@@ -63,7 +63,7 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
-		field.Int("status").Default(0),
+		field.Int("status").Default(1),
 	}
 }
 
