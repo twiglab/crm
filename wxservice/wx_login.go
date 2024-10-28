@@ -1,5 +1,7 @@
 package wxservice
 
+import "fmt"
+
 type LoginResp struct {
 	OpenID     string `json:"openid"`      // 用户唯一标识
 	SessionKey string `json:"session_key"` // 会话密钥
@@ -10,7 +12,7 @@ type LoginResp struct {
 func login(jsCode string) (*LoginResp, error) {
 	result, err := wxMiniProg.GetAuth().Code2Session(jsCode)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("code2session:%w", err)
 	}
 	resp := LoginResp{
 		OpenID:     result.OpenID,
