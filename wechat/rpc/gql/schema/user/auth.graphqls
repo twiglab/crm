@@ -1,0 +1,13 @@
+input JsCodeReq {
+  jsCode: String!
+}
+
+type AuthUserResp{
+  openID: String!
+  unionID: String!
+}
+
+type Query {
+  AuthUser(input: JsCodeReq!): AuthUserResp!
+}
+
