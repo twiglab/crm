@@ -19,5 +19,5 @@
 
 # go
 .idea
-go.sum
 go.work.sum
+go.work
