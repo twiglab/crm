@@ -1,7 +1,5 @@
 package model
 
-//model:json
-//go:generate msgp
 type AuthInfo struct {
 	JsCode   string `msg:"js_code"`
 	WxOpenID string `msg:"wx_open_id"` // wx 的openID

@@ -17,10 +17,7 @@ func NewMemberDBOP(client *ent.Client) *MemberDBOP {
 }
 
 func (op *MemberDBOP) InsertNewMember(ctx context.Context, param Param) (*ent.Member, error) {
-	cr := op.client.Member.Create()
-	cr.SetCode(param.Code)
-	cr.SetWxOpenID(param.WxOpenID)
-	return cr.Save(ctx)
+	return insertNewMember(ctx, op.client, param)
 }
 
 func (op *MemberDBOP) SelectByCode(ctx context.Context, param Param) (*ent.Member, error) {

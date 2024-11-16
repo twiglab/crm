@@ -2,25 +2,22 @@
 
 package model
 
+type CreateWxMemberReq struct {
+	Code     string `json:"code"`
+	WxOpenID string `json:"wxOpenID"`
+}
+
+type Member struct {
+	Code     string `json:"code"`
+	WxOpenID string `json:"wxOpenID"`
+}
+
 type Mutation struct {
 }
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type OpenIDReq struct {
+	WxOpenID string `json:"wxOpenID"`
 }
 
 type Query struct {
-}
-
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
-}
-
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
 }

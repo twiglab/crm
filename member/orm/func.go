@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/it512/box"
 	"github.com/twiglab/crm/member/orm/ent"
 	"github.com/twiglab/crm/member/orm/ent/member"
 )
