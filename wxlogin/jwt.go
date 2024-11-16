@@ -1,18 +1,29 @@
 package wxlogin
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"strings"
 	"time"
 	"wxlogin/web"
+	"wxlogin/wx"
 
 	"github.com/go-jose/go-jose/v4"
 	"github.com/go-jose/go-jose/v4/json"
 	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/google/uuid"
-	"github.com/it512/box"
 )
+
+type XClient struct {
+	*wx.MemberCli
+	*wx.WxCli
+}
+
+func (x *XClient) Login(ctx context.Context, wxOpenID string) error {
+	x.MemberCli.QueryWxMember(ctx, wxOpenID)
+	return nil
+}
 
 type AuthJWTConfig struct {
 	Alg    string `json:"alg"`
@@ -45,14 +56,10 @@ func Auth(config AuthJWTConfig) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			code, passwd string
+			code string
 		)
 
 		if code = r.PostFormValue("code"); code == "" {
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-		if passwd = r.PostFormValue("passwd"); passwd == "" {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
