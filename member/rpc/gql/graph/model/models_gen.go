@@ -2,21 +2,7 @@
 
 package model
 
-type CreateWxMemberReq struct {
-	Code     string `json:"code"`
-	WxOpenID string `json:"wxOpenID"`
-}
-
-type Member struct {
-	Code     string `json:"code"`
-	WxOpenID string `json:"wxOpenID"`
-}
-
 type Mutation struct {
-}
-
-type OpenIDReq struct {
-	WxOpenID string `json:"wxOpenID"`
 }
 
 type Query struct {

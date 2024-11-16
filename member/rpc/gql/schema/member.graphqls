@@ -1,4 +1,4 @@
-type Member {
+type MemberResp {
   code: String!
   wxOpenID: String!
 }
@@ -12,12 +12,11 @@ input CreateWxMemberReq {
   wxOpenID: String!
 }
 
-
 type Query {
-  QueryWxMember (input: OpenIDReq!): Member!
+  QueryWxMember (input: OpenIDReq!): MemberResp!
 }
 
 
 type Mutation {
-  createWxMember(input: CreateWxMemberReq!): Member!
+  CreateWxMember(input: CreateWxMemberReq!): MemberResp!
 }

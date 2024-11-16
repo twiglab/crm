@@ -1,0 +1,13 @@
+mutation CreateWxMember($input: CreateWxMemberReq!) {
+  CreateWxMember(input: $input) {
+    code
+    wxOpenID
+  }
+}
+
+query QueryWxMember($input: OpenIDReq!) {
+  QueryWxMember(input: $input) {
+    code
+    wxOpenID
+  }
+}
