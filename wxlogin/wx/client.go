@@ -16,7 +16,7 @@ func NewMemberCli(client graphql.Client) *MemberCli {
 	return &MemberCli{client: client}
 }
 
-func (c *MemberCli) Add(ctx context.Context, wxOpenID string) error {
+func (c *MemberCli) QueryWxMember(ctx context.Context, wxOpenID string) error {
 	_, err := low.QueryWxMember(ctx, c.client, data.OpenIDReq{WxOpenID: wxOpenID})
 	if err != nil {
 		return err

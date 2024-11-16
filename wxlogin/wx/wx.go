@@ -12,6 +12,10 @@ type WxCli struct {
 	client graphql.Client
 }
 
+func NewWxCli(client graphql.Client) *WxCli {
+	return &WxCli{client: client}
+}
+
 func (c *WxCli) AuthUser(ctx context.Context, jsCode string) error {
 	_, err := low.AuthUser(ctx, c.client, data.JsCodeReq{JsCode: jsCode})
 	if err != nil {
