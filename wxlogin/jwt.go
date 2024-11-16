@@ -58,12 +58,6 @@ func Auth(config AuthJWTConfig) http.HandlerFunc {
 		}
 
 		ctx := r.Context()
-		az := box.MustFrom[*Authz](ctx, AzKey)
-		u, err := az.Login(ctx, code, passwd)
-		if err != nil {
-			http.Error(w, "Not found user", http.StatusUnauthorized)
-			return
-		}
 
 		token := NewClaims(u.Code)
 		tokenString, err := signed(token, secret)
