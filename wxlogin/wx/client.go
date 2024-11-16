@@ -36,11 +36,22 @@ func (c *MemberCli) Cr(ctx context.Context) {
 }
 */
 
-func (c *MemberCli) Login(ctx context.Context, wxOpenID string) (*Member, error) {
+func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, error) {
 	req, err := low.QueryWxMember(ctx, c.client, data.OpenIDReq{WxOpenID: wxOpenID})
 	if err != nil {
-		return req.GetQueryWxMember
+		return nil, err
+
 	}
-	m := req.GetQueryWxMember()
-	low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+	found := true
+	if found {
+		m := req.GetQueryWxMember()
+		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+	}
+	r, err := low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+	if err != nil {
+		return nil, err
+
+	}
+	m := r.GetCreateWxMember()
+	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 }
