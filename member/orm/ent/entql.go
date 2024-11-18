@@ -31,6 +31,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 			member.FieldPhone:      {Type: field.TypeString, Column: member.FieldPhone},
 			member.FieldNickname:   {Type: field.TypeString, Column: member.FieldNickname},
 			member.FieldWxOpenID:   {Type: field.TypeString, Column: member.FieldWxOpenID},
+			member.FieldWxUID:      {Type: field.TypeString, Column: member.FieldWxUID},
+			member.FieldWxMBCode:   {Type: field.TypeString, Column: member.FieldWxMBCode},
+			member.FieldWxRegTime:  {Type: field.TypeTime, Column: member.FieldWxRegTime},
 			member.FieldStatus:     {Type: field.TypeInt, Column: member.FieldStatus},
 		},
 	}
@@ -111,6 +114,21 @@ func (f *MemberFilter) WhereNickname(p entql.StringP) {
 // WhereWxOpenID applies the entql string predicate on the wx_open_id field.
 func (f *MemberFilter) WhereWxOpenID(p entql.StringP) {
 	f.Where(p.Field(member.FieldWxOpenID))
+}
+
+// WhereWxUID applies the entql string predicate on the wx_uid field.
+func (f *MemberFilter) WhereWxUID(p entql.StringP) {
+	f.Where(p.Field(member.FieldWxUID))
+}
+
+// WhereWxMBCode applies the entql string predicate on the wx_mb_code field.
+func (f *MemberFilter) WhereWxMBCode(p entql.StringP) {
+	f.Where(p.Field(member.FieldWxMBCode))
+}
+
+// WhereWxRegTime applies the entql time.Time predicate on the wx_reg_time field.
+func (f *MemberFilter) WhereWxRegTime(p entql.TimeP) {
+	f.Where(p.Field(member.FieldWxRegTime))
 }
 
 // WhereStatus applies the entql int predicate on the status field.

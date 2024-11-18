@@ -30,6 +30,12 @@ type Member struct {
 	Nickname string `json:"nickname,omitempty"`
 	// WxOpenID holds the value of the "wx_open_id" field.
 	WxOpenID string `json:"wx_open_id,omitempty"`
+	// WxUID holds the value of the "wx_uid" field.
+	WxUID string `json:"wx_uid,omitempty"`
+	// WxMBCode holds the value of the "wx_mb_code" field.
+	WxMBCode string `json:"wx_mb_code,omitempty"`
+	// WxRegTime holds the value of the "wx_reg_time" field.
+	WxRegTime *time.Time `json:"wx_reg_time,omitempty"`
 	// Status holds the value of the "status" field.
 	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
@@ -42,9 +48,9 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID:
+		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldWxMBCode:
 			values[i] = new(sql.NullString)
-		case member.FieldCreateTime, member.FieldUpdateTime:
+		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldWxRegTime:
 			values[i] = new(sql.NullTime)
 		case member.FieldID:
 			values[i] = new(uuid.UUID)
@@ -105,6 +111,25 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.WxOpenID = value.String
 			}
+		case member.FieldWxUID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_uid", values[i])
+			} else if value.Valid {
+				m.WxUID = value.String
+			}
+		case member.FieldWxMBCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_mb_code", values[i])
+			} else if value.Valid {
+				m.WxMBCode = value.String
+			}
+		case member.FieldWxRegTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_reg_time", values[i])
+			} else if value.Valid {
+				m.WxRegTime = new(time.Time)
+				*m.WxRegTime = value.Time
+			}
 		case member.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
@@ -164,6 +189,17 @@ func (m *Member) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("wx_open_id=")
 	builder.WriteString(m.WxOpenID)
+	builder.WriteString(", ")
+	builder.WriteString("wx_uid=")
+	builder.WriteString(m.WxUID)
+	builder.WriteString(", ")
+	builder.WriteString("wx_mb_code=")
+	builder.WriteString(m.WxMBCode)
+	builder.WriteString(", ")
+	if v := m.WxRegTime; v != nil {
+		builder.WriteString("wx_reg_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", m.Status))

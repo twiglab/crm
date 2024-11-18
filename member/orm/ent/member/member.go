@@ -26,6 +26,12 @@ const (
 	FieldNickname = "nickname"
 	// FieldWxOpenID holds the string denoting the wx_open_id field in the database.
 	FieldWxOpenID = "wx_open_id"
+	// FieldWxUID holds the string denoting the wx_uid field in the database.
+	FieldWxUID = "wx_uid"
+	// FieldWxMBCode holds the string denoting the wx_mb_code field in the database.
+	FieldWxMBCode = "wx_mb_code"
+	// FieldWxRegTime holds the string denoting the wx_reg_time field in the database.
+	FieldWxRegTime = "wx_reg_time"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the member in the database.
@@ -41,6 +47,9 @@ var Columns = []string{
 	FieldPhone,
 	FieldNickname,
 	FieldWxOpenID,
+	FieldWxUID,
+	FieldWxMBCode,
+	FieldWxRegTime,
 	FieldStatus,
 }
 
@@ -71,6 +80,10 @@ var (
 	NicknameValidator func(string) error
 	// WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	WxOpenIDValidator func(string) error
+	// WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
+	WxUIDValidator func(string) error
+	// WxMBCodeValidator is a validator for the "wx_mb_code" field. It is called by the builders before save.
+	WxMBCodeValidator func(string) error
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 	// DefaultID holds the default value on creation for the "id" field.
@@ -113,6 +126,21 @@ func ByNickname(opts ...sql.OrderTermOption) OrderOption {
 // ByWxOpenID orders the results by the wx_open_id field.
 func ByWxOpenID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWxOpenID, opts...).ToFunc()
+}
+
+// ByWxUID orders the results by the wx_uid field.
+func ByWxUID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxUID, opts...).ToFunc()
+}
+
+// ByWxMBCode orders the results by the wx_mb_code field.
+func ByWxMBCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxMBCode, opts...).ToFunc()
+}
+
+// ByWxRegTime orders the results by the wx_reg_time field.
+func ByWxRegTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxRegTime, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

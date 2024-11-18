@@ -85,6 +85,21 @@ func WxOpenID(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldWxOpenID, v))
 }
 
+// WxUID applies equality check predicate on the "wx_uid" field. It's identical to WxUIDEQ.
+func WxUID(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxUID, v))
+}
+
+// WxMBCode applies equality check predicate on the "wx_mb_code" field. It's identical to WxMBCodeEQ.
+func WxMBCode(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxMBCode, v))
+}
+
+// WxRegTime applies equality check predicate on the "wx_reg_time" field. It's identical to WxRegTimeEQ.
+func WxRegTime(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxRegTime, v))
+}
+
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v int) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldStatus, v))
@@ -290,6 +305,16 @@ func PhoneHasSuffix(v string) predicate.Member {
 	return predicate.Member(sql.FieldHasSuffix(FieldPhone, v))
 }
 
+// PhoneIsNil applies the IsNil predicate on the "phone" field.
+func PhoneIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldPhone))
+}
+
+// PhoneNotNil applies the NotNil predicate on the "phone" field.
+func PhoneNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldPhone))
+}
+
 // PhoneEqualFold applies the EqualFold predicate on the "phone" field.
 func PhoneEqualFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldEqualFold(FieldPhone, v))
@@ -353,6 +378,16 @@ func NicknameHasPrefix(v string) predicate.Member {
 // NicknameHasSuffix applies the HasSuffix predicate on the "nickname" field.
 func NicknameHasSuffix(v string) predicate.Member {
 	return predicate.Member(sql.FieldHasSuffix(FieldNickname, v))
+}
+
+// NicknameIsNil applies the IsNil predicate on the "nickname" field.
+func NicknameIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldNickname))
+}
+
+// NicknameNotNil applies the NotNil predicate on the "nickname" field.
+func NicknameNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldNickname))
 }
 
 // NicknameEqualFold applies the EqualFold predicate on the "nickname" field.
@@ -428,6 +463,196 @@ func WxOpenIDEqualFold(v string) predicate.Member {
 // WxOpenIDContainsFold applies the ContainsFold predicate on the "wx_open_id" field.
 func WxOpenIDContainsFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldContainsFold(FieldWxOpenID, v))
+}
+
+// WxUIDEQ applies the EQ predicate on the "wx_uid" field.
+func WxUIDEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxUID, v))
+}
+
+// WxUIDNEQ applies the NEQ predicate on the "wx_uid" field.
+func WxUIDNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldWxUID, v))
+}
+
+// WxUIDIn applies the In predicate on the "wx_uid" field.
+func WxUIDIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldWxUID, vs...))
+}
+
+// WxUIDNotIn applies the NotIn predicate on the "wx_uid" field.
+func WxUIDNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldWxUID, vs...))
+}
+
+// WxUIDGT applies the GT predicate on the "wx_uid" field.
+func WxUIDGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldWxUID, v))
+}
+
+// WxUIDGTE applies the GTE predicate on the "wx_uid" field.
+func WxUIDGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldWxUID, v))
+}
+
+// WxUIDLT applies the LT predicate on the "wx_uid" field.
+func WxUIDLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldWxUID, v))
+}
+
+// WxUIDLTE applies the LTE predicate on the "wx_uid" field.
+func WxUIDLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldWxUID, v))
+}
+
+// WxUIDContains applies the Contains predicate on the "wx_uid" field.
+func WxUIDContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldWxUID, v))
+}
+
+// WxUIDHasPrefix applies the HasPrefix predicate on the "wx_uid" field.
+func WxUIDHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldWxUID, v))
+}
+
+// WxUIDHasSuffix applies the HasSuffix predicate on the "wx_uid" field.
+func WxUIDHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldWxUID, v))
+}
+
+// WxUIDEqualFold applies the EqualFold predicate on the "wx_uid" field.
+func WxUIDEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldWxUID, v))
+}
+
+// WxUIDContainsFold applies the ContainsFold predicate on the "wx_uid" field.
+func WxUIDContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldWxUID, v))
+}
+
+// WxMBCodeEQ applies the EQ predicate on the "wx_mb_code" field.
+func WxMBCodeEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxMBCode, v))
+}
+
+// WxMBCodeNEQ applies the NEQ predicate on the "wx_mb_code" field.
+func WxMBCodeNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldWxMBCode, v))
+}
+
+// WxMBCodeIn applies the In predicate on the "wx_mb_code" field.
+func WxMBCodeIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldWxMBCode, vs...))
+}
+
+// WxMBCodeNotIn applies the NotIn predicate on the "wx_mb_code" field.
+func WxMBCodeNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldWxMBCode, vs...))
+}
+
+// WxMBCodeGT applies the GT predicate on the "wx_mb_code" field.
+func WxMBCodeGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldWxMBCode, v))
+}
+
+// WxMBCodeGTE applies the GTE predicate on the "wx_mb_code" field.
+func WxMBCodeGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldWxMBCode, v))
+}
+
+// WxMBCodeLT applies the LT predicate on the "wx_mb_code" field.
+func WxMBCodeLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldWxMBCode, v))
+}
+
+// WxMBCodeLTE applies the LTE predicate on the "wx_mb_code" field.
+func WxMBCodeLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldWxMBCode, v))
+}
+
+// WxMBCodeContains applies the Contains predicate on the "wx_mb_code" field.
+func WxMBCodeContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldWxMBCode, v))
+}
+
+// WxMBCodeHasPrefix applies the HasPrefix predicate on the "wx_mb_code" field.
+func WxMBCodeHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldWxMBCode, v))
+}
+
+// WxMBCodeHasSuffix applies the HasSuffix predicate on the "wx_mb_code" field.
+func WxMBCodeHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldWxMBCode, v))
+}
+
+// WxMBCodeIsNil applies the IsNil predicate on the "wx_mb_code" field.
+func WxMBCodeIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldWxMBCode))
+}
+
+// WxMBCodeNotNil applies the NotNil predicate on the "wx_mb_code" field.
+func WxMBCodeNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldWxMBCode))
+}
+
+// WxMBCodeEqualFold applies the EqualFold predicate on the "wx_mb_code" field.
+func WxMBCodeEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldWxMBCode, v))
+}
+
+// WxMBCodeContainsFold applies the ContainsFold predicate on the "wx_mb_code" field.
+func WxMBCodeContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldWxMBCode, v))
+}
+
+// WxRegTimeEQ applies the EQ predicate on the "wx_reg_time" field.
+func WxRegTimeEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxRegTime, v))
+}
+
+// WxRegTimeNEQ applies the NEQ predicate on the "wx_reg_time" field.
+func WxRegTimeNEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldWxRegTime, v))
+}
+
+// WxRegTimeIn applies the In predicate on the "wx_reg_time" field.
+func WxRegTimeIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldWxRegTime, vs...))
+}
+
+// WxRegTimeNotIn applies the NotIn predicate on the "wx_reg_time" field.
+func WxRegTimeNotIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldWxRegTime, vs...))
+}
+
+// WxRegTimeGT applies the GT predicate on the "wx_reg_time" field.
+func WxRegTimeGT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldWxRegTime, v))
+}
+
+// WxRegTimeGTE applies the GTE predicate on the "wx_reg_time" field.
+func WxRegTimeGTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldWxRegTime, v))
+}
+
+// WxRegTimeLT applies the LT predicate on the "wx_reg_time" field.
+func WxRegTimeLT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldWxRegTime, v))
+}
+
+// WxRegTimeLTE applies the LTE predicate on the "wx_reg_time" field.
+func WxRegTimeLTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldWxRegTime, v))
+}
+
+// WxRegTimeIsNil applies the IsNil predicate on the "wx_reg_time" field.
+func WxRegTimeIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldWxRegTime))
+}
+
+// WxRegTimeNotNil applies the NotNil predicate on the "wx_reg_time" field.
+func WxRegTimeNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldWxRegTime))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

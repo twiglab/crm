@@ -72,15 +72,65 @@ func (mc *MemberCreate) SetPhone(s string) *MemberCreate {
 	return mc
 }
 
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (mc *MemberCreate) SetNillablePhone(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetPhone(*s)
+	}
+	return mc
+}
+
 // SetNickname sets the "nickname" field.
 func (mc *MemberCreate) SetNickname(s string) *MemberCreate {
 	mc.mutation.SetNickname(s)
 	return mc
 }
 
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableNickname(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetNickname(*s)
+	}
+	return mc
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (mc *MemberCreate) SetWxOpenID(s string) *MemberCreate {
 	mc.mutation.SetWxOpenID(s)
+	return mc
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (mc *MemberCreate) SetWxUID(s string) *MemberCreate {
+	mc.mutation.SetWxUID(s)
+	return mc
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (mc *MemberCreate) SetWxMBCode(s string) *MemberCreate {
+	mc.mutation.SetWxMBCode(s)
+	return mc
+}
+
+// SetNillableWxMBCode sets the "wx_mb_code" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableWxMBCode(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetWxMBCode(*s)
+	}
+	return mc
+}
+
+// SetWxRegTime sets the "wx_reg_time" field.
+func (mc *MemberCreate) SetWxRegTime(t time.Time) *MemberCreate {
+	mc.mutation.SetWxRegTime(t)
+	return mc
+}
+
+// SetNillableWxRegTime sets the "wx_reg_time" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableWxRegTime(t *time.Time) *MemberCreate {
+	if t != nil {
+		mc.SetWxRegTime(*t)
+	}
 	return mc
 }
 
@@ -185,16 +235,10 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Member.code": %w`, err)}
 		}
 	}
-	if _, ok := mc.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`ent: missing required field "Member.phone"`)}
-	}
 	if v, ok := mc.mutation.Phone(); ok {
 		if err := member.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Member.phone": %w`, err)}
 		}
-	}
-	if _, ok := mc.mutation.Nickname(); !ok {
-		return &ValidationError{Name: "nickname", err: errors.New(`ent: missing required field "Member.nickname"`)}
 	}
 	if v, ok := mc.mutation.Nickname(); ok {
 		if err := member.NicknameValidator(v); err != nil {
@@ -207,6 +251,19 @@ func (mc *MemberCreate) check() error {
 	if v, ok := mc.mutation.WxOpenID(); ok {
 		if err := member.WxOpenIDValidator(v); err != nil {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
+		}
+	}
+	if _, ok := mc.mutation.WxUID(); !ok {
+		return &ValidationError{Name: "wx_uid", err: errors.New(`ent: missing required field "Member.wx_uid"`)}
+	}
+	if v, ok := mc.mutation.WxUID(); ok {
+		if err := member.WxUIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
+		}
+	}
+	if v, ok := mc.mutation.WxMBCode(); ok {
+		if err := member.WxMBCodeValidator(v); err != nil {
+			return &ValidationError{Name: "wx_mb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_mb_code": %w`, err)}
 		}
 	}
 	if _, ok := mc.mutation.Status(); !ok {
@@ -271,6 +328,18 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
 		_node.WxOpenID = value
+	}
+	if value, ok := mc.mutation.WxUID(); ok {
+		_spec.SetField(member.FieldWxUID, field.TypeString, value)
+		_node.WxUID = value
+	}
+	if value, ok := mc.mutation.WxMBCode(); ok {
+		_spec.SetField(member.FieldWxMBCode, field.TypeString, value)
+		_node.WxMBCode = value
+	}
+	if value, ok := mc.mutation.WxRegTime(); ok {
+		_spec.SetField(member.FieldWxRegTime, field.TypeTime, value)
+		_node.WxRegTime = &value
 	}
 	if value, ok := mc.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)
@@ -352,6 +421,12 @@ func (u *MemberUpsert) UpdatePhone() *MemberUpsert {
 	return u
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (u *MemberUpsert) ClearPhone() *MemberUpsert {
+	u.SetNull(member.FieldPhone)
+	return u
+}
+
 // SetNickname sets the "nickname" field.
 func (u *MemberUpsert) SetNickname(v string) *MemberUpsert {
 	u.Set(member.FieldNickname, v)
@@ -364,6 +439,12 @@ func (u *MemberUpsert) UpdateNickname() *MemberUpsert {
 	return u
 }
 
+// ClearNickname clears the value of the "nickname" field.
+func (u *MemberUpsert) ClearNickname() *MemberUpsert {
+	u.SetNull(member.FieldNickname)
+	return u
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (u *MemberUpsert) SetWxOpenID(v string) *MemberUpsert {
 	u.Set(member.FieldWxOpenID, v)
@@ -373,6 +454,36 @@ func (u *MemberUpsert) SetWxOpenID(v string) *MemberUpsert {
 // UpdateWxOpenID sets the "wx_open_id" field to the value that was provided on create.
 func (u *MemberUpsert) UpdateWxOpenID() *MemberUpsert {
 	u.SetExcluded(member.FieldWxOpenID)
+	return u
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (u *MemberUpsert) SetWxUID(v string) *MemberUpsert {
+	u.Set(member.FieldWxUID, v)
+	return u
+}
+
+// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateWxUID() *MemberUpsert {
+	u.SetExcluded(member.FieldWxUID)
+	return u
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (u *MemberUpsert) SetWxMBCode(v string) *MemberUpsert {
+	u.Set(member.FieldWxMBCode, v)
+	return u
+}
+
+// UpdateWxMBCode sets the "wx_mb_code" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateWxMBCode() *MemberUpsert {
+	u.SetExcluded(member.FieldWxMBCode)
+	return u
+}
+
+// ClearWxMBCode clears the value of the "wx_mb_code" field.
+func (u *MemberUpsert) ClearWxMBCode() *MemberUpsert {
+	u.SetNull(member.FieldWxMBCode)
 	return u
 }
 
@@ -416,6 +527,9 @@ func (u *MemberUpsertOne) UpdateNewValues() *MemberUpsertOne {
 		}
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(member.FieldCode)
+		}
+		if _, exists := u.create.mutation.WxRegTime(); exists {
+			s.SetIgnore(member.FieldWxRegTime)
 		}
 	}))
 	return u
@@ -476,6 +590,13 @@ func (u *MemberUpsertOne) UpdatePhone() *MemberUpsertOne {
 	})
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (u *MemberUpsertOne) ClearPhone() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearPhone()
+	})
+}
+
 // SetNickname sets the "nickname" field.
 func (u *MemberUpsertOne) SetNickname(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
@@ -490,6 +611,13 @@ func (u *MemberUpsertOne) UpdateNickname() *MemberUpsertOne {
 	})
 }
 
+// ClearNickname clears the value of the "nickname" field.
+func (u *MemberUpsertOne) ClearNickname() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearNickname()
+	})
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (u *MemberUpsertOne) SetWxOpenID(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
@@ -501,6 +629,41 @@ func (u *MemberUpsertOne) SetWxOpenID(v string) *MemberUpsertOne {
 func (u *MemberUpsertOne) UpdateWxOpenID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateWxOpenID()
+	})
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (u *MemberUpsertOne) SetWxUID(v string) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxUID(v)
+	})
+}
+
+// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateWxUID() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxUID()
+	})
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (u *MemberUpsertOne) SetWxMBCode(v string) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxMBCode(v)
+	})
+}
+
+// UpdateWxMBCode sets the "wx_mb_code" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateWxMBCode() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxMBCode()
+	})
+}
+
+// ClearWxMBCode clears the value of the "wx_mb_code" field.
+func (u *MemberUpsertOne) ClearWxMBCode() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearWxMBCode()
 	})
 }
 
@@ -714,6 +877,9 @@ func (u *MemberUpsertBulk) UpdateNewValues() *MemberUpsertBulk {
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(member.FieldCode)
 			}
+			if _, exists := b.mutation.WxRegTime(); exists {
+				s.SetIgnore(member.FieldWxRegTime)
+			}
 		}
 	}))
 	return u
@@ -774,6 +940,13 @@ func (u *MemberUpsertBulk) UpdatePhone() *MemberUpsertBulk {
 	})
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (u *MemberUpsertBulk) ClearPhone() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearPhone()
+	})
+}
+
 // SetNickname sets the "nickname" field.
 func (u *MemberUpsertBulk) SetNickname(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
@@ -788,6 +961,13 @@ func (u *MemberUpsertBulk) UpdateNickname() *MemberUpsertBulk {
 	})
 }
 
+// ClearNickname clears the value of the "nickname" field.
+func (u *MemberUpsertBulk) ClearNickname() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearNickname()
+	})
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (u *MemberUpsertBulk) SetWxOpenID(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
@@ -799,6 +979,41 @@ func (u *MemberUpsertBulk) SetWxOpenID(v string) *MemberUpsertBulk {
 func (u *MemberUpsertBulk) UpdateWxOpenID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateWxOpenID()
+	})
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (u *MemberUpsertBulk) SetWxUID(v string) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxUID(v)
+	})
+}
+
+// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateWxUID() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxUID()
+	})
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (u *MemberUpsertBulk) SetWxMBCode(v string) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxMBCode(v)
+	})
+}
+
+// UpdateWxMBCode sets the "wx_mb_code" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateWxMBCode() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxMBCode()
+	})
+}
+
+// ClearWxMBCode clears the value of the "wx_mb_code" field.
+func (u *MemberUpsertBulk) ClearWxMBCode() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearWxMBCode()
 	})
 }
 
