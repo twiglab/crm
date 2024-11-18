@@ -13,7 +13,7 @@ input CreateWxMemberReq {
 }
 
 type Query {
-  QueryWxMember (input: OpenIDReq!): MemberResp!
+  QueryWxMember (input: OpenIDReq!): MemberResp
 }
 
 

@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/twiglab/crm/member/orm"
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
@@ -18,7 +19,12 @@ func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.Create
 
 // QueryWxMember is the resolver for the QueryWxMember field.
 func (r *queryResolver) QueryWxMember(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
-	panic(fmt.Errorf("not implemented: QueryWxMember - QueryWxMember"))
+	m, err := r.dbop.SelectByWxID(ctx, orm.Param{WxOpenID: input.WxOpenID})
+	if m != nil && err == nil {
+		return &data.MemberResp{Code: m.Code}, nil
+	}
+
+	return nil, err
 }
 
 // Mutation returns MutationResolver implementation.

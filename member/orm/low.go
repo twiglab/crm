@@ -2,7 +2,6 @@ package orm
 
 import (
 	"context"
-	"errors"
 
 	"github.com/it512/box"
 	"github.com/twiglab/crm/member/orm/ent"
@@ -28,10 +27,6 @@ func insertNewMember(ctx context.Context, client *ent.Client, param Param) (*ent
 }
 
 func selectByWxID(ctx context.Context, client *ent.Client, param Param) (*ent.Member, error) {
-	if param.WxOpenID == "" {
-		return nil, errors.New("用户为空")
-	}
-
 	q := client.Member.Query()
 	q.Where(member.CodeEQ(param.WxOpenID))
 	return q.Only(ctx)

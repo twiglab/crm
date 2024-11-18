@@ -266,7 +266,7 @@ input CreateWxMemberReq {
 }
 
 type Query {
-  QueryWxMember (input: OpenIDReq!): MemberResp!
+  QueryWxMember (input: OpenIDReq!): MemberResp
 }
 
 
@@ -634,14 +634,11 @@ func (ec *executionContext) _Query_QueryWxMember(ctx context.Context, field grap
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*data.MemberResp)
 	fc.Result = res
-	return ec.marshalNMemberResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐMemberResp(ctx, field.Selections, res)
+	return ec.marshalOMemberResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐMemberResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_QueryWxMember(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2849,16 +2846,13 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		case "QueryWxMember":
 			field := field
 
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Query_QueryWxMember(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
 				return res
 			}
 
@@ -3791,6 +3785,13 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOMemberResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐMemberResp(ctx context.Context, sel ast.SelectionSet, v *data.MemberResp) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._MemberResp(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

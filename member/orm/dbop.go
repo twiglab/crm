@@ -5,29 +5,14 @@ import (
 	"errors"
 
 	"github.com/twiglab/crm/member/orm/ent"
-	"github.com/twiglab/crm/member/orm/ent/member"
 )
 
 type MemberDBOP struct {
-	client *ent.Client
-}
-
-func NewMemberDBOP(client *ent.Client) *MemberDBOP {
-	return &MemberDBOP{client: client}
+	Client *ent.Client
 }
 
 func (op *MemberDBOP) InsertNewMember(ctx context.Context, param Param) (*ent.Member, error) {
-	return insertNewMember(ctx, op.client, param)
-}
-
-func (op *MemberDBOP) SelectByCode(ctx context.Context, param Param) (*ent.Member, error) {
-	if param.Code == "" {
-		return nil, errors.New("用户为空")
-	}
-
-	q := EntClient(ctx).Member.Query()
-	q.Where(member.CodeEQ(param.Code))
-	return q.Only(ctx)
+	return insertNewMember(ctx, op.Client, param)
 }
 
 func (op *MemberDBOP) SelectByWxID(ctx context.Context, param Param) (*ent.Member, error) {
@@ -35,7 +20,24 @@ func (op *MemberDBOP) SelectByWxID(ctx context.Context, param Param) (*ent.Membe
 		return nil, errors.New("用户为空")
 	}
 
-	q := op.client.Member.Query()
-	q.Where(member.CodeEQ(param.WxOpenID))
-	return q.Only(ctx)
+	m, err := selectByWxID(ctx, op.Client, param)
+	if ent.IsNotFound(err) {
+		return nil, nil
+	}
+
+	return m, err
+}
+
+func (op *MemberDBOP) SelectByWxID2(ctx context.Context, param Param) (*ent.Member, bool, error) {
+
+	m, err := op.SelectByWxID(ctx, param)
+	if ent.IsNotFound(err) {
+		return nil, false, nil
+	}
+
+	if err != nil {
+		return nil, false, err
+	}
+
+	return m, true, nil
 }
