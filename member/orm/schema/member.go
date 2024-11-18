@@ -9,8 +9,7 @@ import (
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
 	"github.com/google/uuid"
-
-	"github.com/twiglab/crm/member/orm/schema/x"
+	"github.com/twiglab/crm/member/orm/schema/internal/x"
 )
 
 type Member struct {
@@ -38,6 +37,7 @@ func (Member) Fields() []ent.Field {
 
 		field.String("phone").
 			MaxLen(64).
+			Optional().
 			Unique().
 			Validate(x.CheckMobile).
 			SchemaType(map[string]string{
@@ -48,6 +48,7 @@ func (Member) Fields() []ent.Field {
 
 		field.String("nickname").
 			MaxLen(64).
+			Optional().
 			SchemaType(map[string]string{
 				dialect.MySQL:    "varchar(64)", // Override MySQL.
 				dialect.Postgres: "varchar(64)", // Override Postgres.
@@ -63,7 +64,33 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
+		field.String("wx_uid").
+			MaxLen(256).
+			Unique().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
+
+		field.String("wx_mb_code").
+			MaxLen(64).
+			Unique().
+			Optional().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(64)", // Override MySQL.
+				dialect.Postgres: "varchar(64)", // Override Postgres.
+				dialect.SQLite:   "varchar(64)", // Override Postgres.
+			}),
+
+		field.Time("wx_reg_time").
+			Optional().
+			Nillable().
+			Immutable(),
+
 		field.Int("status").Default(1),
+
+		field.Int("source").Default(0),
 	}
 }
 
@@ -77,7 +104,6 @@ func (Member) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("code"),
 		index.Fields("wx_open_id"),
-		index.Fields("phone"),
 	}
 }
 

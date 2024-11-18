@@ -48,6 +48,12 @@ func (mu *MemberUpdate) SetNillablePhone(s *string) *MemberUpdate {
 	return mu
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (mu *MemberUpdate) ClearPhone() *MemberUpdate {
+	mu.mutation.ClearPhone()
+	return mu
+}
+
 // SetNickname sets the "nickname" field.
 func (mu *MemberUpdate) SetNickname(s string) *MemberUpdate {
 	mu.mutation.SetNickname(s)
@@ -62,6 +68,12 @@ func (mu *MemberUpdate) SetNillableNickname(s *string) *MemberUpdate {
 	return mu
 }
 
+// ClearNickname clears the value of the "nickname" field.
+func (mu *MemberUpdate) ClearNickname() *MemberUpdate {
+	mu.mutation.ClearNickname()
+	return mu
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (mu *MemberUpdate) SetWxOpenID(s string) *MemberUpdate {
 	mu.mutation.SetWxOpenID(s)
@@ -73,6 +85,40 @@ func (mu *MemberUpdate) SetNillableWxOpenID(s *string) *MemberUpdate {
 	if s != nil {
 		mu.SetWxOpenID(*s)
 	}
+	return mu
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (mu *MemberUpdate) SetWxUID(s string) *MemberUpdate {
+	mu.mutation.SetWxUID(s)
+	return mu
+}
+
+// SetNillableWxUID sets the "wx_uid" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxUID(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetWxUID(*s)
+	}
+	return mu
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (mu *MemberUpdate) SetWxMBCode(s string) *MemberUpdate {
+	mu.mutation.SetWxMBCode(s)
+	return mu
+}
+
+// SetNillableWxMBCode sets the "wx_mb_code" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxMBCode(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetWxMBCode(*s)
+	}
+	return mu
+}
+
+// ClearWxMBCode clears the value of the "wx_mb_code" field.
+func (mu *MemberUpdate) ClearWxMBCode() *MemberUpdate {
+	mu.mutation.ClearWxMBCode()
 	return mu
 }
 
@@ -155,6 +201,16 @@ func (mu *MemberUpdate) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
+	if v, ok := mu.mutation.WxUID(); ok {
+		if err := member.WxUIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
+		}
+	}
+	if v, ok := mu.mutation.WxMBCode(); ok {
+		if err := member.WxMBCodeValidator(v); err != nil {
+			return &ValidationError{Name: "wx_mb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_mb_code": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -176,11 +232,29 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.Phone(); ok {
 		_spec.SetField(member.FieldPhone, field.TypeString, value)
 	}
+	if mu.mutation.PhoneCleared() {
+		_spec.ClearField(member.FieldPhone, field.TypeString)
+	}
 	if value, ok := mu.mutation.Nickname(); ok {
 		_spec.SetField(member.FieldNickname, field.TypeString, value)
 	}
+	if mu.mutation.NicknameCleared() {
+		_spec.ClearField(member.FieldNickname, field.TypeString)
+	}
 	if value, ok := mu.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.WxUID(); ok {
+		_spec.SetField(member.FieldWxUID, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.WxMBCode(); ok {
+		_spec.SetField(member.FieldWxMBCode, field.TypeString, value)
+	}
+	if mu.mutation.WxMBCodeCleared() {
+		_spec.ClearField(member.FieldWxMBCode, field.TypeString)
+	}
+	if mu.mutation.WxRegTimeCleared() {
+		_spec.ClearField(member.FieldWxRegTime, field.TypeTime)
 	}
 	if value, ok := mu.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)
@@ -228,6 +302,12 @@ func (muo *MemberUpdateOne) SetNillablePhone(s *string) *MemberUpdateOne {
 	return muo
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (muo *MemberUpdateOne) ClearPhone() *MemberUpdateOne {
+	muo.mutation.ClearPhone()
+	return muo
+}
+
 // SetNickname sets the "nickname" field.
 func (muo *MemberUpdateOne) SetNickname(s string) *MemberUpdateOne {
 	muo.mutation.SetNickname(s)
@@ -242,6 +322,12 @@ func (muo *MemberUpdateOne) SetNillableNickname(s *string) *MemberUpdateOne {
 	return muo
 }
 
+// ClearNickname clears the value of the "nickname" field.
+func (muo *MemberUpdateOne) ClearNickname() *MemberUpdateOne {
+	muo.mutation.ClearNickname()
+	return muo
+}
+
 // SetWxOpenID sets the "wx_open_id" field.
 func (muo *MemberUpdateOne) SetWxOpenID(s string) *MemberUpdateOne {
 	muo.mutation.SetWxOpenID(s)
@@ -253,6 +339,40 @@ func (muo *MemberUpdateOne) SetNillableWxOpenID(s *string) *MemberUpdateOne {
 	if s != nil {
 		muo.SetWxOpenID(*s)
 	}
+	return muo
+}
+
+// SetWxUID sets the "wx_uid" field.
+func (muo *MemberUpdateOne) SetWxUID(s string) *MemberUpdateOne {
+	muo.mutation.SetWxUID(s)
+	return muo
+}
+
+// SetNillableWxUID sets the "wx_uid" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxUID(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetWxUID(*s)
+	}
+	return muo
+}
+
+// SetWxMBCode sets the "wx_mb_code" field.
+func (muo *MemberUpdateOne) SetWxMBCode(s string) *MemberUpdateOne {
+	muo.mutation.SetWxMBCode(s)
+	return muo
+}
+
+// SetNillableWxMBCode sets the "wx_mb_code" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxMBCode(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetWxMBCode(*s)
+	}
+	return muo
+}
+
+// ClearWxMBCode clears the value of the "wx_mb_code" field.
+func (muo *MemberUpdateOne) ClearWxMBCode() *MemberUpdateOne {
+	muo.mutation.ClearWxMBCode()
 	return muo
 }
 
@@ -348,6 +468,16 @@ func (muo *MemberUpdateOne) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
+	if v, ok := muo.mutation.WxUID(); ok {
+		if err := member.WxUIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
+		}
+	}
+	if v, ok := muo.mutation.WxMBCode(); ok {
+		if err := member.WxMBCodeValidator(v); err != nil {
+			return &ValidationError{Name: "wx_mb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_mb_code": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -386,11 +516,29 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	if value, ok := muo.mutation.Phone(); ok {
 		_spec.SetField(member.FieldPhone, field.TypeString, value)
 	}
+	if muo.mutation.PhoneCleared() {
+		_spec.ClearField(member.FieldPhone, field.TypeString)
+	}
 	if value, ok := muo.mutation.Nickname(); ok {
 		_spec.SetField(member.FieldNickname, field.TypeString, value)
 	}
+	if muo.mutation.NicknameCleared() {
+		_spec.ClearField(member.FieldNickname, field.TypeString)
+	}
 	if value, ok := muo.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.WxUID(); ok {
+		_spec.SetField(member.FieldWxUID, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.WxMBCode(); ok {
+		_spec.SetField(member.FieldWxMBCode, field.TypeString, value)
+	}
+	if muo.mutation.WxMBCodeCleared() {
+		_spec.ClearField(member.FieldWxMBCode, field.TypeString)
+	}
+	if muo.mutation.WxRegTimeCleared() {
+		_spec.ClearField(member.FieldWxRegTime, field.TypeTime)
 	}
 	if value, ok := muo.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)

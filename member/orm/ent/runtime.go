@@ -75,8 +75,16 @@ func init() {
 	memberDescWxOpenID := memberFields[4].Descriptor()
 	// member.WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	member.WxOpenIDValidator = memberDescWxOpenID.Validators[0].(func(string) error)
+	// memberDescWxUID is the schema descriptor for wx_uid field.
+	memberDescWxUID := memberFields[5].Descriptor()
+	// member.WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
+	member.WxUIDValidator = memberDescWxUID.Validators[0].(func(string) error)
+	// memberDescWxMBCode is the schema descriptor for wx_mb_code field.
+	memberDescWxMBCode := memberFields[6].Descriptor()
+	// member.WxMBCodeValidator is a validator for the "wx_mb_code" field. It is called by the builders before save.
+	member.WxMBCodeValidator = memberDescWxMBCode.Validators[0].(func(string) error)
 	// memberDescStatus is the schema descriptor for status field.
-	memberDescStatus := memberFields[5].Descriptor()
+	memberDescStatus := memberFields[8].Descriptor()
 	// member.DefaultStatus holds the default value on creation for the status field.
 	member.DefaultStatus = memberDescStatus.Default.(int)
 	// memberDescID is the schema descriptor for id field.
