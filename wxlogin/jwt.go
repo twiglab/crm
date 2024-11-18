@@ -20,9 +20,33 @@ type XClient struct {
 	*wx.WxCli
 }
 
-func (x *XClient) Login(ctx context.Context, wxOpenID string) error {
-	x.MemberCli.QueryWxMember(ctx, wxOpenID)
-	return nil
+// func (x *XClient) Login(ctx context.Context, wxOpenID string) error {
+// 	x.MemberCli.QueryWxMember(ctx, wxOpenID)
+// 	return nil
+// }
+
+// Login 用户登录，jscode换取用户jwt
+//
+//	@param ctx
+//	@param jsCode
+//	@return error
+func (x *XClient) Login(ctx context.Context, jsCode string) (string, error) {
+	codes, err := x.WxCli.AuthUser(ctx, jsCode)
+	if err != nil {
+		return "", err
+	}
+
+	member, err := x.MemberCli.LoginOrCr(ctx, codes.OpenID)
+	if err != nil {
+		return "", err
+	}
+
+	jwtStr, err := signed(NewClaims(member.Code), []byte("secret"))
+	if err != nil {
+		return "", err
+	}
+
+	return jwtStr, err
 }
 
 type AuthJWTConfig struct {
