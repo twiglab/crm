@@ -36,22 +36,31 @@ func (c *MemberCli) Cr(ctx context.Context) {
 }
 */
 
+// LoginOrCr 根据微信openid查询用户信息，如果用户不存在则创建新用户
+//
+//	@param ctx
+//	@param wxOpenID
+//	@return *Member
+//	@return error
 func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, error) {
+	// 根据微信openid查询用户信息
 	req, err := low.QueryWxMember(ctx, c.client, data.OpenIDReq{WxOpenID: wxOpenID})
-	if err != nil {
-		return nil, err
+	m := req.GetQueryWxMember()
 
-	}
-	found := true
-	if found {
-		m := req.GetQueryWxMember()
+	if err == nil && m == (data.MemberResp{}) {
+		// 创建用户
+		r, err := low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+		if err != nil {
+			return nil, err
+		}
+		m = r.GetCreateWxMember()
 		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 	}
-	r, err := low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+
+	// 查询出错
 	if err != nil {
 		return nil, err
-
 	}
-	m := r.GetCreateWxMember()
+
 	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 }

@@ -35,6 +35,7 @@ func (c *WxCli) AuthUser(ctx context.Context, jsCode string) (*Codes, error) {
 	return &Codes{OpenID: resp.AuthUser.OpenID, Unionid: resp.AuthUser.UnionID}, nil
 }
 
+// Deprecated: use AuthUser instead
 func (c *WxCli) AuthUser2(ctx context.Context, jsCode string) error {
 	_, err := low.AuthUser(ctx, c.client, data.JsCodeReq{JsCode: jsCode})
 	if err != nil {
