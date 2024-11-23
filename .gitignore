@@ -21,3 +21,4 @@
 .idea
 go.work.sum
 go.work
+.env
