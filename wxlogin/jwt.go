@@ -19,7 +19,7 @@ type AuthJWTConfig struct {
 }
 
 type X struct {
-	JwtStr string
+	Jwt    string
 	Code   string
 	Claims *jwt.Claims
 }
@@ -29,35 +29,6 @@ type AuthClient struct {
 	WxCli     *wx.WxCli
 
 	Secret []byte
-}
-
-// func (x *XClient) Login(ctx context.Context, wxOpenID string) error {
-// 	x.MemberCli.QueryWxMember(ctx, wxOpenID)
-// 	return nil
-// }
-
-// Login 用户登录，jscode换取用户jwt
-//
-//	@param ctx
-//	@param jsCode
-//	@return error
-func (x *AuthClient) Login(ctx context.Context, jsCode string) (string, error) {
-	codes, err := x.WxCli.AuthUser(ctx, jsCode)
-	if err != nil {
-		return "", err
-	}
-
-	member, err := x.MemberCli.LoginOrCr(ctx, codes.OpenID)
-	if err != nil {
-		return "", err
-	}
-
-	jwtStr, err := signed(NewClaims(member.Code), []byte("secret"))
-	if err != nil {
-		return "", err
-	}
-
-	return jwtStr, err
 }
 
 func (x *AuthClient) Login2(ctx context.Context, jsCode string) (*X, error) {
@@ -73,19 +44,12 @@ func (x *AuthClient) Login2(ctx context.Context, jsCode string) (*X, error) {
 
 	claims := NewClaims(member.Code)
 
-	jwtStr, err := signed(claims, x.Secret)
+	jwt, err := signed(claims, x.Secret)
 	if err != nil {
 		return nil, err
 	}
 
-	return &X{JwtStr: jwtStr, Code: member.Code, Claims: claims}, nil
-}
-
-type NonceSource struct {
-}
-
-func (NonceSource) Nonce() (string, error) {
-	return uuid.NewString(), nil
+	return &X{Jwt: jwt, Code: member.Code, Claims: claims}, nil
 }
 
 func NewClaims(code string) *jwt.Claims {
@@ -98,6 +62,13 @@ func NewClaims(code string) *jwt.Claims {
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 		NotBefore: jwt.NewNumericDate(time.Now()),
 	}
+}
+
+type NonceSource struct {
+}
+
+func (NonceSource) Nonce() (string, error) {
+	return uuid.NewString(), nil
 }
 
 var nonce NonceSource = NonceSource{}
