@@ -2,22 +2,33 @@ package wxlogin
 
 import (
 	"context"
-	"errors"
-	"net/http"
-	"strings"
 	"time"
-	"wxlogin/web"
-	"wxlogin/wx"
 
 	"github.com/go-jose/go-jose/v4"
 	"github.com/go-jose/go-jose/v4/json"
 	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/google/uuid"
+
+	"github.com/twiglab/crm/wxlogin/wx"
 )
 
-type XClient struct {
-	*wx.MemberCli
-	*wx.WxCli
+type AuthJWTConfig struct {
+	Alg    string `json:"alg"`
+	Secret string `json:"secret" yaml:"secret" mapstructure:"secret"`
+	Expire int    `json:"expire" yaml:"expire" mapstructure:"expire"`
+}
+
+type X struct {
+	JwtStr string
+	Code   string
+	Claims *jwt.Claims
+}
+
+type AuthClient struct {
+	MemberCli *wx.MemberCli
+	WxCli     *wx.WxCli
+
+	Secret []byte
 }
 
 // func (x *XClient) Login(ctx context.Context, wxOpenID string) error {
@@ -30,7 +41,7 @@ type XClient struct {
 //	@param ctx
 //	@param jsCode
 //	@return error
-func (x *XClient) Login(ctx context.Context, jsCode string) (string, error) {
+func (x *AuthClient) Login(ctx context.Context, jsCode string) (string, error) {
 	codes, err := x.WxCli.AuthUser(ctx, jsCode)
 	if err != nil {
 		return "", err
@@ -49,10 +60,25 @@ func (x *XClient) Login(ctx context.Context, jsCode string) (string, error) {
 	return jwtStr, err
 }
 
-type AuthJWTConfig struct {
-	Alg    string `json:"alg"`
-	Secret string `json:"secret" yaml:"secret" mapstructure:"secret"`
-	Expire int    `json:"expire" yaml:"expire" mapstructure:"expire"`
+func (x *AuthClient) Login2(ctx context.Context, jsCode string) (*X, error) {
+	codes, err := x.WxCli.AuthUser(ctx, jsCode)
+	if err != nil {
+		return nil, err
+	}
+
+	member, err := x.MemberCli.LoginOrCr(ctx, codes.OpenID)
+	if err != nil {
+		return nil, err
+	}
+
+	claims := NewClaims(member.Code)
+
+	jwtStr, err := signed(claims, x.Secret)
+	if err != nil {
+		return nil, err
+	}
+
+	return &X{JwtStr: jwtStr, Code: member.Code, Claims: claims}, nil
 }
 
 type NonceSource struct {
@@ -64,9 +90,9 @@ func (NonceSource) Nonce() (string, error) {
 
 func NewClaims(code string) *jwt.Claims {
 	return &jwt.Claims{
-		Issuer:    "https://yabu.net.cn/authz",
+		Issuer:    "https://xx/authz",
 		ID:        uuid.NewString(),
-		Audience:  []string{"yabu-om", "yabu-flow"},
+		Audience:  []string{"app"},
 		Subject:   code,
 		Expiry:    jwt.NewNumericDate(time.Now().Add(128 * 24 * time.Hour)),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -74,37 +100,7 @@ func NewClaims(code string) *jwt.Claims {
 	}
 }
 
-func Auth(config AuthJWTConfig) http.HandlerFunc {
-
-	secret := []byte(config.Secret)
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		var (
-			code string
-		)
-
-		if code = r.PostFormValue("code"); code == "" {
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
-		ctx := r.Context()
-
-		token := NewClaims(u.Code)
-		tokenString, err := signed(token, secret)
-		if err != nil {
-			http.Error(w, "Not found user", http.StatusUnauthorized)
-			return
-		}
-
-		_ = web.JsonTo(http.StatusOK,
-			map[string]any{
-				"code": "OK",
-				"data": map[string]any{"token": tokenString, "name": u.Name, "code": u.Code}},
-			w,
-		)
-	}
-}
+var nonce NonceSource = NonceSource{}
 
 func signed(claims *jwt.Claims, key any) (string, error) {
 	bs, err := json.Marshal(claims)
@@ -115,7 +111,7 @@ func signed(claims *jwt.Claims, key any) (string, error) {
 	singner, err := jose.NewSigner(jose.SigningKey{
 		Algorithm: jose.HS512,
 		Key:       key,
-	}, &jose.SignerOptions{NonceSource: NonceSource{}})
+	}, &jose.SignerOptions{NonceSource: nonce})
 
 	if err != nil {
 		return "", err
@@ -129,6 +125,7 @@ func signed(claims *jwt.Claims, key any) (string, error) {
 	return ss.CompactSerialize()
 }
 
+/*
 func Verify(config AuthJWTConfig) http.HandlerFunc {
 
 	secret := []byte(config.Secret)
@@ -172,3 +169,36 @@ func ExtractToken(req *http.Request) (string, error) {
 	}
 	return tokenHeader[7:], nil
 }
+
+func Auth(config AuthJWTConfig) http.HandlerFunc {
+
+	secret := []byte(config.Secret)
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			code string
+		)
+
+		if code = r.PostFormValue("code"); code == "" {
+			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			return
+		}
+
+		ctx := r.Context()
+
+		token := NewClaims(u.Code)
+		tokenString, err := signed(token, secret)
+		if err != nil {
+			http.Error(w, "Not found user", http.StatusUnauthorized)
+			return
+		}
+
+		_ = web.JsonTo(http.StatusOK,
+			map[string]any{
+				"code": "OK",
+				"data": map[string]any{"token": tokenString, "name": u.Name, "code": u.Code}},
+			w,
+		)
+	}
+}
+*/
