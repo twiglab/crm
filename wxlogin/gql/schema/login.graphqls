@@ -1,0 +1,14 @@
+input JsCodeReq {
+  jsCode: String!
+}
+
+type LoginUserResp{
+  openID: String!
+  code: String!
+  jwt: String!
+}
+
+type Query {
+  Login(input: JsCodeReq!): LoginUserResp!
+}
+

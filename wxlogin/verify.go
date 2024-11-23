@@ -9,10 +9,7 @@ import (
 	"github.com/go-jose/go-jose/v4/jwt"
 )
 
-func Verify(config AuthJWTConfig) http.HandlerFunc {
-
-	secret := []byte(config.Secret)
-
+func Verify(secret []byte) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, err := ExtractToken(r)
 		if err != nil {

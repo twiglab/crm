@@ -28,6 +28,8 @@ type AuthClient struct {
 	MemberCli *wx.MemberCli
 	WxCli     *wx.WxCli
 
+	AuthJWTConfig AuthJWTConfig
+
 	Secret []byte
 }
 
@@ -95,81 +97,3 @@ func signed(claims *jwt.Claims, key any) (string, error) {
 
 	return ss.CompactSerialize()
 }
-
-/*
-func Verify(config AuthJWTConfig) http.HandlerFunc {
-
-	secret := []byte(config.Secret)
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		t, err := ExtractToken(r)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
-		}
-
-		token, err := jwt.ParseSigned(t, allSignatureAlgorithms)
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
-		}
-
-		claims := jwt.Claims{}
-		if err := token.Claims(secret, &claims); err != nil {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
-		}
-
-		if err := claims.Validate(jwt.Expected{}); err != nil {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
-		}
-	}
-}
-
-var allSignatureAlgorithms = []jose.SignatureAlgorithm{
-	jose.HS512,
-	jose.HS256,
-}
-
-func ExtractToken(req *http.Request) (string, error) {
-	tokenHeader := req.Header.Get("Authorization")
-	if len(tokenHeader) < 7 || !strings.EqualFold(tokenHeader[:7], "bearer ") {
-		return "", errors.New("no token")
-	}
-	return tokenHeader[7:], nil
-}
-
-func Auth(config AuthJWTConfig) http.HandlerFunc {
-
-	secret := []byte(config.Secret)
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		var (
-			code string
-		)
-
-		if code = r.PostFormValue("code"); code == "" {
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
-		ctx := r.Context()
-
-		token := NewClaims(u.Code)
-		tokenString, err := signed(token, secret)
-		if err != nil {
-			http.Error(w, "Not found user", http.StatusUnauthorized)
-			return
-		}
-
-		_ = web.JsonTo(http.StatusOK,
-			map[string]any{
-				"code": "OK",
-				"data": map[string]any{"token": tokenString, "name": u.Name, "code": u.Code}},
-			w,
-		)
-	}
-}
-*/

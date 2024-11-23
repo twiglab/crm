@@ -14,11 +14,7 @@ type Member struct {
 }
 
 type MemberCli struct {
-	client graphql.Client
-}
-
-func NewMemberCli(client graphql.Client) *MemberCli {
-	return &MemberCli{client: client}
+	graphql.Client
 }
 
 /*
@@ -44,12 +40,12 @@ func (c *MemberCli) Cr(ctx context.Context) {
 //	@return error
 func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, error) {
 	// 根据微信openid查询用户信息
-	req, err := low.QueryWxMember(ctx, c.client, data.OpenIDReq{WxOpenID: wxOpenID})
+	req, err := low.QueryWxMember(ctx, c.Client, data.OpenIDReq{WxOpenID: wxOpenID})
 	m := req.GetQueryWxMember()
 
 	if err == nil && m == (data.MemberResp{}) {
 		// 创建用户
-		r, err := low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+		r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
 		if err != nil {
 			return nil, err
 		}
