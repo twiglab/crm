@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-jose/go-jose/v4"
 	"github.com/go-jose/go-jose/v4/jwt"
 )
@@ -48,4 +49,10 @@ func ExtractToken(req *http.Request) (string, error) {
 		return "", errors.New("no token")
 	}
 	return tokenHeader[7:], nil
+}
+
+func JWTVerify(secret []byte) chi.Router {
+	r := chi.NewRouter()
+	r.HandleFunc("/verify", Verify(secret))
+	return r
 }

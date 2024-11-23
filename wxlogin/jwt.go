@@ -28,9 +28,9 @@ type AuthClient struct {
 	MemberCli *wx.MemberCli
 	WxCli     *wx.WxCli
 
-	AuthJWTConfig AuthJWTConfig
-
 	Secret []byte
+
+	// AuthJWTConfig AuthJWTConfig
 }
 
 func (x *AuthClient) Login2(ctx context.Context, jsCode string) (*X, error) {
