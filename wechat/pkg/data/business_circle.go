@@ -1,5 +1,10 @@
 package data
 
+import (
+	"fmt"
+	"github.com/bytedance/sonic"
+)
+
 type BusinessCircleNotifyBase struct {
 	Id           string `json:"id"`            // 通知的唯一ID
 	CreateTime   string `json:"create_time"`   // 通知时间(遵循rfc3339标准格式)
@@ -47,6 +52,18 @@ type BusinessCircleAuthor struct {
 	Source BusinessCircleAuthorSource `json:"source"`
 }
 
+func EncodeBusinessCircleAuthor(author *BusinessCircleAuthor) (string, error) {
+	return sonic.MarshalString(author)
+}
+
+func DecodeBusinessCircleAuthor(json string) (*BusinessCircleAuthor, error) {
+	var author BusinessCircleAuthor
+	if err := sonic.UnmarshalString(json, &author); err != nil {
+		return nil, fmt.Errorf("UnmarshalString err:%w", err)
+	}
+	return &author, nil
+}
+
 type BusinessCircleShopBase struct {
 	Mchid        string `json:"mchid"`         // 微信支付分配的商户号
 	MerchantName string `json:"merchant_name"` // 商圈商户名称
@@ -72,6 +89,18 @@ type BusinessCirclePayment struct {
 	Source BusinessCirclePaymentSource `json:"source"`
 }
 
+func EncodeBusinessCirclePayment(payment *BusinessCirclePayment) (string, error) {
+	return sonic.MarshalString(payment)
+}
+
+func DecodeBusinessCirclePayment(json string) (*BusinessCirclePayment, error) {
+	var author BusinessCirclePayment
+	if err := sonic.UnmarshalString(json, &author); err != nil {
+		return nil, fmt.Errorf("UnmarshalString err:%w", err)
+	}
+	return &author, nil
+}
+
 /*
 商圈会员场内退款结果
 */
@@ -89,4 +118,16 @@ type BusinessCircleRefundSource struct {
 type BusinessCircleRefund struct {
 	BusinessCircleNotifyBase
 	Source BusinessCircleRefundSource `json:"source"`
+}
+
+func EncodeBusinessCircleRefund(refund *BusinessCircleRefund) (string, error) {
+	return sonic.MarshalString(refund)
+}
+
+func DecodeBusinessCircleRefund(json string) (*BusinessCircleRefund, error) {
+	var author BusinessCircleRefund
+	if err := sonic.UnmarshalString(json, &author); err != nil {
+		return nil, fmt.Errorf("UnmarshalString err:%w", err)
+	}
+	return &author, nil
 }
