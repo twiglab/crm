@@ -1,4 +1,4 @@
-package mini
+package sns
 
 import (
 	"github.com/silenceper/wechat/v2"

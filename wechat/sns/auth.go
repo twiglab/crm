@@ -1,4 +1,4 @@
-package mini
+package sns
 
 import (
 	"context"
