@@ -43,11 +43,9 @@ func X(url string) *MQ {
 	return &MQ{ch: ch, conn: conn, exname: "wechat_topic"}
 }
 
-func (mq *MQ) Send(ctx context.Context, c encoding.BinaryMarshaler, key string) {
+func (mq *MQ) Send(ctx context.Context, body []byte, key string) {
 	octx, cancel := context.WithTimeout(ctx, mq.timeout)
 	defer cancel()
-
-	bs, _ := c.MarshalBinary()
 
 	err := mq.ch.PublishWithContext(octx,
 		mq.exname, // exchange
@@ -56,9 +54,14 @@ func (mq *MQ) Send(ctx context.Context, c encoding.BinaryMarshaler, key string) 
 		false,     // immediate
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        bs,
+			Body:        body,
 		})
 	failOnError(err, "Failed to publish a message")
+}
+
+func (mq *MQ) SendMarshaler(ctx context.Context, body encoding.BinaryMarshaler, key string) {
+	bs, _ := body.MarshalBinary()
+	mq.Send(ctx, bs, key)
 }
 
 func (mq *MQ) Close() error {
