@@ -28,14 +28,16 @@ const (
 	FieldWxOpenID = "wx_open_id"
 	// FieldWxUID holds the string denoting the wx_uid field in the database.
 	FieldWxUID = "wx_uid"
-	// FieldWxBcmbCode holds the string denoting the wx_bcmb_code field in the database.
-	FieldWxBcmbCode = "wx_bcmb_code"
-	// FieldWxBcmbRegTime holds the string denoting the wx_bcmb_reg_time field in the database.
-	FieldWxBcmbRegTime = "wx_bcmb_reg_time"
-	// FieldWxBcmbMsgID holds the string denoting the wx_bcmb_msg_id field in the database.
-	FieldWxBcmbMsgID = "wx_bcmb_msg_id"
-	// FieldWxBcmbAuthType holds the string denoting the wx_bcmb_auth_type field in the database.
-	FieldWxBcmbAuthType = "wx_bcmb_auth_type"
+	// FieldBcmbCode holds the string denoting the bcmb_code field in the database.
+	FieldBcmbCode = "bcmb_code"
+	// FieldBcmbRegTime holds the string denoting the bcmb_reg_time field in the database.
+	FieldBcmbRegTime = "bcmb_reg_time"
+	// FieldBcmbWxMsgID holds the string denoting the bcmb_wx_msg_id field in the database.
+	FieldBcmbWxMsgID = "bcmb_wx_msg_id"
+	// FieldBcmbType holds the string denoting the bcmb_type field in the database.
+	FieldBcmbType = "bcmb_type"
+	// FieldLevel holds the string denoting the level field in the database.
+	FieldLevel = "level"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldSource holds the string denoting the source field in the database.
@@ -54,10 +56,11 @@ var Columns = []string{
 	FieldNickname,
 	FieldWxOpenID,
 	FieldWxUID,
-	FieldWxBcmbCode,
-	FieldWxBcmbRegTime,
-	FieldWxBcmbMsgID,
-	FieldWxBcmbAuthType,
+	FieldBcmbCode,
+	FieldBcmbRegTime,
+	FieldBcmbWxMsgID,
+	FieldBcmbType,
+	FieldLevel,
 	FieldStatus,
 	FieldSource,
 }
@@ -91,12 +94,14 @@ var (
 	WxOpenIDValidator func(string) error
 	// WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
 	WxUIDValidator func(string) error
-	// WxBcmbCodeValidator is a validator for the "wx_bcmb_code" field. It is called by the builders before save.
-	WxBcmbCodeValidator func(string) error
-	// WxBcmbMsgIDValidator is a validator for the "wx_bcmb_msg_id" field. It is called by the builders before save.
-	WxBcmbMsgIDValidator func(string) error
-	// DefaultWxBcmbAuthType holds the default value on creation for the "wx_bcmb_auth_type" field.
-	DefaultWxBcmbAuthType int
+	// BcmbCodeValidator is a validator for the "bcmb_code" field. It is called by the builders before save.
+	BcmbCodeValidator func(string) error
+	// BcmbWxMsgIDValidator is a validator for the "bcmb_wx_msg_id" field. It is called by the builders before save.
+	BcmbWxMsgIDValidator func(string) error
+	// DefaultBcmbType holds the default value on creation for the "bcmb_type" field.
+	DefaultBcmbType int
+	// DefaultLevel holds the default value on creation for the "level" field.
+	DefaultLevel int
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 	// DefaultSource holds the default value on creation for the "source" field.
@@ -148,24 +153,29 @@ func ByWxUID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWxUID, opts...).ToFunc()
 }
 
-// ByWxBcmbCode orders the results by the wx_bcmb_code field.
-func ByWxBcmbCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxBcmbCode, opts...).ToFunc()
+// ByBcmbCode orders the results by the bcmb_code field.
+func ByBcmbCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBcmbCode, opts...).ToFunc()
 }
 
-// ByWxBcmbRegTime orders the results by the wx_bcmb_reg_time field.
-func ByWxBcmbRegTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxBcmbRegTime, opts...).ToFunc()
+// ByBcmbRegTime orders the results by the bcmb_reg_time field.
+func ByBcmbRegTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBcmbRegTime, opts...).ToFunc()
 }
 
-// ByWxBcmbMsgID orders the results by the wx_bcmb_msg_id field.
-func ByWxBcmbMsgID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxBcmbMsgID, opts...).ToFunc()
+// ByBcmbWxMsgID orders the results by the bcmb_wx_msg_id field.
+func ByBcmbWxMsgID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBcmbWxMsgID, opts...).ToFunc()
 }
 
-// ByWxBcmbAuthType orders the results by the wx_bcmb_auth_type field.
-func ByWxBcmbAuthType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxBcmbAuthType, opts...).ToFunc()
+// ByBcmbType orders the results by the bcmb_type field.
+func ByBcmbType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBcmbType, opts...).ToFunc()
+}
+
+// ByLevel orders the results by the level field.
+func ByLevel(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLevel, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

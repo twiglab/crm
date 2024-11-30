@@ -25,19 +25,20 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Member",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			member.FieldCreateTime:     {Type: field.TypeTime, Column: member.FieldCreateTime},
-			member.FieldUpdateTime:     {Type: field.TypeTime, Column: member.FieldUpdateTime},
-			member.FieldCode:           {Type: field.TypeString, Column: member.FieldCode},
-			member.FieldPhone:          {Type: field.TypeString, Column: member.FieldPhone},
-			member.FieldNickname:       {Type: field.TypeString, Column: member.FieldNickname},
-			member.FieldWxOpenID:       {Type: field.TypeString, Column: member.FieldWxOpenID},
-			member.FieldWxUID:          {Type: field.TypeString, Column: member.FieldWxUID},
-			member.FieldWxBcmbCode:     {Type: field.TypeString, Column: member.FieldWxBcmbCode},
-			member.FieldWxBcmbRegTime:  {Type: field.TypeTime, Column: member.FieldWxBcmbRegTime},
-			member.FieldWxBcmbMsgID:    {Type: field.TypeString, Column: member.FieldWxBcmbMsgID},
-			member.FieldWxBcmbAuthType: {Type: field.TypeInt, Column: member.FieldWxBcmbAuthType},
-			member.FieldStatus:         {Type: field.TypeInt, Column: member.FieldStatus},
-			member.FieldSource:         {Type: field.TypeInt, Column: member.FieldSource},
+			member.FieldCreateTime:  {Type: field.TypeTime, Column: member.FieldCreateTime},
+			member.FieldUpdateTime:  {Type: field.TypeTime, Column: member.FieldUpdateTime},
+			member.FieldCode:        {Type: field.TypeString, Column: member.FieldCode},
+			member.FieldPhone:       {Type: field.TypeString, Column: member.FieldPhone},
+			member.FieldNickname:    {Type: field.TypeString, Column: member.FieldNickname},
+			member.FieldWxOpenID:    {Type: field.TypeString, Column: member.FieldWxOpenID},
+			member.FieldWxUID:       {Type: field.TypeString, Column: member.FieldWxUID},
+			member.FieldBcmbCode:    {Type: field.TypeString, Column: member.FieldBcmbCode},
+			member.FieldBcmbRegTime: {Type: field.TypeTime, Column: member.FieldBcmbRegTime},
+			member.FieldBcmbWxMsgID: {Type: field.TypeString, Column: member.FieldBcmbWxMsgID},
+			member.FieldBcmbType:    {Type: field.TypeInt, Column: member.FieldBcmbType},
+			member.FieldLevel:       {Type: field.TypeInt, Column: member.FieldLevel},
+			member.FieldStatus:      {Type: field.TypeInt, Column: member.FieldStatus},
+			member.FieldSource:      {Type: field.TypeInt, Column: member.FieldSource},
 		},
 	}
 	return graph
@@ -124,24 +125,29 @@ func (f *MemberFilter) WhereWxUID(p entql.StringP) {
 	f.Where(p.Field(member.FieldWxUID))
 }
 
-// WhereWxBcmbCode applies the entql string predicate on the wx_bcmb_code field.
-func (f *MemberFilter) WhereWxBcmbCode(p entql.StringP) {
-	f.Where(p.Field(member.FieldWxBcmbCode))
+// WhereBcmbCode applies the entql string predicate on the bcmb_code field.
+func (f *MemberFilter) WhereBcmbCode(p entql.StringP) {
+	f.Where(p.Field(member.FieldBcmbCode))
 }
 
-// WhereWxBcmbRegTime applies the entql time.Time predicate on the wx_bcmb_reg_time field.
-func (f *MemberFilter) WhereWxBcmbRegTime(p entql.TimeP) {
-	f.Where(p.Field(member.FieldWxBcmbRegTime))
+// WhereBcmbRegTime applies the entql time.Time predicate on the bcmb_reg_time field.
+func (f *MemberFilter) WhereBcmbRegTime(p entql.TimeP) {
+	f.Where(p.Field(member.FieldBcmbRegTime))
 }
 
-// WhereWxBcmbMsgID applies the entql string predicate on the wx_bcmb_msg_id field.
-func (f *MemberFilter) WhereWxBcmbMsgID(p entql.StringP) {
-	f.Where(p.Field(member.FieldWxBcmbMsgID))
+// WhereBcmbWxMsgID applies the entql string predicate on the bcmb_wx_msg_id field.
+func (f *MemberFilter) WhereBcmbWxMsgID(p entql.StringP) {
+	f.Where(p.Field(member.FieldBcmbWxMsgID))
 }
 
-// WhereWxBcmbAuthType applies the entql int predicate on the wx_bcmb_auth_type field.
-func (f *MemberFilter) WhereWxBcmbAuthType(p entql.IntP) {
-	f.Where(p.Field(member.FieldWxBcmbAuthType))
+// WhereBcmbType applies the entql int predicate on the bcmb_type field.
+func (f *MemberFilter) WhereBcmbType(p entql.IntP) {
+	f.Where(p.Field(member.FieldBcmbType))
+}
+
+// WhereLevel applies the entql int predicate on the level field.
+func (f *MemberFilter) WhereLevel(p entql.IntP) {
+	f.Where(p.Field(member.FieldLevel))
 }
 
 // WhereStatus applies the entql int predicate on the status field.

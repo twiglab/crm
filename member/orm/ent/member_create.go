@@ -106,58 +106,72 @@ func (mc *MemberCreate) SetWxUID(s string) *MemberCreate {
 	return mc
 }
 
-// SetWxBcmbCode sets the "wx_bcmb_code" field.
-func (mc *MemberCreate) SetWxBcmbCode(s string) *MemberCreate {
-	mc.mutation.SetWxBcmbCode(s)
+// SetBcmbCode sets the "bcmb_code" field.
+func (mc *MemberCreate) SetBcmbCode(s string) *MemberCreate {
+	mc.mutation.SetBcmbCode(s)
 	return mc
 }
 
-// SetNillableWxBcmbCode sets the "wx_bcmb_code" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableWxBcmbCode(s *string) *MemberCreate {
+// SetNillableBcmbCode sets the "bcmb_code" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBcmbCode(s *string) *MemberCreate {
 	if s != nil {
-		mc.SetWxBcmbCode(*s)
+		mc.SetBcmbCode(*s)
 	}
 	return mc
 }
 
-// SetWxBcmbRegTime sets the "wx_bcmb_reg_time" field.
-func (mc *MemberCreate) SetWxBcmbRegTime(t time.Time) *MemberCreate {
-	mc.mutation.SetWxBcmbRegTime(t)
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (mc *MemberCreate) SetBcmbRegTime(t time.Time) *MemberCreate {
+	mc.mutation.SetBcmbRegTime(t)
 	return mc
 }
 
-// SetNillableWxBcmbRegTime sets the "wx_bcmb_reg_time" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableWxBcmbRegTime(t *time.Time) *MemberCreate {
+// SetNillableBcmbRegTime sets the "bcmb_reg_time" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBcmbRegTime(t *time.Time) *MemberCreate {
 	if t != nil {
-		mc.SetWxBcmbRegTime(*t)
+		mc.SetBcmbRegTime(*t)
 	}
 	return mc
 }
 
-// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
-func (mc *MemberCreate) SetWxBcmbMsgID(s string) *MemberCreate {
-	mc.mutation.SetWxBcmbMsgID(s)
+// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
+func (mc *MemberCreate) SetBcmbWxMsgID(s string) *MemberCreate {
+	mc.mutation.SetBcmbWxMsgID(s)
 	return mc
 }
 
-// SetNillableWxBcmbMsgID sets the "wx_bcmb_msg_id" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableWxBcmbMsgID(s *string) *MemberCreate {
+// SetNillableBcmbWxMsgID sets the "bcmb_wx_msg_id" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBcmbWxMsgID(s *string) *MemberCreate {
 	if s != nil {
-		mc.SetWxBcmbMsgID(*s)
+		mc.SetBcmbWxMsgID(*s)
 	}
 	return mc
 }
 
-// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
-func (mc *MemberCreate) SetWxBcmbAuthType(i int) *MemberCreate {
-	mc.mutation.SetWxBcmbAuthType(i)
+// SetBcmbType sets the "bcmb_type" field.
+func (mc *MemberCreate) SetBcmbType(i int) *MemberCreate {
+	mc.mutation.SetBcmbType(i)
 	return mc
 }
 
-// SetNillableWxBcmbAuthType sets the "wx_bcmb_auth_type" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableWxBcmbAuthType(i *int) *MemberCreate {
+// SetNillableBcmbType sets the "bcmb_type" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBcmbType(i *int) *MemberCreate {
 	if i != nil {
-		mc.SetWxBcmbAuthType(*i)
+		mc.SetBcmbType(*i)
+	}
+	return mc
+}
+
+// SetLevel sets the "level" field.
+func (mc *MemberCreate) SetLevel(i int) *MemberCreate {
+	mc.mutation.SetLevel(i)
+	return mc
+}
+
+// SetNillableLevel sets the "level" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableLevel(i *int) *MemberCreate {
+	if i != nil {
+		mc.SetLevel(*i)
 	}
 	return mc
 }
@@ -251,9 +265,13 @@ func (mc *MemberCreate) defaults() {
 		v := member.DefaultCode()
 		mc.mutation.SetCode(v)
 	}
-	if _, ok := mc.mutation.WxBcmbAuthType(); !ok {
-		v := member.DefaultWxBcmbAuthType
-		mc.mutation.SetWxBcmbAuthType(v)
+	if _, ok := mc.mutation.BcmbType(); !ok {
+		v := member.DefaultBcmbType
+		mc.mutation.SetBcmbType(v)
+	}
+	if _, ok := mc.mutation.Level(); !ok {
+		v := member.DefaultLevel
+		mc.mutation.SetLevel(v)
 	}
 	if _, ok := mc.mutation.Status(); !ok {
 		v := member.DefaultStatus
@@ -311,18 +329,21 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
 		}
 	}
-	if v, ok := mc.mutation.WxBcmbCode(); ok {
-		if err := member.WxBcmbCodeValidator(v); err != nil {
-			return &ValidationError{Name: "wx_bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_code": %w`, err)}
+	if v, ok := mc.mutation.BcmbCode(); ok {
+		if err := member.BcmbCodeValidator(v); err != nil {
+			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
 		}
 	}
-	if v, ok := mc.mutation.WxBcmbMsgID(); ok {
-		if err := member.WxBcmbMsgIDValidator(v); err != nil {
-			return &ValidationError{Name: "wx_bcmb_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_msg_id": %w`, err)}
+	if v, ok := mc.mutation.BcmbWxMsgID(); ok {
+		if err := member.BcmbWxMsgIDValidator(v); err != nil {
+			return &ValidationError{Name: "bcmb_wx_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_wx_msg_id": %w`, err)}
 		}
 	}
-	if _, ok := mc.mutation.WxBcmbAuthType(); !ok {
-		return &ValidationError{Name: "wx_bcmb_auth_type", err: errors.New(`ent: missing required field "Member.wx_bcmb_auth_type"`)}
+	if _, ok := mc.mutation.BcmbType(); !ok {
+		return &ValidationError{Name: "bcmb_type", err: errors.New(`ent: missing required field "Member.bcmb_type"`)}
+	}
+	if _, ok := mc.mutation.Level(); !ok {
+		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Member.level"`)}
 	}
 	if _, ok := mc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Member.status"`)}
@@ -394,21 +415,25 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 		_spec.SetField(member.FieldWxUID, field.TypeString, value)
 		_node.WxUID = value
 	}
-	if value, ok := mc.mutation.WxBcmbCode(); ok {
-		_spec.SetField(member.FieldWxBcmbCode, field.TypeString, value)
-		_node.WxBcmbCode = value
+	if value, ok := mc.mutation.BcmbCode(); ok {
+		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
+		_node.BcmbCode = value
 	}
-	if value, ok := mc.mutation.WxBcmbRegTime(); ok {
-		_spec.SetField(member.FieldWxBcmbRegTime, field.TypeTime, value)
-		_node.WxBcmbRegTime = &value
+	if value, ok := mc.mutation.BcmbRegTime(); ok {
+		_spec.SetField(member.FieldBcmbRegTime, field.TypeTime, value)
+		_node.BcmbRegTime = &value
 	}
-	if value, ok := mc.mutation.WxBcmbMsgID(); ok {
-		_spec.SetField(member.FieldWxBcmbMsgID, field.TypeString, value)
-		_node.WxBcmbMsgID = value
+	if value, ok := mc.mutation.BcmbWxMsgID(); ok {
+		_spec.SetField(member.FieldBcmbWxMsgID, field.TypeString, value)
+		_node.BcmbWxMsgID = value
 	}
-	if value, ok := mc.mutation.WxBcmbAuthType(); ok {
-		_spec.SetField(member.FieldWxBcmbAuthType, field.TypeInt, value)
-		_node.WxBcmbAuthType = value
+	if value, ok := mc.mutation.BcmbType(); ok {
+		_spec.SetField(member.FieldBcmbType, field.TypeInt, value)
+		_node.BcmbType = value
+	}
+	if value, ok := mc.mutation.Level(); ok {
+		_spec.SetField(member.FieldLevel, field.TypeInt, value)
+		_node.Level = value
 	}
 	if value, ok := mc.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)
@@ -542,57 +567,75 @@ func (u *MemberUpsert) UpdateWxUID() *MemberUpsert {
 	return u
 }
 
-// SetWxBcmbCode sets the "wx_bcmb_code" field.
-func (u *MemberUpsert) SetWxBcmbCode(v string) *MemberUpsert {
-	u.Set(member.FieldWxBcmbCode, v)
+// SetBcmbCode sets the "bcmb_code" field.
+func (u *MemberUpsert) SetBcmbCode(v string) *MemberUpsert {
+	u.Set(member.FieldBcmbCode, v)
 	return u
 }
 
-// UpdateWxBcmbCode sets the "wx_bcmb_code" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateWxBcmbCode() *MemberUpsert {
-	u.SetExcluded(member.FieldWxBcmbCode)
+// UpdateBcmbCode sets the "bcmb_code" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateBcmbCode() *MemberUpsert {
+	u.SetExcluded(member.FieldBcmbCode)
 	return u
 }
 
-// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
-func (u *MemberUpsert) ClearWxBcmbCode() *MemberUpsert {
-	u.SetNull(member.FieldWxBcmbCode)
+// ClearBcmbCode clears the value of the "bcmb_code" field.
+func (u *MemberUpsert) ClearBcmbCode() *MemberUpsert {
+	u.SetNull(member.FieldBcmbCode)
 	return u
 }
 
-// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
-func (u *MemberUpsert) SetWxBcmbMsgID(v string) *MemberUpsert {
-	u.Set(member.FieldWxBcmbMsgID, v)
+// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
+func (u *MemberUpsert) SetBcmbWxMsgID(v string) *MemberUpsert {
+	u.Set(member.FieldBcmbWxMsgID, v)
 	return u
 }
 
-// UpdateWxBcmbMsgID sets the "wx_bcmb_msg_id" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateWxBcmbMsgID() *MemberUpsert {
-	u.SetExcluded(member.FieldWxBcmbMsgID)
+// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateBcmbWxMsgID() *MemberUpsert {
+	u.SetExcluded(member.FieldBcmbWxMsgID)
 	return u
 }
 
-// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
-func (u *MemberUpsert) ClearWxBcmbMsgID() *MemberUpsert {
-	u.SetNull(member.FieldWxBcmbMsgID)
+// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
+func (u *MemberUpsert) ClearBcmbWxMsgID() *MemberUpsert {
+	u.SetNull(member.FieldBcmbWxMsgID)
 	return u
 }
 
-// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
-func (u *MemberUpsert) SetWxBcmbAuthType(v int) *MemberUpsert {
-	u.Set(member.FieldWxBcmbAuthType, v)
+// SetBcmbType sets the "bcmb_type" field.
+func (u *MemberUpsert) SetBcmbType(v int) *MemberUpsert {
+	u.Set(member.FieldBcmbType, v)
 	return u
 }
 
-// UpdateWxBcmbAuthType sets the "wx_bcmb_auth_type" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateWxBcmbAuthType() *MemberUpsert {
-	u.SetExcluded(member.FieldWxBcmbAuthType)
+// UpdateBcmbType sets the "bcmb_type" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateBcmbType() *MemberUpsert {
+	u.SetExcluded(member.FieldBcmbType)
 	return u
 }
 
-// AddWxBcmbAuthType adds v to the "wx_bcmb_auth_type" field.
-func (u *MemberUpsert) AddWxBcmbAuthType(v int) *MemberUpsert {
-	u.Add(member.FieldWxBcmbAuthType, v)
+// AddBcmbType adds v to the "bcmb_type" field.
+func (u *MemberUpsert) AddBcmbType(v int) *MemberUpsert {
+	u.Add(member.FieldBcmbType, v)
+	return u
+}
+
+// SetLevel sets the "level" field.
+func (u *MemberUpsert) SetLevel(v int) *MemberUpsert {
+	u.Set(member.FieldLevel, v)
+	return u
+}
+
+// UpdateLevel sets the "level" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateLevel() *MemberUpsert {
+	u.SetExcluded(member.FieldLevel)
+	return u
+}
+
+// AddLevel adds v to the "level" field.
+func (u *MemberUpsert) AddLevel(v int) *MemberUpsert {
+	u.Add(member.FieldLevel, v)
 	return u
 }
 
@@ -655,8 +698,8 @@ func (u *MemberUpsertOne) UpdateNewValues() *MemberUpsertOne {
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(member.FieldCode)
 		}
-		if _, exists := u.create.mutation.WxBcmbRegTime(); exists {
-			s.SetIgnore(member.FieldWxBcmbRegTime)
+		if _, exists := u.create.mutation.BcmbRegTime(); exists {
+			s.SetIgnore(member.FieldBcmbRegTime)
 		}
 	}))
 	return u
@@ -773,66 +816,87 @@ func (u *MemberUpsertOne) UpdateWxUID() *MemberUpsertOne {
 	})
 }
 
-// SetWxBcmbCode sets the "wx_bcmb_code" field.
-func (u *MemberUpsertOne) SetWxBcmbCode(v string) *MemberUpsertOne {
+// SetBcmbCode sets the "bcmb_code" field.
+func (u *MemberUpsertOne) SetBcmbCode(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbCode(v)
+		s.SetBcmbCode(v)
 	})
 }
 
-// UpdateWxBcmbCode sets the "wx_bcmb_code" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateWxBcmbCode() *MemberUpsertOne {
+// UpdateBcmbCode sets the "bcmb_code" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateBcmbCode() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbCode()
+		s.UpdateBcmbCode()
 	})
 }
 
-// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
-func (u *MemberUpsertOne) ClearWxBcmbCode() *MemberUpsertOne {
+// ClearBcmbCode clears the value of the "bcmb_code" field.
+func (u *MemberUpsertOne) ClearBcmbCode() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearWxBcmbCode()
+		s.ClearBcmbCode()
 	})
 }
 
-// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
-func (u *MemberUpsertOne) SetWxBcmbMsgID(v string) *MemberUpsertOne {
+// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
+func (u *MemberUpsertOne) SetBcmbWxMsgID(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbMsgID(v)
+		s.SetBcmbWxMsgID(v)
 	})
 }
 
-// UpdateWxBcmbMsgID sets the "wx_bcmb_msg_id" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateWxBcmbMsgID() *MemberUpsertOne {
+// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateBcmbWxMsgID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbMsgID()
+		s.UpdateBcmbWxMsgID()
 	})
 }
 
-// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
-func (u *MemberUpsertOne) ClearWxBcmbMsgID() *MemberUpsertOne {
+// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
+func (u *MemberUpsertOne) ClearBcmbWxMsgID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearWxBcmbMsgID()
+		s.ClearBcmbWxMsgID()
 	})
 }
 
-// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
-func (u *MemberUpsertOne) SetWxBcmbAuthType(v int) *MemberUpsertOne {
+// SetBcmbType sets the "bcmb_type" field.
+func (u *MemberUpsertOne) SetBcmbType(v int) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbAuthType(v)
+		s.SetBcmbType(v)
 	})
 }
 
-// AddWxBcmbAuthType adds v to the "wx_bcmb_auth_type" field.
-func (u *MemberUpsertOne) AddWxBcmbAuthType(v int) *MemberUpsertOne {
+// AddBcmbType adds v to the "bcmb_type" field.
+func (u *MemberUpsertOne) AddBcmbType(v int) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.AddWxBcmbAuthType(v)
+		s.AddBcmbType(v)
 	})
 }
 
-// UpdateWxBcmbAuthType sets the "wx_bcmb_auth_type" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateWxBcmbAuthType() *MemberUpsertOne {
+// UpdateBcmbType sets the "bcmb_type" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateBcmbType() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbAuthType()
+		s.UpdateBcmbType()
+	})
+}
+
+// SetLevel sets the "level" field.
+func (u *MemberUpsertOne) SetLevel(v int) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetLevel(v)
+	})
+}
+
+// AddLevel adds v to the "level" field.
+func (u *MemberUpsertOne) AddLevel(v int) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddLevel(v)
+	})
+}
+
+// UpdateLevel sets the "level" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateLevel() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateLevel()
 	})
 }
 
@@ -1067,8 +1131,8 @@ func (u *MemberUpsertBulk) UpdateNewValues() *MemberUpsertBulk {
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(member.FieldCode)
 			}
-			if _, exists := b.mutation.WxBcmbRegTime(); exists {
-				s.SetIgnore(member.FieldWxBcmbRegTime)
+			if _, exists := b.mutation.BcmbRegTime(); exists {
+				s.SetIgnore(member.FieldBcmbRegTime)
 			}
 		}
 	}))
@@ -1186,66 +1250,87 @@ func (u *MemberUpsertBulk) UpdateWxUID() *MemberUpsertBulk {
 	})
 }
 
-// SetWxBcmbCode sets the "wx_bcmb_code" field.
-func (u *MemberUpsertBulk) SetWxBcmbCode(v string) *MemberUpsertBulk {
+// SetBcmbCode sets the "bcmb_code" field.
+func (u *MemberUpsertBulk) SetBcmbCode(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbCode(v)
+		s.SetBcmbCode(v)
 	})
 }
 
-// UpdateWxBcmbCode sets the "wx_bcmb_code" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateWxBcmbCode() *MemberUpsertBulk {
+// UpdateBcmbCode sets the "bcmb_code" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateBcmbCode() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbCode()
+		s.UpdateBcmbCode()
 	})
 }
 
-// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
-func (u *MemberUpsertBulk) ClearWxBcmbCode() *MemberUpsertBulk {
+// ClearBcmbCode clears the value of the "bcmb_code" field.
+func (u *MemberUpsertBulk) ClearBcmbCode() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearWxBcmbCode()
+		s.ClearBcmbCode()
 	})
 }
 
-// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
-func (u *MemberUpsertBulk) SetWxBcmbMsgID(v string) *MemberUpsertBulk {
+// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
+func (u *MemberUpsertBulk) SetBcmbWxMsgID(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbMsgID(v)
+		s.SetBcmbWxMsgID(v)
 	})
 }
 
-// UpdateWxBcmbMsgID sets the "wx_bcmb_msg_id" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateWxBcmbMsgID() *MemberUpsertBulk {
+// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateBcmbWxMsgID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbMsgID()
+		s.UpdateBcmbWxMsgID()
 	})
 }
 
-// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
-func (u *MemberUpsertBulk) ClearWxBcmbMsgID() *MemberUpsertBulk {
+// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
+func (u *MemberUpsertBulk) ClearBcmbWxMsgID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearWxBcmbMsgID()
+		s.ClearBcmbWxMsgID()
 	})
 }
 
-// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
-func (u *MemberUpsertBulk) SetWxBcmbAuthType(v int) *MemberUpsertBulk {
+// SetBcmbType sets the "bcmb_type" field.
+func (u *MemberUpsertBulk) SetBcmbType(v int) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetWxBcmbAuthType(v)
+		s.SetBcmbType(v)
 	})
 }
 
-// AddWxBcmbAuthType adds v to the "wx_bcmb_auth_type" field.
-func (u *MemberUpsertBulk) AddWxBcmbAuthType(v int) *MemberUpsertBulk {
+// AddBcmbType adds v to the "bcmb_type" field.
+func (u *MemberUpsertBulk) AddBcmbType(v int) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.AddWxBcmbAuthType(v)
+		s.AddBcmbType(v)
 	})
 }
 
-// UpdateWxBcmbAuthType sets the "wx_bcmb_auth_type" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateWxBcmbAuthType() *MemberUpsertBulk {
+// UpdateBcmbType sets the "bcmb_type" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateBcmbType() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxBcmbAuthType()
+		s.UpdateBcmbType()
+	})
+}
+
+// SetLevel sets the "level" field.
+func (u *MemberUpsertBulk) SetLevel(v int) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetLevel(v)
+	})
+}
+
+// AddLevel adds v to the "level" field.
+func (u *MemberUpsertBulk) AddLevel(v int) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddLevel(v)
+	})
+}
+
+// UpdateLevel sets the "level" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateLevel() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateLevel()
 	})
 }
 

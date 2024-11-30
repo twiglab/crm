@@ -31,29 +31,31 @@ const (
 // MemberMutation represents an operation that mutates the Member nodes in the graph.
 type MemberMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *uuid.UUID
-	create_time          *time.Time
-	update_time          *time.Time
-	code                 *string
-	phone                *string
-	nickname             *string
-	wx_open_id           *string
-	wx_uid               *string
-	wx_bcmb_code         *string
-	wx_bcmb_reg_time     *time.Time
-	wx_bcmb_msg_id       *string
-	wx_bcmb_auth_type    *int
-	addwx_bcmb_auth_type *int
-	status               *int
-	addstatus            *int
-	source               *int
-	addsource            *int
-	clearedFields        map[string]struct{}
-	done                 bool
-	oldValue             func(context.Context) (*Member, error)
-	predicates           []predicate.Member
+	op             Op
+	typ            string
+	id             *uuid.UUID
+	create_time    *time.Time
+	update_time    *time.Time
+	code           *string
+	phone          *string
+	nickname       *string
+	wx_open_id     *string
+	wx_uid         *string
+	bcmb_code      *string
+	bcmb_reg_time  *time.Time
+	bcmb_wx_msg_id *string
+	bcmb_type      *int
+	addbcmb_type   *int
+	level          *int
+	addlevel       *int
+	status         *int
+	addstatus      *int
+	source         *int
+	addsource      *int
+	clearedFields  map[string]struct{}
+	done           bool
+	oldValue       func(context.Context) (*Member, error)
+	predicates     []predicate.Member
 }
 
 var _ ent.Mutation = (*MemberMutation)(nil)
@@ -438,207 +440,263 @@ func (m *MemberMutation) ResetWxUID() {
 	m.wx_uid = nil
 }
 
-// SetWxBcmbCode sets the "wx_bcmb_code" field.
-func (m *MemberMutation) SetWxBcmbCode(s string) {
-	m.wx_bcmb_code = &s
+// SetBcmbCode sets the "bcmb_code" field.
+func (m *MemberMutation) SetBcmbCode(s string) {
+	m.bcmb_code = &s
 }
 
-// WxBcmbCode returns the value of the "wx_bcmb_code" field in the mutation.
-func (m *MemberMutation) WxBcmbCode() (r string, exists bool) {
-	v := m.wx_bcmb_code
+// BcmbCode returns the value of the "bcmb_code" field in the mutation.
+func (m *MemberMutation) BcmbCode() (r string, exists bool) {
+	v := m.bcmb_code
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldWxBcmbCode returns the old "wx_bcmb_code" field's value of the Member entity.
+// OldBcmbCode returns the old "bcmb_code" field's value of the Member entity.
 // If the Member object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MemberMutation) OldWxBcmbCode(ctx context.Context) (v string, err error) {
+func (m *MemberMutation) OldBcmbCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWxBcmbCode is only allowed on UpdateOne operations")
+		return v, errors.New("OldBcmbCode is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWxBcmbCode requires an ID field in the mutation")
+		return v, errors.New("OldBcmbCode requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWxBcmbCode: %w", err)
+		return v, fmt.Errorf("querying old value for OldBcmbCode: %w", err)
 	}
-	return oldValue.WxBcmbCode, nil
+	return oldValue.BcmbCode, nil
 }
 
-// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
-func (m *MemberMutation) ClearWxBcmbCode() {
-	m.wx_bcmb_code = nil
-	m.clearedFields[member.FieldWxBcmbCode] = struct{}{}
+// ClearBcmbCode clears the value of the "bcmb_code" field.
+func (m *MemberMutation) ClearBcmbCode() {
+	m.bcmb_code = nil
+	m.clearedFields[member.FieldBcmbCode] = struct{}{}
 }
 
-// WxBcmbCodeCleared returns if the "wx_bcmb_code" field was cleared in this mutation.
-func (m *MemberMutation) WxBcmbCodeCleared() bool {
-	_, ok := m.clearedFields[member.FieldWxBcmbCode]
+// BcmbCodeCleared returns if the "bcmb_code" field was cleared in this mutation.
+func (m *MemberMutation) BcmbCodeCleared() bool {
+	_, ok := m.clearedFields[member.FieldBcmbCode]
 	return ok
 }
 
-// ResetWxBcmbCode resets all changes to the "wx_bcmb_code" field.
-func (m *MemberMutation) ResetWxBcmbCode() {
-	m.wx_bcmb_code = nil
-	delete(m.clearedFields, member.FieldWxBcmbCode)
+// ResetBcmbCode resets all changes to the "bcmb_code" field.
+func (m *MemberMutation) ResetBcmbCode() {
+	m.bcmb_code = nil
+	delete(m.clearedFields, member.FieldBcmbCode)
 }
 
-// SetWxBcmbRegTime sets the "wx_bcmb_reg_time" field.
-func (m *MemberMutation) SetWxBcmbRegTime(t time.Time) {
-	m.wx_bcmb_reg_time = &t
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (m *MemberMutation) SetBcmbRegTime(t time.Time) {
+	m.bcmb_reg_time = &t
 }
 
-// WxBcmbRegTime returns the value of the "wx_bcmb_reg_time" field in the mutation.
-func (m *MemberMutation) WxBcmbRegTime() (r time.Time, exists bool) {
-	v := m.wx_bcmb_reg_time
+// BcmbRegTime returns the value of the "bcmb_reg_time" field in the mutation.
+func (m *MemberMutation) BcmbRegTime() (r time.Time, exists bool) {
+	v := m.bcmb_reg_time
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldWxBcmbRegTime returns the old "wx_bcmb_reg_time" field's value of the Member entity.
+// OldBcmbRegTime returns the old "bcmb_reg_time" field's value of the Member entity.
 // If the Member object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MemberMutation) OldWxBcmbRegTime(ctx context.Context) (v *time.Time, err error) {
+func (m *MemberMutation) OldBcmbRegTime(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWxBcmbRegTime is only allowed on UpdateOne operations")
+		return v, errors.New("OldBcmbRegTime is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWxBcmbRegTime requires an ID field in the mutation")
+		return v, errors.New("OldBcmbRegTime requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWxBcmbRegTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldBcmbRegTime: %w", err)
 	}
-	return oldValue.WxBcmbRegTime, nil
+	return oldValue.BcmbRegTime, nil
 }
 
-// ClearWxBcmbRegTime clears the value of the "wx_bcmb_reg_time" field.
-func (m *MemberMutation) ClearWxBcmbRegTime() {
-	m.wx_bcmb_reg_time = nil
-	m.clearedFields[member.FieldWxBcmbRegTime] = struct{}{}
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (m *MemberMutation) ClearBcmbRegTime() {
+	m.bcmb_reg_time = nil
+	m.clearedFields[member.FieldBcmbRegTime] = struct{}{}
 }
 
-// WxBcmbRegTimeCleared returns if the "wx_bcmb_reg_time" field was cleared in this mutation.
-func (m *MemberMutation) WxBcmbRegTimeCleared() bool {
-	_, ok := m.clearedFields[member.FieldWxBcmbRegTime]
+// BcmbRegTimeCleared returns if the "bcmb_reg_time" field was cleared in this mutation.
+func (m *MemberMutation) BcmbRegTimeCleared() bool {
+	_, ok := m.clearedFields[member.FieldBcmbRegTime]
 	return ok
 }
 
-// ResetWxBcmbRegTime resets all changes to the "wx_bcmb_reg_time" field.
-func (m *MemberMutation) ResetWxBcmbRegTime() {
-	m.wx_bcmb_reg_time = nil
-	delete(m.clearedFields, member.FieldWxBcmbRegTime)
+// ResetBcmbRegTime resets all changes to the "bcmb_reg_time" field.
+func (m *MemberMutation) ResetBcmbRegTime() {
+	m.bcmb_reg_time = nil
+	delete(m.clearedFields, member.FieldBcmbRegTime)
 }
 
-// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
-func (m *MemberMutation) SetWxBcmbMsgID(s string) {
-	m.wx_bcmb_msg_id = &s
+// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
+func (m *MemberMutation) SetBcmbWxMsgID(s string) {
+	m.bcmb_wx_msg_id = &s
 }
 
-// WxBcmbMsgID returns the value of the "wx_bcmb_msg_id" field in the mutation.
-func (m *MemberMutation) WxBcmbMsgID() (r string, exists bool) {
-	v := m.wx_bcmb_msg_id
+// BcmbWxMsgID returns the value of the "bcmb_wx_msg_id" field in the mutation.
+func (m *MemberMutation) BcmbWxMsgID() (r string, exists bool) {
+	v := m.bcmb_wx_msg_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldWxBcmbMsgID returns the old "wx_bcmb_msg_id" field's value of the Member entity.
+// OldBcmbWxMsgID returns the old "bcmb_wx_msg_id" field's value of the Member entity.
 // If the Member object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MemberMutation) OldWxBcmbMsgID(ctx context.Context) (v string, err error) {
+func (m *MemberMutation) OldBcmbWxMsgID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWxBcmbMsgID is only allowed on UpdateOne operations")
+		return v, errors.New("OldBcmbWxMsgID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWxBcmbMsgID requires an ID field in the mutation")
+		return v, errors.New("OldBcmbWxMsgID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWxBcmbMsgID: %w", err)
+		return v, fmt.Errorf("querying old value for OldBcmbWxMsgID: %w", err)
 	}
-	return oldValue.WxBcmbMsgID, nil
+	return oldValue.BcmbWxMsgID, nil
 }
 
-// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
-func (m *MemberMutation) ClearWxBcmbMsgID() {
-	m.wx_bcmb_msg_id = nil
-	m.clearedFields[member.FieldWxBcmbMsgID] = struct{}{}
+// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
+func (m *MemberMutation) ClearBcmbWxMsgID() {
+	m.bcmb_wx_msg_id = nil
+	m.clearedFields[member.FieldBcmbWxMsgID] = struct{}{}
 }
 
-// WxBcmbMsgIDCleared returns if the "wx_bcmb_msg_id" field was cleared in this mutation.
-func (m *MemberMutation) WxBcmbMsgIDCleared() bool {
-	_, ok := m.clearedFields[member.FieldWxBcmbMsgID]
+// BcmbWxMsgIDCleared returns if the "bcmb_wx_msg_id" field was cleared in this mutation.
+func (m *MemberMutation) BcmbWxMsgIDCleared() bool {
+	_, ok := m.clearedFields[member.FieldBcmbWxMsgID]
 	return ok
 }
 
-// ResetWxBcmbMsgID resets all changes to the "wx_bcmb_msg_id" field.
-func (m *MemberMutation) ResetWxBcmbMsgID() {
-	m.wx_bcmb_msg_id = nil
-	delete(m.clearedFields, member.FieldWxBcmbMsgID)
+// ResetBcmbWxMsgID resets all changes to the "bcmb_wx_msg_id" field.
+func (m *MemberMutation) ResetBcmbWxMsgID() {
+	m.bcmb_wx_msg_id = nil
+	delete(m.clearedFields, member.FieldBcmbWxMsgID)
 }
 
-// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
-func (m *MemberMutation) SetWxBcmbAuthType(i int) {
-	m.wx_bcmb_auth_type = &i
-	m.addwx_bcmb_auth_type = nil
+// SetBcmbType sets the "bcmb_type" field.
+func (m *MemberMutation) SetBcmbType(i int) {
+	m.bcmb_type = &i
+	m.addbcmb_type = nil
 }
 
-// WxBcmbAuthType returns the value of the "wx_bcmb_auth_type" field in the mutation.
-func (m *MemberMutation) WxBcmbAuthType() (r int, exists bool) {
-	v := m.wx_bcmb_auth_type
+// BcmbType returns the value of the "bcmb_type" field in the mutation.
+func (m *MemberMutation) BcmbType() (r int, exists bool) {
+	v := m.bcmb_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldWxBcmbAuthType returns the old "wx_bcmb_auth_type" field's value of the Member entity.
+// OldBcmbType returns the old "bcmb_type" field's value of the Member entity.
 // If the Member object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MemberMutation) OldWxBcmbAuthType(ctx context.Context) (v int, err error) {
+func (m *MemberMutation) OldBcmbType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWxBcmbAuthType is only allowed on UpdateOne operations")
+		return v, errors.New("OldBcmbType is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWxBcmbAuthType requires an ID field in the mutation")
+		return v, errors.New("OldBcmbType requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWxBcmbAuthType: %w", err)
+		return v, fmt.Errorf("querying old value for OldBcmbType: %w", err)
 	}
-	return oldValue.WxBcmbAuthType, nil
+	return oldValue.BcmbType, nil
 }
 
-// AddWxBcmbAuthType adds i to the "wx_bcmb_auth_type" field.
-func (m *MemberMutation) AddWxBcmbAuthType(i int) {
-	if m.addwx_bcmb_auth_type != nil {
-		*m.addwx_bcmb_auth_type += i
+// AddBcmbType adds i to the "bcmb_type" field.
+func (m *MemberMutation) AddBcmbType(i int) {
+	if m.addbcmb_type != nil {
+		*m.addbcmb_type += i
 	} else {
-		m.addwx_bcmb_auth_type = &i
+		m.addbcmb_type = &i
 	}
 }
 
-// AddedWxBcmbAuthType returns the value that was added to the "wx_bcmb_auth_type" field in this mutation.
-func (m *MemberMutation) AddedWxBcmbAuthType() (r int, exists bool) {
-	v := m.addwx_bcmb_auth_type
+// AddedBcmbType returns the value that was added to the "bcmb_type" field in this mutation.
+func (m *MemberMutation) AddedBcmbType() (r int, exists bool) {
+	v := m.addbcmb_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetWxBcmbAuthType resets all changes to the "wx_bcmb_auth_type" field.
-func (m *MemberMutation) ResetWxBcmbAuthType() {
-	m.wx_bcmb_auth_type = nil
-	m.addwx_bcmb_auth_type = nil
+// ResetBcmbType resets all changes to the "bcmb_type" field.
+func (m *MemberMutation) ResetBcmbType() {
+	m.bcmb_type = nil
+	m.addbcmb_type = nil
+}
+
+// SetLevel sets the "level" field.
+func (m *MemberMutation) SetLevel(i int) {
+	m.level = &i
+	m.addlevel = nil
+}
+
+// Level returns the value of the "level" field in the mutation.
+func (m *MemberMutation) Level() (r int, exists bool) {
+	v := m.level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevel returns the old "level" field's value of the Member entity.
+// If the Member object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MemberMutation) OldLevel(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevel: %w", err)
+	}
+	return oldValue.Level, nil
+}
+
+// AddLevel adds i to the "level" field.
+func (m *MemberMutation) AddLevel(i int) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
+}
+
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *MemberMutation) AddedLevel() (r int, exists bool) {
+	v := m.addlevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetLevel resets all changes to the "level" field.
+func (m *MemberMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
 }
 
 // SetStatus sets the "status" field.
@@ -787,7 +845,7 @@ func (m *MemberMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MemberMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.create_time != nil {
 		fields = append(fields, member.FieldCreateTime)
 	}
@@ -809,17 +867,20 @@ func (m *MemberMutation) Fields() []string {
 	if m.wx_uid != nil {
 		fields = append(fields, member.FieldWxUID)
 	}
-	if m.wx_bcmb_code != nil {
-		fields = append(fields, member.FieldWxBcmbCode)
+	if m.bcmb_code != nil {
+		fields = append(fields, member.FieldBcmbCode)
 	}
-	if m.wx_bcmb_reg_time != nil {
-		fields = append(fields, member.FieldWxBcmbRegTime)
+	if m.bcmb_reg_time != nil {
+		fields = append(fields, member.FieldBcmbRegTime)
 	}
-	if m.wx_bcmb_msg_id != nil {
-		fields = append(fields, member.FieldWxBcmbMsgID)
+	if m.bcmb_wx_msg_id != nil {
+		fields = append(fields, member.FieldBcmbWxMsgID)
 	}
-	if m.wx_bcmb_auth_type != nil {
-		fields = append(fields, member.FieldWxBcmbAuthType)
+	if m.bcmb_type != nil {
+		fields = append(fields, member.FieldBcmbType)
+	}
+	if m.level != nil {
+		fields = append(fields, member.FieldLevel)
 	}
 	if m.status != nil {
 		fields = append(fields, member.FieldStatus)
@@ -849,14 +910,16 @@ func (m *MemberMutation) Field(name string) (ent.Value, bool) {
 		return m.WxOpenID()
 	case member.FieldWxUID:
 		return m.WxUID()
-	case member.FieldWxBcmbCode:
-		return m.WxBcmbCode()
-	case member.FieldWxBcmbRegTime:
-		return m.WxBcmbRegTime()
-	case member.FieldWxBcmbMsgID:
-		return m.WxBcmbMsgID()
-	case member.FieldWxBcmbAuthType:
-		return m.WxBcmbAuthType()
+	case member.FieldBcmbCode:
+		return m.BcmbCode()
+	case member.FieldBcmbRegTime:
+		return m.BcmbRegTime()
+	case member.FieldBcmbWxMsgID:
+		return m.BcmbWxMsgID()
+	case member.FieldBcmbType:
+		return m.BcmbType()
+	case member.FieldLevel:
+		return m.Level()
 	case member.FieldStatus:
 		return m.Status()
 	case member.FieldSource:
@@ -884,14 +947,16 @@ func (m *MemberMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldWxOpenID(ctx)
 	case member.FieldWxUID:
 		return m.OldWxUID(ctx)
-	case member.FieldWxBcmbCode:
-		return m.OldWxBcmbCode(ctx)
-	case member.FieldWxBcmbRegTime:
-		return m.OldWxBcmbRegTime(ctx)
-	case member.FieldWxBcmbMsgID:
-		return m.OldWxBcmbMsgID(ctx)
-	case member.FieldWxBcmbAuthType:
-		return m.OldWxBcmbAuthType(ctx)
+	case member.FieldBcmbCode:
+		return m.OldBcmbCode(ctx)
+	case member.FieldBcmbRegTime:
+		return m.OldBcmbRegTime(ctx)
+	case member.FieldBcmbWxMsgID:
+		return m.OldBcmbWxMsgID(ctx)
+	case member.FieldBcmbType:
+		return m.OldBcmbType(ctx)
+	case member.FieldLevel:
+		return m.OldLevel(ctx)
 	case member.FieldStatus:
 		return m.OldStatus(ctx)
 	case member.FieldSource:
@@ -954,33 +1019,40 @@ func (m *MemberMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetWxUID(v)
 		return nil
-	case member.FieldWxBcmbCode:
+	case member.FieldBcmbCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetWxBcmbCode(v)
+		m.SetBcmbCode(v)
 		return nil
-	case member.FieldWxBcmbRegTime:
+	case member.FieldBcmbRegTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetWxBcmbRegTime(v)
+		m.SetBcmbRegTime(v)
 		return nil
-	case member.FieldWxBcmbMsgID:
+	case member.FieldBcmbWxMsgID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetWxBcmbMsgID(v)
+		m.SetBcmbWxMsgID(v)
 		return nil
-	case member.FieldWxBcmbAuthType:
+	case member.FieldBcmbType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetWxBcmbAuthType(v)
+		m.SetBcmbType(v)
+		return nil
+	case member.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevel(v)
 		return nil
 	case member.FieldStatus:
 		v, ok := value.(int)
@@ -1004,8 +1076,11 @@ func (m *MemberMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *MemberMutation) AddedFields() []string {
 	var fields []string
-	if m.addwx_bcmb_auth_type != nil {
-		fields = append(fields, member.FieldWxBcmbAuthType)
+	if m.addbcmb_type != nil {
+		fields = append(fields, member.FieldBcmbType)
+	}
+	if m.addlevel != nil {
+		fields = append(fields, member.FieldLevel)
 	}
 	if m.addstatus != nil {
 		fields = append(fields, member.FieldStatus)
@@ -1021,8 +1096,10 @@ func (m *MemberMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *MemberMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case member.FieldWxBcmbAuthType:
-		return m.AddedWxBcmbAuthType()
+	case member.FieldBcmbType:
+		return m.AddedBcmbType()
+	case member.FieldLevel:
+		return m.AddedLevel()
 	case member.FieldStatus:
 		return m.AddedStatus()
 	case member.FieldSource:
@@ -1036,12 +1113,19 @@ func (m *MemberMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *MemberMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case member.FieldWxBcmbAuthType:
+	case member.FieldBcmbType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddWxBcmbAuthType(v)
+		m.AddBcmbType(v)
+		return nil
+	case member.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
 		return nil
 	case member.FieldStatus:
 		v, ok := value.(int)
@@ -1071,14 +1155,14 @@ func (m *MemberMutation) ClearedFields() []string {
 	if m.FieldCleared(member.FieldNickname) {
 		fields = append(fields, member.FieldNickname)
 	}
-	if m.FieldCleared(member.FieldWxBcmbCode) {
-		fields = append(fields, member.FieldWxBcmbCode)
+	if m.FieldCleared(member.FieldBcmbCode) {
+		fields = append(fields, member.FieldBcmbCode)
 	}
-	if m.FieldCleared(member.FieldWxBcmbRegTime) {
-		fields = append(fields, member.FieldWxBcmbRegTime)
+	if m.FieldCleared(member.FieldBcmbRegTime) {
+		fields = append(fields, member.FieldBcmbRegTime)
 	}
-	if m.FieldCleared(member.FieldWxBcmbMsgID) {
-		fields = append(fields, member.FieldWxBcmbMsgID)
+	if m.FieldCleared(member.FieldBcmbWxMsgID) {
+		fields = append(fields, member.FieldBcmbWxMsgID)
 	}
 	return fields
 }
@@ -1100,14 +1184,14 @@ func (m *MemberMutation) ClearField(name string) error {
 	case member.FieldNickname:
 		m.ClearNickname()
 		return nil
-	case member.FieldWxBcmbCode:
-		m.ClearWxBcmbCode()
+	case member.FieldBcmbCode:
+		m.ClearBcmbCode()
 		return nil
-	case member.FieldWxBcmbRegTime:
-		m.ClearWxBcmbRegTime()
+	case member.FieldBcmbRegTime:
+		m.ClearBcmbRegTime()
 		return nil
-	case member.FieldWxBcmbMsgID:
-		m.ClearWxBcmbMsgID()
+	case member.FieldBcmbWxMsgID:
+		m.ClearBcmbWxMsgID()
 		return nil
 	}
 	return fmt.Errorf("unknown Member nullable field %s", name)
@@ -1138,17 +1222,20 @@ func (m *MemberMutation) ResetField(name string) error {
 	case member.FieldWxUID:
 		m.ResetWxUID()
 		return nil
-	case member.FieldWxBcmbCode:
-		m.ResetWxBcmbCode()
+	case member.FieldBcmbCode:
+		m.ResetBcmbCode()
 		return nil
-	case member.FieldWxBcmbRegTime:
-		m.ResetWxBcmbRegTime()
+	case member.FieldBcmbRegTime:
+		m.ResetBcmbRegTime()
 		return nil
-	case member.FieldWxBcmbMsgID:
-		m.ResetWxBcmbMsgID()
+	case member.FieldBcmbWxMsgID:
+		m.ResetBcmbWxMsgID()
 		return nil
-	case member.FieldWxBcmbAuthType:
-		m.ResetWxBcmbAuthType()
+	case member.FieldBcmbType:
+		m.ResetBcmbType()
+		return nil
+	case member.FieldLevel:
+		m.ResetLevel()
 		return nil
 	case member.FieldStatus:
 		m.ResetStatus()
