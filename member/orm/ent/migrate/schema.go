@@ -19,9 +19,12 @@ var (
 		{Name: "nickname", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "wx_open_id", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
 		{Name: "wx_uid", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
-		{Name: "wx_mb_code", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "wx_reg_time", Type: field.TypeTime, Nullable: true},
+		{Name: "wx_bcmb_code", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "wx_bcmb_reg_time", Type: field.TypeTime, Nullable: true},
+		{Name: "wx_bcmb_msg_id", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "wx_bcmb_auth_type", Type: field.TypeInt, Default: 0},
 		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "source", Type: field.TypeInt, Default: 0},
 	}
 	// TMemberTable holds the schema information for the "t_member" table.
 	TMemberTable = &schema.Table{
@@ -38,11 +41,6 @@ var (
 				Name:    "member_wx_open_id",
 				Unique:  false,
 				Columns: []*schema.Column{TMemberColumns[6]},
-			},
-			{
-				Name:    "member_phone",
-				Unique:  false,
-				Columns: []*schema.Column{TMemberColumns[4]},
 			},
 		},
 	}

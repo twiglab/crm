@@ -102,23 +102,64 @@ func (mu *MemberUpdate) SetNillableWxUID(s *string) *MemberUpdate {
 	return mu
 }
 
-// SetWxMBCode sets the "wx_mb_code" field.
-func (mu *MemberUpdate) SetWxMBCode(s string) *MemberUpdate {
-	mu.mutation.SetWxMBCode(s)
+// SetWxBcmbCode sets the "wx_bcmb_code" field.
+func (mu *MemberUpdate) SetWxBcmbCode(s string) *MemberUpdate {
+	mu.mutation.SetWxBcmbCode(s)
 	return mu
 }
 
-// SetNillableWxMBCode sets the "wx_mb_code" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableWxMBCode(s *string) *MemberUpdate {
+// SetNillableWxBcmbCode sets the "wx_bcmb_code" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxBcmbCode(s *string) *MemberUpdate {
 	if s != nil {
-		mu.SetWxMBCode(*s)
+		mu.SetWxBcmbCode(*s)
 	}
 	return mu
 }
 
-// ClearWxMBCode clears the value of the "wx_mb_code" field.
-func (mu *MemberUpdate) ClearWxMBCode() *MemberUpdate {
-	mu.mutation.ClearWxMBCode()
+// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
+func (mu *MemberUpdate) ClearWxBcmbCode() *MemberUpdate {
+	mu.mutation.ClearWxBcmbCode()
+	return mu
+}
+
+// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
+func (mu *MemberUpdate) SetWxBcmbMsgID(s string) *MemberUpdate {
+	mu.mutation.SetWxBcmbMsgID(s)
+	return mu
+}
+
+// SetNillableWxBcmbMsgID sets the "wx_bcmb_msg_id" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxBcmbMsgID(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetWxBcmbMsgID(*s)
+	}
+	return mu
+}
+
+// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
+func (mu *MemberUpdate) ClearWxBcmbMsgID() *MemberUpdate {
+	mu.mutation.ClearWxBcmbMsgID()
+	return mu
+}
+
+// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
+func (mu *MemberUpdate) SetWxBcmbAuthType(i int) *MemberUpdate {
+	mu.mutation.ResetWxBcmbAuthType()
+	mu.mutation.SetWxBcmbAuthType(i)
+	return mu
+}
+
+// SetNillableWxBcmbAuthType sets the "wx_bcmb_auth_type" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxBcmbAuthType(i *int) *MemberUpdate {
+	if i != nil {
+		mu.SetWxBcmbAuthType(*i)
+	}
+	return mu
+}
+
+// AddWxBcmbAuthType adds i to the "wx_bcmb_auth_type" field.
+func (mu *MemberUpdate) AddWxBcmbAuthType(i int) *MemberUpdate {
+	mu.mutation.AddWxBcmbAuthType(i)
 	return mu
 }
 
@@ -140,6 +181,27 @@ func (mu *MemberUpdate) SetNillableStatus(i *int) *MemberUpdate {
 // AddStatus adds i to the "status" field.
 func (mu *MemberUpdate) AddStatus(i int) *MemberUpdate {
 	mu.mutation.AddStatus(i)
+	return mu
+}
+
+// SetSource sets the "source" field.
+func (mu *MemberUpdate) SetSource(i int) *MemberUpdate {
+	mu.mutation.ResetSource()
+	mu.mutation.SetSource(i)
+	return mu
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableSource(i *int) *MemberUpdate {
+	if i != nil {
+		mu.SetSource(*i)
+	}
+	return mu
+}
+
+// AddSource adds i to the "source" field.
+func (mu *MemberUpdate) AddSource(i int) *MemberUpdate {
+	mu.mutation.AddSource(i)
 	return mu
 }
 
@@ -206,9 +268,14 @@ func (mu *MemberUpdate) check() error {
 			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
 		}
 	}
-	if v, ok := mu.mutation.WxMBCode(); ok {
-		if err := member.WxMBCodeValidator(v); err != nil {
-			return &ValidationError{Name: "wx_mb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_mb_code": %w`, err)}
+	if v, ok := mu.mutation.WxBcmbCode(); ok {
+		if err := member.WxBcmbCodeValidator(v); err != nil {
+			return &ValidationError{Name: "wx_bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_code": %w`, err)}
+		}
+	}
+	if v, ok := mu.mutation.WxBcmbMsgID(); ok {
+		if err := member.WxBcmbMsgIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_bcmb_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_msg_id": %w`, err)}
 		}
 	}
 	return nil
@@ -247,20 +314,38 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.WxUID(); ok {
 		_spec.SetField(member.FieldWxUID, field.TypeString, value)
 	}
-	if value, ok := mu.mutation.WxMBCode(); ok {
-		_spec.SetField(member.FieldWxMBCode, field.TypeString, value)
+	if value, ok := mu.mutation.WxBcmbCode(); ok {
+		_spec.SetField(member.FieldWxBcmbCode, field.TypeString, value)
 	}
-	if mu.mutation.WxMBCodeCleared() {
-		_spec.ClearField(member.FieldWxMBCode, field.TypeString)
+	if mu.mutation.WxBcmbCodeCleared() {
+		_spec.ClearField(member.FieldWxBcmbCode, field.TypeString)
 	}
-	if mu.mutation.WxRegTimeCleared() {
-		_spec.ClearField(member.FieldWxRegTime, field.TypeTime)
+	if mu.mutation.WxBcmbRegTimeCleared() {
+		_spec.ClearField(member.FieldWxBcmbRegTime, field.TypeTime)
+	}
+	if value, ok := mu.mutation.WxBcmbMsgID(); ok {
+		_spec.SetField(member.FieldWxBcmbMsgID, field.TypeString, value)
+	}
+	if mu.mutation.WxBcmbMsgIDCleared() {
+		_spec.ClearField(member.FieldWxBcmbMsgID, field.TypeString)
+	}
+	if value, ok := mu.mutation.WxBcmbAuthType(); ok {
+		_spec.SetField(member.FieldWxBcmbAuthType, field.TypeInt, value)
+	}
+	if value, ok := mu.mutation.AddedWxBcmbAuthType(); ok {
+		_spec.AddField(member.FieldWxBcmbAuthType, field.TypeInt, value)
 	}
 	if value, ok := mu.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := mu.mutation.AddedStatus(); ok {
 		_spec.AddField(member.FieldStatus, field.TypeInt, value)
+	}
+	if value, ok := mu.mutation.Source(); ok {
+		_spec.SetField(member.FieldSource, field.TypeInt, value)
+	}
+	if value, ok := mu.mutation.AddedSource(); ok {
+		_spec.AddField(member.FieldSource, field.TypeInt, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -356,23 +441,64 @@ func (muo *MemberUpdateOne) SetNillableWxUID(s *string) *MemberUpdateOne {
 	return muo
 }
 
-// SetWxMBCode sets the "wx_mb_code" field.
-func (muo *MemberUpdateOne) SetWxMBCode(s string) *MemberUpdateOne {
-	muo.mutation.SetWxMBCode(s)
+// SetWxBcmbCode sets the "wx_bcmb_code" field.
+func (muo *MemberUpdateOne) SetWxBcmbCode(s string) *MemberUpdateOne {
+	muo.mutation.SetWxBcmbCode(s)
 	return muo
 }
 
-// SetNillableWxMBCode sets the "wx_mb_code" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableWxMBCode(s *string) *MemberUpdateOne {
+// SetNillableWxBcmbCode sets the "wx_bcmb_code" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxBcmbCode(s *string) *MemberUpdateOne {
 	if s != nil {
-		muo.SetWxMBCode(*s)
+		muo.SetWxBcmbCode(*s)
 	}
 	return muo
 }
 
-// ClearWxMBCode clears the value of the "wx_mb_code" field.
-func (muo *MemberUpdateOne) ClearWxMBCode() *MemberUpdateOne {
-	muo.mutation.ClearWxMBCode()
+// ClearWxBcmbCode clears the value of the "wx_bcmb_code" field.
+func (muo *MemberUpdateOne) ClearWxBcmbCode() *MemberUpdateOne {
+	muo.mutation.ClearWxBcmbCode()
+	return muo
+}
+
+// SetWxBcmbMsgID sets the "wx_bcmb_msg_id" field.
+func (muo *MemberUpdateOne) SetWxBcmbMsgID(s string) *MemberUpdateOne {
+	muo.mutation.SetWxBcmbMsgID(s)
+	return muo
+}
+
+// SetNillableWxBcmbMsgID sets the "wx_bcmb_msg_id" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxBcmbMsgID(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetWxBcmbMsgID(*s)
+	}
+	return muo
+}
+
+// ClearWxBcmbMsgID clears the value of the "wx_bcmb_msg_id" field.
+func (muo *MemberUpdateOne) ClearWxBcmbMsgID() *MemberUpdateOne {
+	muo.mutation.ClearWxBcmbMsgID()
+	return muo
+}
+
+// SetWxBcmbAuthType sets the "wx_bcmb_auth_type" field.
+func (muo *MemberUpdateOne) SetWxBcmbAuthType(i int) *MemberUpdateOne {
+	muo.mutation.ResetWxBcmbAuthType()
+	muo.mutation.SetWxBcmbAuthType(i)
+	return muo
+}
+
+// SetNillableWxBcmbAuthType sets the "wx_bcmb_auth_type" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxBcmbAuthType(i *int) *MemberUpdateOne {
+	if i != nil {
+		muo.SetWxBcmbAuthType(*i)
+	}
+	return muo
+}
+
+// AddWxBcmbAuthType adds i to the "wx_bcmb_auth_type" field.
+func (muo *MemberUpdateOne) AddWxBcmbAuthType(i int) *MemberUpdateOne {
+	muo.mutation.AddWxBcmbAuthType(i)
 	return muo
 }
 
@@ -394,6 +520,27 @@ func (muo *MemberUpdateOne) SetNillableStatus(i *int) *MemberUpdateOne {
 // AddStatus adds i to the "status" field.
 func (muo *MemberUpdateOne) AddStatus(i int) *MemberUpdateOne {
 	muo.mutation.AddStatus(i)
+	return muo
+}
+
+// SetSource sets the "source" field.
+func (muo *MemberUpdateOne) SetSource(i int) *MemberUpdateOne {
+	muo.mutation.ResetSource()
+	muo.mutation.SetSource(i)
+	return muo
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableSource(i *int) *MemberUpdateOne {
+	if i != nil {
+		muo.SetSource(*i)
+	}
+	return muo
+}
+
+// AddSource adds i to the "source" field.
+func (muo *MemberUpdateOne) AddSource(i int) *MemberUpdateOne {
+	muo.mutation.AddSource(i)
 	return muo
 }
 
@@ -473,9 +620,14 @@ func (muo *MemberUpdateOne) check() error {
 			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
 		}
 	}
-	if v, ok := muo.mutation.WxMBCode(); ok {
-		if err := member.WxMBCodeValidator(v); err != nil {
-			return &ValidationError{Name: "wx_mb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_mb_code": %w`, err)}
+	if v, ok := muo.mutation.WxBcmbCode(); ok {
+		if err := member.WxBcmbCodeValidator(v); err != nil {
+			return &ValidationError{Name: "wx_bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_code": %w`, err)}
+		}
+	}
+	if v, ok := muo.mutation.WxBcmbMsgID(); ok {
+		if err := member.WxBcmbMsgIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_bcmb_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_bcmb_msg_id": %w`, err)}
 		}
 	}
 	return nil
@@ -531,20 +683,38 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	if value, ok := muo.mutation.WxUID(); ok {
 		_spec.SetField(member.FieldWxUID, field.TypeString, value)
 	}
-	if value, ok := muo.mutation.WxMBCode(); ok {
-		_spec.SetField(member.FieldWxMBCode, field.TypeString, value)
+	if value, ok := muo.mutation.WxBcmbCode(); ok {
+		_spec.SetField(member.FieldWxBcmbCode, field.TypeString, value)
 	}
-	if muo.mutation.WxMBCodeCleared() {
-		_spec.ClearField(member.FieldWxMBCode, field.TypeString)
+	if muo.mutation.WxBcmbCodeCleared() {
+		_spec.ClearField(member.FieldWxBcmbCode, field.TypeString)
 	}
-	if muo.mutation.WxRegTimeCleared() {
-		_spec.ClearField(member.FieldWxRegTime, field.TypeTime)
+	if muo.mutation.WxBcmbRegTimeCleared() {
+		_spec.ClearField(member.FieldWxBcmbRegTime, field.TypeTime)
+	}
+	if value, ok := muo.mutation.WxBcmbMsgID(); ok {
+		_spec.SetField(member.FieldWxBcmbMsgID, field.TypeString, value)
+	}
+	if muo.mutation.WxBcmbMsgIDCleared() {
+		_spec.ClearField(member.FieldWxBcmbMsgID, field.TypeString)
+	}
+	if value, ok := muo.mutation.WxBcmbAuthType(); ok {
+		_spec.SetField(member.FieldWxBcmbAuthType, field.TypeInt, value)
+	}
+	if value, ok := muo.mutation.AddedWxBcmbAuthType(); ok {
+		_spec.AddField(member.FieldWxBcmbAuthType, field.TypeInt, value)
 	}
 	if value, ok := muo.mutation.Status(); ok {
 		_spec.SetField(member.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := muo.mutation.AddedStatus(); ok {
 		_spec.AddField(member.FieldStatus, field.TypeInt, value)
+	}
+	if value, ok := muo.mutation.Source(); ok {
+		_spec.SetField(member.FieldSource, field.TypeInt, value)
+	}
+	if value, ok := muo.mutation.AddedSource(); ok {
+		_spec.AddField(member.FieldSource, field.TypeInt, value)
 	}
 	_node = &Member{config: muo.config}
 	_spec.Assign = _node.assignValues

@@ -79,14 +79,26 @@ func init() {
 	memberDescWxUID := memberFields[5].Descriptor()
 	// member.WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
 	member.WxUIDValidator = memberDescWxUID.Validators[0].(func(string) error)
-	// memberDescWxMBCode is the schema descriptor for wx_mb_code field.
-	memberDescWxMBCode := memberFields[6].Descriptor()
-	// member.WxMBCodeValidator is a validator for the "wx_mb_code" field. It is called by the builders before save.
-	member.WxMBCodeValidator = memberDescWxMBCode.Validators[0].(func(string) error)
+	// memberDescWxBcmbCode is the schema descriptor for wx_bcmb_code field.
+	memberDescWxBcmbCode := memberFields[6].Descriptor()
+	// member.WxBcmbCodeValidator is a validator for the "wx_bcmb_code" field. It is called by the builders before save.
+	member.WxBcmbCodeValidator = memberDescWxBcmbCode.Validators[0].(func(string) error)
+	// memberDescWxBcmbMsgID is the schema descriptor for wx_bcmb_msg_id field.
+	memberDescWxBcmbMsgID := memberFields[8].Descriptor()
+	// member.WxBcmbMsgIDValidator is a validator for the "wx_bcmb_msg_id" field. It is called by the builders before save.
+	member.WxBcmbMsgIDValidator = memberDescWxBcmbMsgID.Validators[0].(func(string) error)
+	// memberDescWxBcmbAuthType is the schema descriptor for wx_bcmb_auth_type field.
+	memberDescWxBcmbAuthType := memberFields[9].Descriptor()
+	// member.DefaultWxBcmbAuthType holds the default value on creation for the wx_bcmb_auth_type field.
+	member.DefaultWxBcmbAuthType = memberDescWxBcmbAuthType.Default.(int)
 	// memberDescStatus is the schema descriptor for status field.
-	memberDescStatus := memberFields[8].Descriptor()
+	memberDescStatus := memberFields[10].Descriptor()
 	// member.DefaultStatus holds the default value on creation for the status field.
 	member.DefaultStatus = memberDescStatus.Default.(int)
+	// memberDescSource is the schema descriptor for source field.
+	memberDescSource := memberFields[11].Descriptor()
+	// member.DefaultSource holds the default value on creation for the source field.
+	member.DefaultSource = memberDescSource.Default.(int)
 	// memberDescID is the schema descriptor for id field.
 	memberDescID := memberFields[0].Descriptor()
 	// member.DefaultID holds the default value on creation for the id field.

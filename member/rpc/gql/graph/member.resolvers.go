@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/twiglab/crm/member/orm"
 	"github.com/twiglab/crm/member/pkg/data"
@@ -14,7 +13,12 @@ import (
 
 // CreateWxMember is the resolver for the CreateWxMember field.
 func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.CreateWxMemberReq) (*data.MemberResp, error) {
-	panic(fmt.Errorf("not implemented: CreateWxMember - CreateWxMember"))
+	m, err := r.dbop.InsertNewMember(ctx, orm.Param{Code: input.Code, WxOpenID: input.WxOpenID})
+	if err != nil {
+		return nil, err
+	}
+
+	return &data.MemberResp{Code: m.Code}, nil
 }
 
 // QueryWxMember is the resolver for the QueryWxMember field.

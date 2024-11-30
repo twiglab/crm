@@ -28,12 +28,18 @@ const (
 	FieldWxOpenID = "wx_open_id"
 	// FieldWxUID holds the string denoting the wx_uid field in the database.
 	FieldWxUID = "wx_uid"
-	// FieldWxMBCode holds the string denoting the wx_mb_code field in the database.
-	FieldWxMBCode = "wx_mb_code"
-	// FieldWxRegTime holds the string denoting the wx_reg_time field in the database.
-	FieldWxRegTime = "wx_reg_time"
+	// FieldWxBcmbCode holds the string denoting the wx_bcmb_code field in the database.
+	FieldWxBcmbCode = "wx_bcmb_code"
+	// FieldWxBcmbRegTime holds the string denoting the wx_bcmb_reg_time field in the database.
+	FieldWxBcmbRegTime = "wx_bcmb_reg_time"
+	// FieldWxBcmbMsgID holds the string denoting the wx_bcmb_msg_id field in the database.
+	FieldWxBcmbMsgID = "wx_bcmb_msg_id"
+	// FieldWxBcmbAuthType holds the string denoting the wx_bcmb_auth_type field in the database.
+	FieldWxBcmbAuthType = "wx_bcmb_auth_type"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldSource holds the string denoting the source field in the database.
+	FieldSource = "source"
 	// Table holds the table name of the member in the database.
 	Table = "t_member"
 )
@@ -48,9 +54,12 @@ var Columns = []string{
 	FieldNickname,
 	FieldWxOpenID,
 	FieldWxUID,
-	FieldWxMBCode,
-	FieldWxRegTime,
+	FieldWxBcmbCode,
+	FieldWxBcmbRegTime,
+	FieldWxBcmbMsgID,
+	FieldWxBcmbAuthType,
 	FieldStatus,
+	FieldSource,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -82,10 +91,16 @@ var (
 	WxOpenIDValidator func(string) error
 	// WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
 	WxUIDValidator func(string) error
-	// WxMBCodeValidator is a validator for the "wx_mb_code" field. It is called by the builders before save.
-	WxMBCodeValidator func(string) error
+	// WxBcmbCodeValidator is a validator for the "wx_bcmb_code" field. It is called by the builders before save.
+	WxBcmbCodeValidator func(string) error
+	// WxBcmbMsgIDValidator is a validator for the "wx_bcmb_msg_id" field. It is called by the builders before save.
+	WxBcmbMsgIDValidator func(string) error
+	// DefaultWxBcmbAuthType holds the default value on creation for the "wx_bcmb_auth_type" field.
+	DefaultWxBcmbAuthType int
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
+	// DefaultSource holds the default value on creation for the "source" field.
+	DefaultSource int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
@@ -133,17 +148,32 @@ func ByWxUID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWxUID, opts...).ToFunc()
 }
 
-// ByWxMBCode orders the results by the wx_mb_code field.
-func ByWxMBCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxMBCode, opts...).ToFunc()
+// ByWxBcmbCode orders the results by the wx_bcmb_code field.
+func ByWxBcmbCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxBcmbCode, opts...).ToFunc()
 }
 
-// ByWxRegTime orders the results by the wx_reg_time field.
-func ByWxRegTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxRegTime, opts...).ToFunc()
+// ByWxBcmbRegTime orders the results by the wx_bcmb_reg_time field.
+func ByWxBcmbRegTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxBcmbRegTime, opts...).ToFunc()
+}
+
+// ByWxBcmbMsgID orders the results by the wx_bcmb_msg_id field.
+func ByWxBcmbMsgID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxBcmbMsgID, opts...).ToFunc()
+}
+
+// ByWxBcmbAuthType orders the results by the wx_bcmb_auth_type field.
+func ByWxBcmbAuthType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxBcmbAuthType, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// BySource orders the results by the source field.
+func BySource(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSource, opts...).ToFunc()
 }

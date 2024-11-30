@@ -25,16 +25,19 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Member",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			member.FieldCreateTime: {Type: field.TypeTime, Column: member.FieldCreateTime},
-			member.FieldUpdateTime: {Type: field.TypeTime, Column: member.FieldUpdateTime},
-			member.FieldCode:       {Type: field.TypeString, Column: member.FieldCode},
-			member.FieldPhone:      {Type: field.TypeString, Column: member.FieldPhone},
-			member.FieldNickname:   {Type: field.TypeString, Column: member.FieldNickname},
-			member.FieldWxOpenID:   {Type: field.TypeString, Column: member.FieldWxOpenID},
-			member.FieldWxUID:      {Type: field.TypeString, Column: member.FieldWxUID},
-			member.FieldWxMBCode:   {Type: field.TypeString, Column: member.FieldWxMBCode},
-			member.FieldWxRegTime:  {Type: field.TypeTime, Column: member.FieldWxRegTime},
-			member.FieldStatus:     {Type: field.TypeInt, Column: member.FieldStatus},
+			member.FieldCreateTime:     {Type: field.TypeTime, Column: member.FieldCreateTime},
+			member.FieldUpdateTime:     {Type: field.TypeTime, Column: member.FieldUpdateTime},
+			member.FieldCode:           {Type: field.TypeString, Column: member.FieldCode},
+			member.FieldPhone:          {Type: field.TypeString, Column: member.FieldPhone},
+			member.FieldNickname:       {Type: field.TypeString, Column: member.FieldNickname},
+			member.FieldWxOpenID:       {Type: field.TypeString, Column: member.FieldWxOpenID},
+			member.FieldWxUID:          {Type: field.TypeString, Column: member.FieldWxUID},
+			member.FieldWxBcmbCode:     {Type: field.TypeString, Column: member.FieldWxBcmbCode},
+			member.FieldWxBcmbRegTime:  {Type: field.TypeTime, Column: member.FieldWxBcmbRegTime},
+			member.FieldWxBcmbMsgID:    {Type: field.TypeString, Column: member.FieldWxBcmbMsgID},
+			member.FieldWxBcmbAuthType: {Type: field.TypeInt, Column: member.FieldWxBcmbAuthType},
+			member.FieldStatus:         {Type: field.TypeInt, Column: member.FieldStatus},
+			member.FieldSource:         {Type: field.TypeInt, Column: member.FieldSource},
 		},
 	}
 	return graph
@@ -121,17 +124,32 @@ func (f *MemberFilter) WhereWxUID(p entql.StringP) {
 	f.Where(p.Field(member.FieldWxUID))
 }
 
-// WhereWxMBCode applies the entql string predicate on the wx_mb_code field.
-func (f *MemberFilter) WhereWxMBCode(p entql.StringP) {
-	f.Where(p.Field(member.FieldWxMBCode))
+// WhereWxBcmbCode applies the entql string predicate on the wx_bcmb_code field.
+func (f *MemberFilter) WhereWxBcmbCode(p entql.StringP) {
+	f.Where(p.Field(member.FieldWxBcmbCode))
 }
 
-// WhereWxRegTime applies the entql time.Time predicate on the wx_reg_time field.
-func (f *MemberFilter) WhereWxRegTime(p entql.TimeP) {
-	f.Where(p.Field(member.FieldWxRegTime))
+// WhereWxBcmbRegTime applies the entql time.Time predicate on the wx_bcmb_reg_time field.
+func (f *MemberFilter) WhereWxBcmbRegTime(p entql.TimeP) {
+	f.Where(p.Field(member.FieldWxBcmbRegTime))
+}
+
+// WhereWxBcmbMsgID applies the entql string predicate on the wx_bcmb_msg_id field.
+func (f *MemberFilter) WhereWxBcmbMsgID(p entql.StringP) {
+	f.Where(p.Field(member.FieldWxBcmbMsgID))
+}
+
+// WhereWxBcmbAuthType applies the entql int predicate on the wx_bcmb_auth_type field.
+func (f *MemberFilter) WhereWxBcmbAuthType(p entql.IntP) {
+	f.Where(p.Field(member.FieldWxBcmbAuthType))
 }
 
 // WhereStatus applies the entql int predicate on the status field.
 func (f *MemberFilter) WhereStatus(p entql.IntP) {
 	f.Where(p.Field(member.FieldStatus))
+}
+
+// WhereSource applies the entql int predicate on the source field.
+func (f *MemberFilter) WhereSource(p entql.IntP) {
+	f.Where(p.Field(member.FieldSource))
 }

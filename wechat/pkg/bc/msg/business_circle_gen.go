@@ -24,6 +24,12 @@ func (z *BusinessCircleAuthor) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			err = z.BusinessCircleMsg.DecodeMsg(dc)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "OpenID":
 			z.OpenID, err = dc.ReadString()
 			if err != nil {
@@ -61,9 +67,19 @@ func (z *BusinessCircleAuthor) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *BusinessCircleAuthor) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 4
+	// map header, size 5
+	// write "BusinessCircleMsg"
+	err = en.Append(0x85, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	if err != nil {
+		return
+	}
+	err = z.BusinessCircleMsg.EncodeMsg(en)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// write "OpenID"
-	err = en.Append(0x84, 0xa6, 0x4f, 0x70, 0x65, 0x6e, 0x49, 0x44)
+	err = en.Append(0xa6, 0x4f, 0x70, 0x65, 0x6e, 0x49, 0x44)
 	if err != nil {
 		return
 	}
@@ -108,9 +124,16 @@ func (z *BusinessCircleAuthor) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *BusinessCircleAuthor) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 4
+	// map header, size 5
+	// string "BusinessCircleMsg"
+	o = append(o, 0x85, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	o, err = z.BusinessCircleMsg.MarshalMsg(o)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// string "OpenID"
-	o = append(o, 0x84, 0xa6, 0x4f, 0x70, 0x65, 0x6e, 0x49, 0x44)
+	o = append(o, 0xa6, 0x4f, 0x70, 0x65, 0x6e, 0x49, 0x44)
 	o = msgp.AppendString(o, z.OpenID)
 	// string "Code"
 	o = append(o, 0xa4, 0x43, 0x6f, 0x64, 0x65)
@@ -142,6 +165,12 @@ func (z *BusinessCircleAuthor) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			bts, err = z.BusinessCircleMsg.UnmarshalMsg(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "OpenID":
 			z.OpenID, bts, err = msgp.ReadStringBytes(bts)
 			if err != nil {
@@ -180,7 +209,185 @@ func (z *BusinessCircleAuthor) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *BusinessCircleAuthor) Msgsize() (s int) {
-	s = 1 + 7 + msgp.StringPrefixSize + len(z.OpenID) + 5 + msgp.StringPrefixSize + len(z.Code) + 6 + msgp.StringPrefixSize + len(z.MchID) + 9 + msgp.StringPrefixSize + len(z.AuthType)
+	s = 1 + 18 + z.BusinessCircleMsg.Msgsize() + 7 + msgp.StringPrefixSize + len(z.OpenID) + 5 + msgp.StringPrefixSize + len(z.Code) + 6 + msgp.StringPrefixSize + len(z.MchID) + 9 + msgp.StringPrefixSize + len(z.AuthType)
+	return
+}
+
+// DecodeMsg implements msgp.Decodable
+func (z *BusinessCircleMsg) DecodeMsg(dc *msgp.Reader) (err error) {
+	var field []byte
+	_ = field
+	var zb0001 uint32
+	zb0001, err = dc.ReadMapHeader()
+	if err != nil {
+		err = msgp.WrapError(err)
+		return
+	}
+	for zb0001 > 0 {
+		zb0001--
+		field, err = dc.ReadMapKeyPtr()
+		if err != nil {
+			err = msgp.WrapError(err)
+			return
+		}
+		switch msgp.UnsafeString(field) {
+		case "MsgID":
+			z.MsgID, err = dc.ReadString()
+			if err != nil {
+				err = msgp.WrapError(err, "MsgID")
+				return
+			}
+		case "CreateTime":
+			z.CreateTime, err = dc.ReadTime()
+			if err != nil {
+				err = msgp.WrapError(err, "CreateTime")
+				return
+			}
+		case "MsgType":
+			z.MsgType, err = dc.ReadString()
+			if err != nil {
+				err = msgp.WrapError(err, "MsgType")
+				return
+			}
+		case "Summary":
+			z.Summary, err = dc.ReadString()
+			if err != nil {
+				err = msgp.WrapError(err, "Summary")
+				return
+			}
+		default:
+			err = dc.Skip()
+			if err != nil {
+				err = msgp.WrapError(err)
+				return
+			}
+		}
+	}
+	return
+}
+
+// EncodeMsg implements msgp.Encodable
+func (z *BusinessCircleMsg) EncodeMsg(en *msgp.Writer) (err error) {
+	// map header, size 4
+	// write "MsgID"
+	err = en.Append(0x84, 0xa5, 0x4d, 0x73, 0x67, 0x49, 0x44)
+	if err != nil {
+		return
+	}
+	err = en.WriteString(z.MsgID)
+	if err != nil {
+		err = msgp.WrapError(err, "MsgID")
+		return
+	}
+	// write "CreateTime"
+	err = en.Append(0xaa, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65)
+	if err != nil {
+		return
+	}
+	err = en.WriteTime(z.CreateTime)
+	if err != nil {
+		err = msgp.WrapError(err, "CreateTime")
+		return
+	}
+	// write "MsgType"
+	err = en.Append(0xa7, 0x4d, 0x73, 0x67, 0x54, 0x79, 0x70, 0x65)
+	if err != nil {
+		return
+	}
+	err = en.WriteString(z.MsgType)
+	if err != nil {
+		err = msgp.WrapError(err, "MsgType")
+		return
+	}
+	// write "Summary"
+	err = en.Append(0xa7, 0x53, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79)
+	if err != nil {
+		return
+	}
+	err = en.WriteString(z.Summary)
+	if err != nil {
+		err = msgp.WrapError(err, "Summary")
+		return
+	}
+	return
+}
+
+// MarshalMsg implements msgp.Marshaler
+func (z *BusinessCircleMsg) MarshalMsg(b []byte) (o []byte, err error) {
+	o = msgp.Require(b, z.Msgsize())
+	// map header, size 4
+	// string "MsgID"
+	o = append(o, 0x84, 0xa5, 0x4d, 0x73, 0x67, 0x49, 0x44)
+	o = msgp.AppendString(o, z.MsgID)
+	// string "CreateTime"
+	o = append(o, 0xaa, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65)
+	o = msgp.AppendTime(o, z.CreateTime)
+	// string "MsgType"
+	o = append(o, 0xa7, 0x4d, 0x73, 0x67, 0x54, 0x79, 0x70, 0x65)
+	o = msgp.AppendString(o, z.MsgType)
+	// string "Summary"
+	o = append(o, 0xa7, 0x53, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79)
+	o = msgp.AppendString(o, z.Summary)
+	return
+}
+
+// UnmarshalMsg implements msgp.Unmarshaler
+func (z *BusinessCircleMsg) UnmarshalMsg(bts []byte) (o []byte, err error) {
+	var field []byte
+	_ = field
+	var zb0001 uint32
+	zb0001, bts, err = msgp.ReadMapHeaderBytes(bts)
+	if err != nil {
+		err = msgp.WrapError(err)
+		return
+	}
+	for zb0001 > 0 {
+		zb0001--
+		field, bts, err = msgp.ReadMapKeyZC(bts)
+		if err != nil {
+			err = msgp.WrapError(err)
+			return
+		}
+		switch msgp.UnsafeString(field) {
+		case "MsgID":
+			z.MsgID, bts, err = msgp.ReadStringBytes(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "MsgID")
+				return
+			}
+		case "CreateTime":
+			z.CreateTime, bts, err = msgp.ReadTimeBytes(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "CreateTime")
+				return
+			}
+		case "MsgType":
+			z.MsgType, bts, err = msgp.ReadStringBytes(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "MsgType")
+				return
+			}
+		case "Summary":
+			z.Summary, bts, err = msgp.ReadStringBytes(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "Summary")
+				return
+			}
+		default:
+			bts, err = msgp.Skip(bts)
+			if err != nil {
+				err = msgp.WrapError(err)
+				return
+			}
+		}
+	}
+	o = bts
+	return
+}
+
+// Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
+func (z *BusinessCircleMsg) Msgsize() (s int) {
+	s = 1 + 6 + msgp.StringPrefixSize + len(z.MsgID) + 11 + msgp.TimeSize + 8 + msgp.StringPrefixSize + len(z.MsgType) + 8 + msgp.StringPrefixSize + len(z.Summary)
 	return
 }
 
@@ -202,6 +409,12 @@ func (z *BusinessCirclePayment) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			err = z.BusinessCircleMsg.DecodeMsg(dc)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "BusinessCircleShopBase":
 			err = z.BusinessCircleShopBase.DecodeMsg(dc)
 			if err != nil {
@@ -227,7 +440,7 @@ func (z *BusinessCirclePayment) DecodeMsg(dc *msgp.Reader) (err error) {
 				return
 			}
 		case "TimeEnd":
-			z.TimeEnd, err = dc.ReadString()
+			z.TimeEnd, err = dc.ReadTime()
 			if err != nil {
 				err = msgp.WrapError(err, "TimeEnd")
 				return
@@ -251,9 +464,19 @@ func (z *BusinessCirclePayment) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *BusinessCirclePayment) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 6
+	// map header, size 7
+	// write "BusinessCircleMsg"
+	err = en.Append(0x87, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	if err != nil {
+		return
+	}
+	err = z.BusinessCircleMsg.EncodeMsg(en)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// write "BusinessCircleShopBase"
-	err = en.Append(0x86, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
+	err = en.Append(0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
 	if err != nil {
 		return
 	}
@@ -297,7 +520,7 @@ func (z *BusinessCirclePayment) EncodeMsg(en *msgp.Writer) (err error) {
 	if err != nil {
 		return
 	}
-	err = en.WriteString(z.TimeEnd)
+	err = en.WriteTime(z.TimeEnd)
 	if err != nil {
 		err = msgp.WrapError(err, "TimeEnd")
 		return
@@ -318,9 +541,16 @@ func (z *BusinessCirclePayment) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *BusinessCirclePayment) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 6
+	// map header, size 7
+	// string "BusinessCircleMsg"
+	o = append(o, 0x87, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	o, err = z.BusinessCircleMsg.MarshalMsg(o)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// string "BusinessCircleShopBase"
-	o = append(o, 0x86, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
+	o = append(o, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
 	o, err = z.BusinessCircleShopBase.MarshalMsg(o)
 	if err != nil {
 		err = msgp.WrapError(err, "BusinessCircleShopBase")
@@ -337,7 +567,7 @@ func (z *BusinessCirclePayment) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.AppendInt(o, z.Amount)
 	// string "TimeEnd"
 	o = append(o, 0xa7, 0x54, 0x69, 0x6d, 0x65, 0x45, 0x6e, 0x64)
-	o = msgp.AppendString(o, z.TimeEnd)
+	o = msgp.AppendTime(o, z.TimeEnd)
 	// string "TransactionID"
 	o = append(o, 0xad, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44)
 	o = msgp.AppendString(o, z.TransactionID)
@@ -362,6 +592,12 @@ func (z *BusinessCirclePayment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			bts, err = z.BusinessCircleMsg.UnmarshalMsg(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "BusinessCircleShopBase":
 			bts, err = z.BusinessCircleShopBase.UnmarshalMsg(bts)
 			if err != nil {
@@ -387,7 +623,7 @@ func (z *BusinessCirclePayment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 				return
 			}
 		case "TimeEnd":
-			z.TimeEnd, bts, err = msgp.ReadStringBytes(bts)
+			z.TimeEnd, bts, err = msgp.ReadTimeBytes(bts)
 			if err != nil {
 				err = msgp.WrapError(err, "TimeEnd")
 				return
@@ -412,7 +648,7 @@ func (z *BusinessCirclePayment) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *BusinessCirclePayment) Msgsize() (s int) {
-	s = 1 + 23 + z.BusinessCircleShopBase.Msgsize() + 6 + msgp.StringPrefixSize + len(z.AppID) + 7 + msgp.StringPrefixSize + len(z.OpenID) + 7 + msgp.IntSize + 8 + msgp.StringPrefixSize + len(z.TimeEnd) + 14 + msgp.StringPrefixSize + len(z.TransactionID)
+	s = 1 + 18 + z.BusinessCircleMsg.Msgsize() + 23 + z.BusinessCircleShopBase.Msgsize() + 6 + msgp.StringPrefixSize + len(z.AppID) + 7 + msgp.StringPrefixSize + len(z.OpenID) + 7 + msgp.IntSize + 8 + msgp.TimeSize + 14 + msgp.StringPrefixSize + len(z.TransactionID)
 	return
 }
 
@@ -434,6 +670,12 @@ func (z *BusinessCircleRefund) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			err = z.BusinessCircleMsg.DecodeMsg(dc)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "BusinessCircleShopBase":
 			err = z.BusinessCircleShopBase.DecodeMsg(dc)
 			if err != nil {
@@ -453,7 +695,7 @@ func (z *BusinessCircleRefund) DecodeMsg(dc *msgp.Reader) (err error) {
 				return
 			}
 		case "RefundTime":
-			z.RefundTime, err = dc.ReadString()
+			z.RefundTime, err = dc.ReadTime()
 			if err != nil {
 				err = msgp.WrapError(err, "RefundTime")
 				return
@@ -495,9 +737,19 @@ func (z *BusinessCircleRefund) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *BusinessCircleRefund) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 8
+	// map header, size 9
+	// write "BusinessCircleMsg"
+	err = en.Append(0x89, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	if err != nil {
+		return
+	}
+	err = z.BusinessCircleMsg.EncodeMsg(en)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// write "BusinessCircleShopBase"
-	err = en.Append(0x88, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
+	err = en.Append(0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
 	if err != nil {
 		return
 	}
@@ -531,7 +783,7 @@ func (z *BusinessCircleRefund) EncodeMsg(en *msgp.Writer) (err error) {
 	if err != nil {
 		return
 	}
-	err = en.WriteString(z.RefundTime)
+	err = en.WriteTime(z.RefundTime)
 	if err != nil {
 		err = msgp.WrapError(err, "RefundTime")
 		return
@@ -582,9 +834,16 @@ func (z *BusinessCircleRefund) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *BusinessCircleRefund) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 8
+	// map header, size 9
+	// string "BusinessCircleMsg"
+	o = append(o, 0x89, 0xb1, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x4d, 0x73, 0x67)
+	o, err = z.BusinessCircleMsg.MarshalMsg(o)
+	if err != nil {
+		err = msgp.WrapError(err, "BusinessCircleMsg")
+		return
+	}
 	// string "BusinessCircleShopBase"
-	o = append(o, 0x88, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
+	o = append(o, 0xb6, 0x42, 0x75, 0x73, 0x69, 0x6e, 0x65, 0x73, 0x73, 0x43, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x61, 0x73, 0x65)
 	o, err = z.BusinessCircleShopBase.MarshalMsg(o)
 	if err != nil {
 		err = msgp.WrapError(err, "BusinessCircleShopBase")
@@ -598,7 +857,7 @@ func (z *BusinessCircleRefund) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.AppendString(o, z.OpenID)
 	// string "RefundTime"
 	o = append(o, 0xaa, 0x52, 0x65, 0x66, 0x75, 0x6e, 0x64, 0x54, 0x69, 0x6d, 0x65)
-	o = msgp.AppendString(o, z.RefundTime)
+	o = msgp.AppendTime(o, z.RefundTime)
 	// string "PayAmount"
 	o = append(o, 0xa9, 0x50, 0x61, 0x79, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74)
 	o = msgp.AppendInt(o, z.PayAmount)
@@ -632,6 +891,12 @@ func (z *BusinessCircleRefund) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "BusinessCircleMsg":
+			bts, err = z.BusinessCircleMsg.UnmarshalMsg(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "BusinessCircleMsg")
+				return
+			}
 		case "BusinessCircleShopBase":
 			bts, err = z.BusinessCircleShopBase.UnmarshalMsg(bts)
 			if err != nil {
@@ -651,7 +916,7 @@ func (z *BusinessCircleRefund) UnmarshalMsg(bts []byte) (o []byte, err error) {
 				return
 			}
 		case "RefundTime":
-			z.RefundTime, bts, err = msgp.ReadStringBytes(bts)
+			z.RefundTime, bts, err = msgp.ReadTimeBytes(bts)
 			if err != nil {
 				err = msgp.WrapError(err, "RefundTime")
 				return
@@ -694,7 +959,7 @@ func (z *BusinessCircleRefund) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *BusinessCircleRefund) Msgsize() (s int) {
-	s = 1 + 23 + z.BusinessCircleShopBase.Msgsize() + 6 + msgp.StringPrefixSize + len(z.AppID) + 7 + msgp.StringPrefixSize + len(z.OpenID) + 11 + msgp.StringPrefixSize + len(z.RefundTime) + 10 + msgp.IntSize + 13 + msgp.IntSize + 14 + msgp.StringPrefixSize + len(z.TransactionID) + 9 + msgp.StringPrefixSize + len(z.RefundID)
+	s = 1 + 18 + z.BusinessCircleMsg.Msgsize() + 23 + z.BusinessCircleShopBase.Msgsize() + 6 + msgp.StringPrefixSize + len(z.AppID) + 7 + msgp.StringPrefixSize + len(z.OpenID) + 11 + msgp.TimeSize + 10 + msgp.IntSize + 13 + msgp.IntSize + 14 + msgp.StringPrefixSize + len(z.TransactionID) + 9 + msgp.StringPrefixSize + len(z.RefundID)
 	return
 }
 

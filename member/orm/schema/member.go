@@ -73,7 +73,9 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
-		field.String("wx_mb_code").
+		// 商圈会员卡号
+		// 用户在商圈会员卡card_id下的唯一标志，用户领取会员卡后获得的code
+		field.String("wx_bcmb_code").
 			MaxLen(64).
 			Unique().
 			Optional().
@@ -83,10 +85,28 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
-		field.Time("wx_reg_time").
+		// 商圈会员注册时间
+		field.Time("wx_bcmb_reg_time").
 			Optional().
 			Nillable().
 			Immutable(),
+
+		// 商圈会员消息id，用于幂等
+		field.String("wx_bcmb_msg_id").
+			MaxLen(64).
+			Unique().
+			Optional().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(64)", // Override MySQL.
+				dialect.Postgres: "varchar(64)", // Override Postgres.
+				dialect.SQLite:   "varchar(64)", // Override Postgres.
+			}),
+
+		// 商圈会员授权类型
+		// 0 未开通
+		// 1 REGISTERED_MODE ：会员开卡(进卡包) + 未授权会员积分服务
+		// 2 REGISTERED_AND_AUTHORIZATION_MODE：会员开卡(进卡包）+授权会员积分服务
+		field.Int("wx_bcmb_auth_type").Default(0),
 
 		field.Int("status").Default(1),
 

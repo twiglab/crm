@@ -32,12 +32,18 @@ type Member struct {
 	WxOpenID string `json:"wx_open_id,omitempty"`
 	// WxUID holds the value of the "wx_uid" field.
 	WxUID string `json:"wx_uid,omitempty"`
-	// WxMBCode holds the value of the "wx_mb_code" field.
-	WxMBCode string `json:"wx_mb_code,omitempty"`
-	// WxRegTime holds the value of the "wx_reg_time" field.
-	WxRegTime *time.Time `json:"wx_reg_time,omitempty"`
+	// WxBcmbCode holds the value of the "wx_bcmb_code" field.
+	WxBcmbCode string `json:"wx_bcmb_code,omitempty"`
+	// WxBcmbRegTime holds the value of the "wx_bcmb_reg_time" field.
+	WxBcmbRegTime *time.Time `json:"wx_bcmb_reg_time,omitempty"`
+	// WxBcmbMsgID holds the value of the "wx_bcmb_msg_id" field.
+	WxBcmbMsgID string `json:"wx_bcmb_msg_id,omitempty"`
+	// WxBcmbAuthType holds the value of the "wx_bcmb_auth_type" field.
+	WxBcmbAuthType int `json:"wx_bcmb_auth_type,omitempty"`
 	// Status holds the value of the "status" field.
-	Status       int `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
+	// Source holds the value of the "source" field.
+	Source       int `json:"source,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -46,11 +52,11 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case member.FieldStatus:
+		case member.FieldWxBcmbAuthType, member.FieldStatus, member.FieldSource:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldWxMBCode:
+		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldWxBcmbCode, member.FieldWxBcmbMsgID:
 			values[i] = new(sql.NullString)
-		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldWxRegTime:
+		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldWxBcmbRegTime:
 			values[i] = new(sql.NullTime)
 		case member.FieldID:
 			values[i] = new(uuid.UUID)
@@ -117,24 +123,42 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.WxUID = value.String
 			}
-		case member.FieldWxMBCode:
+		case member.FieldWxBcmbCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field wx_mb_code", values[i])
+				return fmt.Errorf("unexpected type %T for field wx_bcmb_code", values[i])
 			} else if value.Valid {
-				m.WxMBCode = value.String
+				m.WxBcmbCode = value.String
 			}
-		case member.FieldWxRegTime:
+		case member.FieldWxBcmbRegTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field wx_reg_time", values[i])
+				return fmt.Errorf("unexpected type %T for field wx_bcmb_reg_time", values[i])
 			} else if value.Valid {
-				m.WxRegTime = new(time.Time)
-				*m.WxRegTime = value.Time
+				m.WxBcmbRegTime = new(time.Time)
+				*m.WxBcmbRegTime = value.Time
+			}
+		case member.FieldWxBcmbMsgID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_bcmb_msg_id", values[i])
+			} else if value.Valid {
+				m.WxBcmbMsgID = value.String
+			}
+		case member.FieldWxBcmbAuthType:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_bcmb_auth_type", values[i])
+			} else if value.Valid {
+				m.WxBcmbAuthType = int(value.Int64)
 			}
 		case member.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				m.Status = int(value.Int64)
+			}
+		case member.FieldSource:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field source", values[i])
+			} else if value.Valid {
+				m.Source = int(value.Int64)
 			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
@@ -193,16 +217,25 @@ func (m *Member) String() string {
 	builder.WriteString("wx_uid=")
 	builder.WriteString(m.WxUID)
 	builder.WriteString(", ")
-	builder.WriteString("wx_mb_code=")
-	builder.WriteString(m.WxMBCode)
+	builder.WriteString("wx_bcmb_code=")
+	builder.WriteString(m.WxBcmbCode)
 	builder.WriteString(", ")
-	if v := m.WxRegTime; v != nil {
-		builder.WriteString("wx_reg_time=")
+	if v := m.WxBcmbRegTime; v != nil {
+		builder.WriteString("wx_bcmb_reg_time=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
+	builder.WriteString("wx_bcmb_msg_id=")
+	builder.WriteString(m.WxBcmbMsgID)
+	builder.WriteString(", ")
+	builder.WriteString("wx_bcmb_auth_type=")
+	builder.WriteString(fmt.Sprintf("%v", m.WxBcmbAuthType))
+	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", m.Status))
+	builder.WriteString(", ")
+	builder.WriteString("source=")
+	builder.WriteString(fmt.Sprintf("%v", m.Source))
 	builder.WriteByte(')')
 	return builder.String()
 }
