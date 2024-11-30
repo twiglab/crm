@@ -35,7 +35,7 @@ type BusinessCircleRefundSource struct {
 	BusinessCircleShopBase
 	AppID         string `json:"appid"`          // 顾客授权积分时使用的小程序的AppID
 	OpenID        string `json:"openid"`         // 顾客授权时使用的小程序上的OpenID
-	RefundTime    string `json:"time_end"`       // 交易完成时间，遵循[rfc3339]标准格式
+	RefundTime    string `json:"refund_time"`    // 交易完成时间，遵循[rfc3339]标准格式
 	PayAmount     int    `json:"pay_amount"`     // 用户实际消费金额，单位（分）
 	RefundAmount  int    `json:"refund_amount"`  // 用户退款金额，单位（分）
 	TransactionID string `json:"transaction_id"` // 微信支付订单号
