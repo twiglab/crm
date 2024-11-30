@@ -10,11 +10,11 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
-// Activity is the model entity for the Activity schema.
-type Activity struct {
+// Poly is the model entity for the Poly schema.
+type Poly struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
@@ -26,12 +26,8 @@ type Activity struct {
 	Operator string `json:"operator,omitempty"`
 	// ActivityAddTime holds the value of the "activity_add_time" field.
 	ActivityAddTime time.Time `json:"activity_add_time,omitempty"`
-	// Approver holds the value of the "approver" field.
-	Approver string `json:"approver,omitempty"`
-	// ActivityApproveTime holds the value of the "activity_approve_time" field.
-	ActivityApproveTime time.Time `json:"activity_approve_time,omitempty"`
-	// Principal holds the value of the "principal" field.
-	Principal string `json:"principal,omitempty"`
+	// RuleCode holds the value of the "rule_code" field.
+	RuleCode string `json:"rule_code,omitempty"`
 	// ActivityName holds the value of the "activity_name" field.
 	ActivityName string `json:"activity_name,omitempty"`
 	// ActivityDesc holds the value of the "activity_desc" field.
@@ -50,17 +46,17 @@ type Activity struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*Activity) scanValues(columns []string) ([]any, error) {
+func (*Poly) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case activity.FieldActivityBudget, activity.FieldActivityStatus, activity.FieldActivityType:
+		case poly.FieldActivityBudget, poly.FieldActivityStatus, poly.FieldActivityType:
 			values[i] = new(sql.NullInt64)
-		case activity.FieldCode, activity.FieldMallCode, activity.FieldOperator, activity.FieldApprover, activity.FieldPrincipal, activity.FieldActivityName, activity.FieldActivityDesc:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldOperator, poly.FieldRuleCode, poly.FieldActivityName, poly.FieldActivityDesc:
 			values[i] = new(sql.NullString)
-		case activity.FieldActivityAddTime, activity.FieldActivityApproveTime, activity.FieldActivityStartTime, activity.FieldActivityEndTime:
+		case poly.FieldActivityAddTime, poly.FieldActivityStartTime, poly.FieldActivityEndTime:
 			values[i] = new(sql.NullTime)
-		case activity.FieldID:
+		case poly.FieldID:
 			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -70,183 +66,165 @@ func (*Activity) scanValues(columns []string) ([]any, error) {
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the Activity fields.
-func (a *Activity) assignValues(columns []string, values []any) error {
+// to the Poly fields.
+func (po *Poly) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case activity.FieldID:
+		case poly.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				a.ID = *value
+				po.ID = *value
 			}
-		case activity.FieldCode:
+		case poly.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
-				a.Code = value.String
+				po.Code = value.String
 			}
-		case activity.FieldMallCode:
+		case poly.FieldMallCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field mall_code", values[i])
 			} else if value.Valid {
-				a.MallCode = value.String
+				po.MallCode = value.String
 			}
-		case activity.FieldOperator:
+		case poly.FieldOperator:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field operator", values[i])
 			} else if value.Valid {
-				a.Operator = value.String
+				po.Operator = value.String
 			}
-		case activity.FieldActivityAddTime:
+		case poly.FieldActivityAddTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_add_time", values[i])
 			} else if value.Valid {
-				a.ActivityAddTime = value.Time
+				po.ActivityAddTime = value.Time
 			}
-		case activity.FieldApprover:
+		case poly.FieldRuleCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field approver", values[i])
+				return fmt.Errorf("unexpected type %T for field rule_code", values[i])
 			} else if value.Valid {
-				a.Approver = value.String
+				po.RuleCode = value.String
 			}
-		case activity.FieldActivityApproveTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_approve_time", values[i])
-			} else if value.Valid {
-				a.ActivityApproveTime = value.Time
-			}
-		case activity.FieldPrincipal:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field principal", values[i])
-			} else if value.Valid {
-				a.Principal = value.String
-			}
-		case activity.FieldActivityName:
+		case poly.FieldActivityName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_name", values[i])
 			} else if value.Valid {
-				a.ActivityName = value.String
+				po.ActivityName = value.String
 			}
-		case activity.FieldActivityDesc:
+		case poly.FieldActivityDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_desc", values[i])
 			} else if value.Valid {
-				a.ActivityDesc = value.String
+				po.ActivityDesc = value.String
 			}
-		case activity.FieldActivityBudget:
+		case poly.FieldActivityBudget:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_budget", values[i])
 			} else if value.Valid {
-				a.ActivityBudget = value.Int64
+				po.ActivityBudget = value.Int64
 			}
-		case activity.FieldActivityStartTime:
+		case poly.FieldActivityStartTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_start_time", values[i])
 			} else if value.Valid {
-				a.ActivityStartTime = value.Time
+				po.ActivityStartTime = value.Time
 			}
-		case activity.FieldActivityEndTime:
+		case poly.FieldActivityEndTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_end_time", values[i])
 			} else if value.Valid {
-				a.ActivityEndTime = value.Time
+				po.ActivityEndTime = value.Time
 			}
-		case activity.FieldActivityStatus:
+		case poly.FieldActivityStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_status", values[i])
 			} else if value.Valid {
-				a.ActivityStatus = int(value.Int64)
+				po.ActivityStatus = int(value.Int64)
 			}
-		case activity.FieldActivityType:
+		case poly.FieldActivityType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_type", values[i])
 			} else if value.Valid {
-				a.ActivityType = int(value.Int64)
+				po.ActivityType = int(value.Int64)
 			}
 		default:
-			a.selectValues.Set(columns[i], values[i])
+			po.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
 }
 
-// Value returns the ent.Value that was dynamically selected and assigned to the Activity.
+// Value returns the ent.Value that was dynamically selected and assigned to the Poly.
 // This includes values selected through modifiers, order, etc.
-func (a *Activity) Value(name string) (ent.Value, error) {
-	return a.selectValues.Get(name)
+func (po *Poly) Value(name string) (ent.Value, error) {
+	return po.selectValues.Get(name)
 }
 
-// Update returns a builder for updating this Activity.
-// Note that you need to call Activity.Unwrap() before calling this method if this Activity
+// Update returns a builder for updating this Poly.
+// Note that you need to call Poly.Unwrap() before calling this method if this Poly
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (a *Activity) Update() *ActivityUpdateOne {
-	return NewActivityClient(a.config).UpdateOne(a)
+func (po *Poly) Update() *PolyUpdateOne {
+	return NewPolyClient(po.config).UpdateOne(po)
 }
 
-// Unwrap unwraps the Activity entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the Poly entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (a *Activity) Unwrap() *Activity {
-	_tx, ok := a.config.driver.(*txDriver)
+func (po *Poly) Unwrap() *Poly {
+	_tx, ok := po.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: Activity is not a transactional entity")
+		panic("ent: Poly is not a transactional entity")
 	}
-	a.config.driver = _tx.drv
-	return a
+	po.config.driver = _tx.drv
+	return po
 }
 
 // String implements the fmt.Stringer.
-func (a *Activity) String() string {
+func (po *Poly) String() string {
 	var builder strings.Builder
-	builder.WriteString("Activity(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", a.ID))
+	builder.WriteString("Poly(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", po.ID))
 	builder.WriteString("code=")
-	builder.WriteString(a.Code)
+	builder.WriteString(po.Code)
 	builder.WriteString(", ")
 	builder.WriteString("mall_code=")
-	builder.WriteString(a.MallCode)
+	builder.WriteString(po.MallCode)
 	builder.WriteString(", ")
 	builder.WriteString("operator=")
-	builder.WriteString(a.Operator)
+	builder.WriteString(po.Operator)
 	builder.WriteString(", ")
 	builder.WriteString("activity_add_time=")
-	builder.WriteString(a.ActivityAddTime.Format(time.ANSIC))
+	builder.WriteString(po.ActivityAddTime.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("approver=")
-	builder.WriteString(a.Approver)
-	builder.WriteString(", ")
-	builder.WriteString("activity_approve_time=")
-	builder.WriteString(a.ActivityApproveTime.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("principal=")
-	builder.WriteString(a.Principal)
+	builder.WriteString("rule_code=")
+	builder.WriteString(po.RuleCode)
 	builder.WriteString(", ")
 	builder.WriteString("activity_name=")
-	builder.WriteString(a.ActivityName)
+	builder.WriteString(po.ActivityName)
 	builder.WriteString(", ")
 	builder.WriteString("activity_desc=")
-	builder.WriteString(a.ActivityDesc)
+	builder.WriteString(po.ActivityDesc)
 	builder.WriteString(", ")
 	builder.WriteString("activity_budget=")
-	builder.WriteString(fmt.Sprintf("%v", a.ActivityBudget))
+	builder.WriteString(fmt.Sprintf("%v", po.ActivityBudget))
 	builder.WriteString(", ")
 	builder.WriteString("activity_start_time=")
-	builder.WriteString(a.ActivityStartTime.Format(time.ANSIC))
+	builder.WriteString(po.ActivityStartTime.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("activity_end_time=")
-	builder.WriteString(a.ActivityEndTime.Format(time.ANSIC))
+	builder.WriteString(po.ActivityEndTime.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("activity_status=")
-	builder.WriteString(fmt.Sprintf("%v", a.ActivityStatus))
+	builder.WriteString(fmt.Sprintf("%v", po.ActivityStatus))
 	builder.WriteString(", ")
 	builder.WriteString("activity_type=")
-	builder.WriteString(fmt.Sprintf("%v", a.ActivityType))
+	builder.WriteString(fmt.Sprintf("%v", po.ActivityType))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// Activities is a parsable slice of Activity.
-type Activities []*Activity
+// Polies is a parsable slice of Poly.
+type Polies []*Poly

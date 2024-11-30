@@ -111,52 +111,28 @@ func DenyMutationOperationRule(op ent.Op) MutationRule {
 	return OnMutationOperation(rule, op)
 }
 
-// The ActivityQueryRuleFunc type is an adapter to allow the use of ordinary
+// The PolyQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type ActivityQueryRuleFunc func(context.Context, *ent.ActivityQuery) error
+type PolyQueryRuleFunc func(context.Context, *ent.PolyQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f ActivityQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.ActivityQuery); ok {
+func (f PolyQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PolyQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ActivityQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PolyQuery", q)
 }
 
-// The ActivityMutationRuleFunc type is an adapter to allow the use of ordinary
+// The PolyMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type ActivityMutationRuleFunc func(context.Context, *ent.ActivityMutation) error
+type PolyMutationRuleFunc func(context.Context, *ent.PolyMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f ActivityMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.ActivityMutation); ok {
+func (f PolyMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PolyMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ActivityMutation", m)
-}
-
-// The ActivityChangeQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type ActivityChangeQueryRuleFunc func(context.Context, *ent.ActivityChangeQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f ActivityChangeQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.ActivityChangeQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ActivityChangeQuery", q)
-}
-
-// The ActivityChangeMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type ActivityChangeMutationRuleFunc func(context.Context, *ent.ActivityChangeMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f ActivityChangeMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.ActivityChangeMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ActivityChangeMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PolyMutation", m)
 }
 
 type (
@@ -194,9 +170,7 @@ var _ QueryMutationRule = FilterFunc(nil)
 
 func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
-	case *ent.ActivityQuery:
-		return q.Filter(), nil
-	case *ent.ActivityChangeQuery:
+	case *ent.PolyQuery:
 		return q.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected query type %T for query filter", q)
@@ -205,9 +179,7 @@ func queryFilter(q ent.Query) (Filter, error) {
 
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
-	case *ent.ActivityMutation:
-		return m.Filter(), nil
-	case *ent.ActivityChangeMutation:
+	case *ent.PolyMutation:
 		return m.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected mutation type %T for mutation filter", m)

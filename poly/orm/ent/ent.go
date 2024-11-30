@@ -12,8 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -74,8 +73,7 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			activity.Table:       activity.ValidColumn,
-			activitychange.Table: activitychange.ValidColumn,
+			poly.Table: poly.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

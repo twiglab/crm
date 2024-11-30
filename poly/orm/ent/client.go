@@ -15,8 +15,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 
 	stdsql "database/sql"
 )
@@ -26,10 +25,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Activity is the client for interacting with the Activity builders.
-	Activity *ActivityClient
-	// ActivityChange is the client for interacting with the ActivityChange builders.
-	ActivityChange *ActivityChangeClient
+	// Poly is the client for interacting with the Poly builders.
+	Poly *PolyClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -41,8 +38,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Activity = NewActivityClient(c.config)
-	c.ActivityChange = NewActivityChangeClient(c.config)
+	c.Poly = NewPolyClient(c.config)
 }
 
 type (
@@ -133,10 +129,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:            ctx,
-		config:         cfg,
-		Activity:       NewActivityClient(cfg),
-		ActivityChange: NewActivityChangeClient(cfg),
+		ctx:    ctx,
+		config: cfg,
+		Poly:   NewPolyClient(cfg),
 	}, nil
 }
 
@@ -154,17 +149,16 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:            ctx,
-		config:         cfg,
-		Activity:       NewActivityClient(cfg),
-		ActivityChange: NewActivityChangeClient(cfg),
+		ctx:    ctx,
+		config: cfg,
+		Poly:   NewPolyClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Activity.
+//		Poly.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -186,130 +180,126 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Activity.Use(hooks...)
-	c.ActivityChange.Use(hooks...)
+	c.Poly.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Activity.Intercept(interceptors...)
-	c.ActivityChange.Intercept(interceptors...)
+	c.Poly.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
-	case *ActivityMutation:
-		return c.Activity.mutate(ctx, m)
-	case *ActivityChangeMutation:
-		return c.ActivityChange.mutate(ctx, m)
+	case *PolyMutation:
+		return c.Poly.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
 }
 
-// ActivityClient is a client for the Activity schema.
-type ActivityClient struct {
+// PolyClient is a client for the Poly schema.
+type PolyClient struct {
 	config
 }
 
-// NewActivityClient returns a client for the Activity from the given config.
-func NewActivityClient(c config) *ActivityClient {
-	return &ActivityClient{config: c}
+// NewPolyClient returns a client for the Poly from the given config.
+func NewPolyClient(c config) *PolyClient {
+	return &PolyClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `activity.Hooks(f(g(h())))`.
-func (c *ActivityClient) Use(hooks ...Hook) {
-	c.hooks.Activity = append(c.hooks.Activity, hooks...)
+// A call to `Use(f, g, h)` equals to `poly.Hooks(f(g(h())))`.
+func (c *PolyClient) Use(hooks ...Hook) {
+	c.hooks.Poly = append(c.hooks.Poly, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `activity.Intercept(f(g(h())))`.
-func (c *ActivityClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Activity = append(c.inters.Activity, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `poly.Intercept(f(g(h())))`.
+func (c *PolyClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Poly = append(c.inters.Poly, interceptors...)
 }
 
-// Create returns a builder for creating a Activity entity.
-func (c *ActivityClient) Create() *ActivityCreate {
-	mutation := newActivityMutation(c.config, OpCreate)
-	return &ActivityCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a Poly entity.
+func (c *PolyClient) Create() *PolyCreate {
+	mutation := newPolyMutation(c.config, OpCreate)
+	return &PolyCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Activity entities.
-func (c *ActivityClient) CreateBulk(builders ...*ActivityCreate) *ActivityCreateBulk {
-	return &ActivityCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Poly entities.
+func (c *PolyClient) CreateBulk(builders ...*PolyCreate) *PolyCreateBulk {
+	return &PolyCreateBulk{config: c.config, builders: builders}
 }
 
 // MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
 // a builder and applies setFunc on it.
-func (c *ActivityClient) MapCreateBulk(slice any, setFunc func(*ActivityCreate, int)) *ActivityCreateBulk {
+func (c *PolyClient) MapCreateBulk(slice any, setFunc func(*PolyCreate, int)) *PolyCreateBulk {
 	rv := reflect.ValueOf(slice)
 	if rv.Kind() != reflect.Slice {
-		return &ActivityCreateBulk{err: fmt.Errorf("calling to ActivityClient.MapCreateBulk with wrong type %T, need slice", slice)}
+		return &PolyCreateBulk{err: fmt.Errorf("calling to PolyClient.MapCreateBulk with wrong type %T, need slice", slice)}
 	}
-	builders := make([]*ActivityCreate, rv.Len())
+	builders := make([]*PolyCreate, rv.Len())
 	for i := 0; i < rv.Len(); i++ {
 		builders[i] = c.Create()
 		setFunc(builders[i], i)
 	}
-	return &ActivityCreateBulk{config: c.config, builders: builders}
+	return &PolyCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Activity.
-func (c *ActivityClient) Update() *ActivityUpdate {
-	mutation := newActivityMutation(c.config, OpUpdate)
-	return &ActivityUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Poly.
+func (c *PolyClient) Update() *PolyUpdate {
+	mutation := newPolyMutation(c.config, OpUpdate)
+	return &PolyUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *ActivityClient) UpdateOne(a *Activity) *ActivityUpdateOne {
-	mutation := newActivityMutation(c.config, OpUpdateOne, withActivity(a))
-	return &ActivityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PolyClient) UpdateOne(po *Poly) *PolyUpdateOne {
+	mutation := newPolyMutation(c.config, OpUpdateOne, withPoly(po))
+	return &PolyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ActivityClient) UpdateOneID(id uuid.UUID) *ActivityUpdateOne {
-	mutation := newActivityMutation(c.config, OpUpdateOne, withActivityID(id))
-	return &ActivityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PolyClient) UpdateOneID(id uuid.UUID) *PolyUpdateOne {
+	mutation := newPolyMutation(c.config, OpUpdateOne, withPolyID(id))
+	return &PolyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Activity.
-func (c *ActivityClient) Delete() *ActivityDelete {
-	mutation := newActivityMutation(c.config, OpDelete)
-	return &ActivityDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Poly.
+func (c *PolyClient) Delete() *PolyDelete {
+	mutation := newPolyMutation(c.config, OpDelete)
+	return &PolyDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *ActivityClient) DeleteOne(a *Activity) *ActivityDeleteOne {
-	return c.DeleteOneID(a.ID)
+func (c *PolyClient) DeleteOne(po *Poly) *PolyDeleteOne {
+	return c.DeleteOneID(po.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ActivityClient) DeleteOneID(id uuid.UUID) *ActivityDeleteOne {
-	builder := c.Delete().Where(activity.ID(id))
+func (c *PolyClient) DeleteOneID(id uuid.UUID) *PolyDeleteOne {
+	builder := c.Delete().Where(poly.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &ActivityDeleteOne{builder}
+	return &PolyDeleteOne{builder}
 }
 
-// Query returns a query builder for Activity.
-func (c *ActivityClient) Query() *ActivityQuery {
-	return &ActivityQuery{
+// Query returns a query builder for Poly.
+func (c *PolyClient) Query() *PolyQuery {
+	return &PolyQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeActivity},
+		ctx:    &QueryContext{Type: TypePoly},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a Activity entity by its id.
-func (c *ActivityClient) Get(ctx context.Context, id uuid.UUID) (*Activity, error) {
-	return c.Query().Where(activity.ID(id)).Only(ctx)
+// Get returns a Poly entity by its id.
+func (c *PolyClient) Get(ctx context.Context, id uuid.UUID) (*Poly, error) {
+	return c.Query().Where(poly.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ActivityClient) GetX(ctx context.Context, id uuid.UUID) *Activity {
+func (c *PolyClient) GetX(ctx context.Context, id uuid.UUID) *Poly {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -318,170 +308,37 @@ func (c *ActivityClient) GetX(ctx context.Context, id uuid.UUID) *Activity {
 }
 
 // Hooks returns the client hooks.
-func (c *ActivityClient) Hooks() []Hook {
-	return c.hooks.Activity
+func (c *PolyClient) Hooks() []Hook {
+	return c.hooks.Poly
 }
 
 // Interceptors returns the client interceptors.
-func (c *ActivityClient) Interceptors() []Interceptor {
-	return c.inters.Activity
+func (c *PolyClient) Interceptors() []Interceptor {
+	return c.inters.Poly
 }
 
-func (c *ActivityClient) mutate(ctx context.Context, m *ActivityMutation) (Value, error) {
+func (c *PolyClient) mutate(ctx context.Context, m *PolyMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&ActivityCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PolyCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&ActivityUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PolyUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&ActivityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PolyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&ActivityDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&PolyDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown Activity mutation op: %q", m.Op())
-	}
-}
-
-// ActivityChangeClient is a client for the ActivityChange schema.
-type ActivityChangeClient struct {
-	config
-}
-
-// NewActivityChangeClient returns a client for the ActivityChange from the given config.
-func NewActivityChangeClient(c config) *ActivityChangeClient {
-	return &ActivityChangeClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `activitychange.Hooks(f(g(h())))`.
-func (c *ActivityChangeClient) Use(hooks ...Hook) {
-	c.hooks.ActivityChange = append(c.hooks.ActivityChange, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `activitychange.Intercept(f(g(h())))`.
-func (c *ActivityChangeClient) Intercept(interceptors ...Interceptor) {
-	c.inters.ActivityChange = append(c.inters.ActivityChange, interceptors...)
-}
-
-// Create returns a builder for creating a ActivityChange entity.
-func (c *ActivityChangeClient) Create() *ActivityChangeCreate {
-	mutation := newActivityChangeMutation(c.config, OpCreate)
-	return &ActivityChangeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of ActivityChange entities.
-func (c *ActivityChangeClient) CreateBulk(builders ...*ActivityChangeCreate) *ActivityChangeCreateBulk {
-	return &ActivityChangeCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *ActivityChangeClient) MapCreateBulk(slice any, setFunc func(*ActivityChangeCreate, int)) *ActivityChangeCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &ActivityChangeCreateBulk{err: fmt.Errorf("calling to ActivityChangeClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*ActivityChangeCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &ActivityChangeCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for ActivityChange.
-func (c *ActivityChangeClient) Update() *ActivityChangeUpdate {
-	mutation := newActivityChangeMutation(c.config, OpUpdate)
-	return &ActivityChangeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *ActivityChangeClient) UpdateOne(ac *ActivityChange) *ActivityChangeUpdateOne {
-	mutation := newActivityChangeMutation(c.config, OpUpdateOne, withActivityChange(ac))
-	return &ActivityChangeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *ActivityChangeClient) UpdateOneID(id uuid.UUID) *ActivityChangeUpdateOne {
-	mutation := newActivityChangeMutation(c.config, OpUpdateOne, withActivityChangeID(id))
-	return &ActivityChangeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for ActivityChange.
-func (c *ActivityChangeClient) Delete() *ActivityChangeDelete {
-	mutation := newActivityChangeMutation(c.config, OpDelete)
-	return &ActivityChangeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *ActivityChangeClient) DeleteOne(ac *ActivityChange) *ActivityChangeDeleteOne {
-	return c.DeleteOneID(ac.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ActivityChangeClient) DeleteOneID(id uuid.UUID) *ActivityChangeDeleteOne {
-	builder := c.Delete().Where(activitychange.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &ActivityChangeDeleteOne{builder}
-}
-
-// Query returns a query builder for ActivityChange.
-func (c *ActivityChangeClient) Query() *ActivityChangeQuery {
-	return &ActivityChangeQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeActivityChange},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a ActivityChange entity by its id.
-func (c *ActivityChangeClient) Get(ctx context.Context, id uuid.UUID) (*ActivityChange, error) {
-	return c.Query().Where(activitychange.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *ActivityChangeClient) GetX(ctx context.Context, id uuid.UUID) *ActivityChange {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *ActivityChangeClient) Hooks() []Hook {
-	return c.hooks.ActivityChange
-}
-
-// Interceptors returns the client interceptors.
-func (c *ActivityChangeClient) Interceptors() []Interceptor {
-	return c.inters.ActivityChange
-}
-
-func (c *ActivityChangeClient) mutate(ctx context.Context, m *ActivityChangeMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&ActivityChangeCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&ActivityChangeUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&ActivityChangeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&ActivityChangeDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("ent: unknown ActivityChange mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown Poly mutation op: %q", m.Op())
 	}
 }
 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Activity, ActivityChange []ent.Hook
+		Poly []ent.Hook
 	}
 	inters struct {
-		Activity, ActivityChange []ent.Interceptor
+		Poly []ent.Interceptor
 	}
 )
 

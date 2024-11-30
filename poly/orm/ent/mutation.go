@@ -12,8 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/ent/predicate"
 )
 
@@ -26,50 +25,47 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeActivity       = "Activity"
-	TypeActivityChange = "ActivityChange"
+	TypePoly = "Poly"
 )
 
-// ActivityMutation represents an operation that mutates the Activity nodes in the graph.
-type ActivityMutation struct {
+// PolyMutation represents an operation that mutates the Poly nodes in the graph.
+type PolyMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *uuid.UUID
-	code                  *string
-	mall_code             *string
-	operator              *string
-	activity_add_time     *time.Time
-	approver              *string
-	activity_approve_time *time.Time
-	principal             *string
-	activity_name         *string
-	activity_desc         *string
-	activity_budget       *int64
-	addactivity_budget    *int64
-	activity_start_time   *time.Time
-	activity_end_time     *time.Time
-	activity_status       *int
-	addactivity_status    *int
-	activity_type         *int
-	addactivity_type      *int
-	clearedFields         map[string]struct{}
-	done                  bool
-	oldValue              func(context.Context) (*Activity, error)
-	predicates            []predicate.Activity
+	op                  Op
+	typ                 string
+	id                  *uuid.UUID
+	code                *string
+	mall_code           *string
+	operator            *string
+	activity_add_time   *time.Time
+	rule_code           *string
+	activity_name       *string
+	activity_desc       *string
+	activity_budget     *int64
+	addactivity_budget  *int64
+	activity_start_time *time.Time
+	activity_end_time   *time.Time
+	activity_status     *int
+	addactivity_status  *int
+	activity_type       *int
+	addactivity_type    *int
+	clearedFields       map[string]struct{}
+	done                bool
+	oldValue            func(context.Context) (*Poly, error)
+	predicates          []predicate.Poly
 }
 
-var _ ent.Mutation = (*ActivityMutation)(nil)
+var _ ent.Mutation = (*PolyMutation)(nil)
 
-// activityOption allows management of the mutation configuration using functional options.
-type activityOption func(*ActivityMutation)
+// polyOption allows management of the mutation configuration using functional options.
+type polyOption func(*PolyMutation)
 
-// newActivityMutation creates new mutation for the Activity entity.
-func newActivityMutation(c config, op Op, opts ...activityOption) *ActivityMutation {
-	m := &ActivityMutation{
+// newPolyMutation creates new mutation for the Poly entity.
+func newPolyMutation(c config, op Op, opts ...polyOption) *PolyMutation {
+	m := &PolyMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeActivity,
+		typ:           TypePoly,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -78,20 +74,20 @@ func newActivityMutation(c config, op Op, opts ...activityOption) *ActivityMutat
 	return m
 }
 
-// withActivityID sets the ID field of the mutation.
-func withActivityID(id uuid.UUID) activityOption {
-	return func(m *ActivityMutation) {
+// withPolyID sets the ID field of the mutation.
+func withPolyID(id uuid.UUID) polyOption {
+	return func(m *PolyMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Activity
+			value *Poly
 		)
-		m.oldValue = func(ctx context.Context) (*Activity, error) {
+		m.oldValue = func(ctx context.Context) (*Poly, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Activity.Get(ctx, id)
+					value, err = m.Client().Poly.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -100,10 +96,10 @@ func withActivityID(id uuid.UUID) activityOption {
 	}
 }
 
-// withActivity sets the old Activity of the mutation.
-func withActivity(node *Activity) activityOption {
-	return func(m *ActivityMutation) {
-		m.oldValue = func(context.Context) (*Activity, error) {
+// withPoly sets the old Poly of the mutation.
+func withPoly(node *Poly) polyOption {
+	return func(m *PolyMutation) {
+		m.oldValue = func(context.Context) (*Poly, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -112,7 +108,7 @@ func withActivity(node *Activity) activityOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ActivityMutation) Client() *Client {
+func (m PolyMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -120,7 +116,7 @@ func (m ActivityMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m ActivityMutation) Tx() (*Tx, error) {
+func (m PolyMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, errors.New("ent: mutation is not running in a transaction")
 	}
@@ -130,14 +126,14 @@ func (m ActivityMutation) Tx() (*Tx, error) {
 }
 
 // SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of Activity entities.
-func (m *ActivityMutation) SetID(id uuid.UUID) {
+// operation is only accepted on creation of Poly entities.
+func (m *PolyMutation) SetID(id uuid.UUID) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *ActivityMutation) ID() (id uuid.UUID, exists bool) {
+func (m *PolyMutation) ID() (id uuid.UUID, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -148,7 +144,7 @@ func (m *ActivityMutation) ID() (id uuid.UUID, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *ActivityMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+func (m *PolyMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
@@ -157,19 +153,19 @@ func (m *ActivityMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Activity.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().Poly.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
 }
 
 // SetCode sets the "code" field.
-func (m *ActivityMutation) SetCode(s string) {
+func (m *PolyMutation) SetCode(s string) {
 	m.code = &s
 }
 
 // Code returns the value of the "code" field in the mutation.
-func (m *ActivityMutation) Code() (r string, exists bool) {
+func (m *PolyMutation) Code() (r string, exists bool) {
 	v := m.code
 	if v == nil {
 		return
@@ -177,10 +173,10 @@ func (m *ActivityMutation) Code() (r string, exists bool) {
 	return *v, true
 }
 
-// OldCode returns the old "code" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldCode returns the old "code" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldCode(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCode is only allowed on UpdateOne operations")
 	}
@@ -195,17 +191,17 @@ func (m *ActivityMutation) OldCode(ctx context.Context) (v string, err error) {
 }
 
 // ResetCode resets all changes to the "code" field.
-func (m *ActivityMutation) ResetCode() {
+func (m *PolyMutation) ResetCode() {
 	m.code = nil
 }
 
 // SetMallCode sets the "mall_code" field.
-func (m *ActivityMutation) SetMallCode(s string) {
+func (m *PolyMutation) SetMallCode(s string) {
 	m.mall_code = &s
 }
 
 // MallCode returns the value of the "mall_code" field in the mutation.
-func (m *ActivityMutation) MallCode() (r string, exists bool) {
+func (m *PolyMutation) MallCode() (r string, exists bool) {
 	v := m.mall_code
 	if v == nil {
 		return
@@ -213,10 +209,10 @@ func (m *ActivityMutation) MallCode() (r string, exists bool) {
 	return *v, true
 }
 
-// OldMallCode returns the old "mall_code" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldMallCode returns the old "mall_code" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldMallCode(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldMallCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMallCode is only allowed on UpdateOne operations")
 	}
@@ -231,17 +227,17 @@ func (m *ActivityMutation) OldMallCode(ctx context.Context) (v string, err error
 }
 
 // ResetMallCode resets all changes to the "mall_code" field.
-func (m *ActivityMutation) ResetMallCode() {
+func (m *PolyMutation) ResetMallCode() {
 	m.mall_code = nil
 }
 
 // SetOperator sets the "operator" field.
-func (m *ActivityMutation) SetOperator(s string) {
+func (m *PolyMutation) SetOperator(s string) {
 	m.operator = &s
 }
 
 // Operator returns the value of the "operator" field in the mutation.
-func (m *ActivityMutation) Operator() (r string, exists bool) {
+func (m *PolyMutation) Operator() (r string, exists bool) {
 	v := m.operator
 	if v == nil {
 		return
@@ -249,10 +245,10 @@ func (m *ActivityMutation) Operator() (r string, exists bool) {
 	return *v, true
 }
 
-// OldOperator returns the old "operator" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldOperator returns the old "operator" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldOperator(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldOperator(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldOperator is only allowed on UpdateOne operations")
 	}
@@ -267,17 +263,17 @@ func (m *ActivityMutation) OldOperator(ctx context.Context) (v string, err error
 }
 
 // ResetOperator resets all changes to the "operator" field.
-func (m *ActivityMutation) ResetOperator() {
+func (m *PolyMutation) ResetOperator() {
 	m.operator = nil
 }
 
 // SetActivityAddTime sets the "activity_add_time" field.
-func (m *ActivityMutation) SetActivityAddTime(t time.Time) {
+func (m *PolyMutation) SetActivityAddTime(t time.Time) {
 	m.activity_add_time = &t
 }
 
 // ActivityAddTime returns the value of the "activity_add_time" field in the mutation.
-func (m *ActivityMutation) ActivityAddTime() (r time.Time, exists bool) {
+func (m *PolyMutation) ActivityAddTime() (r time.Time, exists bool) {
 	v := m.activity_add_time
 	if v == nil {
 		return
@@ -285,10 +281,10 @@ func (m *ActivityMutation) ActivityAddTime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldActivityAddTime returns the old "activity_add_time" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityAddTime returns the old "activity_add_time" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityAddTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldActivityAddTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityAddTime is only allowed on UpdateOne operations")
 	}
@@ -303,125 +299,53 @@ func (m *ActivityMutation) OldActivityAddTime(ctx context.Context) (v time.Time,
 }
 
 // ResetActivityAddTime resets all changes to the "activity_add_time" field.
-func (m *ActivityMutation) ResetActivityAddTime() {
+func (m *PolyMutation) ResetActivityAddTime() {
 	m.activity_add_time = nil
 }
 
-// SetApprover sets the "approver" field.
-func (m *ActivityMutation) SetApprover(s string) {
-	m.approver = &s
+// SetRuleCode sets the "rule_code" field.
+func (m *PolyMutation) SetRuleCode(s string) {
+	m.rule_code = &s
 }
 
-// Approver returns the value of the "approver" field in the mutation.
-func (m *ActivityMutation) Approver() (r string, exists bool) {
-	v := m.approver
+// RuleCode returns the value of the "rule_code" field in the mutation.
+func (m *PolyMutation) RuleCode() (r string, exists bool) {
+	v := m.rule_code
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldApprover returns the old "approver" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldRuleCode returns the old "rule_code" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldApprover(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldRuleCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldApprover is only allowed on UpdateOne operations")
+		return v, errors.New("OldRuleCode is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldApprover requires an ID field in the mutation")
+		return v, errors.New("OldRuleCode requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldApprover: %w", err)
+		return v, fmt.Errorf("querying old value for OldRuleCode: %w", err)
 	}
-	return oldValue.Approver, nil
+	return oldValue.RuleCode, nil
 }
 
-// ResetApprover resets all changes to the "approver" field.
-func (m *ActivityMutation) ResetApprover() {
-	m.approver = nil
-}
-
-// SetActivityApproveTime sets the "activity_approve_time" field.
-func (m *ActivityMutation) SetActivityApproveTime(t time.Time) {
-	m.activity_approve_time = &t
-}
-
-// ActivityApproveTime returns the value of the "activity_approve_time" field in the mutation.
-func (m *ActivityMutation) ActivityApproveTime() (r time.Time, exists bool) {
-	v := m.activity_approve_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldActivityApproveTime returns the old "activity_approve_time" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityApproveTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityApproveTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityApproveTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityApproveTime: %w", err)
-	}
-	return oldValue.ActivityApproveTime, nil
-}
-
-// ResetActivityApproveTime resets all changes to the "activity_approve_time" field.
-func (m *ActivityMutation) ResetActivityApproveTime() {
-	m.activity_approve_time = nil
-}
-
-// SetPrincipal sets the "principal" field.
-func (m *ActivityMutation) SetPrincipal(s string) {
-	m.principal = &s
-}
-
-// Principal returns the value of the "principal" field in the mutation.
-func (m *ActivityMutation) Principal() (r string, exists bool) {
-	v := m.principal
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPrincipal returns the old "principal" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldPrincipal(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPrincipal is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPrincipal requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPrincipal: %w", err)
-	}
-	return oldValue.Principal, nil
-}
-
-// ResetPrincipal resets all changes to the "principal" field.
-func (m *ActivityMutation) ResetPrincipal() {
-	m.principal = nil
+// ResetRuleCode resets all changes to the "rule_code" field.
+func (m *PolyMutation) ResetRuleCode() {
+	m.rule_code = nil
 }
 
 // SetActivityName sets the "activity_name" field.
-func (m *ActivityMutation) SetActivityName(s string) {
+func (m *PolyMutation) SetActivityName(s string) {
 	m.activity_name = &s
 }
 
 // ActivityName returns the value of the "activity_name" field in the mutation.
-func (m *ActivityMutation) ActivityName() (r string, exists bool) {
+func (m *PolyMutation) ActivityName() (r string, exists bool) {
 	v := m.activity_name
 	if v == nil {
 		return
@@ -429,10 +353,10 @@ func (m *ActivityMutation) ActivityName() (r string, exists bool) {
 	return *v, true
 }
 
-// OldActivityName returns the old "activity_name" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityName returns the old "activity_name" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityName(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldActivityName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityName is only allowed on UpdateOne operations")
 	}
@@ -447,17 +371,17 @@ func (m *ActivityMutation) OldActivityName(ctx context.Context) (v string, err e
 }
 
 // ResetActivityName resets all changes to the "activity_name" field.
-func (m *ActivityMutation) ResetActivityName() {
+func (m *PolyMutation) ResetActivityName() {
 	m.activity_name = nil
 }
 
 // SetActivityDesc sets the "activity_desc" field.
-func (m *ActivityMutation) SetActivityDesc(s string) {
+func (m *PolyMutation) SetActivityDesc(s string) {
 	m.activity_desc = &s
 }
 
 // ActivityDesc returns the value of the "activity_desc" field in the mutation.
-func (m *ActivityMutation) ActivityDesc() (r string, exists bool) {
+func (m *PolyMutation) ActivityDesc() (r string, exists bool) {
 	v := m.activity_desc
 	if v == nil {
 		return
@@ -465,10 +389,10 @@ func (m *ActivityMutation) ActivityDesc() (r string, exists bool) {
 	return *v, true
 }
 
-// OldActivityDesc returns the old "activity_desc" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityDesc returns the old "activity_desc" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityDesc(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldActivityDesc(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityDesc is only allowed on UpdateOne operations")
 	}
@@ -483,18 +407,18 @@ func (m *ActivityMutation) OldActivityDesc(ctx context.Context) (v string, err e
 }
 
 // ResetActivityDesc resets all changes to the "activity_desc" field.
-func (m *ActivityMutation) ResetActivityDesc() {
+func (m *PolyMutation) ResetActivityDesc() {
 	m.activity_desc = nil
 }
 
 // SetActivityBudget sets the "activity_budget" field.
-func (m *ActivityMutation) SetActivityBudget(i int64) {
+func (m *PolyMutation) SetActivityBudget(i int64) {
 	m.activity_budget = &i
 	m.addactivity_budget = nil
 }
 
 // ActivityBudget returns the value of the "activity_budget" field in the mutation.
-func (m *ActivityMutation) ActivityBudget() (r int64, exists bool) {
+func (m *PolyMutation) ActivityBudget() (r int64, exists bool) {
 	v := m.activity_budget
 	if v == nil {
 		return
@@ -502,10 +426,10 @@ func (m *ActivityMutation) ActivityBudget() (r int64, exists bool) {
 	return *v, true
 }
 
-// OldActivityBudget returns the old "activity_budget" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityBudget returns the old "activity_budget" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityBudget(ctx context.Context) (v int64, err error) {
+func (m *PolyMutation) OldActivityBudget(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityBudget is only allowed on UpdateOne operations")
 	}
@@ -520,7 +444,7 @@ func (m *ActivityMutation) OldActivityBudget(ctx context.Context) (v int64, err 
 }
 
 // AddActivityBudget adds i to the "activity_budget" field.
-func (m *ActivityMutation) AddActivityBudget(i int64) {
+func (m *PolyMutation) AddActivityBudget(i int64) {
 	if m.addactivity_budget != nil {
 		*m.addactivity_budget += i
 	} else {
@@ -529,7 +453,7 @@ func (m *ActivityMutation) AddActivityBudget(i int64) {
 }
 
 // AddedActivityBudget returns the value that was added to the "activity_budget" field in this mutation.
-func (m *ActivityMutation) AddedActivityBudget() (r int64, exists bool) {
+func (m *PolyMutation) AddedActivityBudget() (r int64, exists bool) {
 	v := m.addactivity_budget
 	if v == nil {
 		return
@@ -538,18 +462,18 @@ func (m *ActivityMutation) AddedActivityBudget() (r int64, exists bool) {
 }
 
 // ResetActivityBudget resets all changes to the "activity_budget" field.
-func (m *ActivityMutation) ResetActivityBudget() {
+func (m *PolyMutation) ResetActivityBudget() {
 	m.activity_budget = nil
 	m.addactivity_budget = nil
 }
 
 // SetActivityStartTime sets the "activity_start_time" field.
-func (m *ActivityMutation) SetActivityStartTime(t time.Time) {
+func (m *PolyMutation) SetActivityStartTime(t time.Time) {
 	m.activity_start_time = &t
 }
 
 // ActivityStartTime returns the value of the "activity_start_time" field in the mutation.
-func (m *ActivityMutation) ActivityStartTime() (r time.Time, exists bool) {
+func (m *PolyMutation) ActivityStartTime() (r time.Time, exists bool) {
 	v := m.activity_start_time
 	if v == nil {
 		return
@@ -557,10 +481,10 @@ func (m *ActivityMutation) ActivityStartTime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldActivityStartTime returns the old "activity_start_time" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityStartTime returns the old "activity_start_time" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityStartTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldActivityStartTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityStartTime is only allowed on UpdateOne operations")
 	}
@@ -575,17 +499,17 @@ func (m *ActivityMutation) OldActivityStartTime(ctx context.Context) (v time.Tim
 }
 
 // ResetActivityStartTime resets all changes to the "activity_start_time" field.
-func (m *ActivityMutation) ResetActivityStartTime() {
+func (m *PolyMutation) ResetActivityStartTime() {
 	m.activity_start_time = nil
 }
 
 // SetActivityEndTime sets the "activity_end_time" field.
-func (m *ActivityMutation) SetActivityEndTime(t time.Time) {
+func (m *PolyMutation) SetActivityEndTime(t time.Time) {
 	m.activity_end_time = &t
 }
 
 // ActivityEndTime returns the value of the "activity_end_time" field in the mutation.
-func (m *ActivityMutation) ActivityEndTime() (r time.Time, exists bool) {
+func (m *PolyMutation) ActivityEndTime() (r time.Time, exists bool) {
 	v := m.activity_end_time
 	if v == nil {
 		return
@@ -593,10 +517,10 @@ func (m *ActivityMutation) ActivityEndTime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldActivityEndTime returns the old "activity_end_time" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityEndTime returns the old "activity_end_time" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityEndTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldActivityEndTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityEndTime is only allowed on UpdateOne operations")
 	}
@@ -611,18 +535,18 @@ func (m *ActivityMutation) OldActivityEndTime(ctx context.Context) (v time.Time,
 }
 
 // ResetActivityEndTime resets all changes to the "activity_end_time" field.
-func (m *ActivityMutation) ResetActivityEndTime() {
+func (m *PolyMutation) ResetActivityEndTime() {
 	m.activity_end_time = nil
 }
 
 // SetActivityStatus sets the "activity_status" field.
-func (m *ActivityMutation) SetActivityStatus(i int) {
+func (m *PolyMutation) SetActivityStatus(i int) {
 	m.activity_status = &i
 	m.addactivity_status = nil
 }
 
 // ActivityStatus returns the value of the "activity_status" field in the mutation.
-func (m *ActivityMutation) ActivityStatus() (r int, exists bool) {
+func (m *PolyMutation) ActivityStatus() (r int, exists bool) {
 	v := m.activity_status
 	if v == nil {
 		return
@@ -630,10 +554,10 @@ func (m *ActivityMutation) ActivityStatus() (r int, exists bool) {
 	return *v, true
 }
 
-// OldActivityStatus returns the old "activity_status" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityStatus returns the old "activity_status" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityStatus(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldActivityStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityStatus is only allowed on UpdateOne operations")
 	}
@@ -648,7 +572,7 @@ func (m *ActivityMutation) OldActivityStatus(ctx context.Context) (v int, err er
 }
 
 // AddActivityStatus adds i to the "activity_status" field.
-func (m *ActivityMutation) AddActivityStatus(i int) {
+func (m *PolyMutation) AddActivityStatus(i int) {
 	if m.addactivity_status != nil {
 		*m.addactivity_status += i
 	} else {
@@ -657,7 +581,7 @@ func (m *ActivityMutation) AddActivityStatus(i int) {
 }
 
 // AddedActivityStatus returns the value that was added to the "activity_status" field in this mutation.
-func (m *ActivityMutation) AddedActivityStatus() (r int, exists bool) {
+func (m *PolyMutation) AddedActivityStatus() (r int, exists bool) {
 	v := m.addactivity_status
 	if v == nil {
 		return
@@ -666,19 +590,19 @@ func (m *ActivityMutation) AddedActivityStatus() (r int, exists bool) {
 }
 
 // ResetActivityStatus resets all changes to the "activity_status" field.
-func (m *ActivityMutation) ResetActivityStatus() {
+func (m *PolyMutation) ResetActivityStatus() {
 	m.activity_status = nil
 	m.addactivity_status = nil
 }
 
 // SetActivityType sets the "activity_type" field.
-func (m *ActivityMutation) SetActivityType(i int) {
+func (m *PolyMutation) SetActivityType(i int) {
 	m.activity_type = &i
 	m.addactivity_type = nil
 }
 
 // ActivityType returns the value of the "activity_type" field in the mutation.
-func (m *ActivityMutation) ActivityType() (r int, exists bool) {
+func (m *PolyMutation) ActivityType() (r int, exists bool) {
 	v := m.activity_type
 	if v == nil {
 		return
@@ -686,10 +610,10 @@ func (m *ActivityMutation) ActivityType() (r int, exists bool) {
 	return *v, true
 }
 
-// OldActivityType returns the old "activity_type" field's value of the Activity entity.
-// If the Activity object wasn't provided to the builder, the object is fetched from the database.
+// OldActivityType returns the old "activity_type" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldActivityType(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldActivityType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActivityType is only allowed on UpdateOne operations")
 	}
@@ -704,7 +628,7 @@ func (m *ActivityMutation) OldActivityType(ctx context.Context) (v int, err erro
 }
 
 // AddActivityType adds i to the "activity_type" field.
-func (m *ActivityMutation) AddActivityType(i int) {
+func (m *PolyMutation) AddActivityType(i int) {
 	if m.addactivity_type != nil {
 		*m.addactivity_type += i
 	} else {
@@ -713,7 +637,7 @@ func (m *ActivityMutation) AddActivityType(i int) {
 }
 
 // AddedActivityType returns the value that was added to the "activity_type" field in this mutation.
-func (m *ActivityMutation) AddedActivityType() (r int, exists bool) {
+func (m *PolyMutation) AddedActivityType() (r int, exists bool) {
 	v := m.addactivity_type
 	if v == nil {
 		return
@@ -722,20 +646,20 @@ func (m *ActivityMutation) AddedActivityType() (r int, exists bool) {
 }
 
 // ResetActivityType resets all changes to the "activity_type" field.
-func (m *ActivityMutation) ResetActivityType() {
+func (m *PolyMutation) ResetActivityType() {
 	m.activity_type = nil
 	m.addactivity_type = nil
 }
 
-// Where appends a list predicates to the ActivityMutation builder.
-func (m *ActivityMutation) Where(ps ...predicate.Activity) {
+// Where appends a list predicates to the PolyMutation builder.
+func (m *PolyMutation) Where(ps ...predicate.Poly) {
 	m.predicates = append(m.predicates, ps...)
 }
 
-// WhereP appends storage-level predicates to the ActivityMutation builder. Using this method,
+// WhereP appends storage-level predicates to the PolyMutation builder. Using this method,
 // users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *ActivityMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Activity, len(ps))
+func (m *PolyMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Poly, len(ps))
 	for i := range ps {
 		p[i] = ps[i]
 	}
@@ -743,66 +667,60 @@ func (m *ActivityMutation) WhereP(ps ...func(*sql.Selector)) {
 }
 
 // Op returns the operation name.
-func (m *ActivityMutation) Op() Op {
+func (m *PolyMutation) Op() Op {
 	return m.op
 }
 
 // SetOp allows setting the mutation operation.
-func (m *ActivityMutation) SetOp(op Op) {
+func (m *PolyMutation) SetOp(op Op) {
 	m.op = op
 }
 
-// Type returns the node type of this mutation (Activity).
-func (m *ActivityMutation) Type() string {
+// Type returns the node type of this mutation (Poly).
+func (m *PolyMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *ActivityMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+func (m *PolyMutation) Fields() []string {
+	fields := make([]string, 0, 12)
 	if m.code != nil {
-		fields = append(fields, activity.FieldCode)
+		fields = append(fields, poly.FieldCode)
 	}
 	if m.mall_code != nil {
-		fields = append(fields, activity.FieldMallCode)
+		fields = append(fields, poly.FieldMallCode)
 	}
 	if m.operator != nil {
-		fields = append(fields, activity.FieldOperator)
+		fields = append(fields, poly.FieldOperator)
 	}
 	if m.activity_add_time != nil {
-		fields = append(fields, activity.FieldActivityAddTime)
+		fields = append(fields, poly.FieldActivityAddTime)
 	}
-	if m.approver != nil {
-		fields = append(fields, activity.FieldApprover)
-	}
-	if m.activity_approve_time != nil {
-		fields = append(fields, activity.FieldActivityApproveTime)
-	}
-	if m.principal != nil {
-		fields = append(fields, activity.FieldPrincipal)
+	if m.rule_code != nil {
+		fields = append(fields, poly.FieldRuleCode)
 	}
 	if m.activity_name != nil {
-		fields = append(fields, activity.FieldActivityName)
+		fields = append(fields, poly.FieldActivityName)
 	}
 	if m.activity_desc != nil {
-		fields = append(fields, activity.FieldActivityDesc)
+		fields = append(fields, poly.FieldActivityDesc)
 	}
 	if m.activity_budget != nil {
-		fields = append(fields, activity.FieldActivityBudget)
+		fields = append(fields, poly.FieldActivityBudget)
 	}
 	if m.activity_start_time != nil {
-		fields = append(fields, activity.FieldActivityStartTime)
+		fields = append(fields, poly.FieldActivityStartTime)
 	}
 	if m.activity_end_time != nil {
-		fields = append(fields, activity.FieldActivityEndTime)
+		fields = append(fields, poly.FieldActivityEndTime)
 	}
 	if m.activity_status != nil {
-		fields = append(fields, activity.FieldActivityStatus)
+		fields = append(fields, poly.FieldActivityStatus)
 	}
 	if m.activity_type != nil {
-		fields = append(fields, activity.FieldActivityType)
+		fields = append(fields, poly.FieldActivityType)
 	}
 	return fields
 }
@@ -810,35 +728,31 @@ func (m *ActivityMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *ActivityMutation) Field(name string) (ent.Value, bool) {
+func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case activity.FieldCode:
+	case poly.FieldCode:
 		return m.Code()
-	case activity.FieldMallCode:
+	case poly.FieldMallCode:
 		return m.MallCode()
-	case activity.FieldOperator:
+	case poly.FieldOperator:
 		return m.Operator()
-	case activity.FieldActivityAddTime:
+	case poly.FieldActivityAddTime:
 		return m.ActivityAddTime()
-	case activity.FieldApprover:
-		return m.Approver()
-	case activity.FieldActivityApproveTime:
-		return m.ActivityApproveTime()
-	case activity.FieldPrincipal:
-		return m.Principal()
-	case activity.FieldActivityName:
+	case poly.FieldRuleCode:
+		return m.RuleCode()
+	case poly.FieldActivityName:
 		return m.ActivityName()
-	case activity.FieldActivityDesc:
+	case poly.FieldActivityDesc:
 		return m.ActivityDesc()
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		return m.ActivityBudget()
-	case activity.FieldActivityStartTime:
+	case poly.FieldActivityStartTime:
 		return m.ActivityStartTime()
-	case activity.FieldActivityEndTime:
+	case poly.FieldActivityEndTime:
 		return m.ActivityEndTime()
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		return m.ActivityStatus()
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		return m.ActivityType()
 	}
 	return nil, false
@@ -847,137 +761,119 @@ func (m *ActivityMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *ActivityMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case activity.FieldCode:
+	case poly.FieldCode:
 		return m.OldCode(ctx)
-	case activity.FieldMallCode:
+	case poly.FieldMallCode:
 		return m.OldMallCode(ctx)
-	case activity.FieldOperator:
+	case poly.FieldOperator:
 		return m.OldOperator(ctx)
-	case activity.FieldActivityAddTime:
+	case poly.FieldActivityAddTime:
 		return m.OldActivityAddTime(ctx)
-	case activity.FieldApprover:
-		return m.OldApprover(ctx)
-	case activity.FieldActivityApproveTime:
-		return m.OldActivityApproveTime(ctx)
-	case activity.FieldPrincipal:
-		return m.OldPrincipal(ctx)
-	case activity.FieldActivityName:
+	case poly.FieldRuleCode:
+		return m.OldRuleCode(ctx)
+	case poly.FieldActivityName:
 		return m.OldActivityName(ctx)
-	case activity.FieldActivityDesc:
+	case poly.FieldActivityDesc:
 		return m.OldActivityDesc(ctx)
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		return m.OldActivityBudget(ctx)
-	case activity.FieldActivityStartTime:
+	case poly.FieldActivityStartTime:
 		return m.OldActivityStartTime(ctx)
-	case activity.FieldActivityEndTime:
+	case poly.FieldActivityEndTime:
 		return m.OldActivityEndTime(ctx)
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		return m.OldActivityStatus(ctx)
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		return m.OldActivityType(ctx)
 	}
-	return nil, fmt.Errorf("unknown Activity field %s", name)
+	return nil, fmt.Errorf("unknown Poly field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ActivityMutation) SetField(name string, value ent.Value) error {
+func (m *PolyMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case activity.FieldCode:
+	case poly.FieldCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCode(v)
 		return nil
-	case activity.FieldMallCode:
+	case poly.FieldMallCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMallCode(v)
 		return nil
-	case activity.FieldOperator:
+	case poly.FieldOperator:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetOperator(v)
 		return nil
-	case activity.FieldActivityAddTime:
+	case poly.FieldActivityAddTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityAddTime(v)
 		return nil
-	case activity.FieldApprover:
+	case poly.FieldRuleCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetApprover(v)
+		m.SetRuleCode(v)
 		return nil
-	case activity.FieldActivityApproveTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetActivityApproveTime(v)
-		return nil
-	case activity.FieldPrincipal:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPrincipal(v)
-		return nil
-	case activity.FieldActivityName:
+	case poly.FieldActivityName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityName(v)
 		return nil
-	case activity.FieldActivityDesc:
+	case poly.FieldActivityDesc:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityDesc(v)
 		return nil
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityBudget(v)
 		return nil
-	case activity.FieldActivityStartTime:
+	case poly.FieldActivityStartTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityStartTime(v)
 		return nil
-	case activity.FieldActivityEndTime:
+	case poly.FieldActivityEndTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityEndTime(v)
 		return nil
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetActivityStatus(v)
 		return nil
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -985,21 +881,21 @@ func (m *ActivityMutation) SetField(name string, value ent.Value) error {
 		m.SetActivityType(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Activity field %s", name)
+	return fmt.Errorf("unknown Poly field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *ActivityMutation) AddedFields() []string {
+func (m *PolyMutation) AddedFields() []string {
 	var fields []string
 	if m.addactivity_budget != nil {
-		fields = append(fields, activity.FieldActivityBudget)
+		fields = append(fields, poly.FieldActivityBudget)
 	}
 	if m.addactivity_status != nil {
-		fields = append(fields, activity.FieldActivityStatus)
+		fields = append(fields, poly.FieldActivityStatus)
 	}
 	if m.addactivity_type != nil {
-		fields = append(fields, activity.FieldActivityType)
+		fields = append(fields, poly.FieldActivityType)
 	}
 	return fields
 }
@@ -1007,13 +903,13 @@ func (m *ActivityMutation) AddedFields() []string {
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *ActivityMutation) AddedField(name string) (ent.Value, bool) {
+func (m *PolyMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		return m.AddedActivityBudget()
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		return m.AddedActivityStatus()
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		return m.AddedActivityType()
 	}
 	return nil, false
@@ -1022,23 +918,23 @@ func (m *ActivityMutation) AddedField(name string) (ent.Value, bool) {
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ActivityMutation) AddField(name string, value ent.Value) error {
+func (m *PolyMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddActivityBudget(v)
 		return nil
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddActivityStatus(v)
 		return nil
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -1046,976 +942,116 @@ func (m *ActivityMutation) AddField(name string, value ent.Value) error {
 		m.AddActivityType(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Activity numeric field %s", name)
+	return fmt.Errorf("unknown Poly numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *ActivityMutation) ClearedFields() []string {
+func (m *PolyMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *ActivityMutation) FieldCleared(name string) bool {
+func (m *PolyMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *ActivityMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown Activity nullable field %s", name)
+func (m *PolyMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Poly nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *ActivityMutation) ResetField(name string) error {
+func (m *PolyMutation) ResetField(name string) error {
 	switch name {
-	case activity.FieldCode:
+	case poly.FieldCode:
 		m.ResetCode()
 		return nil
-	case activity.FieldMallCode:
+	case poly.FieldMallCode:
 		m.ResetMallCode()
 		return nil
-	case activity.FieldOperator:
+	case poly.FieldOperator:
 		m.ResetOperator()
 		return nil
-	case activity.FieldActivityAddTime:
+	case poly.FieldActivityAddTime:
 		m.ResetActivityAddTime()
 		return nil
-	case activity.FieldApprover:
-		m.ResetApprover()
+	case poly.FieldRuleCode:
+		m.ResetRuleCode()
 		return nil
-	case activity.FieldActivityApproveTime:
-		m.ResetActivityApproveTime()
-		return nil
-	case activity.FieldPrincipal:
-		m.ResetPrincipal()
-		return nil
-	case activity.FieldActivityName:
+	case poly.FieldActivityName:
 		m.ResetActivityName()
 		return nil
-	case activity.FieldActivityDesc:
+	case poly.FieldActivityDesc:
 		m.ResetActivityDesc()
 		return nil
-	case activity.FieldActivityBudget:
+	case poly.FieldActivityBudget:
 		m.ResetActivityBudget()
 		return nil
-	case activity.FieldActivityStartTime:
+	case poly.FieldActivityStartTime:
 		m.ResetActivityStartTime()
 		return nil
-	case activity.FieldActivityEndTime:
+	case poly.FieldActivityEndTime:
 		m.ResetActivityEndTime()
 		return nil
-	case activity.FieldActivityStatus:
+	case poly.FieldActivityStatus:
 		m.ResetActivityStatus()
 		return nil
-	case activity.FieldActivityType:
+	case poly.FieldActivityType:
 		m.ResetActivityType()
 		return nil
 	}
-	return fmt.Errorf("unknown Activity field %s", name)
+	return fmt.Errorf("unknown Poly field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ActivityMutation) AddedEdges() []string {
+func (m *PolyMutation) AddedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *ActivityMutation) AddedIDs(name string) []ent.Value {
+func (m *PolyMutation) AddedIDs(name string) []ent.Value {
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ActivityMutation) RemovedEdges() []string {
+func (m *PolyMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *ActivityMutation) RemovedIDs(name string) []ent.Value {
+func (m *PolyMutation) RemovedIDs(name string) []ent.Value {
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ActivityMutation) ClearedEdges() []string {
+func (m *PolyMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *ActivityMutation) EdgeCleared(name string) bool {
+func (m *PolyMutation) EdgeCleared(name string) bool {
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *ActivityMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown Activity unique edge %s", name)
+func (m *PolyMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Poly unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *ActivityMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown Activity edge %s", name)
-}
-
-// ActivityChangeMutation represents an operation that mutates the ActivityChange nodes in the graph.
-type ActivityChangeMutation struct {
-	config
-	op             Op
-	typ            string
-	id             *uuid.UUID
-	code           *string
-	activity_code  *string
-	operator       *string
-	submit_time    *time.Time
-	approver       *string
-	approve_time   *time.Time
-	status         *int
-	addstatus      *int
-	change_summary *string
-	change_reason  *string
-	change_record  *string
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*ActivityChange, error)
-	predicates     []predicate.ActivityChange
-}
-
-var _ ent.Mutation = (*ActivityChangeMutation)(nil)
-
-// activitychangeOption allows management of the mutation configuration using functional options.
-type activitychangeOption func(*ActivityChangeMutation)
-
-// newActivityChangeMutation creates new mutation for the ActivityChange entity.
-func newActivityChangeMutation(c config, op Op, opts ...activitychangeOption) *ActivityChangeMutation {
-	m := &ActivityChangeMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeActivityChange,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withActivityChangeID sets the ID field of the mutation.
-func withActivityChangeID(id uuid.UUID) activitychangeOption {
-	return func(m *ActivityChangeMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *ActivityChange
-		)
-		m.oldValue = func(ctx context.Context) (*ActivityChange, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().ActivityChange.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withActivityChange sets the old ActivityChange of the mutation.
-func withActivityChange(node *ActivityChange) activitychangeOption {
-	return func(m *ActivityChangeMutation) {
-		m.oldValue = func(context.Context) (*ActivityChange, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ActivityChangeMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m ActivityChangeMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("ent: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of ActivityChange entities.
-func (m *ActivityChangeMutation) SetID(id uuid.UUID) {
-	m.id = &id
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *ActivityChangeMutation) ID() (id uuid.UUID, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *ActivityChangeMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []uuid.UUID{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().ActivityChange.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCode sets the "code" field.
-func (m *ActivityChangeMutation) SetCode(s string) {
-	m.code = &s
-}
-
-// Code returns the value of the "code" field in the mutation.
-func (m *ActivityChangeMutation) Code() (r string, exists bool) {
-	v := m.code
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCode returns the old "code" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldCode(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCode: %w", err)
-	}
-	return oldValue.Code, nil
-}
-
-// ResetCode resets all changes to the "code" field.
-func (m *ActivityChangeMutation) ResetCode() {
-	m.code = nil
-}
-
-// SetActivityCode sets the "activity_code" field.
-func (m *ActivityChangeMutation) SetActivityCode(s string) {
-	m.activity_code = &s
-}
-
-// ActivityCode returns the value of the "activity_code" field in the mutation.
-func (m *ActivityChangeMutation) ActivityCode() (r string, exists bool) {
-	v := m.activity_code
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldActivityCode returns the old "activity_code" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldActivityCode(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityCode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityCode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityCode: %w", err)
-	}
-	return oldValue.ActivityCode, nil
-}
-
-// ResetActivityCode resets all changes to the "activity_code" field.
-func (m *ActivityChangeMutation) ResetActivityCode() {
-	m.activity_code = nil
-}
-
-// SetOperator sets the "operator" field.
-func (m *ActivityChangeMutation) SetOperator(s string) {
-	m.operator = &s
-}
-
-// Operator returns the value of the "operator" field in the mutation.
-func (m *ActivityChangeMutation) Operator() (r string, exists bool) {
-	v := m.operator
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOperator returns the old "operator" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldOperator(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOperator is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOperator requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOperator: %w", err)
-	}
-	return oldValue.Operator, nil
-}
-
-// ResetOperator resets all changes to the "operator" field.
-func (m *ActivityChangeMutation) ResetOperator() {
-	m.operator = nil
-}
-
-// SetSubmitTime sets the "submit_time" field.
-func (m *ActivityChangeMutation) SetSubmitTime(t time.Time) {
-	m.submit_time = &t
-}
-
-// SubmitTime returns the value of the "submit_time" field in the mutation.
-func (m *ActivityChangeMutation) SubmitTime() (r time.Time, exists bool) {
-	v := m.submit_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldSubmitTime returns the old "submit_time" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldSubmitTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSubmitTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSubmitTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSubmitTime: %w", err)
-	}
-	return oldValue.SubmitTime, nil
-}
-
-// ResetSubmitTime resets all changes to the "submit_time" field.
-func (m *ActivityChangeMutation) ResetSubmitTime() {
-	m.submit_time = nil
-}
-
-// SetApprover sets the "approver" field.
-func (m *ActivityChangeMutation) SetApprover(s string) {
-	m.approver = &s
-}
-
-// Approver returns the value of the "approver" field in the mutation.
-func (m *ActivityChangeMutation) Approver() (r string, exists bool) {
-	v := m.approver
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldApprover returns the old "approver" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldApprover(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldApprover is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldApprover requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldApprover: %w", err)
-	}
-	return oldValue.Approver, nil
-}
-
-// ResetApprover resets all changes to the "approver" field.
-func (m *ActivityChangeMutation) ResetApprover() {
-	m.approver = nil
-}
-
-// SetApproveTime sets the "approve_time" field.
-func (m *ActivityChangeMutation) SetApproveTime(t time.Time) {
-	m.approve_time = &t
-}
-
-// ApproveTime returns the value of the "approve_time" field in the mutation.
-func (m *ActivityChangeMutation) ApproveTime() (r time.Time, exists bool) {
-	v := m.approve_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldApproveTime returns the old "approve_time" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldApproveTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldApproveTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldApproveTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldApproveTime: %w", err)
-	}
-	return oldValue.ApproveTime, nil
-}
-
-// ResetApproveTime resets all changes to the "approve_time" field.
-func (m *ActivityChangeMutation) ResetApproveTime() {
-	m.approve_time = nil
-}
-
-// SetStatus sets the "status" field.
-func (m *ActivityChangeMutation) SetStatus(i int) {
-	m.status = &i
-	m.addstatus = nil
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *ActivityChangeMutation) Status() (r int, exists bool) {
-	v := m.status
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStatus returns the old "status" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldStatus(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// AddStatus adds i to the "status" field.
-func (m *ActivityChangeMutation) AddStatus(i int) {
-	if m.addstatus != nil {
-		*m.addstatus += i
-	} else {
-		m.addstatus = &i
-	}
-}
-
-// AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *ActivityChangeMutation) AddedStatus() (r int, exists bool) {
-	v := m.addstatus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *ActivityChangeMutation) ResetStatus() {
-	m.status = nil
-	m.addstatus = nil
-}
-
-// SetChangeSummary sets the "change_summary" field.
-func (m *ActivityChangeMutation) SetChangeSummary(s string) {
-	m.change_summary = &s
-}
-
-// ChangeSummary returns the value of the "change_summary" field in the mutation.
-func (m *ActivityChangeMutation) ChangeSummary() (r string, exists bool) {
-	v := m.change_summary
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChangeSummary returns the old "change_summary" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldChangeSummary(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChangeSummary is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChangeSummary requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChangeSummary: %w", err)
-	}
-	return oldValue.ChangeSummary, nil
-}
-
-// ResetChangeSummary resets all changes to the "change_summary" field.
-func (m *ActivityChangeMutation) ResetChangeSummary() {
-	m.change_summary = nil
-}
-
-// SetChangeReason sets the "change_reason" field.
-func (m *ActivityChangeMutation) SetChangeReason(s string) {
-	m.change_reason = &s
-}
-
-// ChangeReason returns the value of the "change_reason" field in the mutation.
-func (m *ActivityChangeMutation) ChangeReason() (r string, exists bool) {
-	v := m.change_reason
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChangeReason returns the old "change_reason" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldChangeReason(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChangeReason is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChangeReason requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChangeReason: %w", err)
-	}
-	return oldValue.ChangeReason, nil
-}
-
-// ResetChangeReason resets all changes to the "change_reason" field.
-func (m *ActivityChangeMutation) ResetChangeReason() {
-	m.change_reason = nil
-}
-
-// SetChangeRecord sets the "change_record" field.
-func (m *ActivityChangeMutation) SetChangeRecord(s string) {
-	m.change_record = &s
-}
-
-// ChangeRecord returns the value of the "change_record" field in the mutation.
-func (m *ActivityChangeMutation) ChangeRecord() (r string, exists bool) {
-	v := m.change_record
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChangeRecord returns the old "change_record" field's value of the ActivityChange entity.
-// If the ActivityChange object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityChangeMutation) OldChangeRecord(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChangeRecord is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChangeRecord requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChangeRecord: %w", err)
-	}
-	return oldValue.ChangeRecord, nil
-}
-
-// ResetChangeRecord resets all changes to the "change_record" field.
-func (m *ActivityChangeMutation) ResetChangeRecord() {
-	m.change_record = nil
-}
-
-// Where appends a list predicates to the ActivityChangeMutation builder.
-func (m *ActivityChangeMutation) Where(ps ...predicate.ActivityChange) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the ActivityChangeMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *ActivityChangeMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.ActivityChange, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *ActivityChangeMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *ActivityChangeMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (ActivityChange).
-func (m *ActivityChangeMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *ActivityChangeMutation) Fields() []string {
-	fields := make([]string, 0, 10)
-	if m.code != nil {
-		fields = append(fields, activitychange.FieldCode)
-	}
-	if m.activity_code != nil {
-		fields = append(fields, activitychange.FieldActivityCode)
-	}
-	if m.operator != nil {
-		fields = append(fields, activitychange.FieldOperator)
-	}
-	if m.submit_time != nil {
-		fields = append(fields, activitychange.FieldSubmitTime)
-	}
-	if m.approver != nil {
-		fields = append(fields, activitychange.FieldApprover)
-	}
-	if m.approve_time != nil {
-		fields = append(fields, activitychange.FieldApproveTime)
-	}
-	if m.status != nil {
-		fields = append(fields, activitychange.FieldStatus)
-	}
-	if m.change_summary != nil {
-		fields = append(fields, activitychange.FieldChangeSummary)
-	}
-	if m.change_reason != nil {
-		fields = append(fields, activitychange.FieldChangeReason)
-	}
-	if m.change_record != nil {
-		fields = append(fields, activitychange.FieldChangeRecord)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *ActivityChangeMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case activitychange.FieldCode:
-		return m.Code()
-	case activitychange.FieldActivityCode:
-		return m.ActivityCode()
-	case activitychange.FieldOperator:
-		return m.Operator()
-	case activitychange.FieldSubmitTime:
-		return m.SubmitTime()
-	case activitychange.FieldApprover:
-		return m.Approver()
-	case activitychange.FieldApproveTime:
-		return m.ApproveTime()
-	case activitychange.FieldStatus:
-		return m.Status()
-	case activitychange.FieldChangeSummary:
-		return m.ChangeSummary()
-	case activitychange.FieldChangeReason:
-		return m.ChangeReason()
-	case activitychange.FieldChangeRecord:
-		return m.ChangeRecord()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *ActivityChangeMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case activitychange.FieldCode:
-		return m.OldCode(ctx)
-	case activitychange.FieldActivityCode:
-		return m.OldActivityCode(ctx)
-	case activitychange.FieldOperator:
-		return m.OldOperator(ctx)
-	case activitychange.FieldSubmitTime:
-		return m.OldSubmitTime(ctx)
-	case activitychange.FieldApprover:
-		return m.OldApprover(ctx)
-	case activitychange.FieldApproveTime:
-		return m.OldApproveTime(ctx)
-	case activitychange.FieldStatus:
-		return m.OldStatus(ctx)
-	case activitychange.FieldChangeSummary:
-		return m.OldChangeSummary(ctx)
-	case activitychange.FieldChangeReason:
-		return m.OldChangeReason(ctx)
-	case activitychange.FieldChangeRecord:
-		return m.OldChangeRecord(ctx)
-	}
-	return nil, fmt.Errorf("unknown ActivityChange field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ActivityChangeMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case activitychange.FieldCode:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCode(v)
-		return nil
-	case activitychange.FieldActivityCode:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetActivityCode(v)
-		return nil
-	case activitychange.FieldOperator:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOperator(v)
-		return nil
-	case activitychange.FieldSubmitTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetSubmitTime(v)
-		return nil
-	case activitychange.FieldApprover:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetApprover(v)
-		return nil
-	case activitychange.FieldApproveTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetApproveTime(v)
-		return nil
-	case activitychange.FieldStatus:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
-		return nil
-	case activitychange.FieldChangeSummary:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChangeSummary(v)
-		return nil
-	case activitychange.FieldChangeReason:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChangeReason(v)
-		return nil
-	case activitychange.FieldChangeRecord:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChangeRecord(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ActivityChange field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *ActivityChangeMutation) AddedFields() []string {
-	var fields []string
-	if m.addstatus != nil {
-		fields = append(fields, activitychange.FieldStatus)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *ActivityChangeMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case activitychange.FieldStatus:
-		return m.AddedStatus()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *ActivityChangeMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case activitychange.FieldStatus:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddStatus(v)
-		return nil
-	}
-	return fmt.Errorf("unknown ActivityChange numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *ActivityChangeMutation) ClearedFields() []string {
-	return nil
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *ActivityChangeMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *ActivityChangeMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown ActivityChange nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *ActivityChangeMutation) ResetField(name string) error {
-	switch name {
-	case activitychange.FieldCode:
-		m.ResetCode()
-		return nil
-	case activitychange.FieldActivityCode:
-		m.ResetActivityCode()
-		return nil
-	case activitychange.FieldOperator:
-		m.ResetOperator()
-		return nil
-	case activitychange.FieldSubmitTime:
-		m.ResetSubmitTime()
-		return nil
-	case activitychange.FieldApprover:
-		m.ResetApprover()
-		return nil
-	case activitychange.FieldApproveTime:
-		m.ResetApproveTime()
-		return nil
-	case activitychange.FieldStatus:
-		m.ResetStatus()
-		return nil
-	case activitychange.FieldChangeSummary:
-		m.ResetChangeSummary()
-		return nil
-	case activitychange.FieldChangeReason:
-		m.ResetChangeReason()
-		return nil
-	case activitychange.FieldChangeRecord:
-		m.ResetChangeRecord()
-		return nil
-	}
-	return fmt.Errorf("unknown ActivityChange field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ActivityChangeMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *ActivityChangeMutation) AddedIDs(name string) []ent.Value {
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ActivityChangeMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *ActivityChangeMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ActivityChangeMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *ActivityChangeMutation) EdgeCleared(name string) bool {
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *ActivityChangeMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown ActivityChange unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *ActivityChangeMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown ActivityChange edge %s", name)
+func (m *PolyMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Poly edge %s", name)
 }

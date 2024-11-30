@@ -3,8 +3,7 @@
 package ent
 
 import (
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -14,55 +13,30 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 2)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 1)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
-			Table:   activity.Table,
-			Columns: activity.Columns,
+			Table:   poly.Table,
+			Columns: poly.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: activity.FieldID,
+				Column: poly.FieldID,
 			},
 		},
-		Type: "Activity",
+		Type: "Poly",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			activity.FieldCode:                {Type: field.TypeString, Column: activity.FieldCode},
-			activity.FieldMallCode:            {Type: field.TypeString, Column: activity.FieldMallCode},
-			activity.FieldOperator:            {Type: field.TypeString, Column: activity.FieldOperator},
-			activity.FieldActivityAddTime:     {Type: field.TypeTime, Column: activity.FieldActivityAddTime},
-			activity.FieldApprover:            {Type: field.TypeString, Column: activity.FieldApprover},
-			activity.FieldActivityApproveTime: {Type: field.TypeTime, Column: activity.FieldActivityApproveTime},
-			activity.FieldPrincipal:           {Type: field.TypeString, Column: activity.FieldPrincipal},
-			activity.FieldActivityName:        {Type: field.TypeString, Column: activity.FieldActivityName},
-			activity.FieldActivityDesc:        {Type: field.TypeString, Column: activity.FieldActivityDesc},
-			activity.FieldActivityBudget:      {Type: field.TypeInt64, Column: activity.FieldActivityBudget},
-			activity.FieldActivityStartTime:   {Type: field.TypeTime, Column: activity.FieldActivityStartTime},
-			activity.FieldActivityEndTime:     {Type: field.TypeTime, Column: activity.FieldActivityEndTime},
-			activity.FieldActivityStatus:      {Type: field.TypeInt, Column: activity.FieldActivityStatus},
-			activity.FieldActivityType:        {Type: field.TypeInt, Column: activity.FieldActivityType},
-		},
-	}
-	graph.Nodes[1] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   activitychange.Table,
-			Columns: activitychange.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: activitychange.FieldID,
-			},
-		},
-		Type: "ActivityChange",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			activitychange.FieldCode:          {Type: field.TypeString, Column: activitychange.FieldCode},
-			activitychange.FieldActivityCode:  {Type: field.TypeString, Column: activitychange.FieldActivityCode},
-			activitychange.FieldOperator:      {Type: field.TypeString, Column: activitychange.FieldOperator},
-			activitychange.FieldSubmitTime:    {Type: field.TypeTime, Column: activitychange.FieldSubmitTime},
-			activitychange.FieldApprover:      {Type: field.TypeString, Column: activitychange.FieldApprover},
-			activitychange.FieldApproveTime:   {Type: field.TypeTime, Column: activitychange.FieldApproveTime},
-			activitychange.FieldStatus:        {Type: field.TypeInt, Column: activitychange.FieldStatus},
-			activitychange.FieldChangeSummary: {Type: field.TypeString, Column: activitychange.FieldChangeSummary},
-			activitychange.FieldChangeReason:  {Type: field.TypeString, Column: activitychange.FieldChangeReason},
-			activitychange.FieldChangeRecord:  {Type: field.TypeString, Column: activitychange.FieldChangeRecord},
+			poly.FieldCode:              {Type: field.TypeString, Column: poly.FieldCode},
+			poly.FieldMallCode:          {Type: field.TypeString, Column: poly.FieldMallCode},
+			poly.FieldOperator:          {Type: field.TypeString, Column: poly.FieldOperator},
+			poly.FieldActivityAddTime:   {Type: field.TypeTime, Column: poly.FieldActivityAddTime},
+			poly.FieldRuleCode:          {Type: field.TypeString, Column: poly.FieldRuleCode},
+			poly.FieldActivityName:      {Type: field.TypeString, Column: poly.FieldActivityName},
+			poly.FieldActivityDesc:      {Type: field.TypeString, Column: poly.FieldActivityDesc},
+			poly.FieldActivityBudget:    {Type: field.TypeInt64, Column: poly.FieldActivityBudget},
+			poly.FieldActivityStartTime: {Type: field.TypeTime, Column: poly.FieldActivityStartTime},
+			poly.FieldActivityEndTime:   {Type: field.TypeTime, Column: poly.FieldActivityEndTime},
+			poly.FieldActivityStatus:    {Type: field.TypeInt, Column: poly.FieldActivityStatus},
+			poly.FieldActivityType:      {Type: field.TypeInt, Column: poly.FieldActivityType},
 		},
 	}
 	return graph
@@ -75,33 +49,33 @@ type predicateAdder interface {
 }
 
 // addPredicate implements the predicateAdder interface.
-func (aq *ActivityQuery) addPredicate(pred func(s *sql.Selector)) {
-	aq.predicates = append(aq.predicates, pred)
+func (pq *PolyQuery) addPredicate(pred func(s *sql.Selector)) {
+	pq.predicates = append(pq.predicates, pred)
 }
 
-// Filter returns a Filter implementation to apply filters on the ActivityQuery builder.
-func (aq *ActivityQuery) Filter() *ActivityFilter {
-	return &ActivityFilter{config: aq.config, predicateAdder: aq}
+// Filter returns a Filter implementation to apply filters on the PolyQuery builder.
+func (pq *PolyQuery) Filter() *PolyFilter {
+	return &PolyFilter{config: pq.config, predicateAdder: pq}
 }
 
 // addPredicate implements the predicateAdder interface.
-func (m *ActivityMutation) addPredicate(pred func(s *sql.Selector)) {
+func (m *PolyMutation) addPredicate(pred func(s *sql.Selector)) {
 	m.predicates = append(m.predicates, pred)
 }
 
-// Filter returns an entql.Where implementation to apply filters on the ActivityMutation builder.
-func (m *ActivityMutation) Filter() *ActivityFilter {
-	return &ActivityFilter{config: m.config, predicateAdder: m}
+// Filter returns an entql.Where implementation to apply filters on the PolyMutation builder.
+func (m *PolyMutation) Filter() *PolyFilter {
+	return &PolyFilter{config: m.config, predicateAdder: m}
 }
 
-// ActivityFilter provides a generic filtering capability at runtime for ActivityQuery.
-type ActivityFilter struct {
+// PolyFilter provides a generic filtering capability at runtime for PolyQuery.
+type PolyFilter struct {
 	predicateAdder
 	config
 }
 
 // Where applies the entql predicate on the query filter.
-func (f *ActivityFilter) Where(p entql.P) {
+func (f *PolyFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
 		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
 			s.AddError(err)
@@ -110,166 +84,66 @@ func (f *ActivityFilter) Where(p entql.P) {
 }
 
 // WhereID applies the entql [16]byte predicate on the id field.
-func (f *ActivityFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(activity.FieldID))
+func (f *PolyFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(poly.FieldID))
 }
 
 // WhereCode applies the entql string predicate on the code field.
-func (f *ActivityFilter) WhereCode(p entql.StringP) {
-	f.Where(p.Field(activity.FieldCode))
+func (f *PolyFilter) WhereCode(p entql.StringP) {
+	f.Where(p.Field(poly.FieldCode))
 }
 
 // WhereMallCode applies the entql string predicate on the mall_code field.
-func (f *ActivityFilter) WhereMallCode(p entql.StringP) {
-	f.Where(p.Field(activity.FieldMallCode))
+func (f *PolyFilter) WhereMallCode(p entql.StringP) {
+	f.Where(p.Field(poly.FieldMallCode))
 }
 
 // WhereOperator applies the entql string predicate on the operator field.
-func (f *ActivityFilter) WhereOperator(p entql.StringP) {
-	f.Where(p.Field(activity.FieldOperator))
+func (f *PolyFilter) WhereOperator(p entql.StringP) {
+	f.Where(p.Field(poly.FieldOperator))
 }
 
 // WhereActivityAddTime applies the entql time.Time predicate on the activity_add_time field.
-func (f *ActivityFilter) WhereActivityAddTime(p entql.TimeP) {
-	f.Where(p.Field(activity.FieldActivityAddTime))
+func (f *PolyFilter) WhereActivityAddTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldActivityAddTime))
 }
 
-// WhereApprover applies the entql string predicate on the approver field.
-func (f *ActivityFilter) WhereApprover(p entql.StringP) {
-	f.Where(p.Field(activity.FieldApprover))
-}
-
-// WhereActivityApproveTime applies the entql time.Time predicate on the activity_approve_time field.
-func (f *ActivityFilter) WhereActivityApproveTime(p entql.TimeP) {
-	f.Where(p.Field(activity.FieldActivityApproveTime))
-}
-
-// WherePrincipal applies the entql string predicate on the principal field.
-func (f *ActivityFilter) WherePrincipal(p entql.StringP) {
-	f.Where(p.Field(activity.FieldPrincipal))
+// WhereRuleCode applies the entql string predicate on the rule_code field.
+func (f *PolyFilter) WhereRuleCode(p entql.StringP) {
+	f.Where(p.Field(poly.FieldRuleCode))
 }
 
 // WhereActivityName applies the entql string predicate on the activity_name field.
-func (f *ActivityFilter) WhereActivityName(p entql.StringP) {
-	f.Where(p.Field(activity.FieldActivityName))
+func (f *PolyFilter) WhereActivityName(p entql.StringP) {
+	f.Where(p.Field(poly.FieldActivityName))
 }
 
 // WhereActivityDesc applies the entql string predicate on the activity_desc field.
-func (f *ActivityFilter) WhereActivityDesc(p entql.StringP) {
-	f.Where(p.Field(activity.FieldActivityDesc))
+func (f *PolyFilter) WhereActivityDesc(p entql.StringP) {
+	f.Where(p.Field(poly.FieldActivityDesc))
 }
 
 // WhereActivityBudget applies the entql int64 predicate on the activity_budget field.
-func (f *ActivityFilter) WhereActivityBudget(p entql.Int64P) {
-	f.Where(p.Field(activity.FieldActivityBudget))
+func (f *PolyFilter) WhereActivityBudget(p entql.Int64P) {
+	f.Where(p.Field(poly.FieldActivityBudget))
 }
 
 // WhereActivityStartTime applies the entql time.Time predicate on the activity_start_time field.
-func (f *ActivityFilter) WhereActivityStartTime(p entql.TimeP) {
-	f.Where(p.Field(activity.FieldActivityStartTime))
+func (f *PolyFilter) WhereActivityStartTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldActivityStartTime))
 }
 
 // WhereActivityEndTime applies the entql time.Time predicate on the activity_end_time field.
-func (f *ActivityFilter) WhereActivityEndTime(p entql.TimeP) {
-	f.Where(p.Field(activity.FieldActivityEndTime))
+func (f *PolyFilter) WhereActivityEndTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldActivityEndTime))
 }
 
 // WhereActivityStatus applies the entql int predicate on the activity_status field.
-func (f *ActivityFilter) WhereActivityStatus(p entql.IntP) {
-	f.Where(p.Field(activity.FieldActivityStatus))
+func (f *PolyFilter) WhereActivityStatus(p entql.IntP) {
+	f.Where(p.Field(poly.FieldActivityStatus))
 }
 
 // WhereActivityType applies the entql int predicate on the activity_type field.
-func (f *ActivityFilter) WhereActivityType(p entql.IntP) {
-	f.Where(p.Field(activity.FieldActivityType))
-}
-
-// addPredicate implements the predicateAdder interface.
-func (acq *ActivityChangeQuery) addPredicate(pred func(s *sql.Selector)) {
-	acq.predicates = append(acq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the ActivityChangeQuery builder.
-func (acq *ActivityChangeQuery) Filter() *ActivityChangeFilter {
-	return &ActivityChangeFilter{config: acq.config, predicateAdder: acq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *ActivityChangeMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the ActivityChangeMutation builder.
-func (m *ActivityChangeMutation) Filter() *ActivityChangeFilter {
-	return &ActivityChangeFilter{config: m.config, predicateAdder: m}
-}
-
-// ActivityChangeFilter provides a generic filtering capability at runtime for ActivityChangeQuery.
-type ActivityChangeFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *ActivityChangeFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *ActivityChangeFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(activitychange.FieldID))
-}
-
-// WhereCode applies the entql string predicate on the code field.
-func (f *ActivityChangeFilter) WhereCode(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldCode))
-}
-
-// WhereActivityCode applies the entql string predicate on the activity_code field.
-func (f *ActivityChangeFilter) WhereActivityCode(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldActivityCode))
-}
-
-// WhereOperator applies the entql string predicate on the operator field.
-func (f *ActivityChangeFilter) WhereOperator(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldOperator))
-}
-
-// WhereSubmitTime applies the entql time.Time predicate on the submit_time field.
-func (f *ActivityChangeFilter) WhereSubmitTime(p entql.TimeP) {
-	f.Where(p.Field(activitychange.FieldSubmitTime))
-}
-
-// WhereApprover applies the entql string predicate on the approver field.
-func (f *ActivityChangeFilter) WhereApprover(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldApprover))
-}
-
-// WhereApproveTime applies the entql time.Time predicate on the approve_time field.
-func (f *ActivityChangeFilter) WhereApproveTime(p entql.TimeP) {
-	f.Where(p.Field(activitychange.FieldApproveTime))
-}
-
-// WhereStatus applies the entql int predicate on the status field.
-func (f *ActivityChangeFilter) WhereStatus(p entql.IntP) {
-	f.Where(p.Field(activitychange.FieldStatus))
-}
-
-// WhereChangeSummary applies the entql string predicate on the change_summary field.
-func (f *ActivityChangeFilter) WhereChangeSummary(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldChangeSummary))
-}
-
-// WhereChangeReason applies the entql string predicate on the change_reason field.
-func (f *ActivityChangeFilter) WhereChangeReason(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldChangeReason))
-}
-
-// WhereChangeRecord applies the entql string predicate on the change_record field.
-func (f *ActivityChangeFilter) WhereChangeRecord(p entql.StringP) {
-	f.Where(p.Field(activitychange.FieldChangeRecord))
+func (f *PolyFilter) WhereActivityType(p entql.IntP) {
+	f.Where(p.Field(poly.FieldActivityType))
 }

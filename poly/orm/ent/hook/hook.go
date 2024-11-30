@@ -9,28 +9,16 @@ import (
 	"github.com/twiglab/crm/poly/orm/ent"
 )
 
-// The ActivityFunc type is an adapter to allow the use of ordinary
-// function as Activity mutator.
-type ActivityFunc func(context.Context, *ent.ActivityMutation) (ent.Value, error)
+// The PolyFunc type is an adapter to allow the use of ordinary
+// function as Poly mutator.
+type PolyFunc func(context.Context, *ent.PolyMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f ActivityFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.ActivityMutation); ok {
+func (f PolyFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PolyMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ActivityMutation", m)
-}
-
-// The ActivityChangeFunc type is an adapter to allow the use of ordinary
-// function as ActivityChange mutator.
-type ActivityChangeFunc func(context.Context, *ent.ActivityChangeMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f ActivityChangeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.ActivityChangeMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ActivityChangeMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PolyMutation", m)
 }
 
 // Condition is a hook condition function.

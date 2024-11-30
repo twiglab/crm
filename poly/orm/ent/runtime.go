@@ -3,11 +3,8 @@
 package ent
 
 import (
-	"time"
-
 	"github.com/google/uuid"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
+	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/schema"
 )
 
@@ -15,15 +12,15 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	activityFields := schema.Activity{}.Fields()
-	_ = activityFields
-	// activityDescCode is the schema descriptor for code field.
-	activityDescCode := activityFields[1].Descriptor()
-	// activity.DefaultCode holds the default value on creation for the code field.
-	activity.DefaultCode = activityDescCode.Default.(func() string)
-	// activity.CodeValidator is a validator for the "code" field. It is called by the builders before save.
-	activity.CodeValidator = func() func(string) error {
-		validators := activityDescCode.Validators
+	polyFields := schema.Poly{}.Fields()
+	_ = polyFields
+	// polyDescCode is the schema descriptor for code field.
+	polyDescCode := polyFields[1].Descriptor()
+	// poly.DefaultCode holds the default value on creation for the code field.
+	poly.DefaultCode = polyDescCode.Default.(func() string)
+	// poly.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	poly.CodeValidator = func() func(string) error {
+		validators := polyDescCode.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
@@ -37,11 +34,11 @@ func init() {
 			return nil
 		}
 	}()
-	// activityDescMallCode is the schema descriptor for mall_code field.
-	activityDescMallCode := activityFields[2].Descriptor()
-	// activity.MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
-	activity.MallCodeValidator = func() func(string) error {
-		validators := activityDescMallCode.Validators
+	// polyDescMallCode is the schema descriptor for mall_code field.
+	polyDescMallCode := polyFields[2].Descriptor()
+	// poly.MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
+	poly.MallCodeValidator = func() func(string) error {
+		validators := polyDescMallCode.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
@@ -55,11 +52,11 @@ func init() {
 			return nil
 		}
 	}()
-	// activityDescOperator is the schema descriptor for operator field.
-	activityDescOperator := activityFields[3].Descriptor()
-	// activity.OperatorValidator is a validator for the "operator" field. It is called by the builders before save.
-	activity.OperatorValidator = func() func(string) error {
-		validators := activityDescOperator.Validators
+	// polyDescOperator is the schema descriptor for operator field.
+	polyDescOperator := polyFields[3].Descriptor()
+	// poly.OperatorValidator is a validator for the "operator" field. It is called by the builders before save.
+	poly.OperatorValidator = func() func(string) error {
+		validators := polyDescOperator.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
@@ -73,19 +70,29 @@ func init() {
 			return nil
 		}
 	}()
-	// activityDescApprover is the schema descriptor for approver field.
-	activityDescApprover := activityFields[5].Descriptor()
-	// activity.ApproverValidator is a validator for the "approver" field. It is called by the builders before save.
-	activity.ApproverValidator = activityDescApprover.Validators[0].(func(string) error)
-	// activityDescPrincipal is the schema descriptor for principal field.
-	activityDescPrincipal := activityFields[7].Descriptor()
-	// activity.PrincipalValidator is a validator for the "principal" field. It is called by the builders before save.
-	activity.PrincipalValidator = activityDescPrincipal.Validators[0].(func(string) error)
-	// activityDescActivityName is the schema descriptor for activity_name field.
-	activityDescActivityName := activityFields[8].Descriptor()
-	// activity.ActivityNameValidator is a validator for the "activity_name" field. It is called by the builders before save.
-	activity.ActivityNameValidator = func() func(string) error {
-		validators := activityDescActivityName.Validators
+	// polyDescRuleCode is the schema descriptor for rule_code field.
+	polyDescRuleCode := polyFields[5].Descriptor()
+	// poly.RuleCodeValidator is a validator for the "rule_code" field. It is called by the builders before save.
+	poly.RuleCodeValidator = func() func(string) error {
+		validators := polyDescRuleCode.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(rule_code string) error {
+			for _, fn := range fns {
+				if err := fn(rule_code); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescActivityName is the schema descriptor for activity_name field.
+	polyDescActivityName := polyFields[6].Descriptor()
+	// poly.ActivityNameValidator is a validator for the "activity_name" field. It is called by the builders before save.
+	poly.ActivityNameValidator = func() func(string) error {
+		validators := polyDescActivityName.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
@@ -99,106 +106,20 @@ func init() {
 			return nil
 		}
 	}()
-	// activityDescActivityDesc is the schema descriptor for activity_desc field.
-	activityDescActivityDesc := activityFields[9].Descriptor()
-	// activity.ActivityDescValidator is a validator for the "activity_desc" field. It is called by the builders before save.
-	activity.ActivityDescValidator = activityDescActivityDesc.Validators[0].(func(string) error)
-	// activityDescActivityStatus is the schema descriptor for activity_status field.
-	activityDescActivityStatus := activityFields[13].Descriptor()
-	// activity.DefaultActivityStatus holds the default value on creation for the activity_status field.
-	activity.DefaultActivityStatus = activityDescActivityStatus.Default.(int)
-	// activityDescActivityType is the schema descriptor for activity_type field.
-	activityDescActivityType := activityFields[14].Descriptor()
-	// activity.DefaultActivityType holds the default value on creation for the activity_type field.
-	activity.DefaultActivityType = activityDescActivityType.Default.(int)
-	// activityDescID is the schema descriptor for id field.
-	activityDescID := activityFields[0].Descriptor()
-	// activity.DefaultID holds the default value on creation for the id field.
-	activity.DefaultID = activityDescID.Default.(func() uuid.UUID)
-	activitychangeFields := schema.ActivityChange{}.Fields()
-	_ = activitychangeFields
-	// activitychangeDescCode is the schema descriptor for code field.
-	activitychangeDescCode := activitychangeFields[1].Descriptor()
-	// activitychange.DefaultCode holds the default value on creation for the code field.
-	activitychange.DefaultCode = activitychangeDescCode.Default.(func() string)
-	// activitychange.CodeValidator is a validator for the "code" field. It is called by the builders before save.
-	activitychange.CodeValidator = func() func(string) error {
-		validators := activitychangeDescCode.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(code string) error {
-			for _, fn := range fns {
-				if err := fn(code); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// activitychangeDescActivityCode is the schema descriptor for activity_code field.
-	activitychangeDescActivityCode := activitychangeFields[2].Descriptor()
-	// activitychange.ActivityCodeValidator is a validator for the "activity_code" field. It is called by the builders before save.
-	activitychange.ActivityCodeValidator = func() func(string) error {
-		validators := activitychangeDescActivityCode.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(activity_code string) error {
-			for _, fn := range fns {
-				if err := fn(activity_code); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// activitychangeDescOperator is the schema descriptor for operator field.
-	activitychangeDescOperator := activitychangeFields[3].Descriptor()
-	// activitychange.OperatorValidator is a validator for the "operator" field. It is called by the builders before save.
-	activitychange.OperatorValidator = func() func(string) error {
-		validators := activitychangeDescOperator.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(operator string) error {
-			for _, fn := range fns {
-				if err := fn(operator); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// activitychangeDescSubmitTime is the schema descriptor for submit_time field.
-	activitychangeDescSubmitTime := activitychangeFields[4].Descriptor()
-	// activitychange.DefaultSubmitTime holds the default value on creation for the submit_time field.
-	activitychange.DefaultSubmitTime = activitychangeDescSubmitTime.Default.(func() time.Time)
-	// activitychangeDescApprover is the schema descriptor for approver field.
-	activitychangeDescApprover := activitychangeFields[5].Descriptor()
-	// activitychange.ApproverValidator is a validator for the "approver" field. It is called by the builders before save.
-	activitychange.ApproverValidator = activitychangeDescApprover.Validators[0].(func(string) error)
-	// activitychangeDescStatus is the schema descriptor for status field.
-	activitychangeDescStatus := activitychangeFields[7].Descriptor()
-	// activitychange.DefaultStatus holds the default value on creation for the status field.
-	activitychange.DefaultStatus = activitychangeDescStatus.Default.(int)
-	// activitychangeDescChangeSummary is the schema descriptor for change_summary field.
-	activitychangeDescChangeSummary := activitychangeFields[8].Descriptor()
-	// activitychange.ChangeSummaryValidator is a validator for the "change_summary" field. It is called by the builders before save.
-	activitychange.ChangeSummaryValidator = activitychangeDescChangeSummary.Validators[0].(func(string) error)
-	// activitychangeDescChangeReason is the schema descriptor for change_reason field.
-	activitychangeDescChangeReason := activitychangeFields[9].Descriptor()
-	// activitychange.ChangeReasonValidator is a validator for the "change_reason" field. It is called by the builders before save.
-	activitychange.ChangeReasonValidator = activitychangeDescChangeReason.Validators[0].(func(string) error)
-	// activitychangeDescChangeRecord is the schema descriptor for change_record field.
-	activitychangeDescChangeRecord := activitychangeFields[10].Descriptor()
-	// activitychange.ChangeRecordValidator is a validator for the "change_record" field. It is called by the builders before save.
-	activitychange.ChangeRecordValidator = activitychangeDescChangeRecord.Validators[0].(func(string) error)
-	// activitychangeDescID is the schema descriptor for id field.
-	activitychangeDescID := activitychangeFields[0].Descriptor()
-	// activitychange.DefaultID holds the default value on creation for the id field.
-	activitychange.DefaultID = activitychangeDescID.Default.(func() uuid.UUID)
+	// polyDescActivityDesc is the schema descriptor for activity_desc field.
+	polyDescActivityDesc := polyFields[7].Descriptor()
+	// poly.ActivityDescValidator is a validator for the "activity_desc" field. It is called by the builders before save.
+	poly.ActivityDescValidator = polyDescActivityDesc.Validators[0].(func(string) error)
+	// polyDescActivityStatus is the schema descriptor for activity_status field.
+	polyDescActivityStatus := polyFields[11].Descriptor()
+	// poly.DefaultActivityStatus holds the default value on creation for the activity_status field.
+	poly.DefaultActivityStatus = polyDescActivityStatus.Default.(int)
+	// polyDescActivityType is the schema descriptor for activity_type field.
+	polyDescActivityType := polyFields[12].Descriptor()
+	// poly.DefaultActivityType holds the default value on creation for the activity_type field.
+	poly.DefaultActivityType = polyDescActivityType.Default.(int)
+	// polyDescID is the schema descriptor for id field.
+	polyDescID := polyFields[0].Descriptor()
+	// poly.DefaultID holds the default value on creation for the id field.
+	poly.DefaultID = polyDescID.Default.(func() uuid.UUID)
 }

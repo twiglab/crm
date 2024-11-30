@@ -5,14 +5,14 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
-	"github.com/twiglab/crm/adv/orm/schema/x"
+	"github.com/twiglab/crm/poly/orm/schema/internal/x"
 )
 
-type Activity struct {
+type Poly struct {
 	ent.Schema
 }
 
-func (Activity) Fields() []ent.Field {
+func (Poly) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.Nil).
 			Default(x.ID).
@@ -52,19 +52,11 @@ func (Activity) Fields() []ent.Field {
 			}),
 		// 活动添加时间
 		field.Time("activity_add_time").Immutable(),
-		// 审核人
-		field.String("approver").
+
+		// 规则code
+		field.String("rule_code").
 			MaxLen(36).
-			SchemaType(map[string]string{
-				dialect.MySQL:    "char(36)", // Override MySQL.
-				dialect.Postgres: "char(36)", // Override Postgres.
-				dialect.SQLite:   "char(36)", // Override Postgres.
-			}),
-		// 活动审批时间
-		field.Time("activity_approve_time"),
-		// 负责人（可能没用）
-		field.String("principal").
-			MaxLen(36).
+			NotEmpty().
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
