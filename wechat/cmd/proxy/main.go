@@ -16,6 +16,6 @@ func main() {
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/rpc", gql.New(context.Background()))
-	mux.Mount("/wxnotify", bc.BCNotify())
+	mux.Mount("/wxnotify", bc.WxBCNotify())
 	log.Fatal(http.ListenAndServe(":10009", mux))
 }
