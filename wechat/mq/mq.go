@@ -7,6 +7,7 @@ import (
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 )
 
 func failOnError(err error, msg string) {
@@ -30,13 +31,13 @@ func X(url string) *MQ {
 	failOnError(err, "Failed to open a channel")
 
 	err = ch.ExchangeDeclare(
-		"wechat_topic",     // name
-		amqp.ExchangeTopic, // type
-		true,               // durable
-		false,              // auto-deleted
-		false,              // internal
-		false,              // no-wait
-		nil,                // arguments
+		bc.MQ_BC_EXCHANGE_NAME, // name
+		amqp.ExchangeTopic,     // type
+		true,                   // durable
+		false,                  // auto-deleted
+		false,                  // internal
+		false,                  // no-wait
+		nil,                    // arguments
 	)
 	failOnError(err, "Failed to declare an exchange")
 
