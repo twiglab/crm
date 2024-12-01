@@ -6,8 +6,6 @@ import (
 	"time"
 
 	"github.com/twiglab/crm/poly/orm/ent"
-	"github.com/twiglab/crm/poly/orm/ent/activity"
-	"github.com/twiglab/crm/poly/orm/ent/activitychange"
 )
 
 type PolyDBOP struct {
