@@ -24,24 +24,24 @@ type Poly struct {
 	MallCode string `json:"mall_code,omitempty"`
 	// Operator holds the value of the "operator" field.
 	Operator string `json:"operator,omitempty"`
-	// ActivityAddTime holds the value of the "activity_add_time" field.
-	ActivityAddTime time.Time `json:"activity_add_time,omitempty"`
+	// AddTime holds the value of the "add_time" field.
+	AddTime time.Time `json:"add_time,omitempty"`
 	// RuleCode holds the value of the "rule_code" field.
 	RuleCode string `json:"rule_code,omitempty"`
-	// ActivityName holds the value of the "activity_name" field.
-	ActivityName string `json:"activity_name,omitempty"`
-	// ActivityDesc holds the value of the "activity_desc" field.
-	ActivityDesc string `json:"activity_desc,omitempty"`
-	// ActivityBudget holds the value of the "activity_budget" field.
-	ActivityBudget int64 `json:"activity_budget,omitempty"`
-	// ActivityStartTime holds the value of the "activity_start_time" field.
-	ActivityStartTime time.Time `json:"activity_start_time,omitempty"`
-	// ActivityEndTime holds the value of the "activity_end_time" field.
-	ActivityEndTime time.Time `json:"activity_end_time,omitempty"`
-	// ActivityStatus holds the value of the "activity_status" field.
-	ActivityStatus int `json:"activity_status,omitempty"`
-	// ActivityType holds the value of the "activity_type" field.
-	ActivityType int `json:"activity_type,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
+	// Desc holds the value of the "desc" field.
+	Desc string `json:"desc,omitempty"`
+	// Budget holds the value of the "budget" field.
+	Budget int64 `json:"budget,omitempty"`
+	// StartTime holds the value of the "start_time" field.
+	StartTime time.Time `json:"start_time,omitempty"`
+	// EndTime holds the value of the "end_time" field.
+	EndTime time.Time `json:"end_time,omitempty"`
+	// Status holds the value of the "status" field.
+	Status int `json:"status,omitempty"`
+	// Type holds the value of the "type" field.
+	Type         int `json:"type,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -50,11 +50,11 @@ func (*Poly) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case poly.FieldActivityBudget, poly.FieldActivityStatus, poly.FieldActivityType:
+		case poly.FieldBudget, poly.FieldStatus, poly.FieldType:
 			values[i] = new(sql.NullInt64)
-		case poly.FieldCode, poly.FieldMallCode, poly.FieldOperator, poly.FieldRuleCode, poly.FieldActivityName, poly.FieldActivityDesc:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldOperator, poly.FieldRuleCode, poly.FieldName, poly.FieldDesc:
 			values[i] = new(sql.NullString)
-		case poly.FieldActivityAddTime, poly.FieldActivityStartTime, poly.FieldActivityEndTime:
+		case poly.FieldAddTime, poly.FieldStartTime, poly.FieldEndTime:
 			values[i] = new(sql.NullTime)
 		case poly.FieldID:
 			values[i] = new(uuid.UUID)
@@ -97,11 +97,11 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				po.Operator = value.String
 			}
-		case poly.FieldActivityAddTime:
+		case poly.FieldAddTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_add_time", values[i])
+				return fmt.Errorf("unexpected type %T for field add_time", values[i])
 			} else if value.Valid {
-				po.ActivityAddTime = value.Time
+				po.AddTime = value.Time
 			}
 		case poly.FieldRuleCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -109,47 +109,47 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				po.RuleCode = value.String
 			}
-		case poly.FieldActivityName:
+		case poly.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_name", values[i])
+				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				po.ActivityName = value.String
+				po.Name = value.String
 			}
-		case poly.FieldActivityDesc:
+		case poly.FieldDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_desc", values[i])
+				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
-				po.ActivityDesc = value.String
+				po.Desc = value.String
 			}
-		case poly.FieldActivityBudget:
+		case poly.FieldBudget:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_budget", values[i])
+				return fmt.Errorf("unexpected type %T for field budget", values[i])
 			} else if value.Valid {
-				po.ActivityBudget = value.Int64
+				po.Budget = value.Int64
 			}
-		case poly.FieldActivityStartTime:
+		case poly.FieldStartTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_start_time", values[i])
+				return fmt.Errorf("unexpected type %T for field start_time", values[i])
 			} else if value.Valid {
-				po.ActivityStartTime = value.Time
+				po.StartTime = value.Time
 			}
-		case poly.FieldActivityEndTime:
+		case poly.FieldEndTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_end_time", values[i])
+				return fmt.Errorf("unexpected type %T for field end_time", values[i])
 			} else if value.Valid {
-				po.ActivityEndTime = value.Time
+				po.EndTime = value.Time
 			}
-		case poly.FieldActivityStatus:
+		case poly.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_status", values[i])
+				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				po.ActivityStatus = int(value.Int64)
+				po.Status = int(value.Int64)
 			}
-		case poly.FieldActivityType:
+		case poly.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field activity_type", values[i])
+				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				po.ActivityType = int(value.Int64)
+				po.Type = int(value.Int64)
 			}
 		default:
 			po.selectValues.Set(columns[i], values[i])
@@ -196,32 +196,32 @@ func (po *Poly) String() string {
 	builder.WriteString("operator=")
 	builder.WriteString(po.Operator)
 	builder.WriteString(", ")
-	builder.WriteString("activity_add_time=")
-	builder.WriteString(po.ActivityAddTime.Format(time.ANSIC))
+	builder.WriteString("add_time=")
+	builder.WriteString(po.AddTime.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("rule_code=")
 	builder.WriteString(po.RuleCode)
 	builder.WriteString(", ")
-	builder.WriteString("activity_name=")
-	builder.WriteString(po.ActivityName)
+	builder.WriteString("name=")
+	builder.WriteString(po.Name)
 	builder.WriteString(", ")
-	builder.WriteString("activity_desc=")
-	builder.WriteString(po.ActivityDesc)
+	builder.WriteString("desc=")
+	builder.WriteString(po.Desc)
 	builder.WriteString(", ")
-	builder.WriteString("activity_budget=")
-	builder.WriteString(fmt.Sprintf("%v", po.ActivityBudget))
+	builder.WriteString("budget=")
+	builder.WriteString(fmt.Sprintf("%v", po.Budget))
 	builder.WriteString(", ")
-	builder.WriteString("activity_start_time=")
-	builder.WriteString(po.ActivityStartTime.Format(time.ANSIC))
+	builder.WriteString("start_time=")
+	builder.WriteString(po.StartTime.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("activity_end_time=")
-	builder.WriteString(po.ActivityEndTime.Format(time.ANSIC))
+	builder.WriteString("end_time=")
+	builder.WriteString(po.EndTime.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("activity_status=")
-	builder.WriteString(fmt.Sprintf("%v", po.ActivityStatus))
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", po.Status))
 	builder.WriteString(", ")
-	builder.WriteString("activity_type=")
-	builder.WriteString(fmt.Sprintf("%v", po.ActivityType))
+	builder.WriteString("type=")
+	builder.WriteString(fmt.Sprintf("%v", po.Type))
 	builder.WriteByte(')')
 	return builder.String()
 }

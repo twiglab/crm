@@ -14,15 +14,15 @@ var (
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "mall_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "operator", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "activity_add_time", Type: field.TypeTime},
+		{Name: "add_time", Type: field.TypeTime},
 		{Name: "rule_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "activity_name", Type: field.TypeString, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "activity_desc", Type: field.TypeString},
-		{Name: "activity_budget", Type: field.TypeInt64},
-		{Name: "activity_start_time", Type: field.TypeTime},
-		{Name: "activity_end_time", Type: field.TypeTime},
-		{Name: "activity_status", Type: field.TypeInt, Default: 1},
-		{Name: "activity_type", Type: field.TypeInt, Default: 1},
+		{Name: "name", Type: field.TypeString, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "desc", Type: field.TypeString},
+		{Name: "budget", Type: field.TypeInt64},
+		{Name: "start_time", Type: field.TypeTime},
+		{Name: "end_time", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "type", Type: field.TypeInt, Default: 1},
 	}
 	// PoliesTable holds the schema information for the "polies" table.
 	PoliesTable = &schema.Table{

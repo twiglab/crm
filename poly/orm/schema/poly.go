@@ -51,7 +51,7 @@ func (Poly) Fields() []ent.Field {
 				dialect.SQLite:   "char(36)", // Override Postgres.
 			}),
 		// 活动添加时间
-		field.Time("activity_add_time").Immutable(),
+		field.Time("add_time").Immutable(),
 
 		// 规则code
 		field.String("rule_code").
@@ -64,7 +64,7 @@ func (Poly) Fields() []ent.Field {
 			}),
 
 		// 活动名称
-		field.String("activity_name").
+		field.String("name").
 			MaxLen(64).
 			NotEmpty().
 			SchemaType(map[string]string{
@@ -73,17 +73,17 @@ func (Poly) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 		// 活动描述
-		field.String("activity_desc").NotEmpty(),
+		field.String("desc").NotEmpty(),
 		// 活动预算
-		field.Int64("activity_budget"),
+		field.Int64("budget"),
 		// 活动开始时间
-		field.Time("activity_start_time"),
+		field.Time("start_time"),
 		// 活动结束时间
-		field.Time("activity_end_time"),
+		field.Time("end_time"),
 		// 活动状态 （1:等待审批 2：未开启   3：已开启   4：已结束   5：已废弃）
-		field.Int("activity_status").Default(1),
+		field.Int("status").Default(1),
 
 		// 活动类型 (预设字段，后续结合业务拓展)
-		field.Int("activity_type").Default(1),
+		field.Int("type").Default(1),
 	}
 }

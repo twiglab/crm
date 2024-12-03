@@ -50,9 +50,9 @@ func (pc *PolyCreate) SetOperator(s string) *PolyCreate {
 	return pc
 }
 
-// SetActivityAddTime sets the "activity_add_time" field.
-func (pc *PolyCreate) SetActivityAddTime(t time.Time) *PolyCreate {
-	pc.mutation.SetActivityAddTime(t)
+// SetAddTime sets the "add_time" field.
+func (pc *PolyCreate) SetAddTime(t time.Time) *PolyCreate {
+	pc.mutation.SetAddTime(t)
 	return pc
 }
 
@@ -62,60 +62,60 @@ func (pc *PolyCreate) SetRuleCode(s string) *PolyCreate {
 	return pc
 }
 
-// SetActivityName sets the "activity_name" field.
-func (pc *PolyCreate) SetActivityName(s string) *PolyCreate {
-	pc.mutation.SetActivityName(s)
+// SetName sets the "name" field.
+func (pc *PolyCreate) SetName(s string) *PolyCreate {
+	pc.mutation.SetName(s)
 	return pc
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (pc *PolyCreate) SetActivityDesc(s string) *PolyCreate {
-	pc.mutation.SetActivityDesc(s)
+// SetDesc sets the "desc" field.
+func (pc *PolyCreate) SetDesc(s string) *PolyCreate {
+	pc.mutation.SetDesc(s)
 	return pc
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (pc *PolyCreate) SetActivityBudget(i int64) *PolyCreate {
-	pc.mutation.SetActivityBudget(i)
+// SetBudget sets the "budget" field.
+func (pc *PolyCreate) SetBudget(i int64) *PolyCreate {
+	pc.mutation.SetBudget(i)
 	return pc
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (pc *PolyCreate) SetActivityStartTime(t time.Time) *PolyCreate {
-	pc.mutation.SetActivityStartTime(t)
+// SetStartTime sets the "start_time" field.
+func (pc *PolyCreate) SetStartTime(t time.Time) *PolyCreate {
+	pc.mutation.SetStartTime(t)
 	return pc
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (pc *PolyCreate) SetActivityEndTime(t time.Time) *PolyCreate {
-	pc.mutation.SetActivityEndTime(t)
+// SetEndTime sets the "end_time" field.
+func (pc *PolyCreate) SetEndTime(t time.Time) *PolyCreate {
+	pc.mutation.SetEndTime(t)
 	return pc
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (pc *PolyCreate) SetActivityStatus(i int) *PolyCreate {
-	pc.mutation.SetActivityStatus(i)
+// SetStatus sets the "status" field.
+func (pc *PolyCreate) SetStatus(i int) *PolyCreate {
+	pc.mutation.SetStatus(i)
 	return pc
 }
 
-// SetNillableActivityStatus sets the "activity_status" field if the given value is not nil.
-func (pc *PolyCreate) SetNillableActivityStatus(i *int) *PolyCreate {
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableStatus(i *int) *PolyCreate {
 	if i != nil {
-		pc.SetActivityStatus(*i)
+		pc.SetStatus(*i)
 	}
 	return pc
 }
 
-// SetActivityType sets the "activity_type" field.
-func (pc *PolyCreate) SetActivityType(i int) *PolyCreate {
-	pc.mutation.SetActivityType(i)
+// SetType sets the "type" field.
+func (pc *PolyCreate) SetType(i int) *PolyCreate {
+	pc.mutation.SetType(i)
 	return pc
 }
 
-// SetNillableActivityType sets the "activity_type" field if the given value is not nil.
-func (pc *PolyCreate) SetNillableActivityType(i *int) *PolyCreate {
+// SetNillableType sets the "type" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableType(i *int) *PolyCreate {
 	if i != nil {
-		pc.SetActivityType(*i)
+		pc.SetType(*i)
 	}
 	return pc
 }
@@ -173,13 +173,13 @@ func (pc *PolyCreate) defaults() {
 		v := poly.DefaultCode()
 		pc.mutation.SetCode(v)
 	}
-	if _, ok := pc.mutation.ActivityStatus(); !ok {
-		v := poly.DefaultActivityStatus
-		pc.mutation.SetActivityStatus(v)
+	if _, ok := pc.mutation.Status(); !ok {
+		v := poly.DefaultStatus
+		pc.mutation.SetStatus(v)
 	}
-	if _, ok := pc.mutation.ActivityType(); !ok {
-		v := poly.DefaultActivityType
-		pc.mutation.SetActivityType(v)
+	if _, ok := pc.mutation.GetType(); !ok {
+		v := poly.DefaultType
+		pc.mutation.SetType(v)
 	}
 	if _, ok := pc.mutation.ID(); !ok {
 		v := poly.DefaultID()
@@ -213,8 +213,8 @@ func (pc *PolyCreate) check() error {
 			return &ValidationError{Name: "operator", err: fmt.Errorf(`ent: validator failed for field "Poly.operator": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.ActivityAddTime(); !ok {
-		return &ValidationError{Name: "activity_add_time", err: errors.New(`ent: missing required field "Poly.activity_add_time"`)}
+	if _, ok := pc.mutation.AddTime(); !ok {
+		return &ValidationError{Name: "add_time", err: errors.New(`ent: missing required field "Poly.add_time"`)}
 	}
 	if _, ok := pc.mutation.RuleCode(); !ok {
 		return &ValidationError{Name: "rule_code", err: errors.New(`ent: missing required field "Poly.rule_code"`)}
@@ -224,36 +224,36 @@ func (pc *PolyCreate) check() error {
 			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.ActivityName(); !ok {
-		return &ValidationError{Name: "activity_name", err: errors.New(`ent: missing required field "Poly.activity_name"`)}
+	if _, ok := pc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Poly.name"`)}
 	}
-	if v, ok := pc.mutation.ActivityName(); ok {
-		if err := poly.ActivityNameValidator(v); err != nil {
-			return &ValidationError{Name: "activity_name", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_name": %w`, err)}
+	if v, ok := pc.mutation.Name(); ok {
+		if err := poly.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.ActivityDesc(); !ok {
-		return &ValidationError{Name: "activity_desc", err: errors.New(`ent: missing required field "Poly.activity_desc"`)}
+	if _, ok := pc.mutation.Desc(); !ok {
+		return &ValidationError{Name: "desc", err: errors.New(`ent: missing required field "Poly.desc"`)}
 	}
-	if v, ok := pc.mutation.ActivityDesc(); ok {
-		if err := poly.ActivityDescValidator(v); err != nil {
-			return &ValidationError{Name: "activity_desc", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_desc": %w`, err)}
+	if v, ok := pc.mutation.Desc(); ok {
+		if err := poly.DescValidator(v); err != nil {
+			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.ActivityBudget(); !ok {
-		return &ValidationError{Name: "activity_budget", err: errors.New(`ent: missing required field "Poly.activity_budget"`)}
+	if _, ok := pc.mutation.Budget(); !ok {
+		return &ValidationError{Name: "budget", err: errors.New(`ent: missing required field "Poly.budget"`)}
 	}
-	if _, ok := pc.mutation.ActivityStartTime(); !ok {
-		return &ValidationError{Name: "activity_start_time", err: errors.New(`ent: missing required field "Poly.activity_start_time"`)}
+	if _, ok := pc.mutation.StartTime(); !ok {
+		return &ValidationError{Name: "start_time", err: errors.New(`ent: missing required field "Poly.start_time"`)}
 	}
-	if _, ok := pc.mutation.ActivityEndTime(); !ok {
-		return &ValidationError{Name: "activity_end_time", err: errors.New(`ent: missing required field "Poly.activity_end_time"`)}
+	if _, ok := pc.mutation.EndTime(); !ok {
+		return &ValidationError{Name: "end_time", err: errors.New(`ent: missing required field "Poly.end_time"`)}
 	}
-	if _, ok := pc.mutation.ActivityStatus(); !ok {
-		return &ValidationError{Name: "activity_status", err: errors.New(`ent: missing required field "Poly.activity_status"`)}
+	if _, ok := pc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Poly.status"`)}
 	}
-	if _, ok := pc.mutation.ActivityType(); !ok {
-		return &ValidationError{Name: "activity_type", err: errors.New(`ent: missing required field "Poly.activity_type"`)}
+	if _, ok := pc.mutation.GetType(); !ok {
+		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Poly.type"`)}
 	}
 	return nil
 }
@@ -303,41 +303,41 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 		_spec.SetField(poly.FieldOperator, field.TypeString, value)
 		_node.Operator = value
 	}
-	if value, ok := pc.mutation.ActivityAddTime(); ok {
-		_spec.SetField(poly.FieldActivityAddTime, field.TypeTime, value)
-		_node.ActivityAddTime = value
+	if value, ok := pc.mutation.AddTime(); ok {
+		_spec.SetField(poly.FieldAddTime, field.TypeTime, value)
+		_node.AddTime = value
 	}
 	if value, ok := pc.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
 		_node.RuleCode = value
 	}
-	if value, ok := pc.mutation.ActivityName(); ok {
-		_spec.SetField(poly.FieldActivityName, field.TypeString, value)
-		_node.ActivityName = value
+	if value, ok := pc.mutation.Name(); ok {
+		_spec.SetField(poly.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
-	if value, ok := pc.mutation.ActivityDesc(); ok {
-		_spec.SetField(poly.FieldActivityDesc, field.TypeString, value)
-		_node.ActivityDesc = value
+	if value, ok := pc.mutation.Desc(); ok {
+		_spec.SetField(poly.FieldDesc, field.TypeString, value)
+		_node.Desc = value
 	}
-	if value, ok := pc.mutation.ActivityBudget(); ok {
-		_spec.SetField(poly.FieldActivityBudget, field.TypeInt64, value)
-		_node.ActivityBudget = value
+	if value, ok := pc.mutation.Budget(); ok {
+		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
+		_node.Budget = value
 	}
-	if value, ok := pc.mutation.ActivityStartTime(); ok {
-		_spec.SetField(poly.FieldActivityStartTime, field.TypeTime, value)
-		_node.ActivityStartTime = value
+	if value, ok := pc.mutation.StartTime(); ok {
+		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
+		_node.StartTime = value
 	}
-	if value, ok := pc.mutation.ActivityEndTime(); ok {
-		_spec.SetField(poly.FieldActivityEndTime, field.TypeTime, value)
-		_node.ActivityEndTime = value
+	if value, ok := pc.mutation.EndTime(); ok {
+		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
+		_node.EndTime = value
 	}
-	if value, ok := pc.mutation.ActivityStatus(); ok {
-		_spec.SetField(poly.FieldActivityStatus, field.TypeInt, value)
-		_node.ActivityStatus = value
+	if value, ok := pc.mutation.Status(); ok {
+		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
+		_node.Status = value
 	}
-	if value, ok := pc.mutation.ActivityType(); ok {
-		_spec.SetField(poly.FieldActivityType, field.TypeInt, value)
-		_node.ActivityType = value
+	if value, ok := pc.mutation.GetType(); ok {
+		_spec.SetField(poly.FieldType, field.TypeInt, value)
+		_node.Type = value
 	}
 	return _node, _spec
 }
@@ -415,105 +415,105 @@ func (u *PolyUpsert) UpdateRuleCode() *PolyUpsert {
 	return u
 }
 
-// SetActivityName sets the "activity_name" field.
-func (u *PolyUpsert) SetActivityName(v string) *PolyUpsert {
-	u.Set(poly.FieldActivityName, v)
+// SetName sets the "name" field.
+func (u *PolyUpsert) SetName(v string) *PolyUpsert {
+	u.Set(poly.FieldName, v)
 	return u
 }
 
-// UpdateActivityName sets the "activity_name" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityName() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityName)
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateName() *PolyUpsert {
+	u.SetExcluded(poly.FieldName)
 	return u
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (u *PolyUpsert) SetActivityDesc(v string) *PolyUpsert {
-	u.Set(poly.FieldActivityDesc, v)
+// SetDesc sets the "desc" field.
+func (u *PolyUpsert) SetDesc(v string) *PolyUpsert {
+	u.Set(poly.FieldDesc, v)
 	return u
 }
 
-// UpdateActivityDesc sets the "activity_desc" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityDesc() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityDesc)
+// UpdateDesc sets the "desc" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateDesc() *PolyUpsert {
+	u.SetExcluded(poly.FieldDesc)
 	return u
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (u *PolyUpsert) SetActivityBudget(v int64) *PolyUpsert {
-	u.Set(poly.FieldActivityBudget, v)
+// SetBudget sets the "budget" field.
+func (u *PolyUpsert) SetBudget(v int64) *PolyUpsert {
+	u.Set(poly.FieldBudget, v)
 	return u
 }
 
-// UpdateActivityBudget sets the "activity_budget" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityBudget() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityBudget)
+// UpdateBudget sets the "budget" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateBudget() *PolyUpsert {
+	u.SetExcluded(poly.FieldBudget)
 	return u
 }
 
-// AddActivityBudget adds v to the "activity_budget" field.
-func (u *PolyUpsert) AddActivityBudget(v int64) *PolyUpsert {
-	u.Add(poly.FieldActivityBudget, v)
+// AddBudget adds v to the "budget" field.
+func (u *PolyUpsert) AddBudget(v int64) *PolyUpsert {
+	u.Add(poly.FieldBudget, v)
 	return u
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (u *PolyUpsert) SetActivityStartTime(v time.Time) *PolyUpsert {
-	u.Set(poly.FieldActivityStartTime, v)
+// SetStartTime sets the "start_time" field.
+func (u *PolyUpsert) SetStartTime(v time.Time) *PolyUpsert {
+	u.Set(poly.FieldStartTime, v)
 	return u
 }
 
-// UpdateActivityStartTime sets the "activity_start_time" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityStartTime() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityStartTime)
+// UpdateStartTime sets the "start_time" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateStartTime() *PolyUpsert {
+	u.SetExcluded(poly.FieldStartTime)
 	return u
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (u *PolyUpsert) SetActivityEndTime(v time.Time) *PolyUpsert {
-	u.Set(poly.FieldActivityEndTime, v)
+// SetEndTime sets the "end_time" field.
+func (u *PolyUpsert) SetEndTime(v time.Time) *PolyUpsert {
+	u.Set(poly.FieldEndTime, v)
 	return u
 }
 
-// UpdateActivityEndTime sets the "activity_end_time" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityEndTime() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityEndTime)
+// UpdateEndTime sets the "end_time" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateEndTime() *PolyUpsert {
+	u.SetExcluded(poly.FieldEndTime)
 	return u
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (u *PolyUpsert) SetActivityStatus(v int) *PolyUpsert {
-	u.Set(poly.FieldActivityStatus, v)
+// SetStatus sets the "status" field.
+func (u *PolyUpsert) SetStatus(v int) *PolyUpsert {
+	u.Set(poly.FieldStatus, v)
 	return u
 }
 
-// UpdateActivityStatus sets the "activity_status" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityStatus() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityStatus)
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateStatus() *PolyUpsert {
+	u.SetExcluded(poly.FieldStatus)
 	return u
 }
 
-// AddActivityStatus adds v to the "activity_status" field.
-func (u *PolyUpsert) AddActivityStatus(v int) *PolyUpsert {
-	u.Add(poly.FieldActivityStatus, v)
+// AddStatus adds v to the "status" field.
+func (u *PolyUpsert) AddStatus(v int) *PolyUpsert {
+	u.Add(poly.FieldStatus, v)
 	return u
 }
 
-// SetActivityType sets the "activity_type" field.
-func (u *PolyUpsert) SetActivityType(v int) *PolyUpsert {
-	u.Set(poly.FieldActivityType, v)
+// SetType sets the "type" field.
+func (u *PolyUpsert) SetType(v int) *PolyUpsert {
+	u.Set(poly.FieldType, v)
 	return u
 }
 
-// UpdateActivityType sets the "activity_type" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateActivityType() *PolyUpsert {
-	u.SetExcluded(poly.FieldActivityType)
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateType() *PolyUpsert {
+	u.SetExcluded(poly.FieldType)
 	return u
 }
 
-// AddActivityType adds v to the "activity_type" field.
-func (u *PolyUpsert) AddActivityType(v int) *PolyUpsert {
-	u.Add(poly.FieldActivityType, v)
+// AddType adds v to the "type" field.
+func (u *PolyUpsert) AddType(v int) *PolyUpsert {
+	u.Add(poly.FieldType, v)
 	return u
 }
 
@@ -540,8 +540,8 @@ func (u *PolyUpsertOne) UpdateNewValues() *PolyUpsertOne {
 		if _, exists := u.create.mutation.MallCode(); exists {
 			s.SetIgnore(poly.FieldMallCode)
 		}
-		if _, exists := u.create.mutation.ActivityAddTime(); exists {
-			s.SetIgnore(poly.FieldActivityAddTime)
+		if _, exists := u.create.mutation.AddTime(); exists {
+			s.SetIgnore(poly.FieldAddTime)
 		}
 	}))
 	return u
@@ -602,122 +602,122 @@ func (u *PolyUpsertOne) UpdateRuleCode() *PolyUpsertOne {
 	})
 }
 
-// SetActivityName sets the "activity_name" field.
-func (u *PolyUpsertOne) SetActivityName(v string) *PolyUpsertOne {
+// SetName sets the "name" field.
+func (u *PolyUpsertOne) SetName(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityName(v)
+		s.SetName(v)
 	})
 }
 
-// UpdateActivityName sets the "activity_name" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityName() *PolyUpsertOne {
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateName() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityName()
+		s.UpdateName()
 	})
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (u *PolyUpsertOne) SetActivityDesc(v string) *PolyUpsertOne {
+// SetDesc sets the "desc" field.
+func (u *PolyUpsertOne) SetDesc(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityDesc(v)
+		s.SetDesc(v)
 	})
 }
 
-// UpdateActivityDesc sets the "activity_desc" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityDesc() *PolyUpsertOne {
+// UpdateDesc sets the "desc" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateDesc() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityDesc()
+		s.UpdateDesc()
 	})
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (u *PolyUpsertOne) SetActivityBudget(v int64) *PolyUpsertOne {
+// SetBudget sets the "budget" field.
+func (u *PolyUpsertOne) SetBudget(v int64) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityBudget(v)
+		s.SetBudget(v)
 	})
 }
 
-// AddActivityBudget adds v to the "activity_budget" field.
-func (u *PolyUpsertOne) AddActivityBudget(v int64) *PolyUpsertOne {
+// AddBudget adds v to the "budget" field.
+func (u *PolyUpsertOne) AddBudget(v int64) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityBudget(v)
+		s.AddBudget(v)
 	})
 }
 
-// UpdateActivityBudget sets the "activity_budget" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityBudget() *PolyUpsertOne {
+// UpdateBudget sets the "budget" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateBudget() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityBudget()
+		s.UpdateBudget()
 	})
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (u *PolyUpsertOne) SetActivityStartTime(v time.Time) *PolyUpsertOne {
+// SetStartTime sets the "start_time" field.
+func (u *PolyUpsertOne) SetStartTime(v time.Time) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityStartTime(v)
+		s.SetStartTime(v)
 	})
 }
 
-// UpdateActivityStartTime sets the "activity_start_time" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityStartTime() *PolyUpsertOne {
+// UpdateStartTime sets the "start_time" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateStartTime() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityStartTime()
+		s.UpdateStartTime()
 	})
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (u *PolyUpsertOne) SetActivityEndTime(v time.Time) *PolyUpsertOne {
+// SetEndTime sets the "end_time" field.
+func (u *PolyUpsertOne) SetEndTime(v time.Time) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityEndTime(v)
+		s.SetEndTime(v)
 	})
 }
 
-// UpdateActivityEndTime sets the "activity_end_time" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityEndTime() *PolyUpsertOne {
+// UpdateEndTime sets the "end_time" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateEndTime() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityEndTime()
+		s.UpdateEndTime()
 	})
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (u *PolyUpsertOne) SetActivityStatus(v int) *PolyUpsertOne {
+// SetStatus sets the "status" field.
+func (u *PolyUpsertOne) SetStatus(v int) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityStatus(v)
+		s.SetStatus(v)
 	})
 }
 
-// AddActivityStatus adds v to the "activity_status" field.
-func (u *PolyUpsertOne) AddActivityStatus(v int) *PolyUpsertOne {
+// AddStatus adds v to the "status" field.
+func (u *PolyUpsertOne) AddStatus(v int) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityStatus(v)
+		s.AddStatus(v)
 	})
 }
 
-// UpdateActivityStatus sets the "activity_status" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityStatus() *PolyUpsertOne {
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateStatus() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityStatus()
+		s.UpdateStatus()
 	})
 }
 
-// SetActivityType sets the "activity_type" field.
-func (u *PolyUpsertOne) SetActivityType(v int) *PolyUpsertOne {
+// SetType sets the "type" field.
+func (u *PolyUpsertOne) SetType(v int) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityType(v)
+		s.SetType(v)
 	})
 }
 
-// AddActivityType adds v to the "activity_type" field.
-func (u *PolyUpsertOne) AddActivityType(v int) *PolyUpsertOne {
+// AddType adds v to the "type" field.
+func (u *PolyUpsertOne) AddType(v int) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityType(v)
+		s.AddType(v)
 	})
 }
 
-// UpdateActivityType sets the "activity_type" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateActivityType() *PolyUpsertOne {
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateType() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityType()
+		s.UpdateType()
 	})
 }
 
@@ -910,8 +910,8 @@ func (u *PolyUpsertBulk) UpdateNewValues() *PolyUpsertBulk {
 			if _, exists := b.mutation.MallCode(); exists {
 				s.SetIgnore(poly.FieldMallCode)
 			}
-			if _, exists := b.mutation.ActivityAddTime(); exists {
-				s.SetIgnore(poly.FieldActivityAddTime)
+			if _, exists := b.mutation.AddTime(); exists {
+				s.SetIgnore(poly.FieldAddTime)
 			}
 		}
 	}))
@@ -973,122 +973,122 @@ func (u *PolyUpsertBulk) UpdateRuleCode() *PolyUpsertBulk {
 	})
 }
 
-// SetActivityName sets the "activity_name" field.
-func (u *PolyUpsertBulk) SetActivityName(v string) *PolyUpsertBulk {
+// SetName sets the "name" field.
+func (u *PolyUpsertBulk) SetName(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityName(v)
+		s.SetName(v)
 	})
 }
 
-// UpdateActivityName sets the "activity_name" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityName() *PolyUpsertBulk {
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateName() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityName()
+		s.UpdateName()
 	})
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (u *PolyUpsertBulk) SetActivityDesc(v string) *PolyUpsertBulk {
+// SetDesc sets the "desc" field.
+func (u *PolyUpsertBulk) SetDesc(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityDesc(v)
+		s.SetDesc(v)
 	})
 }
 
-// UpdateActivityDesc sets the "activity_desc" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityDesc() *PolyUpsertBulk {
+// UpdateDesc sets the "desc" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateDesc() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityDesc()
+		s.UpdateDesc()
 	})
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (u *PolyUpsertBulk) SetActivityBudget(v int64) *PolyUpsertBulk {
+// SetBudget sets the "budget" field.
+func (u *PolyUpsertBulk) SetBudget(v int64) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityBudget(v)
+		s.SetBudget(v)
 	})
 }
 
-// AddActivityBudget adds v to the "activity_budget" field.
-func (u *PolyUpsertBulk) AddActivityBudget(v int64) *PolyUpsertBulk {
+// AddBudget adds v to the "budget" field.
+func (u *PolyUpsertBulk) AddBudget(v int64) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityBudget(v)
+		s.AddBudget(v)
 	})
 }
 
-// UpdateActivityBudget sets the "activity_budget" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityBudget() *PolyUpsertBulk {
+// UpdateBudget sets the "budget" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateBudget() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityBudget()
+		s.UpdateBudget()
 	})
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (u *PolyUpsertBulk) SetActivityStartTime(v time.Time) *PolyUpsertBulk {
+// SetStartTime sets the "start_time" field.
+func (u *PolyUpsertBulk) SetStartTime(v time.Time) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityStartTime(v)
+		s.SetStartTime(v)
 	})
 }
 
-// UpdateActivityStartTime sets the "activity_start_time" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityStartTime() *PolyUpsertBulk {
+// UpdateStartTime sets the "start_time" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateStartTime() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityStartTime()
+		s.UpdateStartTime()
 	})
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (u *PolyUpsertBulk) SetActivityEndTime(v time.Time) *PolyUpsertBulk {
+// SetEndTime sets the "end_time" field.
+func (u *PolyUpsertBulk) SetEndTime(v time.Time) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityEndTime(v)
+		s.SetEndTime(v)
 	})
 }
 
-// UpdateActivityEndTime sets the "activity_end_time" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityEndTime() *PolyUpsertBulk {
+// UpdateEndTime sets the "end_time" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateEndTime() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityEndTime()
+		s.UpdateEndTime()
 	})
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (u *PolyUpsertBulk) SetActivityStatus(v int) *PolyUpsertBulk {
+// SetStatus sets the "status" field.
+func (u *PolyUpsertBulk) SetStatus(v int) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityStatus(v)
+		s.SetStatus(v)
 	})
 }
 
-// AddActivityStatus adds v to the "activity_status" field.
-func (u *PolyUpsertBulk) AddActivityStatus(v int) *PolyUpsertBulk {
+// AddStatus adds v to the "status" field.
+func (u *PolyUpsertBulk) AddStatus(v int) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityStatus(v)
+		s.AddStatus(v)
 	})
 }
 
-// UpdateActivityStatus sets the "activity_status" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityStatus() *PolyUpsertBulk {
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateStatus() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityStatus()
+		s.UpdateStatus()
 	})
 }
 
-// SetActivityType sets the "activity_type" field.
-func (u *PolyUpsertBulk) SetActivityType(v int) *PolyUpsertBulk {
+// SetType sets the "type" field.
+func (u *PolyUpsertBulk) SetType(v int) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetActivityType(v)
+		s.SetType(v)
 	})
 }
 
-// AddActivityType adds v to the "activity_type" field.
-func (u *PolyUpsertBulk) AddActivityType(v int) *PolyUpsertBulk {
+// AddType adds v to the "type" field.
+func (u *PolyUpsertBulk) AddType(v int) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.AddActivityType(v)
+		s.AddType(v)
 	})
 }
 
-// UpdateActivityType sets the "activity_type" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateActivityType() *PolyUpsertBulk {
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateType() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateActivityType()
+		s.UpdateType()
 	})
 }
 

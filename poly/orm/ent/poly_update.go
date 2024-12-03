@@ -56,122 +56,122 @@ func (pu *PolyUpdate) SetNillableRuleCode(s *string) *PolyUpdate {
 	return pu
 }
 
-// SetActivityName sets the "activity_name" field.
-func (pu *PolyUpdate) SetActivityName(s string) *PolyUpdate {
-	pu.mutation.SetActivityName(s)
+// SetName sets the "name" field.
+func (pu *PolyUpdate) SetName(s string) *PolyUpdate {
+	pu.mutation.SetName(s)
 	return pu
 }
 
-// SetNillableActivityName sets the "activity_name" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityName(s *string) *PolyUpdate {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableName(s *string) *PolyUpdate {
 	if s != nil {
-		pu.SetActivityName(*s)
+		pu.SetName(*s)
 	}
 	return pu
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (pu *PolyUpdate) SetActivityDesc(s string) *PolyUpdate {
-	pu.mutation.SetActivityDesc(s)
+// SetDesc sets the "desc" field.
+func (pu *PolyUpdate) SetDesc(s string) *PolyUpdate {
+	pu.mutation.SetDesc(s)
 	return pu
 }
 
-// SetNillableActivityDesc sets the "activity_desc" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityDesc(s *string) *PolyUpdate {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableDesc(s *string) *PolyUpdate {
 	if s != nil {
-		pu.SetActivityDesc(*s)
+		pu.SetDesc(*s)
 	}
 	return pu
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (pu *PolyUpdate) SetActivityBudget(i int64) *PolyUpdate {
-	pu.mutation.ResetActivityBudget()
-	pu.mutation.SetActivityBudget(i)
+// SetBudget sets the "budget" field.
+func (pu *PolyUpdate) SetBudget(i int64) *PolyUpdate {
+	pu.mutation.ResetBudget()
+	pu.mutation.SetBudget(i)
 	return pu
 }
 
-// SetNillableActivityBudget sets the "activity_budget" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityBudget(i *int64) *PolyUpdate {
+// SetNillableBudget sets the "budget" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableBudget(i *int64) *PolyUpdate {
 	if i != nil {
-		pu.SetActivityBudget(*i)
+		pu.SetBudget(*i)
 	}
 	return pu
 }
 
-// AddActivityBudget adds i to the "activity_budget" field.
-func (pu *PolyUpdate) AddActivityBudget(i int64) *PolyUpdate {
-	pu.mutation.AddActivityBudget(i)
+// AddBudget adds i to the "budget" field.
+func (pu *PolyUpdate) AddBudget(i int64) *PolyUpdate {
+	pu.mutation.AddBudget(i)
 	return pu
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (pu *PolyUpdate) SetActivityStartTime(t time.Time) *PolyUpdate {
-	pu.mutation.SetActivityStartTime(t)
+// SetStartTime sets the "start_time" field.
+func (pu *PolyUpdate) SetStartTime(t time.Time) *PolyUpdate {
+	pu.mutation.SetStartTime(t)
 	return pu
 }
 
-// SetNillableActivityStartTime sets the "activity_start_time" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityStartTime(t *time.Time) *PolyUpdate {
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableStartTime(t *time.Time) *PolyUpdate {
 	if t != nil {
-		pu.SetActivityStartTime(*t)
+		pu.SetStartTime(*t)
 	}
 	return pu
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (pu *PolyUpdate) SetActivityEndTime(t time.Time) *PolyUpdate {
-	pu.mutation.SetActivityEndTime(t)
+// SetEndTime sets the "end_time" field.
+func (pu *PolyUpdate) SetEndTime(t time.Time) *PolyUpdate {
+	pu.mutation.SetEndTime(t)
 	return pu
 }
 
-// SetNillableActivityEndTime sets the "activity_end_time" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityEndTime(t *time.Time) *PolyUpdate {
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableEndTime(t *time.Time) *PolyUpdate {
 	if t != nil {
-		pu.SetActivityEndTime(*t)
+		pu.SetEndTime(*t)
 	}
 	return pu
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (pu *PolyUpdate) SetActivityStatus(i int) *PolyUpdate {
-	pu.mutation.ResetActivityStatus()
-	pu.mutation.SetActivityStatus(i)
+// SetStatus sets the "status" field.
+func (pu *PolyUpdate) SetStatus(i int) *PolyUpdate {
+	pu.mutation.ResetStatus()
+	pu.mutation.SetStatus(i)
 	return pu
 }
 
-// SetNillableActivityStatus sets the "activity_status" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityStatus(i *int) *PolyUpdate {
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableStatus(i *int) *PolyUpdate {
 	if i != nil {
-		pu.SetActivityStatus(*i)
+		pu.SetStatus(*i)
 	}
 	return pu
 }
 
-// AddActivityStatus adds i to the "activity_status" field.
-func (pu *PolyUpdate) AddActivityStatus(i int) *PolyUpdate {
-	pu.mutation.AddActivityStatus(i)
+// AddStatus adds i to the "status" field.
+func (pu *PolyUpdate) AddStatus(i int) *PolyUpdate {
+	pu.mutation.AddStatus(i)
 	return pu
 }
 
-// SetActivityType sets the "activity_type" field.
-func (pu *PolyUpdate) SetActivityType(i int) *PolyUpdate {
-	pu.mutation.ResetActivityType()
-	pu.mutation.SetActivityType(i)
+// SetType sets the "type" field.
+func (pu *PolyUpdate) SetType(i int) *PolyUpdate {
+	pu.mutation.ResetType()
+	pu.mutation.SetType(i)
 	return pu
 }
 
-// SetNillableActivityType sets the "activity_type" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableActivityType(i *int) *PolyUpdate {
+// SetNillableType sets the "type" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableType(i *int) *PolyUpdate {
 	if i != nil {
-		pu.SetActivityType(*i)
+		pu.SetType(*i)
 	}
 	return pu
 }
 
-// AddActivityType adds i to the "activity_type" field.
-func (pu *PolyUpdate) AddActivityType(i int) *PolyUpdate {
-	pu.mutation.AddActivityType(i)
+// AddType adds i to the "type" field.
+func (pu *PolyUpdate) AddType(i int) *PolyUpdate {
+	pu.mutation.AddType(i)
 	return pu
 }
 
@@ -219,14 +219,14 @@ func (pu *PolyUpdate) check() error {
 			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.ActivityName(); ok {
-		if err := poly.ActivityNameValidator(v); err != nil {
-			return &ValidationError{Name: "activity_name", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_name": %w`, err)}
+	if v, ok := pu.mutation.Name(); ok {
+		if err := poly.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.ActivityDesc(); ok {
-		if err := poly.ActivityDescValidator(v); err != nil {
-			return &ValidationError{Name: "activity_desc", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_desc": %w`, err)}
+	if v, ok := pu.mutation.Desc(); ok {
+		if err := poly.DescValidator(v); err != nil {
+			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
 		}
 	}
 	return nil
@@ -250,35 +250,35 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.ActivityName(); ok {
-		_spec.SetField(poly.FieldActivityName, field.TypeString, value)
+	if value, ok := pu.mutation.Name(); ok {
+		_spec.SetField(poly.FieldName, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.ActivityDesc(); ok {
-		_spec.SetField(poly.FieldActivityDesc, field.TypeString, value)
+	if value, ok := pu.mutation.Desc(); ok {
+		_spec.SetField(poly.FieldDesc, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.ActivityBudget(); ok {
-		_spec.SetField(poly.FieldActivityBudget, field.TypeInt64, value)
+	if value, ok := pu.mutation.Budget(); ok {
+		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
 	}
-	if value, ok := pu.mutation.AddedActivityBudget(); ok {
-		_spec.AddField(poly.FieldActivityBudget, field.TypeInt64, value)
+	if value, ok := pu.mutation.AddedBudget(); ok {
+		_spec.AddField(poly.FieldBudget, field.TypeInt64, value)
 	}
-	if value, ok := pu.mutation.ActivityStartTime(); ok {
-		_spec.SetField(poly.FieldActivityStartTime, field.TypeTime, value)
+	if value, ok := pu.mutation.StartTime(); ok {
+		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
 	}
-	if value, ok := pu.mutation.ActivityEndTime(); ok {
-		_spec.SetField(poly.FieldActivityEndTime, field.TypeTime, value)
+	if value, ok := pu.mutation.EndTime(); ok {
+		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 	}
-	if value, ok := pu.mutation.ActivityStatus(); ok {
-		_spec.SetField(poly.FieldActivityStatus, field.TypeInt, value)
+	if value, ok := pu.mutation.Status(); ok {
+		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedActivityStatus(); ok {
-		_spec.AddField(poly.FieldActivityStatus, field.TypeInt, value)
+	if value, ok := pu.mutation.AddedStatus(); ok {
+		_spec.AddField(poly.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.ActivityType(); ok {
-		_spec.SetField(poly.FieldActivityType, field.TypeInt, value)
+	if value, ok := pu.mutation.GetType(); ok {
+		_spec.SetField(poly.FieldType, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedActivityType(); ok {
-		_spec.AddField(poly.FieldActivityType, field.TypeInt, value)
+	if value, ok := pu.mutation.AddedType(); ok {
+		_spec.AddField(poly.FieldType, field.TypeInt, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -328,122 +328,122 @@ func (puo *PolyUpdateOne) SetNillableRuleCode(s *string) *PolyUpdateOne {
 	return puo
 }
 
-// SetActivityName sets the "activity_name" field.
-func (puo *PolyUpdateOne) SetActivityName(s string) *PolyUpdateOne {
-	puo.mutation.SetActivityName(s)
+// SetName sets the "name" field.
+func (puo *PolyUpdateOne) SetName(s string) *PolyUpdateOne {
+	puo.mutation.SetName(s)
 	return puo
 }
 
-// SetNillableActivityName sets the "activity_name" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityName(s *string) *PolyUpdateOne {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableName(s *string) *PolyUpdateOne {
 	if s != nil {
-		puo.SetActivityName(*s)
+		puo.SetName(*s)
 	}
 	return puo
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (puo *PolyUpdateOne) SetActivityDesc(s string) *PolyUpdateOne {
-	puo.mutation.SetActivityDesc(s)
+// SetDesc sets the "desc" field.
+func (puo *PolyUpdateOne) SetDesc(s string) *PolyUpdateOne {
+	puo.mutation.SetDesc(s)
 	return puo
 }
 
-// SetNillableActivityDesc sets the "activity_desc" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityDesc(s *string) *PolyUpdateOne {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableDesc(s *string) *PolyUpdateOne {
 	if s != nil {
-		puo.SetActivityDesc(*s)
+		puo.SetDesc(*s)
 	}
 	return puo
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (puo *PolyUpdateOne) SetActivityBudget(i int64) *PolyUpdateOne {
-	puo.mutation.ResetActivityBudget()
-	puo.mutation.SetActivityBudget(i)
+// SetBudget sets the "budget" field.
+func (puo *PolyUpdateOne) SetBudget(i int64) *PolyUpdateOne {
+	puo.mutation.ResetBudget()
+	puo.mutation.SetBudget(i)
 	return puo
 }
 
-// SetNillableActivityBudget sets the "activity_budget" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityBudget(i *int64) *PolyUpdateOne {
+// SetNillableBudget sets the "budget" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableBudget(i *int64) *PolyUpdateOne {
 	if i != nil {
-		puo.SetActivityBudget(*i)
+		puo.SetBudget(*i)
 	}
 	return puo
 }
 
-// AddActivityBudget adds i to the "activity_budget" field.
-func (puo *PolyUpdateOne) AddActivityBudget(i int64) *PolyUpdateOne {
-	puo.mutation.AddActivityBudget(i)
+// AddBudget adds i to the "budget" field.
+func (puo *PolyUpdateOne) AddBudget(i int64) *PolyUpdateOne {
+	puo.mutation.AddBudget(i)
 	return puo
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (puo *PolyUpdateOne) SetActivityStartTime(t time.Time) *PolyUpdateOne {
-	puo.mutation.SetActivityStartTime(t)
+// SetStartTime sets the "start_time" field.
+func (puo *PolyUpdateOne) SetStartTime(t time.Time) *PolyUpdateOne {
+	puo.mutation.SetStartTime(t)
 	return puo
 }
 
-// SetNillableActivityStartTime sets the "activity_start_time" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityStartTime(t *time.Time) *PolyUpdateOne {
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableStartTime(t *time.Time) *PolyUpdateOne {
 	if t != nil {
-		puo.SetActivityStartTime(*t)
+		puo.SetStartTime(*t)
 	}
 	return puo
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (puo *PolyUpdateOne) SetActivityEndTime(t time.Time) *PolyUpdateOne {
-	puo.mutation.SetActivityEndTime(t)
+// SetEndTime sets the "end_time" field.
+func (puo *PolyUpdateOne) SetEndTime(t time.Time) *PolyUpdateOne {
+	puo.mutation.SetEndTime(t)
 	return puo
 }
 
-// SetNillableActivityEndTime sets the "activity_end_time" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityEndTime(t *time.Time) *PolyUpdateOne {
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableEndTime(t *time.Time) *PolyUpdateOne {
 	if t != nil {
-		puo.SetActivityEndTime(*t)
+		puo.SetEndTime(*t)
 	}
 	return puo
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (puo *PolyUpdateOne) SetActivityStatus(i int) *PolyUpdateOne {
-	puo.mutation.ResetActivityStatus()
-	puo.mutation.SetActivityStatus(i)
+// SetStatus sets the "status" field.
+func (puo *PolyUpdateOne) SetStatus(i int) *PolyUpdateOne {
+	puo.mutation.ResetStatus()
+	puo.mutation.SetStatus(i)
 	return puo
 }
 
-// SetNillableActivityStatus sets the "activity_status" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityStatus(i *int) *PolyUpdateOne {
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableStatus(i *int) *PolyUpdateOne {
 	if i != nil {
-		puo.SetActivityStatus(*i)
+		puo.SetStatus(*i)
 	}
 	return puo
 }
 
-// AddActivityStatus adds i to the "activity_status" field.
-func (puo *PolyUpdateOne) AddActivityStatus(i int) *PolyUpdateOne {
-	puo.mutation.AddActivityStatus(i)
+// AddStatus adds i to the "status" field.
+func (puo *PolyUpdateOne) AddStatus(i int) *PolyUpdateOne {
+	puo.mutation.AddStatus(i)
 	return puo
 }
 
-// SetActivityType sets the "activity_type" field.
-func (puo *PolyUpdateOne) SetActivityType(i int) *PolyUpdateOne {
-	puo.mutation.ResetActivityType()
-	puo.mutation.SetActivityType(i)
+// SetType sets the "type" field.
+func (puo *PolyUpdateOne) SetType(i int) *PolyUpdateOne {
+	puo.mutation.ResetType()
+	puo.mutation.SetType(i)
 	return puo
 }
 
-// SetNillableActivityType sets the "activity_type" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableActivityType(i *int) *PolyUpdateOne {
+// SetNillableType sets the "type" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableType(i *int) *PolyUpdateOne {
 	if i != nil {
-		puo.SetActivityType(*i)
+		puo.SetType(*i)
 	}
 	return puo
 }
 
-// AddActivityType adds i to the "activity_type" field.
-func (puo *PolyUpdateOne) AddActivityType(i int) *PolyUpdateOne {
-	puo.mutation.AddActivityType(i)
+// AddType adds i to the "type" field.
+func (puo *PolyUpdateOne) AddType(i int) *PolyUpdateOne {
+	puo.mutation.AddType(i)
 	return puo
 }
 
@@ -504,14 +504,14 @@ func (puo *PolyUpdateOne) check() error {
 			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.ActivityName(); ok {
-		if err := poly.ActivityNameValidator(v); err != nil {
-			return &ValidationError{Name: "activity_name", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_name": %w`, err)}
+	if v, ok := puo.mutation.Name(); ok {
+		if err := poly.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.ActivityDesc(); ok {
-		if err := poly.ActivityDescValidator(v); err != nil {
-			return &ValidationError{Name: "activity_desc", err: fmt.Errorf(`ent: validator failed for field "Poly.activity_desc": %w`, err)}
+	if v, ok := puo.mutation.Desc(); ok {
+		if err := poly.DescValidator(v); err != nil {
+			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
 		}
 	}
 	return nil
@@ -552,35 +552,35 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	if value, ok := puo.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.ActivityName(); ok {
-		_spec.SetField(poly.FieldActivityName, field.TypeString, value)
+	if value, ok := puo.mutation.Name(); ok {
+		_spec.SetField(poly.FieldName, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.ActivityDesc(); ok {
-		_spec.SetField(poly.FieldActivityDesc, field.TypeString, value)
+	if value, ok := puo.mutation.Desc(); ok {
+		_spec.SetField(poly.FieldDesc, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.ActivityBudget(); ok {
-		_spec.SetField(poly.FieldActivityBudget, field.TypeInt64, value)
+	if value, ok := puo.mutation.Budget(); ok {
+		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
 	}
-	if value, ok := puo.mutation.AddedActivityBudget(); ok {
-		_spec.AddField(poly.FieldActivityBudget, field.TypeInt64, value)
+	if value, ok := puo.mutation.AddedBudget(); ok {
+		_spec.AddField(poly.FieldBudget, field.TypeInt64, value)
 	}
-	if value, ok := puo.mutation.ActivityStartTime(); ok {
-		_spec.SetField(poly.FieldActivityStartTime, field.TypeTime, value)
+	if value, ok := puo.mutation.StartTime(); ok {
+		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
 	}
-	if value, ok := puo.mutation.ActivityEndTime(); ok {
-		_spec.SetField(poly.FieldActivityEndTime, field.TypeTime, value)
+	if value, ok := puo.mutation.EndTime(); ok {
+		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 	}
-	if value, ok := puo.mutation.ActivityStatus(); ok {
-		_spec.SetField(poly.FieldActivityStatus, field.TypeInt, value)
+	if value, ok := puo.mutation.Status(); ok {
+		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedActivityStatus(); ok {
-		_spec.AddField(poly.FieldActivityStatus, field.TypeInt, value)
+	if value, ok := puo.mutation.AddedStatus(); ok {
+		_spec.AddField(poly.FieldStatus, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.ActivityType(); ok {
-		_spec.SetField(poly.FieldActivityType, field.TypeInt, value)
+	if value, ok := puo.mutation.GetType(); ok {
+		_spec.SetField(poly.FieldType, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedActivityType(); ok {
-		_spec.AddField(poly.FieldActivityType, field.TypeInt, value)
+	if value, ok := puo.mutation.AddedType(); ok {
+		_spec.AddField(poly.FieldType, field.TypeInt, value)
 	}
 	_node = &Poly{config: puo.config}
 	_spec.Assign = _node.assignValues

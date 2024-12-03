@@ -35,5 +35,22 @@ type ActivityFullInfo {
 
 
 type Query {
+  # 活动创建
   Create(input:CreatePolyReq!):ActivityFullInfo!
+  # 活动开始
+  Start(code:String!):ActivityFullInfo!
+  # 活动结束
+  End(code:String!):ActivityFullInfo!
+  # 活动详情
+  Query(code:String!):ActivityFullInfo!
+  # 活动列表
+  QueryList(mailCode:String!):[ActivityFullInfo!]!
+
+  # 领卷资格判定
+  Qualification(code:String!):Boolean!
+  # 领卷
+  Receive(code:String!):Boolean!
+  # 活动有效判定
+  ValidPoly(code:String!):Boolean!
+  
 }

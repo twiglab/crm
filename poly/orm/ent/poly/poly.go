@@ -18,24 +18,24 @@ const (
 	FieldMallCode = "mall_code"
 	// FieldOperator holds the string denoting the operator field in the database.
 	FieldOperator = "operator"
-	// FieldActivityAddTime holds the string denoting the activity_add_time field in the database.
-	FieldActivityAddTime = "activity_add_time"
+	// FieldAddTime holds the string denoting the add_time field in the database.
+	FieldAddTime = "add_time"
 	// FieldRuleCode holds the string denoting the rule_code field in the database.
 	FieldRuleCode = "rule_code"
-	// FieldActivityName holds the string denoting the activity_name field in the database.
-	FieldActivityName = "activity_name"
-	// FieldActivityDesc holds the string denoting the activity_desc field in the database.
-	FieldActivityDesc = "activity_desc"
-	// FieldActivityBudget holds the string denoting the activity_budget field in the database.
-	FieldActivityBudget = "activity_budget"
-	// FieldActivityStartTime holds the string denoting the activity_start_time field in the database.
-	FieldActivityStartTime = "activity_start_time"
-	// FieldActivityEndTime holds the string denoting the activity_end_time field in the database.
-	FieldActivityEndTime = "activity_end_time"
-	// FieldActivityStatus holds the string denoting the activity_status field in the database.
-	FieldActivityStatus = "activity_status"
-	// FieldActivityType holds the string denoting the activity_type field in the database.
-	FieldActivityType = "activity_type"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldDesc holds the string denoting the desc field in the database.
+	FieldDesc = "desc"
+	// FieldBudget holds the string denoting the budget field in the database.
+	FieldBudget = "budget"
+	// FieldStartTime holds the string denoting the start_time field in the database.
+	FieldStartTime = "start_time"
+	// FieldEndTime holds the string denoting the end_time field in the database.
+	FieldEndTime = "end_time"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
+	// FieldType holds the string denoting the type field in the database.
+	FieldType = "type"
 	// Table holds the table name of the poly in the database.
 	Table = "polies"
 )
@@ -46,15 +46,15 @@ var Columns = []string{
 	FieldCode,
 	FieldMallCode,
 	FieldOperator,
-	FieldActivityAddTime,
+	FieldAddTime,
 	FieldRuleCode,
-	FieldActivityName,
-	FieldActivityDesc,
-	FieldActivityBudget,
-	FieldActivityStartTime,
-	FieldActivityEndTime,
-	FieldActivityStatus,
-	FieldActivityType,
+	FieldName,
+	FieldDesc,
+	FieldBudget,
+	FieldStartTime,
+	FieldEndTime,
+	FieldStatus,
+	FieldType,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -78,14 +78,14 @@ var (
 	OperatorValidator func(string) error
 	// RuleCodeValidator is a validator for the "rule_code" field. It is called by the builders before save.
 	RuleCodeValidator func(string) error
-	// ActivityNameValidator is a validator for the "activity_name" field. It is called by the builders before save.
-	ActivityNameValidator func(string) error
-	// ActivityDescValidator is a validator for the "activity_desc" field. It is called by the builders before save.
-	ActivityDescValidator func(string) error
-	// DefaultActivityStatus holds the default value on creation for the "activity_status" field.
-	DefaultActivityStatus int
-	// DefaultActivityType holds the default value on creation for the "activity_type" field.
-	DefaultActivityType int
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
+	NameValidator func(string) error
+	// DescValidator is a validator for the "desc" field. It is called by the builders before save.
+	DescValidator func(string) error
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus int
+	// DefaultType holds the default value on creation for the "type" field.
+	DefaultType int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
@@ -113,9 +113,9 @@ func ByOperator(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOperator, opts...).ToFunc()
 }
 
-// ByActivityAddTime orders the results by the activity_add_time field.
-func ByActivityAddTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityAddTime, opts...).ToFunc()
+// ByAddTime orders the results by the add_time field.
+func ByAddTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddTime, opts...).ToFunc()
 }
 
 // ByRuleCode orders the results by the rule_code field.
@@ -123,37 +123,37 @@ func ByRuleCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRuleCode, opts...).ToFunc()
 }
 
-// ByActivityName orders the results by the activity_name field.
-func ByActivityName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityName, opts...).ToFunc()
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByActivityDesc orders the results by the activity_desc field.
-func ByActivityDesc(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityDesc, opts...).ToFunc()
+// ByDesc orders the results by the desc field.
+func ByDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDesc, opts...).ToFunc()
 }
 
-// ByActivityBudget orders the results by the activity_budget field.
-func ByActivityBudget(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityBudget, opts...).ToFunc()
+// ByBudget orders the results by the budget field.
+func ByBudget(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBudget, opts...).ToFunc()
 }
 
-// ByActivityStartTime orders the results by the activity_start_time field.
-func ByActivityStartTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityStartTime, opts...).ToFunc()
+// ByStartTime orders the results by the start_time field.
+func ByStartTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStartTime, opts...).ToFunc()
 }
 
-// ByActivityEndTime orders the results by the activity_end_time field.
-func ByActivityEndTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityEndTime, opts...).ToFunc()
+// ByEndTime orders the results by the end_time field.
+func ByEndTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEndTime, opts...).ToFunc()
 }
 
-// ByActivityStatus orders the results by the activity_status field.
-func ByActivityStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityStatus, opts...).ToFunc()
+// ByStatus orders the results by the status field.
+func ByStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByActivityType orders the results by the activity_type field.
-func ByActivityType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActivityType, opts...).ToFunc()
+// ByType orders the results by the type field.
+func ByType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldType, opts...).ToFunc()
 }

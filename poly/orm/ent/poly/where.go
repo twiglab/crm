@@ -70,9 +70,9 @@ func Operator(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldOperator, v))
 }
 
-// ActivityAddTime applies equality check predicate on the "activity_add_time" field. It's identical to ActivityAddTimeEQ.
-func ActivityAddTime(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityAddTime, v))
+// AddTime applies equality check predicate on the "add_time" field. It's identical to AddTimeEQ.
+func AddTime(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldAddTime, v))
 }
 
 // RuleCode applies equality check predicate on the "rule_code" field. It's identical to RuleCodeEQ.
@@ -80,39 +80,39 @@ func RuleCode(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldRuleCode, v))
 }
 
-// ActivityName applies equality check predicate on the "activity_name" field. It's identical to ActivityNameEQ.
-func ActivityName(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityName, v))
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldName, v))
 }
 
-// ActivityDesc applies equality check predicate on the "activity_desc" field. It's identical to ActivityDescEQ.
-func ActivityDesc(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityDesc, v))
+// Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
+func Desc(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldDesc, v))
 }
 
-// ActivityBudget applies equality check predicate on the "activity_budget" field. It's identical to ActivityBudgetEQ.
-func ActivityBudget(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityBudget, v))
+// Budget applies equality check predicate on the "budget" field. It's identical to BudgetEQ.
+func Budget(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldBudget, v))
 }
 
-// ActivityStartTime applies equality check predicate on the "activity_start_time" field. It's identical to ActivityStartTimeEQ.
-func ActivityStartTime(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityStartTime, v))
+// StartTime applies equality check predicate on the "start_time" field. It's identical to StartTimeEQ.
+func StartTime(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldStartTime, v))
 }
 
-// ActivityEndTime applies equality check predicate on the "activity_end_time" field. It's identical to ActivityEndTimeEQ.
-func ActivityEndTime(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityEndTime, v))
+// EndTime applies equality check predicate on the "end_time" field. It's identical to EndTimeEQ.
+func EndTime(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldEndTime, v))
 }
 
-// ActivityStatus applies equality check predicate on the "activity_status" field. It's identical to ActivityStatusEQ.
-func ActivityStatus(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityStatus, v))
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldStatus, v))
 }
 
-// ActivityType applies equality check predicate on the "activity_type" field. It's identical to ActivityTypeEQ.
-func ActivityType(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityType, v))
+// Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
+func Type(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldType, v))
 }
 
 // CodeEQ applies the EQ predicate on the "code" field.
@@ -310,44 +310,44 @@ func OperatorContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldOperator, v))
 }
 
-// ActivityAddTimeEQ applies the EQ predicate on the "activity_add_time" field.
-func ActivityAddTimeEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityAddTime, v))
+// AddTimeEQ applies the EQ predicate on the "add_time" field.
+func AddTimeEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldAddTime, v))
 }
 
-// ActivityAddTimeNEQ applies the NEQ predicate on the "activity_add_time" field.
-func ActivityAddTimeNEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityAddTime, v))
+// AddTimeNEQ applies the NEQ predicate on the "add_time" field.
+func AddTimeNEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldAddTime, v))
 }
 
-// ActivityAddTimeIn applies the In predicate on the "activity_add_time" field.
-func ActivityAddTimeIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityAddTime, vs...))
+// AddTimeIn applies the In predicate on the "add_time" field.
+func AddTimeIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldAddTime, vs...))
 }
 
-// ActivityAddTimeNotIn applies the NotIn predicate on the "activity_add_time" field.
-func ActivityAddTimeNotIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityAddTime, vs...))
+// AddTimeNotIn applies the NotIn predicate on the "add_time" field.
+func AddTimeNotIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldAddTime, vs...))
 }
 
-// ActivityAddTimeGT applies the GT predicate on the "activity_add_time" field.
-func ActivityAddTimeGT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityAddTime, v))
+// AddTimeGT applies the GT predicate on the "add_time" field.
+func AddTimeGT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldAddTime, v))
 }
 
-// ActivityAddTimeGTE applies the GTE predicate on the "activity_add_time" field.
-func ActivityAddTimeGTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityAddTime, v))
+// AddTimeGTE applies the GTE predicate on the "add_time" field.
+func AddTimeGTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldAddTime, v))
 }
 
-// ActivityAddTimeLT applies the LT predicate on the "activity_add_time" field.
-func ActivityAddTimeLT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityAddTime, v))
+// AddTimeLT applies the LT predicate on the "add_time" field.
+func AddTimeLT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldAddTime, v))
 }
 
-// ActivityAddTimeLTE applies the LTE predicate on the "activity_add_time" field.
-func ActivityAddTimeLTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityAddTime, v))
+// AddTimeLTE applies the LTE predicate on the "add_time" field.
+func AddTimeLTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldAddTime, v))
 }
 
 // RuleCodeEQ applies the EQ predicate on the "rule_code" field.
@@ -415,334 +415,334 @@ func RuleCodeContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldRuleCode, v))
 }
 
-// ActivityNameEQ applies the EQ predicate on the "activity_name" field.
-func ActivityNameEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityName, v))
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldName, v))
 }
 
-// ActivityNameNEQ applies the NEQ predicate on the "activity_name" field.
-func ActivityNameNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityName, v))
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldName, v))
 }
 
-// ActivityNameIn applies the In predicate on the "activity_name" field.
-func ActivityNameIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityName, vs...))
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldName, vs...))
 }
 
-// ActivityNameNotIn applies the NotIn predicate on the "activity_name" field.
-func ActivityNameNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityName, vs...))
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldName, vs...))
 }
 
-// ActivityNameGT applies the GT predicate on the "activity_name" field.
-func ActivityNameGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityName, v))
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldName, v))
 }
 
-// ActivityNameGTE applies the GTE predicate on the "activity_name" field.
-func ActivityNameGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityName, v))
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldName, v))
 }
 
-// ActivityNameLT applies the LT predicate on the "activity_name" field.
-func ActivityNameLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityName, v))
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldName, v))
 }
 
-// ActivityNameLTE applies the LTE predicate on the "activity_name" field.
-func ActivityNameLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityName, v))
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldName, v))
 }
 
-// ActivityNameContains applies the Contains predicate on the "activity_name" field.
-func ActivityNameContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldActivityName, v))
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldName, v))
 }
 
-// ActivityNameHasPrefix applies the HasPrefix predicate on the "activity_name" field.
-func ActivityNameHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldActivityName, v))
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldName, v))
 }
 
-// ActivityNameHasSuffix applies the HasSuffix predicate on the "activity_name" field.
-func ActivityNameHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldActivityName, v))
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldName, v))
 }
 
-// ActivityNameEqualFold applies the EqualFold predicate on the "activity_name" field.
-func ActivityNameEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldActivityName, v))
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldName, v))
 }
 
-// ActivityNameContainsFold applies the ContainsFold predicate on the "activity_name" field.
-func ActivityNameContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldActivityName, v))
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldName, v))
 }
 
-// ActivityDescEQ applies the EQ predicate on the "activity_desc" field.
-func ActivityDescEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityDesc, v))
+// DescEQ applies the EQ predicate on the "desc" field.
+func DescEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldDesc, v))
 }
 
-// ActivityDescNEQ applies the NEQ predicate on the "activity_desc" field.
-func ActivityDescNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityDesc, v))
+// DescNEQ applies the NEQ predicate on the "desc" field.
+func DescNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldDesc, v))
 }
 
-// ActivityDescIn applies the In predicate on the "activity_desc" field.
-func ActivityDescIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityDesc, vs...))
+// DescIn applies the In predicate on the "desc" field.
+func DescIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldDesc, vs...))
 }
 
-// ActivityDescNotIn applies the NotIn predicate on the "activity_desc" field.
-func ActivityDescNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityDesc, vs...))
+// DescNotIn applies the NotIn predicate on the "desc" field.
+func DescNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldDesc, vs...))
 }
 
-// ActivityDescGT applies the GT predicate on the "activity_desc" field.
-func ActivityDescGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityDesc, v))
+// DescGT applies the GT predicate on the "desc" field.
+func DescGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldDesc, v))
 }
 
-// ActivityDescGTE applies the GTE predicate on the "activity_desc" field.
-func ActivityDescGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityDesc, v))
+// DescGTE applies the GTE predicate on the "desc" field.
+func DescGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldDesc, v))
 }
 
-// ActivityDescLT applies the LT predicate on the "activity_desc" field.
-func ActivityDescLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityDesc, v))
+// DescLT applies the LT predicate on the "desc" field.
+func DescLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldDesc, v))
 }
 
-// ActivityDescLTE applies the LTE predicate on the "activity_desc" field.
-func ActivityDescLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityDesc, v))
+// DescLTE applies the LTE predicate on the "desc" field.
+func DescLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldDesc, v))
 }
 
-// ActivityDescContains applies the Contains predicate on the "activity_desc" field.
-func ActivityDescContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldActivityDesc, v))
+// DescContains applies the Contains predicate on the "desc" field.
+func DescContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldDesc, v))
 }
 
-// ActivityDescHasPrefix applies the HasPrefix predicate on the "activity_desc" field.
-func ActivityDescHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldActivityDesc, v))
+// DescHasPrefix applies the HasPrefix predicate on the "desc" field.
+func DescHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldDesc, v))
 }
 
-// ActivityDescHasSuffix applies the HasSuffix predicate on the "activity_desc" field.
-func ActivityDescHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldActivityDesc, v))
+// DescHasSuffix applies the HasSuffix predicate on the "desc" field.
+func DescHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldDesc, v))
 }
 
-// ActivityDescEqualFold applies the EqualFold predicate on the "activity_desc" field.
-func ActivityDescEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldActivityDesc, v))
+// DescEqualFold applies the EqualFold predicate on the "desc" field.
+func DescEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldDesc, v))
 }
 
-// ActivityDescContainsFold applies the ContainsFold predicate on the "activity_desc" field.
-func ActivityDescContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldActivityDesc, v))
+// DescContainsFold applies the ContainsFold predicate on the "desc" field.
+func DescContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldDesc, v))
 }
 
-// ActivityBudgetEQ applies the EQ predicate on the "activity_budget" field.
-func ActivityBudgetEQ(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityBudget, v))
+// BudgetEQ applies the EQ predicate on the "budget" field.
+func BudgetEQ(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldBudget, v))
 }
 
-// ActivityBudgetNEQ applies the NEQ predicate on the "activity_budget" field.
-func ActivityBudgetNEQ(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityBudget, v))
+// BudgetNEQ applies the NEQ predicate on the "budget" field.
+func BudgetNEQ(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldBudget, v))
 }
 
-// ActivityBudgetIn applies the In predicate on the "activity_budget" field.
-func ActivityBudgetIn(vs ...int64) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityBudget, vs...))
+// BudgetIn applies the In predicate on the "budget" field.
+func BudgetIn(vs ...int64) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldBudget, vs...))
 }
 
-// ActivityBudgetNotIn applies the NotIn predicate on the "activity_budget" field.
-func ActivityBudgetNotIn(vs ...int64) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityBudget, vs...))
+// BudgetNotIn applies the NotIn predicate on the "budget" field.
+func BudgetNotIn(vs ...int64) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldBudget, vs...))
 }
 
-// ActivityBudgetGT applies the GT predicate on the "activity_budget" field.
-func ActivityBudgetGT(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityBudget, v))
+// BudgetGT applies the GT predicate on the "budget" field.
+func BudgetGT(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldBudget, v))
 }
 
-// ActivityBudgetGTE applies the GTE predicate on the "activity_budget" field.
-func ActivityBudgetGTE(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityBudget, v))
+// BudgetGTE applies the GTE predicate on the "budget" field.
+func BudgetGTE(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldBudget, v))
 }
 
-// ActivityBudgetLT applies the LT predicate on the "activity_budget" field.
-func ActivityBudgetLT(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityBudget, v))
+// BudgetLT applies the LT predicate on the "budget" field.
+func BudgetLT(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldBudget, v))
 }
 
-// ActivityBudgetLTE applies the LTE predicate on the "activity_budget" field.
-func ActivityBudgetLTE(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityBudget, v))
+// BudgetLTE applies the LTE predicate on the "budget" field.
+func BudgetLTE(v int64) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldBudget, v))
 }
 
-// ActivityStartTimeEQ applies the EQ predicate on the "activity_start_time" field.
-func ActivityStartTimeEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityStartTime, v))
+// StartTimeEQ applies the EQ predicate on the "start_time" field.
+func StartTimeEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldStartTime, v))
 }
 
-// ActivityStartTimeNEQ applies the NEQ predicate on the "activity_start_time" field.
-func ActivityStartTimeNEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityStartTime, v))
+// StartTimeNEQ applies the NEQ predicate on the "start_time" field.
+func StartTimeNEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldStartTime, v))
 }
 
-// ActivityStartTimeIn applies the In predicate on the "activity_start_time" field.
-func ActivityStartTimeIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityStartTime, vs...))
+// StartTimeIn applies the In predicate on the "start_time" field.
+func StartTimeIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldStartTime, vs...))
 }
 
-// ActivityStartTimeNotIn applies the NotIn predicate on the "activity_start_time" field.
-func ActivityStartTimeNotIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityStartTime, vs...))
+// StartTimeNotIn applies the NotIn predicate on the "start_time" field.
+func StartTimeNotIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldStartTime, vs...))
 }
 
-// ActivityStartTimeGT applies the GT predicate on the "activity_start_time" field.
-func ActivityStartTimeGT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityStartTime, v))
+// StartTimeGT applies the GT predicate on the "start_time" field.
+func StartTimeGT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldStartTime, v))
 }
 
-// ActivityStartTimeGTE applies the GTE predicate on the "activity_start_time" field.
-func ActivityStartTimeGTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityStartTime, v))
+// StartTimeGTE applies the GTE predicate on the "start_time" field.
+func StartTimeGTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldStartTime, v))
 }
 
-// ActivityStartTimeLT applies the LT predicate on the "activity_start_time" field.
-func ActivityStartTimeLT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityStartTime, v))
+// StartTimeLT applies the LT predicate on the "start_time" field.
+func StartTimeLT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldStartTime, v))
 }
 
-// ActivityStartTimeLTE applies the LTE predicate on the "activity_start_time" field.
-func ActivityStartTimeLTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityStartTime, v))
+// StartTimeLTE applies the LTE predicate on the "start_time" field.
+func StartTimeLTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldStartTime, v))
 }
 
-// ActivityEndTimeEQ applies the EQ predicate on the "activity_end_time" field.
-func ActivityEndTimeEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityEndTime, v))
+// EndTimeEQ applies the EQ predicate on the "end_time" field.
+func EndTimeEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldEndTime, v))
 }
 
-// ActivityEndTimeNEQ applies the NEQ predicate on the "activity_end_time" field.
-func ActivityEndTimeNEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityEndTime, v))
+// EndTimeNEQ applies the NEQ predicate on the "end_time" field.
+func EndTimeNEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldEndTime, v))
 }
 
-// ActivityEndTimeIn applies the In predicate on the "activity_end_time" field.
-func ActivityEndTimeIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityEndTime, vs...))
+// EndTimeIn applies the In predicate on the "end_time" field.
+func EndTimeIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldEndTime, vs...))
 }
 
-// ActivityEndTimeNotIn applies the NotIn predicate on the "activity_end_time" field.
-func ActivityEndTimeNotIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityEndTime, vs...))
+// EndTimeNotIn applies the NotIn predicate on the "end_time" field.
+func EndTimeNotIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldEndTime, vs...))
 }
 
-// ActivityEndTimeGT applies the GT predicate on the "activity_end_time" field.
-func ActivityEndTimeGT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityEndTime, v))
+// EndTimeGT applies the GT predicate on the "end_time" field.
+func EndTimeGT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldEndTime, v))
 }
 
-// ActivityEndTimeGTE applies the GTE predicate on the "activity_end_time" field.
-func ActivityEndTimeGTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityEndTime, v))
+// EndTimeGTE applies the GTE predicate on the "end_time" field.
+func EndTimeGTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldEndTime, v))
 }
 
-// ActivityEndTimeLT applies the LT predicate on the "activity_end_time" field.
-func ActivityEndTimeLT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityEndTime, v))
+// EndTimeLT applies the LT predicate on the "end_time" field.
+func EndTimeLT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldEndTime, v))
 }
 
-// ActivityEndTimeLTE applies the LTE predicate on the "activity_end_time" field.
-func ActivityEndTimeLTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityEndTime, v))
+// EndTimeLTE applies the LTE predicate on the "end_time" field.
+func EndTimeLTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldEndTime, v))
 }
 
-// ActivityStatusEQ applies the EQ predicate on the "activity_status" field.
-func ActivityStatusEQ(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityStatus, v))
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldStatus, v))
 }
 
-// ActivityStatusNEQ applies the NEQ predicate on the "activity_status" field.
-func ActivityStatusNEQ(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityStatus, v))
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldStatus, v))
 }
 
-// ActivityStatusIn applies the In predicate on the "activity_status" field.
-func ActivityStatusIn(vs ...int) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityStatus, vs...))
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...int) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldStatus, vs...))
 }
 
-// ActivityStatusNotIn applies the NotIn predicate on the "activity_status" field.
-func ActivityStatusNotIn(vs ...int) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityStatus, vs...))
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...int) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldStatus, vs...))
 }
 
-// ActivityStatusGT applies the GT predicate on the "activity_status" field.
-func ActivityStatusGT(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityStatus, v))
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldStatus, v))
 }
 
-// ActivityStatusGTE applies the GTE predicate on the "activity_status" field.
-func ActivityStatusGTE(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityStatus, v))
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldStatus, v))
 }
 
-// ActivityStatusLT applies the LT predicate on the "activity_status" field.
-func ActivityStatusLT(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityStatus, v))
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldStatus, v))
 }
 
-// ActivityStatusLTE applies the LTE predicate on the "activity_status" field.
-func ActivityStatusLTE(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityStatus, v))
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldStatus, v))
 }
 
-// ActivityTypeEQ applies the EQ predicate on the "activity_type" field.
-func ActivityTypeEQ(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldActivityType, v))
+// TypeEQ applies the EQ predicate on the "type" field.
+func TypeEQ(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldType, v))
 }
 
-// ActivityTypeNEQ applies the NEQ predicate on the "activity_type" field.
-func ActivityTypeNEQ(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldActivityType, v))
+// TypeNEQ applies the NEQ predicate on the "type" field.
+func TypeNEQ(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldType, v))
 }
 
-// ActivityTypeIn applies the In predicate on the "activity_type" field.
-func ActivityTypeIn(vs ...int) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldActivityType, vs...))
+// TypeIn applies the In predicate on the "type" field.
+func TypeIn(vs ...int) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldType, vs...))
 }
 
-// ActivityTypeNotIn applies the NotIn predicate on the "activity_type" field.
-func ActivityTypeNotIn(vs ...int) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldActivityType, vs...))
+// TypeNotIn applies the NotIn predicate on the "type" field.
+func TypeNotIn(vs ...int) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldType, vs...))
 }
 
-// ActivityTypeGT applies the GT predicate on the "activity_type" field.
-func ActivityTypeGT(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldActivityType, v))
+// TypeGT applies the GT predicate on the "type" field.
+func TypeGT(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldType, v))
 }
 
-// ActivityTypeGTE applies the GTE predicate on the "activity_type" field.
-func ActivityTypeGTE(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldActivityType, v))
+// TypeGTE applies the GTE predicate on the "type" field.
+func TypeGTE(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldType, v))
 }
 
-// ActivityTypeLT applies the LT predicate on the "activity_type" field.
-func ActivityTypeLT(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldActivityType, v))
+// TypeLT applies the LT predicate on the "type" field.
+func TypeLT(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldType, v))
 }
 
-// ActivityTypeLTE applies the LTE predicate on the "activity_type" field.
-func ActivityTypeLTE(v int) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldActivityType, v))
+// TypeLTE applies the LTE predicate on the "type" field.
+func TypeLTE(v int) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldType, v))
 }
 
 // And groups predicates with the AND operator between them.

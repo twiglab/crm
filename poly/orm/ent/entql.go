@@ -25,18 +25,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Poly",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			poly.FieldCode:              {Type: field.TypeString, Column: poly.FieldCode},
-			poly.FieldMallCode:          {Type: field.TypeString, Column: poly.FieldMallCode},
-			poly.FieldOperator:          {Type: field.TypeString, Column: poly.FieldOperator},
-			poly.FieldActivityAddTime:   {Type: field.TypeTime, Column: poly.FieldActivityAddTime},
-			poly.FieldRuleCode:          {Type: field.TypeString, Column: poly.FieldRuleCode},
-			poly.FieldActivityName:      {Type: field.TypeString, Column: poly.FieldActivityName},
-			poly.FieldActivityDesc:      {Type: field.TypeString, Column: poly.FieldActivityDesc},
-			poly.FieldActivityBudget:    {Type: field.TypeInt64, Column: poly.FieldActivityBudget},
-			poly.FieldActivityStartTime: {Type: field.TypeTime, Column: poly.FieldActivityStartTime},
-			poly.FieldActivityEndTime:   {Type: field.TypeTime, Column: poly.FieldActivityEndTime},
-			poly.FieldActivityStatus:    {Type: field.TypeInt, Column: poly.FieldActivityStatus},
-			poly.FieldActivityType:      {Type: field.TypeInt, Column: poly.FieldActivityType},
+			poly.FieldCode:      {Type: field.TypeString, Column: poly.FieldCode},
+			poly.FieldMallCode:  {Type: field.TypeString, Column: poly.FieldMallCode},
+			poly.FieldOperator:  {Type: field.TypeString, Column: poly.FieldOperator},
+			poly.FieldAddTime:   {Type: field.TypeTime, Column: poly.FieldAddTime},
+			poly.FieldRuleCode:  {Type: field.TypeString, Column: poly.FieldRuleCode},
+			poly.FieldName:      {Type: field.TypeString, Column: poly.FieldName},
+			poly.FieldDesc:      {Type: field.TypeString, Column: poly.FieldDesc},
+			poly.FieldBudget:    {Type: field.TypeInt64, Column: poly.FieldBudget},
+			poly.FieldStartTime: {Type: field.TypeTime, Column: poly.FieldStartTime},
+			poly.FieldEndTime:   {Type: field.TypeTime, Column: poly.FieldEndTime},
+			poly.FieldStatus:    {Type: field.TypeInt, Column: poly.FieldStatus},
+			poly.FieldType:      {Type: field.TypeInt, Column: poly.FieldType},
 		},
 	}
 	return graph
@@ -103,9 +103,9 @@ func (f *PolyFilter) WhereOperator(p entql.StringP) {
 	f.Where(p.Field(poly.FieldOperator))
 }
 
-// WhereActivityAddTime applies the entql time.Time predicate on the activity_add_time field.
-func (f *PolyFilter) WhereActivityAddTime(p entql.TimeP) {
-	f.Where(p.Field(poly.FieldActivityAddTime))
+// WhereAddTime applies the entql time.Time predicate on the add_time field.
+func (f *PolyFilter) WhereAddTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldAddTime))
 }
 
 // WhereRuleCode applies the entql string predicate on the rule_code field.
@@ -113,37 +113,37 @@ func (f *PolyFilter) WhereRuleCode(p entql.StringP) {
 	f.Where(p.Field(poly.FieldRuleCode))
 }
 
-// WhereActivityName applies the entql string predicate on the activity_name field.
-func (f *PolyFilter) WhereActivityName(p entql.StringP) {
-	f.Where(p.Field(poly.FieldActivityName))
+// WhereName applies the entql string predicate on the name field.
+func (f *PolyFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(poly.FieldName))
 }
 
-// WhereActivityDesc applies the entql string predicate on the activity_desc field.
-func (f *PolyFilter) WhereActivityDesc(p entql.StringP) {
-	f.Where(p.Field(poly.FieldActivityDesc))
+// WhereDesc applies the entql string predicate on the desc field.
+func (f *PolyFilter) WhereDesc(p entql.StringP) {
+	f.Where(p.Field(poly.FieldDesc))
 }
 
-// WhereActivityBudget applies the entql int64 predicate on the activity_budget field.
-func (f *PolyFilter) WhereActivityBudget(p entql.Int64P) {
-	f.Where(p.Field(poly.FieldActivityBudget))
+// WhereBudget applies the entql int64 predicate on the budget field.
+func (f *PolyFilter) WhereBudget(p entql.Int64P) {
+	f.Where(p.Field(poly.FieldBudget))
 }
 
-// WhereActivityStartTime applies the entql time.Time predicate on the activity_start_time field.
-func (f *PolyFilter) WhereActivityStartTime(p entql.TimeP) {
-	f.Where(p.Field(poly.FieldActivityStartTime))
+// WhereStartTime applies the entql time.Time predicate on the start_time field.
+func (f *PolyFilter) WhereStartTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldStartTime))
 }
 
-// WhereActivityEndTime applies the entql time.Time predicate on the activity_end_time field.
-func (f *PolyFilter) WhereActivityEndTime(p entql.TimeP) {
-	f.Where(p.Field(poly.FieldActivityEndTime))
+// WhereEndTime applies the entql time.Time predicate on the end_time field.
+func (f *PolyFilter) WhereEndTime(p entql.TimeP) {
+	f.Where(p.Field(poly.FieldEndTime))
 }
 
-// WhereActivityStatus applies the entql int predicate on the activity_status field.
-func (f *PolyFilter) WhereActivityStatus(p entql.IntP) {
-	f.Where(p.Field(poly.FieldActivityStatus))
+// WhereStatus applies the entql int predicate on the status field.
+func (f *PolyFilter) WhereStatus(p entql.IntP) {
+	f.Where(p.Field(poly.FieldStatus))
 }
 
-// WhereActivityType applies the entql int predicate on the activity_type field.
-func (f *PolyFilter) WhereActivityType(p entql.IntP) {
-	f.Where(p.Field(poly.FieldActivityType))
+// WhereType applies the entql int predicate on the type field.
+func (f *PolyFilter) WhereType(p entql.IntP) {
+	f.Where(p.Field(poly.FieldType))
 }

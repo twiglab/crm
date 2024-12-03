@@ -88,36 +88,36 @@ func init() {
 			return nil
 		}
 	}()
-	// polyDescActivityName is the schema descriptor for activity_name field.
-	polyDescActivityName := polyFields[6].Descriptor()
-	// poly.ActivityNameValidator is a validator for the "activity_name" field. It is called by the builders before save.
-	poly.ActivityNameValidator = func() func(string) error {
-		validators := polyDescActivityName.Validators
+	// polyDescName is the schema descriptor for name field.
+	polyDescName := polyFields[6].Descriptor()
+	// poly.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	poly.NameValidator = func() func(string) error {
+		validators := polyDescName.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(activity_name string) error {
+		return func(name string) error {
 			for _, fn := range fns {
-				if err := fn(activity_name); err != nil {
+				if err := fn(name); err != nil {
 					return err
 				}
 			}
 			return nil
 		}
 	}()
-	// polyDescActivityDesc is the schema descriptor for activity_desc field.
-	polyDescActivityDesc := polyFields[7].Descriptor()
-	// poly.ActivityDescValidator is a validator for the "activity_desc" field. It is called by the builders before save.
-	poly.ActivityDescValidator = polyDescActivityDesc.Validators[0].(func(string) error)
-	// polyDescActivityStatus is the schema descriptor for activity_status field.
-	polyDescActivityStatus := polyFields[11].Descriptor()
-	// poly.DefaultActivityStatus holds the default value on creation for the activity_status field.
-	poly.DefaultActivityStatus = polyDescActivityStatus.Default.(int)
-	// polyDescActivityType is the schema descriptor for activity_type field.
-	polyDescActivityType := polyFields[12].Descriptor()
-	// poly.DefaultActivityType holds the default value on creation for the activity_type field.
-	poly.DefaultActivityType = polyDescActivityType.Default.(int)
+	// polyDescDesc is the schema descriptor for desc field.
+	polyDescDesc := polyFields[7].Descriptor()
+	// poly.DescValidator is a validator for the "desc" field. It is called by the builders before save.
+	poly.DescValidator = polyDescDesc.Validators[0].(func(string) error)
+	// polyDescStatus is the schema descriptor for status field.
+	polyDescStatus := polyFields[11].Descriptor()
+	// poly.DefaultStatus holds the default value on creation for the status field.
+	poly.DefaultStatus = polyDescStatus.Default.(int)
+	// polyDescType is the schema descriptor for type field.
+	polyDescType := polyFields[12].Descriptor()
+	// poly.DefaultType holds the default value on creation for the type field.
+	poly.DefaultType = polyDescType.Default.(int)
 	// polyDescID is the schema descriptor for id field.
 	polyDescID := polyFields[0].Descriptor()
 	// poly.DefaultID holds the default value on creation for the id field.

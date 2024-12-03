@@ -31,28 +31,28 @@ const (
 // PolyMutation represents an operation that mutates the Poly nodes in the graph.
 type PolyMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *uuid.UUID
-	code                *string
-	mall_code           *string
-	operator            *string
-	activity_add_time   *time.Time
-	rule_code           *string
-	activity_name       *string
-	activity_desc       *string
-	activity_budget     *int64
-	addactivity_budget  *int64
-	activity_start_time *time.Time
-	activity_end_time   *time.Time
-	activity_status     *int
-	addactivity_status  *int
-	activity_type       *int
-	addactivity_type    *int
-	clearedFields       map[string]struct{}
-	done                bool
-	oldValue            func(context.Context) (*Poly, error)
-	predicates          []predicate.Poly
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	code          *string
+	mall_code     *string
+	operator      *string
+	add_time      *time.Time
+	rule_code     *string
+	name          *string
+	desc          *string
+	budget        *int64
+	addbudget     *int64
+	start_time    *time.Time
+	end_time      *time.Time
+	status        *int
+	addstatus     *int
+	_type         *int
+	add_type      *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Poly, error)
+	predicates    []predicate.Poly
 }
 
 var _ ent.Mutation = (*PolyMutation)(nil)
@@ -267,40 +267,40 @@ func (m *PolyMutation) ResetOperator() {
 	m.operator = nil
 }
 
-// SetActivityAddTime sets the "activity_add_time" field.
-func (m *PolyMutation) SetActivityAddTime(t time.Time) {
-	m.activity_add_time = &t
+// SetAddTime sets the "add_time" field.
+func (m *PolyMutation) SetAddTime(t time.Time) {
+	m.add_time = &t
 }
 
-// ActivityAddTime returns the value of the "activity_add_time" field in the mutation.
-func (m *PolyMutation) ActivityAddTime() (r time.Time, exists bool) {
-	v := m.activity_add_time
+// AddTime returns the value of the "add_time" field in the mutation.
+func (m *PolyMutation) AddTime() (r time.Time, exists bool) {
+	v := m.add_time
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityAddTime returns the old "activity_add_time" field's value of the Poly entity.
+// OldAddTime returns the old "add_time" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityAddTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldAddTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityAddTime is only allowed on UpdateOne operations")
+		return v, errors.New("OldAddTime is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityAddTime requires an ID field in the mutation")
+		return v, errors.New("OldAddTime requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityAddTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldAddTime: %w", err)
 	}
-	return oldValue.ActivityAddTime, nil
+	return oldValue.AddTime, nil
 }
 
-// ResetActivityAddTime resets all changes to the "activity_add_time" field.
-func (m *PolyMutation) ResetActivityAddTime() {
-	m.activity_add_time = nil
+// ResetAddTime resets all changes to the "add_time" field.
+func (m *PolyMutation) ResetAddTime() {
+	m.add_time = nil
 }
 
 // SetRuleCode sets the "rule_code" field.
@@ -339,316 +339,316 @@ func (m *PolyMutation) ResetRuleCode() {
 	m.rule_code = nil
 }
 
-// SetActivityName sets the "activity_name" field.
-func (m *PolyMutation) SetActivityName(s string) {
-	m.activity_name = &s
+// SetName sets the "name" field.
+func (m *PolyMutation) SetName(s string) {
+	m.name = &s
 }
 
-// ActivityName returns the value of the "activity_name" field in the mutation.
-func (m *PolyMutation) ActivityName() (r string, exists bool) {
-	v := m.activity_name
+// Name returns the value of the "name" field in the mutation.
+func (m *PolyMutation) Name() (r string, exists bool) {
+	v := m.name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityName returns the old "activity_name" field's value of the Poly entity.
+// OldName returns the old "name" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityName(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityName is only allowed on UpdateOne operations")
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityName requires an ID field in the mutation")
+		return v, errors.New("OldName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityName: %w", err)
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
 	}
-	return oldValue.ActivityName, nil
+	return oldValue.Name, nil
 }
 
-// ResetActivityName resets all changes to the "activity_name" field.
-func (m *PolyMutation) ResetActivityName() {
-	m.activity_name = nil
+// ResetName resets all changes to the "name" field.
+func (m *PolyMutation) ResetName() {
+	m.name = nil
 }
 
-// SetActivityDesc sets the "activity_desc" field.
-func (m *PolyMutation) SetActivityDesc(s string) {
-	m.activity_desc = &s
+// SetDesc sets the "desc" field.
+func (m *PolyMutation) SetDesc(s string) {
+	m.desc = &s
 }
 
-// ActivityDesc returns the value of the "activity_desc" field in the mutation.
-func (m *PolyMutation) ActivityDesc() (r string, exists bool) {
-	v := m.activity_desc
+// Desc returns the value of the "desc" field in the mutation.
+func (m *PolyMutation) Desc() (r string, exists bool) {
+	v := m.desc
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityDesc returns the old "activity_desc" field's value of the Poly entity.
+// OldDesc returns the old "desc" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityDesc(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldDesc(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityDesc is only allowed on UpdateOne operations")
+		return v, errors.New("OldDesc is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityDesc requires an ID field in the mutation")
+		return v, errors.New("OldDesc requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityDesc: %w", err)
+		return v, fmt.Errorf("querying old value for OldDesc: %w", err)
 	}
-	return oldValue.ActivityDesc, nil
+	return oldValue.Desc, nil
 }
 
-// ResetActivityDesc resets all changes to the "activity_desc" field.
-func (m *PolyMutation) ResetActivityDesc() {
-	m.activity_desc = nil
+// ResetDesc resets all changes to the "desc" field.
+func (m *PolyMutation) ResetDesc() {
+	m.desc = nil
 }
 
-// SetActivityBudget sets the "activity_budget" field.
-func (m *PolyMutation) SetActivityBudget(i int64) {
-	m.activity_budget = &i
-	m.addactivity_budget = nil
+// SetBudget sets the "budget" field.
+func (m *PolyMutation) SetBudget(i int64) {
+	m.budget = &i
+	m.addbudget = nil
 }
 
-// ActivityBudget returns the value of the "activity_budget" field in the mutation.
-func (m *PolyMutation) ActivityBudget() (r int64, exists bool) {
-	v := m.activity_budget
+// Budget returns the value of the "budget" field in the mutation.
+func (m *PolyMutation) Budget() (r int64, exists bool) {
+	v := m.budget
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityBudget returns the old "activity_budget" field's value of the Poly entity.
+// OldBudget returns the old "budget" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityBudget(ctx context.Context) (v int64, err error) {
+func (m *PolyMutation) OldBudget(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityBudget is only allowed on UpdateOne operations")
+		return v, errors.New("OldBudget is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityBudget requires an ID field in the mutation")
+		return v, errors.New("OldBudget requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityBudget: %w", err)
+		return v, fmt.Errorf("querying old value for OldBudget: %w", err)
 	}
-	return oldValue.ActivityBudget, nil
+	return oldValue.Budget, nil
 }
 
-// AddActivityBudget adds i to the "activity_budget" field.
-func (m *PolyMutation) AddActivityBudget(i int64) {
-	if m.addactivity_budget != nil {
-		*m.addactivity_budget += i
+// AddBudget adds i to the "budget" field.
+func (m *PolyMutation) AddBudget(i int64) {
+	if m.addbudget != nil {
+		*m.addbudget += i
 	} else {
-		m.addactivity_budget = &i
+		m.addbudget = &i
 	}
 }
 
-// AddedActivityBudget returns the value that was added to the "activity_budget" field in this mutation.
-func (m *PolyMutation) AddedActivityBudget() (r int64, exists bool) {
-	v := m.addactivity_budget
+// AddedBudget returns the value that was added to the "budget" field in this mutation.
+func (m *PolyMutation) AddedBudget() (r int64, exists bool) {
+	v := m.addbudget
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetActivityBudget resets all changes to the "activity_budget" field.
-func (m *PolyMutation) ResetActivityBudget() {
-	m.activity_budget = nil
-	m.addactivity_budget = nil
+// ResetBudget resets all changes to the "budget" field.
+func (m *PolyMutation) ResetBudget() {
+	m.budget = nil
+	m.addbudget = nil
 }
 
-// SetActivityStartTime sets the "activity_start_time" field.
-func (m *PolyMutation) SetActivityStartTime(t time.Time) {
-	m.activity_start_time = &t
+// SetStartTime sets the "start_time" field.
+func (m *PolyMutation) SetStartTime(t time.Time) {
+	m.start_time = &t
 }
 
-// ActivityStartTime returns the value of the "activity_start_time" field in the mutation.
-func (m *PolyMutation) ActivityStartTime() (r time.Time, exists bool) {
-	v := m.activity_start_time
+// StartTime returns the value of the "start_time" field in the mutation.
+func (m *PolyMutation) StartTime() (r time.Time, exists bool) {
+	v := m.start_time
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityStartTime returns the old "activity_start_time" field's value of the Poly entity.
+// OldStartTime returns the old "start_time" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityStartTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityStartTime is only allowed on UpdateOne operations")
+		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityStartTime requires an ID field in the mutation")
+		return v, errors.New("OldStartTime requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityStartTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
 	}
-	return oldValue.ActivityStartTime, nil
+	return oldValue.StartTime, nil
 }
 
-// ResetActivityStartTime resets all changes to the "activity_start_time" field.
-func (m *PolyMutation) ResetActivityStartTime() {
-	m.activity_start_time = nil
+// ResetStartTime resets all changes to the "start_time" field.
+func (m *PolyMutation) ResetStartTime() {
+	m.start_time = nil
 }
 
-// SetActivityEndTime sets the "activity_end_time" field.
-func (m *PolyMutation) SetActivityEndTime(t time.Time) {
-	m.activity_end_time = &t
+// SetEndTime sets the "end_time" field.
+func (m *PolyMutation) SetEndTime(t time.Time) {
+	m.end_time = &t
 }
 
-// ActivityEndTime returns the value of the "activity_end_time" field in the mutation.
-func (m *PolyMutation) ActivityEndTime() (r time.Time, exists bool) {
-	v := m.activity_end_time
+// EndTime returns the value of the "end_time" field in the mutation.
+func (m *PolyMutation) EndTime() (r time.Time, exists bool) {
+	v := m.end_time
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityEndTime returns the old "activity_end_time" field's value of the Poly entity.
+// OldEndTime returns the old "end_time" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityEndTime(ctx context.Context) (v time.Time, err error) {
+func (m *PolyMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityEndTime is only allowed on UpdateOne operations")
+		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityEndTime requires an ID field in the mutation")
+		return v, errors.New("OldEndTime requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityEndTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
 	}
-	return oldValue.ActivityEndTime, nil
+	return oldValue.EndTime, nil
 }
 
-// ResetActivityEndTime resets all changes to the "activity_end_time" field.
-func (m *PolyMutation) ResetActivityEndTime() {
-	m.activity_end_time = nil
+// ResetEndTime resets all changes to the "end_time" field.
+func (m *PolyMutation) ResetEndTime() {
+	m.end_time = nil
 }
 
-// SetActivityStatus sets the "activity_status" field.
-func (m *PolyMutation) SetActivityStatus(i int) {
-	m.activity_status = &i
-	m.addactivity_status = nil
+// SetStatus sets the "status" field.
+func (m *PolyMutation) SetStatus(i int) {
+	m.status = &i
+	m.addstatus = nil
 }
 
-// ActivityStatus returns the value of the "activity_status" field in the mutation.
-func (m *PolyMutation) ActivityStatus() (r int, exists bool) {
-	v := m.activity_status
+// Status returns the value of the "status" field in the mutation.
+func (m *PolyMutation) Status() (r int, exists bool) {
+	v := m.status
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityStatus returns the old "activity_status" field's value of the Poly entity.
+// OldStatus returns the old "status" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityStatus(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityStatus is only allowed on UpdateOne operations")
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityStatus requires an ID field in the mutation")
+		return v, errors.New("OldStatus requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityStatus: %w", err)
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
 	}
-	return oldValue.ActivityStatus, nil
+	return oldValue.Status, nil
 }
 
-// AddActivityStatus adds i to the "activity_status" field.
-func (m *PolyMutation) AddActivityStatus(i int) {
-	if m.addactivity_status != nil {
-		*m.addactivity_status += i
+// AddStatus adds i to the "status" field.
+func (m *PolyMutation) AddStatus(i int) {
+	if m.addstatus != nil {
+		*m.addstatus += i
 	} else {
-		m.addactivity_status = &i
+		m.addstatus = &i
 	}
 }
 
-// AddedActivityStatus returns the value that was added to the "activity_status" field in this mutation.
-func (m *PolyMutation) AddedActivityStatus() (r int, exists bool) {
-	v := m.addactivity_status
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *PolyMutation) AddedStatus() (r int, exists bool) {
+	v := m.addstatus
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetActivityStatus resets all changes to the "activity_status" field.
-func (m *PolyMutation) ResetActivityStatus() {
-	m.activity_status = nil
-	m.addactivity_status = nil
+// ResetStatus resets all changes to the "status" field.
+func (m *PolyMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
 }
 
-// SetActivityType sets the "activity_type" field.
-func (m *PolyMutation) SetActivityType(i int) {
-	m.activity_type = &i
-	m.addactivity_type = nil
+// SetType sets the "type" field.
+func (m *PolyMutation) SetType(i int) {
+	m._type = &i
+	m.add_type = nil
 }
 
-// ActivityType returns the value of the "activity_type" field in the mutation.
-func (m *PolyMutation) ActivityType() (r int, exists bool) {
-	v := m.activity_type
+// GetType returns the value of the "type" field in the mutation.
+func (m *PolyMutation) GetType() (r int, exists bool) {
+	v := m._type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActivityType returns the old "activity_type" field's value of the Poly entity.
+// OldType returns the old "type" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldActivityType(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActivityType is only allowed on UpdateOne operations")
+		return v, errors.New("OldType is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActivityType requires an ID field in the mutation")
+		return v, errors.New("OldType requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityType: %w", err)
+		return v, fmt.Errorf("querying old value for OldType: %w", err)
 	}
-	return oldValue.ActivityType, nil
+	return oldValue.Type, nil
 }
 
-// AddActivityType adds i to the "activity_type" field.
-func (m *PolyMutation) AddActivityType(i int) {
-	if m.addactivity_type != nil {
-		*m.addactivity_type += i
+// AddType adds i to the "type" field.
+func (m *PolyMutation) AddType(i int) {
+	if m.add_type != nil {
+		*m.add_type += i
 	} else {
-		m.addactivity_type = &i
+		m.add_type = &i
 	}
 }
 
-// AddedActivityType returns the value that was added to the "activity_type" field in this mutation.
-func (m *PolyMutation) AddedActivityType() (r int, exists bool) {
-	v := m.addactivity_type
+// AddedType returns the value that was added to the "type" field in this mutation.
+func (m *PolyMutation) AddedType() (r int, exists bool) {
+	v := m.add_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetActivityType resets all changes to the "activity_type" field.
-func (m *PolyMutation) ResetActivityType() {
-	m.activity_type = nil
-	m.addactivity_type = nil
+// ResetType resets all changes to the "type" field.
+func (m *PolyMutation) ResetType() {
+	m._type = nil
+	m.add_type = nil
 }
 
 // Where appends a list predicates to the PolyMutation builder.
@@ -695,32 +695,32 @@ func (m *PolyMutation) Fields() []string {
 	if m.operator != nil {
 		fields = append(fields, poly.FieldOperator)
 	}
-	if m.activity_add_time != nil {
-		fields = append(fields, poly.FieldActivityAddTime)
+	if m.add_time != nil {
+		fields = append(fields, poly.FieldAddTime)
 	}
 	if m.rule_code != nil {
 		fields = append(fields, poly.FieldRuleCode)
 	}
-	if m.activity_name != nil {
-		fields = append(fields, poly.FieldActivityName)
+	if m.name != nil {
+		fields = append(fields, poly.FieldName)
 	}
-	if m.activity_desc != nil {
-		fields = append(fields, poly.FieldActivityDesc)
+	if m.desc != nil {
+		fields = append(fields, poly.FieldDesc)
 	}
-	if m.activity_budget != nil {
-		fields = append(fields, poly.FieldActivityBudget)
+	if m.budget != nil {
+		fields = append(fields, poly.FieldBudget)
 	}
-	if m.activity_start_time != nil {
-		fields = append(fields, poly.FieldActivityStartTime)
+	if m.start_time != nil {
+		fields = append(fields, poly.FieldStartTime)
 	}
-	if m.activity_end_time != nil {
-		fields = append(fields, poly.FieldActivityEndTime)
+	if m.end_time != nil {
+		fields = append(fields, poly.FieldEndTime)
 	}
-	if m.activity_status != nil {
-		fields = append(fields, poly.FieldActivityStatus)
+	if m.status != nil {
+		fields = append(fields, poly.FieldStatus)
 	}
-	if m.activity_type != nil {
-		fields = append(fields, poly.FieldActivityType)
+	if m._type != nil {
+		fields = append(fields, poly.FieldType)
 	}
 	return fields
 }
@@ -736,24 +736,24 @@ func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 		return m.MallCode()
 	case poly.FieldOperator:
 		return m.Operator()
-	case poly.FieldActivityAddTime:
-		return m.ActivityAddTime()
+	case poly.FieldAddTime:
+		return m.AddTime()
 	case poly.FieldRuleCode:
 		return m.RuleCode()
-	case poly.FieldActivityName:
-		return m.ActivityName()
-	case poly.FieldActivityDesc:
-		return m.ActivityDesc()
-	case poly.FieldActivityBudget:
-		return m.ActivityBudget()
-	case poly.FieldActivityStartTime:
-		return m.ActivityStartTime()
-	case poly.FieldActivityEndTime:
-		return m.ActivityEndTime()
-	case poly.FieldActivityStatus:
-		return m.ActivityStatus()
-	case poly.FieldActivityType:
-		return m.ActivityType()
+	case poly.FieldName:
+		return m.Name()
+	case poly.FieldDesc:
+		return m.Desc()
+	case poly.FieldBudget:
+		return m.Budget()
+	case poly.FieldStartTime:
+		return m.StartTime()
+	case poly.FieldEndTime:
+		return m.EndTime()
+	case poly.FieldStatus:
+		return m.Status()
+	case poly.FieldType:
+		return m.GetType()
 	}
 	return nil, false
 }
@@ -769,24 +769,24 @@ func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldMallCode(ctx)
 	case poly.FieldOperator:
 		return m.OldOperator(ctx)
-	case poly.FieldActivityAddTime:
-		return m.OldActivityAddTime(ctx)
+	case poly.FieldAddTime:
+		return m.OldAddTime(ctx)
 	case poly.FieldRuleCode:
 		return m.OldRuleCode(ctx)
-	case poly.FieldActivityName:
-		return m.OldActivityName(ctx)
-	case poly.FieldActivityDesc:
-		return m.OldActivityDesc(ctx)
-	case poly.FieldActivityBudget:
-		return m.OldActivityBudget(ctx)
-	case poly.FieldActivityStartTime:
-		return m.OldActivityStartTime(ctx)
-	case poly.FieldActivityEndTime:
-		return m.OldActivityEndTime(ctx)
-	case poly.FieldActivityStatus:
-		return m.OldActivityStatus(ctx)
-	case poly.FieldActivityType:
-		return m.OldActivityType(ctx)
+	case poly.FieldName:
+		return m.OldName(ctx)
+	case poly.FieldDesc:
+		return m.OldDesc(ctx)
+	case poly.FieldBudget:
+		return m.OldBudget(ctx)
+	case poly.FieldStartTime:
+		return m.OldStartTime(ctx)
+	case poly.FieldEndTime:
+		return m.OldEndTime(ctx)
+	case poly.FieldStatus:
+		return m.OldStatus(ctx)
+	case poly.FieldType:
+		return m.OldType(ctx)
 	}
 	return nil, fmt.Errorf("unknown Poly field %s", name)
 }
@@ -817,12 +817,12 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOperator(v)
 		return nil
-	case poly.FieldActivityAddTime:
+	case poly.FieldAddTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityAddTime(v)
+		m.SetAddTime(v)
 		return nil
 	case poly.FieldRuleCode:
 		v, ok := value.(string)
@@ -831,54 +831,54 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetRuleCode(v)
 		return nil
-	case poly.FieldActivityName:
+	case poly.FieldName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityName(v)
+		m.SetName(v)
 		return nil
-	case poly.FieldActivityDesc:
+	case poly.FieldDesc:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityDesc(v)
+		m.SetDesc(v)
 		return nil
-	case poly.FieldActivityBudget:
+	case poly.FieldBudget:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityBudget(v)
+		m.SetBudget(v)
 		return nil
-	case poly.FieldActivityStartTime:
+	case poly.FieldStartTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityStartTime(v)
+		m.SetStartTime(v)
 		return nil
-	case poly.FieldActivityEndTime:
+	case poly.FieldEndTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityEndTime(v)
+		m.SetEndTime(v)
 		return nil
-	case poly.FieldActivityStatus:
+	case poly.FieldStatus:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityStatus(v)
+		m.SetStatus(v)
 		return nil
-	case poly.FieldActivityType:
+	case poly.FieldType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetActivityType(v)
+		m.SetType(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Poly field %s", name)
@@ -888,14 +888,14 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *PolyMutation) AddedFields() []string {
 	var fields []string
-	if m.addactivity_budget != nil {
-		fields = append(fields, poly.FieldActivityBudget)
+	if m.addbudget != nil {
+		fields = append(fields, poly.FieldBudget)
 	}
-	if m.addactivity_status != nil {
-		fields = append(fields, poly.FieldActivityStatus)
+	if m.addstatus != nil {
+		fields = append(fields, poly.FieldStatus)
 	}
-	if m.addactivity_type != nil {
-		fields = append(fields, poly.FieldActivityType)
+	if m.add_type != nil {
+		fields = append(fields, poly.FieldType)
 	}
 	return fields
 }
@@ -905,12 +905,12 @@ func (m *PolyMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *PolyMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case poly.FieldActivityBudget:
-		return m.AddedActivityBudget()
-	case poly.FieldActivityStatus:
-		return m.AddedActivityStatus()
-	case poly.FieldActivityType:
-		return m.AddedActivityType()
+	case poly.FieldBudget:
+		return m.AddedBudget()
+	case poly.FieldStatus:
+		return m.AddedStatus()
+	case poly.FieldType:
+		return m.AddedType()
 	}
 	return nil, false
 }
@@ -920,26 +920,26 @@ func (m *PolyMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *PolyMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case poly.FieldActivityBudget:
+	case poly.FieldBudget:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddActivityBudget(v)
+		m.AddBudget(v)
 		return nil
-	case poly.FieldActivityStatus:
+	case poly.FieldStatus:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddActivityStatus(v)
+		m.AddStatus(v)
 		return nil
-	case poly.FieldActivityType:
+	case poly.FieldType:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddActivityType(v)
+		m.AddType(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Poly numeric field %s", name)
@@ -977,32 +977,32 @@ func (m *PolyMutation) ResetField(name string) error {
 	case poly.FieldOperator:
 		m.ResetOperator()
 		return nil
-	case poly.FieldActivityAddTime:
-		m.ResetActivityAddTime()
+	case poly.FieldAddTime:
+		m.ResetAddTime()
 		return nil
 	case poly.FieldRuleCode:
 		m.ResetRuleCode()
 		return nil
-	case poly.FieldActivityName:
-		m.ResetActivityName()
+	case poly.FieldName:
+		m.ResetName()
 		return nil
-	case poly.FieldActivityDesc:
-		m.ResetActivityDesc()
+	case poly.FieldDesc:
+		m.ResetDesc()
 		return nil
-	case poly.FieldActivityBudget:
-		m.ResetActivityBudget()
+	case poly.FieldBudget:
+		m.ResetBudget()
 		return nil
-	case poly.FieldActivityStartTime:
-		m.ResetActivityStartTime()
+	case poly.FieldStartTime:
+		m.ResetStartTime()
 		return nil
-	case poly.FieldActivityEndTime:
-		m.ResetActivityEndTime()
+	case poly.FieldEndTime:
+		m.ResetEndTime()
 		return nil
-	case poly.FieldActivityStatus:
-		m.ResetActivityStatus()
+	case poly.FieldStatus:
+		m.ResetStatus()
 		return nil
-	case poly.FieldActivityType:
-		m.ResetActivityType()
+	case poly.FieldType:
+		m.ResetType()
 		return nil
 	}
 	return fmt.Errorf("unknown Poly field %s", name)
