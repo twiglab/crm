@@ -7,6 +7,12 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
+func failOnErr(err error, msg string) {
+	if err != nil {
+		log.Panicf("%s: %s", msg, err)
+	}
+}
+
 type RabbitMQ struct {
 	conn    *amqp.Connection
 	channel *amqp.Channel
@@ -36,8 +42,7 @@ func (r *RabbitMQ) RecieveTopic() {
 		false,
 		nil,
 	)
-	r.failOnErr(err, "Failed to declare an exch"+
-		"ange")
+	failOnErr(err, "Failed to declare an exchange")
 	//2.试探性创建队列，这里注意队列名称不要写
 	q, err := r.channel.QueueDeclare(
 		"", //随机生产队列名称
@@ -47,7 +52,7 @@ func (r *RabbitMQ) RecieveTopic() {
 		false,
 		nil,
 	)
-	r.failOnErr(err, "Failed to declare a queue")
+	failOnErr(err, "Failed to declare a queue")
 
 	//绑定队列到 exchange 中
 	err = r.channel.QueueBind(

@@ -3,7 +3,7 @@ module github.com/twiglab/crm/wechat
 go 1.23.1
 
 require (
-	github.com/99designs/gqlgen v0.17.57
+	github.com/99designs/gqlgen v0.17.60
 	github.com/Khan/genqlient v0.7.0
 	github.com/bytedance/sonic v1.12.4
 	github.com/go-chi/chi/v5 v5.1.0
@@ -11,11 +11,11 @@ require (
 	github.com/rabbitmq/amqp091-go v1.10.0
 	github.com/silenceper/wechat/v2 v2.1.7
 	github.com/tinylib/msgp v1.2.4
-	github.com/vektah/gqlparser/v2 v2.5.19
+	github.com/vektah/gqlparser/v2 v2.5.20
 )
 
 require (
-	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/agnivade/levenshtein v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
 )
@@ -47,7 +47,7 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	golang.org/x/arch v0.12.0 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
-	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
 )
