@@ -6,11 +6,11 @@ require github.com/google/uuid v1.6.0
 
 require (
 	entgo.io/ent v0.14.1
-	github.com/99designs/gqlgen v0.17.57
+	github.com/99designs/gqlgen v0.17.60
 	github.com/allegro/bigcache/v3 v3.1.0
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/tinylib/msgp v1.2.4
-	github.com/vektah/gqlparser/v2 v2.5.19
+	github.com/vektah/gqlparser/v2 v2.5.20
 	github.com/yuin/gopher-lua v1.1.1
 	layeh.com/gopher-luar v1.0.11
 )
@@ -18,7 +18,7 @@ require (
 require (
 	ariga.io/atlas v0.19.1-0.20240203083654-5948b60a8e43 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
-	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/agnivade/levenshtein v1.2.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
@@ -31,8 +31,8 @@ require (
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
-	golang.org/x/crypto v0.27.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
