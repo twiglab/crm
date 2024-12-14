@@ -2,13 +2,24 @@ package mq
 
 import (
 	"context"
-	"encoding"
 	"log"
+	"log/slog"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
-	"github.com/twiglab/crm/wechat/pkg/bc"
+	"github.com/tinylib/msgp/msgp"
 )
+
+const MSGPACK_MIME = "application/msgpack"
+
+func MsgpMsg(m msgp.Marshaler) (amqp.Publishing, error) {
+	bs, err := m.MarshalMsg(nil)
+	if err != nil {
+		return amqp.Publishing{}, err
+	}
+
+	return amqp.Publishing{Body: bs, ContentType: MSGPACK_MIME}, nil
+}
 
 func failOnError(err error, msg string) {
 	if err != nil {
@@ -17,56 +28,65 @@ func failOnError(err error, msg string) {
 }
 
 type MQ struct {
-	ch      *amqp.Channel
-	conn    *amqp.Connection
-	exname  string
-	timeout time.Duration
+	Conn         *amqp.Connection
+	ExchangeName string
+	Timeout      time.Duration
+
+	Logger *slog.Logger
+
+	ch *amqp.Channel
 }
 
-func X(url string) *MQ {
-	conn, err := amqp.Dial(url)
-	failOnError(err, "Failed to connect to RabbitMQ")
+func New(logger *slog.Logger, timeout time.Duration) *MQ {
+	return &MQ{
+		Timeout: timeout,
+		Logger:  logger,
+	}
+}
 
-	ch, err := conn.Channel()
+func (q *MQ) BuildWith(conn *amqp.Connection) {
+	var err error
+
+	q.Conn = conn
+
+	q.ch, err = q.Conn.Channel()
 	failOnError(err, "Failed to open a channel")
 
-	err = ch.ExchangeDeclare(
-		bc.MQ_BC_EXCHANGE_NAME, // name
-		amqp.ExchangeTopic,     // type
-		true,                   // durable
-		false,                  // auto-deleted
-		false,                  // internal
-		false,                  // no-wait
-		nil,                    // arguments
+	err = q.ch.ExchangeDeclare(
+		q.ExchangeName,     // name
+		amqp.ExchangeTopic, // type
+		true,               // durable
+		true,               // auto-deleted
+		false,              // internal
+		false,              // no-wait
+		nil,                // arguments
 	)
 	failOnError(err, "Failed to declare an exchange")
 
-	return &MQ{ch: ch, conn: conn, exname: "wechat_topic"}
 }
 
-func (mq *MQ) Send(ctx context.Context, body []byte, key string) {
-	octx, cancel := context.WithTimeout(ctx, mq.timeout)
+func (q *MQ) Build(url string) {
+	conn, err := amqp.Dial(url)
+	failOnError(err, "Failed to connect to RabbitMQ")
+	q.BuildWith(conn)
+}
+
+func (mq *MQ) Send(ctx context.Context, routingKey string, msg amqp.Publishing) error {
+	octx, cancel := context.WithTimeout(ctx, mq.Timeout)
 	defer cancel()
 
 	err := mq.ch.PublishWithContext(octx,
-		mq.exname, // exchange
-		key,       // routing key
-		false,     // mandatory
-		false,     // immediate
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        body,
-		})
-	failOnError(err, "Failed to publish a message")
-}
-
-func (mq *MQ) SendMarshaler(ctx context.Context, body encoding.BinaryMarshaler, key string) {
-	bs, _ := body.MarshalBinary()
-	mq.Send(ctx, bs, key)
+		mq.ExchangeName, // exchange
+		routingKey,      // routing key
+		false,           // mandatory
+		false,           // immediate
+		msg,
+	)
+	return err
 }
 
 func (mq *MQ) Close() error {
 	mq.ch.Close()
-	mq.conn.Close()
+	mq.Conn.Close()
 	return nil
 }
