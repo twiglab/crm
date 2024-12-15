@@ -18,14 +18,27 @@ import (
 )
 
 const (
-	WECHAT_APPID     = "WECHAT_APPID"
-	WECHAT_APPSECRET = "WECHAT_APPSECRET"
+	WECHAT_APPID      = "WECHAT_APPID"
+	WECHAT_APPSECRET  = "WECHAT_APPSECRET"
+	WECHAT_MCHID      = "WECHAT_APPSECRET"
+	WECHAT_SERIALNO   = "WECHAT_SERIALNO"
+	WECHAT_APIKEY     = "WECHAT_APIKEY"
+	WECHAT_PRIVATEKEY = "WECHAT_PRIVATEKEY"
 )
 
 func main() {
+	appId := os.Getenv(WECHAT_APPID)
+	appSecret := os.Getenv(WECHAT_APPSECRET)
+	mchId := os.Getenv(WECHAT_MCHID)
+	serialNo := os.Getenv(WECHAT_SERIALNO)
+	apiKey := os.Getenv(WECHAT_APIKEY)
+	privateKey := os.Getenv(WECHAT_PRIVATEKEY)
+
+	sns.InitWeChatClient(mchId, serialNo, apiKey, privateKey)
+
 	cfg := miniConfig.Config{
-		AppID:     os.Getenv(WECHAT_APPID),
-		AppSecret: os.Getenv(WECHAT_APPSECRET),
+		AppID:     appId,
+		AppSecret: appSecret,
 	}
 	sns.InitMini(&cfg, cache.NewMemory())
 
