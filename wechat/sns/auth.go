@@ -10,8 +10,7 @@ import (
 func Code2Session(ctx context.Context, jsCode string) (resp *data.AuthUserResp, e error) {
 	result, err := GetAuth().Code2SessionContext(ctx, jsCode)
 	resp = &data.AuthUserResp{
-		OpenID: result.OpenID,
-		// SessionKey: result.SessionKey,
+		OpenID:  result.OpenID,
 		UnionID: result.UnionID,
 	}
 
