@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/it512/box"
@@ -11,8 +10,8 @@ import (
 	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
 
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/twiglab/crm/wechat/bc"
 	"github.com/twiglab/crm/wechat/sns"
+	"github.com/twiglab/crm/wechat/web"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -56,6 +55,9 @@ func main() {
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/rpc", gql.New(ctx))
-	mux.Mount("/wxnotify", bc.WxBCNotify())
-	log.Fatal(http.ListenAndServe(":10009", mux))
+	//mux.Mount("/wxnotify", bc.WxBCNotify())
+
+	svr := web.NewHttpServer(ctx, ":10009", mux)
+	log.Fatal(web.RunServer(ctx, svr))
+
 }

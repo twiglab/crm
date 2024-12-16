@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/99designs/gqlgen/plugin/federation/fedruntime"
-	"github.com/twiglab/crm/wechat/pkg/data"
+	"github.com/twiglab/crm/wechat/pkg/sns"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -52,7 +52,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		AuthUser           func(childComplexity int, input data.JsCodeReq) int
+		AuthUser           func(childComplexity int, input sns.JsCodeReq) int
 		__resolve__service func(childComplexity int) int
 	}
 
@@ -62,7 +62,7 @@ type ComplexityRoot struct {
 }
 
 type QueryResolver interface {
-	AuthUser(ctx context.Context, input data.JsCodeReq) (*data.AuthUserResp, error)
+	AuthUser(ctx context.Context, input sns.JsCodeReq) (*sns.AuthUserResp, error)
 }
 
 type executableSchema struct {
@@ -108,7 +108,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.AuthUser(childComplexity, args["input"].(data.JsCodeReq)), true
+		return e.complexity.Query.AuthUser(childComplexity, args["input"].(sns.JsCodeReq)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -309,13 +309,13 @@ func (ec *executionContext) field_Query_AuthUser_args(ctx context.Context, rawAr
 func (ec *executionContext) field_Query_AuthUser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (data.JsCodeReq, error) {
+) (sns.JsCodeReq, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋdataᚐJsCodeReq(ctx, tmp)
+		return ec.unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐJsCodeReq(ctx, tmp)
 	}
 
-	var zeroVal data.JsCodeReq
+	var zeroVal sns.JsCodeReq
 	return zeroVal, nil
 }
 
@@ -396,7 +396,7 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _AuthUserResp_openID(ctx context.Context, field graphql.CollectedField, obj *data.AuthUserResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthUserResp_openID(ctx context.Context, field graphql.CollectedField, obj *sns.AuthUserResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AuthUserResp_openID(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -440,7 +440,7 @@ func (ec *executionContext) fieldContext_AuthUserResp_openID(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _AuthUserResp_unionID(ctx context.Context, field graphql.CollectedField, obj *data.AuthUserResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthUserResp_unionID(ctx context.Context, field graphql.CollectedField, obj *sns.AuthUserResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AuthUserResp_unionID(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -498,7 +498,7 @@ func (ec *executionContext) _Query_AuthUser(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AuthUser(rctx, fc.Args["input"].(data.JsCodeReq))
+		return ec.resolvers.Query().AuthUser(rctx, fc.Args["input"].(sns.JsCodeReq))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -510,9 +510,9 @@ func (ec *executionContext) _Query_AuthUser(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*data.AuthUserResp)
+	res := resTmp.(*sns.AuthUserResp)
 	fc.Result = res
-	return ec.marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋdataᚐAuthUserResp(ctx, field.Selections, res)
+	return ec.marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐAuthUserResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_AuthUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2536,8 +2536,8 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputJsCodeReq(ctx context.Context, obj interface{}) (data.JsCodeReq, error) {
-	var it data.JsCodeReq
+func (ec *executionContext) unmarshalInputJsCodeReq(ctx context.Context, obj interface{}) (sns.JsCodeReq, error) {
+	var it sns.JsCodeReq
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -2573,7 +2573,7 @@ func (ec *executionContext) unmarshalInputJsCodeReq(ctx context.Context, obj int
 
 var authUserRespImplementors = []string{"AuthUserResp"}
 
-func (ec *executionContext) _AuthUserResp(ctx context.Context, sel ast.SelectionSet, obj *data.AuthUserResp) graphql.Marshaler {
+func (ec *executionContext) _AuthUserResp(ctx context.Context, sel ast.SelectionSet, obj *sns.AuthUserResp) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, authUserRespImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3071,11 +3071,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNAuthUserResp2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋdataᚐAuthUserResp(ctx context.Context, sel ast.SelectionSet, v data.AuthUserResp) graphql.Marshaler {
+func (ec *executionContext) marshalNAuthUserResp2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐAuthUserResp(ctx context.Context, sel ast.SelectionSet, v sns.AuthUserResp) graphql.Marshaler {
 	return ec._AuthUserResp(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋdataᚐAuthUserResp(ctx context.Context, sel ast.SelectionSet, v *data.AuthUserResp) graphql.Marshaler {
+func (ec *executionContext) marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐAuthUserResp(ctx context.Context, sel ast.SelectionSet, v *sns.AuthUserResp) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3115,7 +3115,7 @@ func (ec *executionContext) marshalNFieldSet2string(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋdataᚐJsCodeReq(ctx context.Context, v interface{}) (data.JsCodeReq, error) {
+func (ec *executionContext) unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐJsCodeReq(ctx context.Context, v interface{}) (sns.JsCodeReq, error) {
 	res, err := ec.unmarshalInputJsCodeReq(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
