@@ -1,7 +1,7 @@
 package member
 
 import (
-	"fmt"
+	"context"
 	"log"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -13,8 +13,12 @@ func failOnErr(err error, msg string) {
 	}
 }
 
+type RecieverHandler interface {
+	RecieveDelivery(ctx context.Context, delivery amqp.Delivery)
+}
+
 type RabbitMQ struct {
-	conn    *amqp.Connection
+	Conn    *amqp.Connection
 	channel *amqp.Channel
 	//队列名称
 	QueueName string
@@ -22,15 +26,13 @@ type RabbitMQ struct {
 	Exchange string
 	//bind Key 名称
 	Key string
-	//连接信息
-	Mqurl string
 }
 
 // 话题模式接受消息
 // 要注意key,规则
 // 其中“*”用于匹配一个单词，“#”用于匹配多个单词（可以是零个）
 // 匹配 kuteng.* 表示匹配 kuteng.hello, kuteng.hello.one需要用kuteng.#才能匹配到
-func (r *RabbitMQ) RecieveTopic() {
+func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) chan struct{} {
 	//1.试探性创建交换机
 	err := r.channel.ExchangeDeclare(
 		r.Exchange,
@@ -62,6 +64,7 @@ func (r *RabbitMQ) RecieveTopic() {
 		r.Exchange,
 		false,
 		nil)
+	failOnErr(err, "Failed to declare a queue")
 
 	//消费消息
 	messges, err := r.channel.Consume(
@@ -73,15 +76,21 @@ func (r *RabbitMQ) RecieveTopic() {
 		false,
 		nil,
 	)
+	failOnErr(err, "Failed to declare a queue")
 
-	forever := make(chan bool)
+	forever := make(chan struct{})
 
 	go func() {
-		for d := range messges {
-			log.Printf("Received a message: %s", d.Body)
+		for {
+			select {
+			case delivery := <-messges:
+				h.RecieveDelivery(ctx, delivery)
+			case <-forever:
+				return
+			}
 		}
 	}()
 
-	fmt.Println("退出请按 CTRL+C\n")
-	<-forever
+	return forever
+
 }

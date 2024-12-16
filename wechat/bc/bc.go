@@ -2,13 +2,21 @@ package bc
 
 import (
 	"context"
+	"errors"
+
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
-	"github.com/twiglab/crm/wechat/pkg/werr"
-	"github.com/twiglab/crm/wechat/sns"
 )
 
-func BCPointsSync(ctx context.Context, query BusinessCirclePointsSync) error {
+type BcClient struct {
+	client *wechat.ClientV3
+}
+
+func NewBcClient(client *wechat.ClientV3) *BcClient {
+	return &BcClient{client: client}
+}
+
+func (c *BcClient) BCPointsSync(ctx context.Context, query BusinessCirclePointsSync) error {
 	var bm gopay.BodyMap
 	bm.Set("transaction_id", query.TransactionID)
 	bm.Set("appid", query.AppID)
@@ -16,16 +24,14 @@ func BCPointsSync(ctx context.Context, query BusinessCirclePointsSync) error {
 	bm.Set("earn_points", query.EarnPoints)
 	bm.Set("increased_points", query.IncreasedPoints)
 	bm.Set("points_update_time", query.PointsUpdateTime)
-	result, err := sns.GetClient().V3BusinessPointsSync(ctx, bm)
-	if err != nil {
-		return &werr.WeChatCommonError{
-			ErrCode: int64(result.Code),
-			ErrMsg:  result.Error,
-		}
+	result, err := c.client.V3BusinessPointsSync(ctx, bm)
+	if result.Code != 0 {
+		return errors.New(result.Error)
 	}
-	return nil
+	return err
 }
 
+/*
 func BCAuthPointsQuery(ctx context.Context, query BusinessCircleAuthorQuery) (*wechat.BusinessAuthPointsQuery, error) {
 	var bm gopay.BodyMap
 	bm.Set("appid", query.AppID)
@@ -70,3 +76,4 @@ func BCParkingSync(ctx context.Context, query BusinessCircleParkingSyncQuery) er
 	}
 	return nil
 }
+*/

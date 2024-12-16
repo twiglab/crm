@@ -65,12 +65,6 @@ func (q *MQ) BuildWith(conn *amqp.Connection) {
 
 }
 
-func (q *MQ) Build(url string) {
-	conn, err := amqp.Dial(url)
-	failOnError(err, "Failed to connect to RabbitMQ")
-	q.BuildWith(conn)
-}
-
 func (mq *MQ) Send(ctx context.Context, routingKey string, msg amqp.Publishing) error {
 	octx, cancel := context.WithTimeout(ctx, mq.Timeout)
 	defer cancel()
@@ -87,6 +81,5 @@ func (mq *MQ) Send(ctx context.Context, routingKey string, msg amqp.Publishing) 
 
 func (mq *MQ) Close() error {
 	mq.ch.Close()
-	mq.Conn.Close()
 	return nil
 }
