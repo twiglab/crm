@@ -26,11 +26,20 @@ const (
 	WECHAT_SERIALNO   = "WECHAT_SERIALNO"
 	WECHAT_APIKEY     = "WECHAT_APIKEY"
 	WECHAT_PRIVATEKEY = "WECHAT_PRIVATEKEY"
+
+	SERVER_ADDR = "SERVER_ADDR"
 )
 
+func GetEnv(env string) string {
+	x := os.Getenv(env)
+	log.Printf("%s = %s\n", env, x)
+	return x
+}
+
 func main() {
-	appId := os.Getenv(WECHAT_APPID)
-	appSecret := os.Getenv(WECHAT_APPSECRET)
+	appId := GetEnv(WECHAT_APPID)
+	appSecret :=GetEnv(WECHAT_APPSECRET)
+	addr := GetEnv(SERVER_ADDR)
 	/*
 		mchId := os.Getenv(WECHAT_MCHID)
 		serialNo := os.Getenv(WECHAT_SERIALNO)
@@ -54,10 +63,10 @@ func main() {
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/rpc", gql.New(ctx))
+	mux.Mount("/rpc", gql.New(auth))
 	//mux.Mount("/wxnotify", bc.WxBCNotify())
 
-	svr := web.NewHttpServer(ctx, ":10009", mux)
+	svr := web.NewHttpServer(ctx, addr, mux)
 	log.Fatal(web.RunServer(ctx, svr))
 
 }
