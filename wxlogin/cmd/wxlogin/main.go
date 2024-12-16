@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -10,9 +10,11 @@ import (
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/twiglab/crm/wxlogin"
 	"github.com/twiglab/crm/wxlogin/gql"
+	"github.com/twiglab/crm/wxlogin/web"
 	"github.com/twiglab/crm/wxlogin/wx"
 )
 
@@ -48,12 +50,13 @@ func main() {
 
 	root := chi.NewMux()
 
+	root.Use(middleware.Logger, middleware.Recoverer)
+
 	root.Mount("/gql", gql.GQLRouter(cli))
 	root.Mount("/jwt", wxlogin.JWTVerify(secret))
 
-	if err := http.ListenAndServe(addr, root); err != nil {
+	svr := web.NewHttpServer(context.Background(), addr, root)
+	if err := web.RunServer(context.Background(), svr); err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(mb)
 }

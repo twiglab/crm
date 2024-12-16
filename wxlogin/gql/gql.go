@@ -17,8 +17,8 @@ func GQLRouter(acli *wxlogin.AuthClient) chi.Router {
 	))
 
 	r := chi.NewRouter()
-	r.Handle("/", playground.ApolloSandboxHandler("pg", "/gql"))
-	r.Handle("/gql", srv)
+	r.Handle("/", playground.ApolloSandboxHandler("pg", "/gql/query"))
+	r.Handle("/query", srv)
 
 	return r
 }

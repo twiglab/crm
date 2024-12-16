@@ -38,7 +38,7 @@ func GetEnv(env string) string {
 
 func main() {
 	appId := GetEnv(WECHAT_APPID)
-	appSecret :=GetEnv(WECHAT_APPSECRET)
+	appSecret := GetEnv(WECHAT_APPSECRET)
 	addr := GetEnv(SERVER_ADDR)
 	/*
 		mchId := os.Getenv(WECHAT_MCHID)
@@ -63,7 +63,7 @@ func main() {
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/rpc", gql.New(auth))
+	mux.Mount("/gqlrpc", gql.New(auth))
 	//mux.Mount("/wxnotify", bc.WxBCNotify())
 
 	svr := web.NewHttpServer(ctx, addr, mux)

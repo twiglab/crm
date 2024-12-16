@@ -19,8 +19,8 @@ func New(a *sns.Auth) chi.Router {
 	srv := rpc.New(es)
 
 	r := chi.NewRouter()
-	r.Handle("/", playground.ApolloSandboxHandler("rpc", "/rpc/gql"))
-	r.Handle("/gql", srv)
+	r.Handle("/", playground.ApolloSandboxHandler("rpc", "/gqlrpc/query"))
+	r.Handle("/query", srv)
 
 	return r
 }

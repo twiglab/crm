@@ -44,6 +44,8 @@ github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1 h1:JnPUqp1Jgrxr
 github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1/go.mod h1:dV6ntWKUnXXLbCzYkNU2d1jjD9FKUOcZon1SJ+X20xo=
 github.com/twiglab/crm/wechat v0.0.0-20241116061244-2ba4efae26f1 h1:wjngLNRqau18Vqn6ybCn4Ws2U1fwehXrQJ0sEWLDsh8=
 github.com/twiglab/crm/wechat v0.0.0-20241116061244-2ba4efae26f1/go.mod h1:gXsub5c9PNnxisPDWoDkAwKrt99MeUYgAb0ehGZRyTk=
+github.com/twiglab/crm/wechat v0.0.0-20241216131727-886793cf0a25 h1:+nB/i8TimBVTxif2trD0S52Znpk3vb7HIZ3ozVtfvrA=
+github.com/twiglab/crm/wechat v0.0.0-20241216131727-886793cf0a25/go.mod h1:lEvPdYOttpqGXb+ywgx4iLZlUdh9W8LGwSknlYEYDYs=
 github.com/vektah/gqlparser/v2 v2.5.20 h1:kPaWbhBntxoZPaNdBaIPT1Kh0i1b/onb5kXgEdP5JCo=
 github.com/vektah/gqlparser/v2 v2.5.20/go.mod h1:xMl+ta8a5M1Yo1A1Iwt/k7gSpscwSnHZdw7tfhEGfTM=
 golang.org/x/crypto v0.31.0 h1:ihbySMvVjLAeSH1IbfcRTkD/iNscyz8rGzjF/E5hV6U=

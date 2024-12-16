@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/Khan/genqlient/graphql"
-	"github.com/twiglab/crm/wechat/pkg/data"
-	"github.com/twiglab/crm/wechat/pkg/low"
+	"github.com/twiglab/crm/wechat/pkg/sns"
+	"github.com/twiglab/crm/wechat/pkg/sns/low"
 )
 
 type WxCli struct {
@@ -24,7 +24,7 @@ type Codes struct {
 //	@return *Codes
 //	@return error
 func (c *WxCli) AuthUser(ctx context.Context, jsCode string) (*Codes, error) {
-	resp, err := low.AuthUser(ctx, c.Client, data.JsCodeReq{JsCode: jsCode})
+	resp, err := low.AuthUser(ctx, c.Client, sns.JsCodeReq{JsCode: jsCode})
 	if err != nil {
 		return nil, err
 	}
