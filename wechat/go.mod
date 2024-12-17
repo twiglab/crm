@@ -5,7 +5,7 @@ go 1.23.1
 require (
 	github.com/99designs/gqlgen v0.17.60
 	github.com/Khan/genqlient v0.7.0
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-pay/gopay v1.5.106
 	github.com/it512/box v0.0.4
 	github.com/joho/godotenv v1.5.1
