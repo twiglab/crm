@@ -5,12 +5,12 @@ go 1.23.1
 require (
 	github.com/99designs/gqlgen v0.17.60
 	github.com/Khan/genqlient v0.7.0
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-jose/go-jose/v4 v4.0.4
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1
-	github.com/twiglab/crm/wechat v0.0.0-20241216131727-886793cf0a25
+	github.com/twiglab/crm/wechat v0.0.0-20241218094246-ef94d18d94d3
 	github.com/vektah/gqlparser/v2 v2.5.20
 )
 
