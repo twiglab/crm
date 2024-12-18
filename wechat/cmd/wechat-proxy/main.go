@@ -64,7 +64,6 @@ func main() {
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(auth))
-	//mux.Mount("/wxnotify", bc.WxBCNotify())
 
 	svr := web.NewHttpServer(ctx, addr, mux)
 	log.Fatal(web.RunServer(ctx, svr))
