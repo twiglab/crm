@@ -1,17 +1,17 @@
 package sns
 
 type AuthUserResp struct {
-	OpenID  string `json:"open_id"`
-	UnionID string `json:"union_id"`
+	OpenID  string
+	UnionID string
 }
 
 type JsCodeReq struct {
-	JsCode string `json:"js_code"`
+	JsCode string
 }
 
 type WeChatCommonError struct {
-	ErrCode int64  `json:"err_code"`
-	ErrMsg  string `json:"err_msg"`
+	ErrCode int64
+	ErrMsg  string
 }
 
 func (e WeChatCommonError) Error() string {
