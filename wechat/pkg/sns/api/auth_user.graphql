@@ -1,0 +1,6 @@
+query AuthUser($input: JsCodeReq!) {
+  AuthUser(input: $input) {
+    openID
+    unionID
+  }
+}
