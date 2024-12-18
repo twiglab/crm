@@ -1,11 +1,11 @@
 package bc
 
 import (
-	"github.com/twiglab/crm/wechat/mq"
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/twiglab/crm/wechat/mq"
+
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
 	"github.com/twiglab/crm/wechat/pkg/bc"
@@ -30,6 +30,7 @@ func BusiCircleAuth(x Xx) http.HandlerFunc {
 			return
 		}
 		ca := BusinessCircleAuthorSource{}
+		// apiKey是什么？ 请黄总翻阅文档，并修改正确
 		if err := req.DecryptCipherTextToStruct(x.WxApiKey, &ca); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
@@ -49,8 +50,11 @@ func BusiCircleAuth(x Xx) http.HandlerFunc {
 			},
 		}
 
+		body, _ := mq.MsgpMsg(msg)
+
 		ctx := r.Context()
-		x.Q.SendMarshaler(ctx, msg, bc.MQ_WX_TOC_BC_AUTH)
+
+		x.Q.Send(ctx, bc.MQ_WX_TOC_BC_AUTH, body)
 	}
 }
 
@@ -67,7 +71,10 @@ func BusiCirclePayment(x Xx) http.HandlerFunc {
 			return
 		}
 
+		ctx := r.Context()
+
 		timeEnd, _ := time.Parse(time.RFC3339, ca.TimeEnd)
+		// 这里代码有错，请黄总修改正确
 		msg := &msg.BusinessCirclePayment{
 			AppID:                  ca.AppID,
 			OpenID:                 ca.OpenID,
@@ -83,11 +90,16 @@ func BusiCirclePayment(x Xx) http.HandlerFunc {
 			},
 		}
 
-		ctx := r.Context()
-		x.Q.SendMarshaler(ctx, msg, bc.MQ_WX_TOC_BC_PAYMENT)
+		// 请黄总考虑这里应当如何实现？
+		//x.BcClient.BCPointsSync(ctx, BusinessCirclePointsSync{})
+
+		body, _ := mq.MsgpMsg(msg)
+
+		x.Q.Send(ctx, bc.MQ_WX_TOC_BC_PAYMENT, body)
 	}
 }
 
+// 请黄总将此方法修改正确
 func BusiCircleRefund(x Xx) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
@@ -124,11 +136,15 @@ func BusiCircleRefund(x Xx) http.HandlerFunc {
 	}
 }
 
+// 这里写的合适吗？ 请黄总修改
 type Xx struct {
 	Q        *mq.MQ
 	WxApiKey string
+	BcClient *BcClient
 }
 
+// 请黄总和运维协商一下notify的url ，并且请运维做好安全措施
+/*
 func WxBCNotify() http.Handler {
 	wx := chi.NewRouter()
 
@@ -141,3 +157,4 @@ func WxBCNotify() http.Handler {
 
 	return r
 }
+*/
