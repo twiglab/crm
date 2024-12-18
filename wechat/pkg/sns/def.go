@@ -1,12 +1,12 @@
 package sns
 
 type AuthUserResp struct {
-	OpenID  string
-	UnionID string
+	OpenID  string `json:"openID"`
+	UnionID string `json:"unionID"`
 }
 
 type JsCodeReq struct {
-	JsCode string
+	JsCode string `json:"jsCode"`
 }
 
 type WeChatCommonError struct {
