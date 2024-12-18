@@ -45,7 +45,7 @@ func New(logger *slog.Logger, timeout time.Duration) *MQ {
 }
 
 func (q *MQ) BuildWith(conn *amqp.Connection, exanme string) error {
-	if !q.binit {
+	if q.binit {
 		return nil
 	}
 
@@ -67,6 +67,8 @@ func (q *MQ) BuildWith(conn *amqp.Connection, exanme string) error {
 		false,              // no-wait
 		nil,                // arguments
 	)
+
+	q.binit = true
 	return err
 }
 

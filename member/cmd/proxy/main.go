@@ -3,16 +3,30 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/twiglab/crm/member/rpc/gql"
+	"github.com/twiglab/crm/member/mq"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 )
 
 func main() {
-	mux := chi.NewMux()
-	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/rpc", gql.New(context.Background()))
-	log.Fatal(http.ListenAndServe(":10009", mux))
+
+	conn, err := mq.Dial("amqp://admin:rabbitmq123456.PWD.rabbitmq@localhost:5672/")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	q := &mq.RabbitMQ{
+		Conn:      conn,
+		QueueName: "QMemberAuth",
+		Exchange:  bc.MQ_BC_EXCHANGE_NAME,
+		Key:       bc.MQ_WX_TOC_BC_AUTH,
+	}
+
+	ch, err := q.Recieve(context.Background(), &mq.MemberAuthReciverHandle{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	<-ch
+
 }
