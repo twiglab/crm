@@ -4,7 +4,7 @@ FROM ${REGISTRY}/golang:1.23 as builder
 
 WORKDIR /opt/build
 COPY wxlogin wxlogin
-RUN cd wxlogin && go build  -o wxlogin -v ./cmd/wxlogin
+RUN cd wxlogin && go build -mod=vendor  -o wxlogin -v ./cmd/wxlogin
 
 FROM ${REGISTRY}/ubuntu:24.04
 
