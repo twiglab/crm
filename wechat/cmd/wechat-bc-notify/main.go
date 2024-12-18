@@ -14,6 +14,7 @@ import (
 
 func main() {
 	fmt.Println("请黄总再此处写代码，提交并保证运行正确！多谢！")
+	fmt.Println("一下代码为测试代码，并非正式代码，请请黄总删除重写！")
 
 	conn, err := mq.Dial("amqp://admin:rabbitmq123456.PWD.rabbitmq@localhost:5672/")
 	if err != nil {
