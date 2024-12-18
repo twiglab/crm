@@ -10,8 +10,8 @@ type JsCodeReq struct {
 }
 
 type WeChatCommonError struct {
-	ErrCode int64  `json:"errcode"`
-	ErrMsg  string `json:"errmsg"`
+	ErrCode int64  `json:"err_code"`
+	ErrMsg  string `json:"err_msg"`
 }
 
 func (e WeChatCommonError) Error() string {
