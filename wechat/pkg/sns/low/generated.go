@@ -11,7 +11,7 @@ import (
 
 // AuthUserResponse is returned by AuthUser on success.
 type AuthUserResponse struct {
-	AuthUser sns.AuthUserResp `json:"AuthUser"`
+	AuthUser sns.AuthUserResp `json:"authUser"`
 }
 
 // GetAuthUser returns AuthUserResponse.AuthUser, and is useful for accessing the field via an interface.
@@ -28,7 +28,7 @@ func (v *__AuthUserInput) GetInput() sns.JsCodeReq { return v.Input }
 // The query or mutation executed by AuthUser.
 const AuthUser_Operation = `
 query AuthUser ($input: JsCodeReq!) {
-	AuthUser(input: $input) {
+	authUser(input: $input) {
 		openID
 		unionID
 	}

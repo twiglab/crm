@@ -98,12 +98,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.AuthUserResp.UnionID(childComplexity), true
 
-	case "Query.AuthUser":
+	case "Query.authUser":
 		if e.complexity.Query.AuthUser == nil {
 			break
 		}
 
-		args, err := ec.field_Query_AuthUser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_authUser_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -225,7 +225,7 @@ type AuthUserResp{
 }
 
 type Query {
-  AuthUser(input: JsCodeReq!): AuthUserResp!
+  authUser(input: JsCodeReq!): AuthUserResp!
 }
 
 `, BuiltIn: false},
@@ -296,29 +296,6 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Query_AuthUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_AuthUser_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_AuthUser_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (sns.JsCodeReq, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐJsCodeReq(ctx, tmp)
-	}
-
-	var zeroVal sns.JsCodeReq
-	return zeroVal, nil
-}
-
 func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -339,6 +316,29 @@ func (ec *executionContext) field_Query___type_argsName(
 	}
 
 	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_authUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_authUser_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_authUser_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (sns.JsCodeReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNJsCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐJsCodeReq(ctx, tmp)
+	}
+
+	var zeroVal sns.JsCodeReq
 	return zeroVal, nil
 }
 
@@ -484,8 +484,8 @@ func (ec *executionContext) fieldContext_AuthUserResp_unionID(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_AuthUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_AuthUser(ctx, field)
+func (ec *executionContext) _Query_authUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_authUser(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -515,7 +515,7 @@ func (ec *executionContext) _Query_AuthUser(ctx context.Context, field graphql.C
 	return ec.marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋsnsᚐAuthUserResp(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_AuthUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_authUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -538,7 +538,7 @@ func (ec *executionContext) fieldContext_Query_AuthUser(ctx context.Context, fie
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_AuthUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Query_authUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -2634,7 +2634,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "AuthUser":
+		case "authUser":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -2643,7 +2643,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_AuthUser(ctx, field)
+				res = ec._Query_authUser(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

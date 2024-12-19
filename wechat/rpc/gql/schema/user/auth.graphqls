@@ -8,6 +8,6 @@ type AuthUserResp{
 }
 
 type Query {
-  AuthUser(input: JsCodeReq!): AuthUserResp!
+  authUser(input: JsCodeReq!): AuthUserResp!
 }
 

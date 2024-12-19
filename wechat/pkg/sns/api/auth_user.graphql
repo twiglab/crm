@@ -1,5 +1,5 @@
 query AuthUser($input: JsCodeReq!) {
-  AuthUser(input: $input) {
+  authUser(input: $input) {
     openID
     unionID
   }

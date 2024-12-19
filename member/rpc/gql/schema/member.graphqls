@@ -1,20 +1,21 @@
 type MemberResp {
   code: String!
-  wx_open_id: String!
+  wxOpenID: String!
 }
 
 input OpenIDReq {
-  wx_open_id: String!
+  wxOpenID: String!
 }
 
 input CreateWxMemberReq {
   code: String!
-  wx_open_id: String!
+  wxOpenID: String!
 }
 
 type Query {
   QueryWxMember (input: OpenIDReq!): MemberResp
   QueryMember (input: OpenIDReq!): MemberResp
+  GetMember (input: OpenIDReq!): MemberResp
 }
 
 
