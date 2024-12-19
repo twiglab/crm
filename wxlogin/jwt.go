@@ -101,7 +101,7 @@ func signed(claims *jwt.Claims, key any) (string, error) {
 	}
 
 	singner, err := jose.NewSigner(jose.SigningKey{
-		Algorithm: jose.HS512,
+		Algorithm: jose.HS256,
 		Key:       key,
 	}, &jose.SignerOptions{NonceSource: nonce})
 

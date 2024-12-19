@@ -46,7 +46,7 @@ func main() {
 	mb := &wx.MemberCli{Client: mbCli}
 	wx := &wx.WxCli{Client: wxCli}
 
-	cli := &wxlogin.AuthClient{MemberCli: mb, WxCli: wx}
+	cli := &wxlogin.AuthClient{MemberCli: mb, WxCli: wx, Secret: secret}
 
 	root := chi.NewMux()
 
