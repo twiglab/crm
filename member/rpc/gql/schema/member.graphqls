@@ -13,12 +13,11 @@ input CreateWxMemberReq {
 }
 
 type Query {
-  QueryWxMember (input: OpenIDReq!): MemberResp
-  QueryMember (input: OpenIDReq!): MemberResp
-  GetMember (input: OpenIDReq!): MemberResp
+  queryWxMember (input: OpenIDReq!): MemberResp
+  getWxMember (input: OpenIDReq!): MemberResp
 }
 
 
 type Mutation {
-  CreateWxMember(input: CreateWxMemberReq!): MemberResp!
+  createWxMember(input: CreateWxMemberReq!): MemberResp!
 }

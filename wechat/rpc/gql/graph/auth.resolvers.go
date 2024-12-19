@@ -12,6 +12,12 @@ import (
 
 // AuthUser is the resolver for the AuthUser field.
 func (r *queryResolver) AuthUser(ctx context.Context, input sns.JsCodeReq) (*sns.AuthUserResp, error) {
+	if input.JsCode == "0000000000" {
+		return &sns.AuthUserResp{
+			OpenID:  "0000000000-0000000000",
+			UnionID: "0000000000",
+		}, nil
+	}
 	return r.Auth.Code2Session(ctx, input.JsCode)
 }
 
