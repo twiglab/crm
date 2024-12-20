@@ -10,16 +10,17 @@ import (
 
 func main() {
 
-	conn, err := mq.Dial("amqp://admin:rabbitmq123456.PWD.rabbitmq@localhost:5672/")
+	conn, err := mq.Dial("amqp://erp:erpPass123@pipi.dev:5672/")
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	q := &mq.RabbitMQ{
 		Conn:      conn,
-		QueueName: "QMemberAuth",
+		QueueName: "q.member.auth",
 		Exchange:  bc.MQ_BC_EXCHANGE_NAME,
-		Key:       bc.MQ_WX_TOC_BC_AUTH,
+		BindKey:   bc.MQ_WX_TOC_BC_AUTH,
 	}
 
 	ch, err := q.Recieve(context.Background(), &mq.MemberAuthReciverHandle{})
