@@ -40,19 +40,20 @@ func (c *MemberCli) Cr(ctx context.Context) {
 //	@return error
 func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, error) {
 	// 根据微信openid查询用户信息
-	req, err := low.QueryWxMember(ctx, c.Client, data.OpenIDReq{WxOpenID: wxOpenID})
-	m := req.GetQueryWxMember()
-
-	if err == nil && m == (data.MemberResp{}) {
-		// 创建用户
-		r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
-		if err != nil {
-			return nil, err
-		}
-		m = r.GetCreateWxMember()
-		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+	req, err := low.QueryWxMemberByOpenID(ctx, c.Client, data.OpenIDReq{WxOpenID: wxOpenID})
+	if err != nil {
+		return nil, err
 	}
 
+	m := req.GetQueryWxMemberByOpenID()
+
+	// 创建用户
+	r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+	if err != nil {
+		return nil, err
+	}
+	m = r.GetCreateWxMember()
+	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 	// 查询出错
 	if err != nil {
 		return nil, err

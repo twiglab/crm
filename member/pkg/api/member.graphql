@@ -1,12 +1,12 @@
 mutation CreateWxMember($input: CreateWxMemberReq!) {
-  CreateWxMember(input: $input) {
+  createWxMember(input: $input) {
     code
     wxOpenID
   }
 }
 
-query QueryWxMember($input: OpenIDReq!) {
-  QueryWxMember(input: $input) {
+query QueryWxMemberByOpenID($input: OpenIDReq!) {
+  queryWxMemberByOpenID(input: $input) {
     code
     wxOpenID
   }

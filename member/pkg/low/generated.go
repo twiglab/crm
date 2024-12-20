@@ -11,19 +11,21 @@ import (
 
 // CreateWxMemberResponse is returned by CreateWxMember on success.
 type CreateWxMemberResponse struct {
-	CreateWxMember data.MemberResp `json:"CreateWxMember"`
+	CreateWxMember data.MemberResp `json:"createWxMember"`
 }
 
 // GetCreateWxMember returns CreateWxMemberResponse.CreateWxMember, and is useful for accessing the field via an interface.
 func (v *CreateWxMemberResponse) GetCreateWxMember() data.MemberResp { return v.CreateWxMember }
 
-// QueryWxMemberResponse is returned by QueryWxMember on success.
-type QueryWxMemberResponse struct {
-	QueryWxMember data.MemberResp `json:"QueryWxMember"`
+// QueryWxMemberByOpenIDResponse is returned by QueryWxMemberByOpenID on success.
+type QueryWxMemberByOpenIDResponse struct {
+	QueryWxMemberByOpenID data.MemberResp `json:"queryWxMemberByOpenID"`
 }
 
-// GetQueryWxMember returns QueryWxMemberResponse.QueryWxMember, and is useful for accessing the field via an interface.
-func (v *QueryWxMemberResponse) GetQueryWxMember() data.MemberResp { return v.QueryWxMember }
+// GetQueryWxMemberByOpenID returns QueryWxMemberByOpenIDResponse.QueryWxMemberByOpenID, and is useful for accessing the field via an interface.
+func (v *QueryWxMemberByOpenIDResponse) GetQueryWxMemberByOpenID() data.MemberResp {
+	return v.QueryWxMemberByOpenID
+}
 
 // __CreateWxMemberInput is used internally by genqlient
 type __CreateWxMemberInput struct {
@@ -33,18 +35,18 @@ type __CreateWxMemberInput struct {
 // GetInput returns __CreateWxMemberInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateWxMemberInput) GetInput() data.CreateWxMemberReq { return v.Input }
 
-// __QueryWxMemberInput is used internally by genqlient
-type __QueryWxMemberInput struct {
+// __QueryWxMemberByOpenIDInput is used internally by genqlient
+type __QueryWxMemberByOpenIDInput struct {
 	Input data.OpenIDReq `json:"input"`
 }
 
-// GetInput returns __QueryWxMemberInput.Input, and is useful for accessing the field via an interface.
-func (v *__QueryWxMemberInput) GetInput() data.OpenIDReq { return v.Input }
+// GetInput returns __QueryWxMemberByOpenIDInput.Input, and is useful for accessing the field via an interface.
+func (v *__QueryWxMemberByOpenIDInput) GetInput() data.OpenIDReq { return v.Input }
 
 // The query or mutation executed by CreateWxMember.
 const CreateWxMember_Operation = `
 mutation CreateWxMember ($input: CreateWxMemberReq!) {
-	CreateWxMember(input: $input) {
+	createWxMember(input: $input) {
 		code
 		wxOpenID
 	}
@@ -77,31 +79,31 @@ func CreateWxMember(
 	return &data_, err_
 }
 
-// The query or mutation executed by QueryWxMember.
-const QueryWxMember_Operation = `
-query QueryWxMember ($input: OpenIDReq!) {
-	QueryWxMember(input: $input) {
+// The query or mutation executed by QueryWxMemberByOpenID.
+const QueryWxMemberByOpenID_Operation = `
+query QueryWxMemberByOpenID ($input: OpenIDReq!) {
+	queryWxMemberByOpenID(input: $input) {
 		code
 		wxOpenID
 	}
 }
 `
 
-func QueryWxMember(
+func QueryWxMemberByOpenID(
 	ctx_ context.Context,
 	client_ graphql.Client,
 	input data.OpenIDReq,
-) (*QueryWxMemberResponse, error) {
+) (*QueryWxMemberByOpenIDResponse, error) {
 	req_ := &graphql.Request{
-		OpName: "QueryWxMember",
-		Query:  QueryWxMember_Operation,
-		Variables: &__QueryWxMemberInput{
+		OpName: "QueryWxMemberByOpenID",
+		Query:  QueryWxMemberByOpenID_Operation,
+		Variables: &__QueryWxMemberByOpenIDInput{
 			Input: input,
 		},
 	}
 	var err_ error
 
-	var data_ QueryWxMemberResponse
+	var data_ QueryWxMemberByOpenIDResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(

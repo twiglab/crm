@@ -3,6 +3,13 @@ type MemberResp {
   wxOpenID: String!
 }
 
+type QryMemberResp {
+  code: String!
+  wxOpenID: String!
+
+  found:Boolean!
+}
+
 input OpenIDReq {
   wxOpenID: String!
 }
@@ -13,7 +20,7 @@ input CreateWxMemberReq {
 }
 
 type Query {
-  queryWxMemberByOpenID (input: OpenIDReq!): MemberResp
+  queryWxMemberByOpenID (input: OpenIDReq!): QryMemberResp!
 }
 
 

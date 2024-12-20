@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 
+	"github.com/twiglab/crm/member/orm/ent"
 	"github.com/twiglab/crm/member/orm/ent/member"
 	"github.com/twiglab/crm/member/pkg/data"
 )
@@ -35,14 +36,18 @@ func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.Create
 }
 
 // QueryWxMemberByOpenID is the resolver for the queryWxMemberByOpenID field.
-func (r *queryResolver) QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
+func (r *queryResolver) QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error) {
 	q := r.Client.Member.Query()
 	q.Where(member.WxOpenIDEQ(input.WxOpenID))
 	mb, err := q.Only(ctx)
+	if ent.IsNotFound(err) {
+		return &data.QryMemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID, Found: false}, nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
-	return &data.MemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
+	return &data.QryMemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID, Found: true}, nil
 }
 
 // Mutation returns MutationResolver implementation.
