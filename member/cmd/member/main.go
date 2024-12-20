@@ -24,5 +24,5 @@ func main() {
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(client))
-	log.Fatal(http.ListenAndServe(":10009", mux))
+	log.Fatal(http.ListenAndServe(":10008", mux))
 }
