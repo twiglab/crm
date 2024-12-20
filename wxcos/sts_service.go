@@ -2,9 +2,7 @@ package wxcos
 
 import (
 	"fmt"
-	"net/http"
 	"sync"
-	"time"
 
 	"github.com/spf13/viper"
 	sts "github.com/tencentyun/qcloud-cos-sts-sdk/go"
@@ -23,9 +21,6 @@ type stsConfig struct {
 
 	DurationSeconds int64 `yaml:"duration_seconds" mapstructure:"duration_seconds"` // 链接有效时间
 
-	// http.client配置
-	ClientTimeout             int `yaml:"client_timeout" mapstructure:"client_timeout"`
-	ClientMaxIdleConnsPerHost int `yaml:"client_max_idle_conns_per_host" mapstructure:"client_max_idle_conns_per_host"`
 }
 
 func readConfig() *stsConfig {
@@ -62,11 +57,7 @@ func GetStsInstance() *stsClient {
 	once.Do(func() {
 		config := readConfig()
 
-		t := http.DefaultTransport.(*http.Transport).Clone()
-		t.MaxIdleConnsPerHost = config.ClientMaxIdleConnsPerHost
-		hc := http.Client{Timeout: time.Duration(config.ClientTimeout) * time.Second, Transport: t}
-
-		client := sts.NewClient(config.SecretId, config.SecretKey, &hc, sts.Host(config.Host))
+		client := sts.NewClient(config.SecretId, config.SecretKey, nil, sts.Host(config.Host))
 		// 配置来源：https://github.com/tencentyun/qcloud-cos-sts-sdk/blob/master/go/example/sts_demo.go
 		opt := &sts.CredentialOptions{
 			DurationSeconds: config.DurationSeconds,
