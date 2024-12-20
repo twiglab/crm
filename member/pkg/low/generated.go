@@ -19,11 +19,11 @@ func (v *CreateWxMemberResponse) GetCreateWxMember() data.MemberResp { return v.
 
 // QueryWxMemberByOpenIDResponse is returned by QueryWxMemberByOpenID on success.
 type QueryWxMemberByOpenIDResponse struct {
-	QueryWxMemberByOpenID data.MemberResp `json:"queryWxMemberByOpenID"`
+	QueryWxMemberByOpenID data.QryMemberResp `json:"queryWxMemberByOpenID"`
 }
 
 // GetQueryWxMemberByOpenID returns QueryWxMemberByOpenIDResponse.QueryWxMemberByOpenID, and is useful for accessing the field via an interface.
-func (v *QueryWxMemberByOpenIDResponse) GetQueryWxMemberByOpenID() data.MemberResp {
+func (v *QueryWxMemberByOpenIDResponse) GetQueryWxMemberByOpenID() data.QryMemberResp {
 	return v.QueryWxMemberByOpenID
 }
 
@@ -85,6 +85,7 @@ query QueryWxMemberByOpenID ($input: OpenIDReq!) {
 	queryWxMemberByOpenID(input: $input) {
 		code
 		wxOpenID
+		found
 	}
 }
 `

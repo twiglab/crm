@@ -9,5 +9,6 @@ query QueryWxMemberByOpenID($input: OpenIDReq!) {
   queryWxMemberByOpenID(input: $input) {
     code
     wxOpenID
+    found
   }
 }

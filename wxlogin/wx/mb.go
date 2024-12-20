@@ -46,18 +46,15 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 	}
 
 	m := req.GetQueryWxMemberByOpenID()
+	if m.Found {
+		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+	}
 
 	// 创建用户
 	r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
 	if err != nil {
 		return nil, err
 	}
-	m = r.GetCreateWxMember()
-	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
-	// 查询出错
-	if err != nil {
-		return nil, err
-	}
-
-	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+	qm := r.GetCreateWxMember()
+	return &Member{Code: qm.Code, WxOpenID: qm.WxOpenID}, nil
 }
