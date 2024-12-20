@@ -3,7 +3,7 @@ module github.com/twiglab/crm/wxlogin
 go 1.23.1
 
 require (
-	github.com/99designs/gqlgen v0.17.60
+	github.com/99designs/gqlgen v0.17.61
 	github.com/Khan/genqlient v0.7.0
 	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-jose/go-jose/v4 v4.0.4
