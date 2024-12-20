@@ -12,7 +12,7 @@ import (
 
 // Login is the resolver for the Login field.
 func (r *queryResolver) Login(ctx context.Context, input model.JsCodeReq) (*model.LoginUserResp, error) {
-	x, err := r.AuthCli.Login3(ctx, input.JsCode)
+	x, err := r.AuthCli.Login2(ctx, input.JsCode)
 	if err != nil {
 		return nil, err
 	}
