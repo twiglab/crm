@@ -41,12 +41,13 @@ func (r *queryResolver) QueryWxMemberByOpenID(ctx context.Context, input data.Op
 	q.Where(member.WxOpenIDEQ(input.WxOpenID))
 	mb, err := q.Only(ctx)
 	if ent.IsNotFound(err) {
-		return &data.QryMemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID, Found: false}, nil
+		return &data.QryMemberResp{Found: false}, nil
 	}
 
 	if err != nil {
-		return nil, err
+		return &data.QryMemberResp{Found: false}, err
 	}
+
 	return &data.QryMemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID, Found: true}, nil
 }
 
