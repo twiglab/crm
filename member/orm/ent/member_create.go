@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/ent/member"
 )
 
@@ -134,16 +132,16 @@ func (mc *MemberCreate) SetNillableBcmbRegTime(t *time.Time) *MemberCreate {
 	return mc
 }
 
-// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
-func (mc *MemberCreate) SetBcmbWxMsgID(s string) *MemberCreate {
-	mc.mutation.SetBcmbWxMsgID(s)
+// SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
+func (mc *MemberCreate) SetBcmbRegMsgID(s string) *MemberCreate {
+	mc.mutation.SetBcmbRegMsgID(s)
 	return mc
 }
 
-// SetNillableBcmbWxMsgID sets the "bcmb_wx_msg_id" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableBcmbWxMsgID(s *string) *MemberCreate {
+// SetNillableBcmbRegMsgID sets the "bcmb_reg_msg_id" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableBcmbRegMsgID(s *string) *MemberCreate {
 	if s != nil {
-		mc.SetBcmbWxMsgID(*s)
+		mc.SetBcmbRegMsgID(*s)
 	}
 	return mc
 }
@@ -176,20 +174,6 @@ func (mc *MemberCreate) SetNillableLevel(i *int) *MemberCreate {
 	return mc
 }
 
-// SetStatus sets the "status" field.
-func (mc *MemberCreate) SetStatus(i int) *MemberCreate {
-	mc.mutation.SetStatus(i)
-	return mc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableStatus(i *int) *MemberCreate {
-	if i != nil {
-		mc.SetStatus(*i)
-	}
-	return mc
-}
-
 // SetSource sets the "source" field.
 func (mc *MemberCreate) SetSource(i int) *MemberCreate {
 	mc.mutation.SetSource(i)
@@ -204,16 +188,30 @@ func (mc *MemberCreate) SetNillableSource(i *int) *MemberCreate {
 	return mc
 }
 
-// SetID sets the "id" field.
-func (mc *MemberCreate) SetID(u uuid.UUID) *MemberCreate {
-	mc.mutation.SetID(u)
+// SetLastTime sets the "last_time" field.
+func (mc *MemberCreate) SetLastTime(t time.Time) *MemberCreate {
+	mc.mutation.SetLastTime(t)
 	return mc
 }
 
-// SetNillableID sets the "id" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableID(u *uuid.UUID) *MemberCreate {
-	if u != nil {
-		mc.SetID(*u)
+// SetNillableLastTime sets the "last_time" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableLastTime(t *time.Time) *MemberCreate {
+	if t != nil {
+		mc.SetLastTime(*t)
+	}
+	return mc
+}
+
+// SetStatus sets the "status" field.
+func (mc *MemberCreate) SetStatus(i int) *MemberCreate {
+	mc.mutation.SetStatus(i)
+	return mc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableStatus(i *int) *MemberCreate {
+	if i != nil {
+		mc.SetStatus(*i)
 	}
 	return mc
 }
@@ -273,17 +271,17 @@ func (mc *MemberCreate) defaults() {
 		v := member.DefaultLevel
 		mc.mutation.SetLevel(v)
 	}
-	if _, ok := mc.mutation.Status(); !ok {
-		v := member.DefaultStatus
-		mc.mutation.SetStatus(v)
-	}
 	if _, ok := mc.mutation.Source(); !ok {
 		v := member.DefaultSource
 		mc.mutation.SetSource(v)
 	}
-	if _, ok := mc.mutation.ID(); !ok {
-		v := member.DefaultID()
-		mc.mutation.SetID(v)
+	if _, ok := mc.mutation.LastTime(); !ok {
+		v := member.DefaultLastTime()
+		mc.mutation.SetLastTime(v)
+	}
+	if _, ok := mc.mutation.Status(); !ok {
+		v := member.DefaultStatus
+		mc.mutation.SetStatus(v)
 	}
 }
 
@@ -334,9 +332,9 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
 		}
 	}
-	if v, ok := mc.mutation.BcmbWxMsgID(); ok {
-		if err := member.BcmbWxMsgIDValidator(v); err != nil {
-			return &ValidationError{Name: "bcmb_wx_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_wx_msg_id": %w`, err)}
+	if v, ok := mc.mutation.BcmbRegMsgID(); ok {
+		if err := member.BcmbRegMsgIDValidator(v); err != nil {
+			return &ValidationError{Name: "bcmb_reg_msg_id", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_reg_msg_id": %w`, err)}
 		}
 	}
 	if _, ok := mc.mutation.BcmbType(); !ok {
@@ -345,11 +343,14 @@ func (mc *MemberCreate) check() error {
 	if _, ok := mc.mutation.Level(); !ok {
 		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Member.level"`)}
 	}
-	if _, ok := mc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Member.status"`)}
-	}
 	if _, ok := mc.mutation.Source(); !ok {
 		return &ValidationError{Name: "source", err: errors.New(`ent: missing required field "Member.source"`)}
+	}
+	if _, ok := mc.mutation.LastTime(); !ok {
+		return &ValidationError{Name: "last_time", err: errors.New(`ent: missing required field "Member.last_time"`)}
+	}
+	if _, ok := mc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Member.status"`)}
 	}
 	return nil
 }
@@ -365,13 +366,8 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
-			_node.ID = *id
-		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
-			return nil, err
-		}
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	mc.mutation.id = &_node.ID
 	mc.mutation.done = true
 	return _node, nil
@@ -380,13 +376,9 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Member{config: mc.config}
-		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeUUID))
+		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
 	)
 	_spec.OnConflict = mc.conflict
-	if id, ok := mc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = &id
-	}
 	if value, ok := mc.mutation.CreateTime(); ok {
 		_spec.SetField(member.FieldCreateTime, field.TypeTime, value)
 		_node.CreateTime = value
@@ -423,9 +415,9 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 		_spec.SetField(member.FieldBcmbRegTime, field.TypeTime, value)
 		_node.BcmbRegTime = &value
 	}
-	if value, ok := mc.mutation.BcmbWxMsgID(); ok {
-		_spec.SetField(member.FieldBcmbWxMsgID, field.TypeString, value)
-		_node.BcmbWxMsgID = value
+	if value, ok := mc.mutation.BcmbRegMsgID(); ok {
+		_spec.SetField(member.FieldBcmbRegMsgID, field.TypeString, value)
+		_node.BcmbRegMsgID = value
 	}
 	if value, ok := mc.mutation.BcmbType(); ok {
 		_spec.SetField(member.FieldBcmbType, field.TypeInt, value)
@@ -435,13 +427,17 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 		_spec.SetField(member.FieldLevel, field.TypeInt, value)
 		_node.Level = value
 	}
-	if value, ok := mc.mutation.Status(); ok {
-		_spec.SetField(member.FieldStatus, field.TypeInt, value)
-		_node.Status = value
-	}
 	if value, ok := mc.mutation.Source(); ok {
 		_spec.SetField(member.FieldSource, field.TypeInt, value)
 		_node.Source = value
+	}
+	if value, ok := mc.mutation.LastTime(); ok {
+		_spec.SetField(member.FieldLastTime, field.TypeTime, value)
+		_node.LastTime = value
+	}
+	if value, ok := mc.mutation.Status(); ok {
+		_spec.SetField(member.FieldStatus, field.TypeInt, value)
+		_node.Status = value
 	}
 	return _node, _spec
 }
@@ -585,21 +581,21 @@ func (u *MemberUpsert) ClearBcmbCode() *MemberUpsert {
 	return u
 }
 
-// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
-func (u *MemberUpsert) SetBcmbWxMsgID(v string) *MemberUpsert {
-	u.Set(member.FieldBcmbWxMsgID, v)
+// SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
+func (u *MemberUpsert) SetBcmbRegMsgID(v string) *MemberUpsert {
+	u.Set(member.FieldBcmbRegMsgID, v)
 	return u
 }
 
-// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateBcmbWxMsgID() *MemberUpsert {
-	u.SetExcluded(member.FieldBcmbWxMsgID)
+// UpdateBcmbRegMsgID sets the "bcmb_reg_msg_id" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateBcmbRegMsgID() *MemberUpsert {
+	u.SetExcluded(member.FieldBcmbRegMsgID)
 	return u
 }
 
-// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
-func (u *MemberUpsert) ClearBcmbWxMsgID() *MemberUpsert {
-	u.SetNull(member.FieldBcmbWxMsgID)
+// ClearBcmbRegMsgID clears the value of the "bcmb_reg_msg_id" field.
+func (u *MemberUpsert) ClearBcmbRegMsgID() *MemberUpsert {
+	u.SetNull(member.FieldBcmbRegMsgID)
 	return u
 }
 
@@ -639,24 +635,6 @@ func (u *MemberUpsert) AddLevel(v int) *MemberUpsert {
 	return u
 }
 
-// SetStatus sets the "status" field.
-func (u *MemberUpsert) SetStatus(v int) *MemberUpsert {
-	u.Set(member.FieldStatus, v)
-	return u
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateStatus() *MemberUpsert {
-	u.SetExcluded(member.FieldStatus)
-	return u
-}
-
-// AddStatus adds v to the "status" field.
-func (u *MemberUpsert) AddStatus(v int) *MemberUpsert {
-	u.Add(member.FieldStatus, v)
-	return u
-}
-
 // SetSource sets the "source" field.
 func (u *MemberUpsert) SetSource(v int) *MemberUpsert {
 	u.Set(member.FieldSource, v)
@@ -675,23 +653,47 @@ func (u *MemberUpsert) AddSource(v int) *MemberUpsert {
 	return u
 }
 
-// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
+// SetLastTime sets the "last_time" field.
+func (u *MemberUpsert) SetLastTime(v time.Time) *MemberUpsert {
+	u.Set(member.FieldLastTime, v)
+	return u
+}
+
+// UpdateLastTime sets the "last_time" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateLastTime() *MemberUpsert {
+	u.SetExcluded(member.FieldLastTime)
+	return u
+}
+
+// SetStatus sets the "status" field.
+func (u *MemberUpsert) SetStatus(v int) *MemberUpsert {
+	u.Set(member.FieldStatus, v)
+	return u
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateStatus() *MemberUpsert {
+	u.SetExcluded(member.FieldStatus)
+	return u
+}
+
+// AddStatus adds v to the "status" field.
+func (u *MemberUpsert) AddStatus(v int) *MemberUpsert {
+	u.Add(member.FieldStatus, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
 //	client.Member.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
-//			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(member.FieldID)
-//			}),
 //		).
 //		Exec(ctx)
 func (u *MemberUpsertOne) UpdateNewValues() *MemberUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
-		if _, exists := u.create.mutation.ID(); exists {
-			s.SetIgnore(member.FieldID)
-		}
 		if _, exists := u.create.mutation.CreateTime(); exists {
 			s.SetIgnore(member.FieldCreateTime)
 		}
@@ -837,24 +839,24 @@ func (u *MemberUpsertOne) ClearBcmbCode() *MemberUpsertOne {
 	})
 }
 
-// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
-func (u *MemberUpsertOne) SetBcmbWxMsgID(v string) *MemberUpsertOne {
+// SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
+func (u *MemberUpsertOne) SetBcmbRegMsgID(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetBcmbWxMsgID(v)
+		s.SetBcmbRegMsgID(v)
 	})
 }
 
-// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateBcmbWxMsgID() *MemberUpsertOne {
+// UpdateBcmbRegMsgID sets the "bcmb_reg_msg_id" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateBcmbRegMsgID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateBcmbWxMsgID()
+		s.UpdateBcmbRegMsgID()
 	})
 }
 
-// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
-func (u *MemberUpsertOne) ClearBcmbWxMsgID() *MemberUpsertOne {
+// ClearBcmbRegMsgID clears the value of the "bcmb_reg_msg_id" field.
+func (u *MemberUpsertOne) ClearBcmbRegMsgID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearBcmbWxMsgID()
+		s.ClearBcmbRegMsgID()
 	})
 }
 
@@ -900,27 +902,6 @@ func (u *MemberUpsertOne) UpdateLevel() *MemberUpsertOne {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *MemberUpsertOne) SetStatus(v int) *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *MemberUpsertOne) AddStatus(v int) *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.AddStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateStatus() *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateStatus()
-	})
-}
-
 // SetSource sets the "source" field.
 func (u *MemberUpsertOne) SetSource(v int) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
@@ -942,6 +923,41 @@ func (u *MemberUpsertOne) UpdateSource() *MemberUpsertOne {
 	})
 }
 
+// SetLastTime sets the "last_time" field.
+func (u *MemberUpsertOne) SetLastTime(v time.Time) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetLastTime(v)
+	})
+}
+
+// UpdateLastTime sets the "last_time" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateLastTime() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateLastTime()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *MemberUpsertOne) SetStatus(v int) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// AddStatus adds v to the "status" field.
+func (u *MemberUpsertOne) AddStatus(v int) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateStatus() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateStatus()
+	})
+}
+
 // Exec executes the query.
 func (u *MemberUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
@@ -958,12 +974,7 @@ func (u *MemberUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *MemberUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
-	if u.create.driver.Dialect() == dialect.MySQL {
-		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
-		// fields from the database since MySQL does not support the RETURNING clause.
-		return id, errors.New("ent: MemberUpsertOne.ID is not supported by MySQL driver. Use MemberUpsertOne.Exec instead")
-	}
+func (u *MemberUpsertOne) ID(ctx context.Context) (id int, err error) {
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -972,7 +983,7 @@ func (u *MemberUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *MemberUpsertOne) IDX(ctx context.Context) uuid.UUID {
+func (u *MemberUpsertOne) IDX(ctx context.Context) int {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -1027,6 +1038,10 @@ func (mcb *MemberCreateBulk) Save(ctx context.Context) ([]*Member, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = int(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -1113,18 +1128,12 @@ type MemberUpsertBulk struct {
 //	client.Member.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
-//			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(member.FieldID)
-//			}),
 //		).
 //		Exec(ctx)
 func (u *MemberUpsertBulk) UpdateNewValues() *MemberUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
-			if _, exists := b.mutation.ID(); exists {
-				s.SetIgnore(member.FieldID)
-			}
 			if _, exists := b.mutation.CreateTime(); exists {
 				s.SetIgnore(member.FieldCreateTime)
 			}
@@ -1271,24 +1280,24 @@ func (u *MemberUpsertBulk) ClearBcmbCode() *MemberUpsertBulk {
 	})
 }
 
-// SetBcmbWxMsgID sets the "bcmb_wx_msg_id" field.
-func (u *MemberUpsertBulk) SetBcmbWxMsgID(v string) *MemberUpsertBulk {
+// SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
+func (u *MemberUpsertBulk) SetBcmbRegMsgID(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.SetBcmbWxMsgID(v)
+		s.SetBcmbRegMsgID(v)
 	})
 }
 
-// UpdateBcmbWxMsgID sets the "bcmb_wx_msg_id" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateBcmbWxMsgID() *MemberUpsertBulk {
+// UpdateBcmbRegMsgID sets the "bcmb_reg_msg_id" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateBcmbRegMsgID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.UpdateBcmbWxMsgID()
+		s.UpdateBcmbRegMsgID()
 	})
 }
 
-// ClearBcmbWxMsgID clears the value of the "bcmb_wx_msg_id" field.
-func (u *MemberUpsertBulk) ClearBcmbWxMsgID() *MemberUpsertBulk {
+// ClearBcmbRegMsgID clears the value of the "bcmb_reg_msg_id" field.
+func (u *MemberUpsertBulk) ClearBcmbRegMsgID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
-		s.ClearBcmbWxMsgID()
+		s.ClearBcmbRegMsgID()
 	})
 }
 
@@ -1334,27 +1343,6 @@ func (u *MemberUpsertBulk) UpdateLevel() *MemberUpsertBulk {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *MemberUpsertBulk) SetStatus(v int) *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *MemberUpsertBulk) AddStatus(v int) *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.AddStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateStatus() *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateStatus()
-	})
-}
-
 // SetSource sets the "source" field.
 func (u *MemberUpsertBulk) SetSource(v int) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
@@ -1373,6 +1361,41 @@ func (u *MemberUpsertBulk) AddSource(v int) *MemberUpsertBulk {
 func (u *MemberUpsertBulk) UpdateSource() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateSource()
+	})
+}
+
+// SetLastTime sets the "last_time" field.
+func (u *MemberUpsertBulk) SetLastTime(v time.Time) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetLastTime(v)
+	})
+}
+
+// UpdateLastTime sets the "last_time" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateLastTime() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateLastTime()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *MemberUpsertBulk) SetStatus(v int) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// AddStatus adds v to the "status" field.
+func (u *MemberUpsertBulk) AddStatus(v int) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateStatus() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateStatus()
 	})
 }
 

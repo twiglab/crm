@@ -19,26 +19,27 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   member.Table,
 			Columns: member.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: member.FieldID,
 			},
 		},
 		Type: "Member",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			member.FieldCreateTime:  {Type: field.TypeTime, Column: member.FieldCreateTime},
-			member.FieldUpdateTime:  {Type: field.TypeTime, Column: member.FieldUpdateTime},
-			member.FieldCode:        {Type: field.TypeString, Column: member.FieldCode},
-			member.FieldPhone:       {Type: field.TypeString, Column: member.FieldPhone},
-			member.FieldNickname:    {Type: field.TypeString, Column: member.FieldNickname},
-			member.FieldWxOpenID:    {Type: field.TypeString, Column: member.FieldWxOpenID},
-			member.FieldWxUID:       {Type: field.TypeString, Column: member.FieldWxUID},
-			member.FieldBcmbCode:    {Type: field.TypeString, Column: member.FieldBcmbCode},
-			member.FieldBcmbRegTime: {Type: field.TypeTime, Column: member.FieldBcmbRegTime},
-			member.FieldBcmbWxMsgID: {Type: field.TypeString, Column: member.FieldBcmbWxMsgID},
-			member.FieldBcmbType:    {Type: field.TypeInt, Column: member.FieldBcmbType},
-			member.FieldLevel:       {Type: field.TypeInt, Column: member.FieldLevel},
-			member.FieldStatus:      {Type: field.TypeInt, Column: member.FieldStatus},
-			member.FieldSource:      {Type: field.TypeInt, Column: member.FieldSource},
+			member.FieldCreateTime:   {Type: field.TypeTime, Column: member.FieldCreateTime},
+			member.FieldUpdateTime:   {Type: field.TypeTime, Column: member.FieldUpdateTime},
+			member.FieldCode:         {Type: field.TypeString, Column: member.FieldCode},
+			member.FieldPhone:        {Type: field.TypeString, Column: member.FieldPhone},
+			member.FieldNickname:     {Type: field.TypeString, Column: member.FieldNickname},
+			member.FieldWxOpenID:     {Type: field.TypeString, Column: member.FieldWxOpenID},
+			member.FieldWxUID:        {Type: field.TypeString, Column: member.FieldWxUID},
+			member.FieldBcmbCode:     {Type: field.TypeString, Column: member.FieldBcmbCode},
+			member.FieldBcmbRegTime:  {Type: field.TypeTime, Column: member.FieldBcmbRegTime},
+			member.FieldBcmbRegMsgID: {Type: field.TypeString, Column: member.FieldBcmbRegMsgID},
+			member.FieldBcmbType:     {Type: field.TypeInt, Column: member.FieldBcmbType},
+			member.FieldLevel:        {Type: field.TypeInt, Column: member.FieldLevel},
+			member.FieldSource:       {Type: field.TypeInt, Column: member.FieldSource},
+			member.FieldLastTime:     {Type: field.TypeTime, Column: member.FieldLastTime},
+			member.FieldStatus:       {Type: field.TypeInt, Column: member.FieldStatus},
 		},
 	}
 	return graph
@@ -85,8 +86,8 @@ func (f *MemberFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *MemberFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql int predicate on the id field.
+func (f *MemberFilter) WhereID(p entql.IntP) {
 	f.Where(p.Field(member.FieldID))
 }
 
@@ -135,9 +136,9 @@ func (f *MemberFilter) WhereBcmbRegTime(p entql.TimeP) {
 	f.Where(p.Field(member.FieldBcmbRegTime))
 }
 
-// WhereBcmbWxMsgID applies the entql string predicate on the bcmb_wx_msg_id field.
-func (f *MemberFilter) WhereBcmbWxMsgID(p entql.StringP) {
-	f.Where(p.Field(member.FieldBcmbWxMsgID))
+// WhereBcmbRegMsgID applies the entql string predicate on the bcmb_reg_msg_id field.
+func (f *MemberFilter) WhereBcmbRegMsgID(p entql.StringP) {
+	f.Where(p.Field(member.FieldBcmbRegMsgID))
 }
 
 // WhereBcmbType applies the entql int predicate on the bcmb_type field.
@@ -150,12 +151,17 @@ func (f *MemberFilter) WhereLevel(p entql.IntP) {
 	f.Where(p.Field(member.FieldLevel))
 }
 
-// WhereStatus applies the entql int predicate on the status field.
-func (f *MemberFilter) WhereStatus(p entql.IntP) {
-	f.Where(p.Field(member.FieldStatus))
-}
-
 // WhereSource applies the entql int predicate on the source field.
 func (f *MemberFilter) WhereSource(p entql.IntP) {
 	f.Where(p.Field(member.FieldSource))
+}
+
+// WhereLastTime applies the entql time.Time predicate on the last_time field.
+func (f *MemberFilter) WhereLastTime(p entql.TimeP) {
+	f.Where(p.Field(member.FieldLastTime))
+}
+
+// WhereStatus applies the entql int predicate on the status field.
+func (f *MemberFilter) WhereStatus(p entql.IntP) {
+	f.Where(p.Field(member.FieldStatus))
 }

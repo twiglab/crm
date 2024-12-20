@@ -11,7 +11,7 @@ import (
 var (
 	// TMemberColumns holds the columns for the "t_member" table.
 	TMemberColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
@@ -19,13 +19,14 @@ var (
 		{Name: "nickname", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "wx_open_id", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
 		{Name: "wx_uid", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
-		{Name: "bcmb_code", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "bcmb_code", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "bcmb_reg_time", Type: field.TypeTime, Nullable: true},
-		{Name: "bcmb_wx_msg_id", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "bcmb_reg_msg_id", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "bcmb_type", Type: field.TypeInt, Default: 0},
 		{Name: "level", Type: field.TypeInt, Default: 0},
-		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "source", Type: field.TypeInt, Default: 0},
+		{Name: "last_time", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 	}
 	// TMemberTable holds the schema information for the "t_member" table.
 	TMemberTable = &schema.Table{

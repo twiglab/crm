@@ -9,7 +9,6 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/ent/member"
 )
 
@@ -17,7 +16,7 @@ import (
 type Member struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uuid.UUID `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
 	CreateTime time.Time `json:"create_time,omitempty"`
 	// UpdateTime holds the value of the "update_time" field.
@@ -36,16 +35,18 @@ type Member struct {
 	BcmbCode string `json:"bcmb_code,omitempty"`
 	// BcmbRegTime holds the value of the "bcmb_reg_time" field.
 	BcmbRegTime *time.Time `json:"bcmb_reg_time,omitempty"`
-	// BcmbWxMsgID holds the value of the "bcmb_wx_msg_id" field.
-	BcmbWxMsgID string `json:"bcmb_wx_msg_id,omitempty"`
+	// BcmbRegMsgID holds the value of the "bcmb_reg_msg_id" field.
+	BcmbRegMsgID string `json:"bcmb_reg_msg_id,omitempty"`
 	// BcmbType holds the value of the "bcmb_type" field.
 	BcmbType int `json:"bcmb_type,omitempty"`
 	// Level holds the value of the "level" field.
 	Level int `json:"level,omitempty"`
-	// Status holds the value of the "status" field.
-	Status int `json:"status,omitempty"`
 	// Source holds the value of the "source" field.
-	Source       int `json:"source,omitempty"`
+	Source int `json:"source,omitempty"`
+	// LastTime holds the value of the "last_time" field.
+	LastTime time.Time `json:"last_time,omitempty"`
+	// Status holds the value of the "status" field.
+	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -54,14 +55,12 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case member.FieldBcmbType, member.FieldLevel, member.FieldStatus, member.FieldSource:
+		case member.FieldID, member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldBcmbCode, member.FieldBcmbWxMsgID:
+		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
 			values[i] = new(sql.NullString)
-		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime:
+		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime, member.FieldLastTime:
 			values[i] = new(sql.NullTime)
-		case member.FieldID:
-			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -78,11 +77,11 @@ func (m *Member) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case member.FieldID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				m.ID = *value
+			value, ok := values[i].(*sql.NullInt64)
+			if !ok {
+				return fmt.Errorf("unexpected type %T for field id", value)
 			}
+			m.ID = int(value.Int64)
 		case member.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field create_time", values[i])
@@ -138,11 +137,11 @@ func (m *Member) assignValues(columns []string, values []any) error {
 				m.BcmbRegTime = new(time.Time)
 				*m.BcmbRegTime = value.Time
 			}
-		case member.FieldBcmbWxMsgID:
+		case member.FieldBcmbRegMsgID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bcmb_wx_msg_id", values[i])
+				return fmt.Errorf("unexpected type %T for field bcmb_reg_msg_id", values[i])
 			} else if value.Valid {
-				m.BcmbWxMsgID = value.String
+				m.BcmbRegMsgID = value.String
 			}
 		case member.FieldBcmbType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -156,17 +155,23 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.Level = int(value.Int64)
 			}
-		case member.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				m.Status = int(value.Int64)
-			}
 		case member.FieldSource:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field source", values[i])
 			} else if value.Valid {
 				m.Source = int(value.Int64)
+			}
+		case member.FieldLastTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field last_time", values[i])
+			} else if value.Valid {
+				m.LastTime = value.Time
+			}
+		case member.FieldStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				m.Status = int(value.Int64)
 			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
@@ -233,8 +238,8 @@ func (m *Member) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("bcmb_wx_msg_id=")
-	builder.WriteString(m.BcmbWxMsgID)
+	builder.WriteString("bcmb_reg_msg_id=")
+	builder.WriteString(m.BcmbRegMsgID)
 	builder.WriteString(", ")
 	builder.WriteString("bcmb_type=")
 	builder.WriteString(fmt.Sprintf("%v", m.BcmbType))
@@ -242,11 +247,14 @@ func (m *Member) String() string {
 	builder.WriteString("level=")
 	builder.WriteString(fmt.Sprintf("%v", m.Level))
 	builder.WriteString(", ")
-	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", m.Status))
-	builder.WriteString(", ")
 	builder.WriteString("source=")
 	builder.WriteString(fmt.Sprintf("%v", m.Source))
+	builder.WriteString(", ")
+	builder.WriteString("last_time=")
+	builder.WriteString(m.LastTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", m.Status))
 	builder.WriteByte(')')
 	return builder.String()
 }

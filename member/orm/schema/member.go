@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
@@ -8,7 +10,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/schema/internal/x"
 )
 
@@ -18,10 +19,6 @@ type Member struct {
 
 func (Member) Fields() []ent.Field {
 	return []ent.Field{
-		field.UUID("id", uuid.Nil).
-			Default(x.ID).
-			Unique().
-			Immutable(),
 
 		field.String("code").
 			MaxLen(36).
@@ -77,7 +74,6 @@ func (Member) Fields() []ent.Field {
 		// 用户在商圈会员卡card_id下的唯一标志，用户领取会员卡后获得的code
 		field.String("bcmb_code").
 			MaxLen(64).
-			Unique().
 			Optional().
 			SchemaType(map[string]string{
 				dialect.MySQL:    "varchar(64)", // Override MySQL.
@@ -92,7 +88,7 @@ func (Member) Fields() []ent.Field {
 			Immutable(),
 
 		// 商圈会员消息id，用于幂等
-		field.String("bcmb_wx_msg_id").
+		field.String("bcmb_reg_msg_id").
 			MaxLen(64).
 			Unique().
 			Optional().
@@ -111,9 +107,12 @@ func (Member) Fields() []ent.Field {
 		// 会员等级
 		field.Int("level").Default(0),
 
-		field.Int("status").Default(1),
-
 		field.Int("source").Default(0),
+
+		// 最后一次登录时间
+		field.Time("last_time").Default(time.Now),
+
+		field.Int("status").Default(1),
 	}
 }
 

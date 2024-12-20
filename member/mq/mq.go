@@ -17,6 +17,13 @@ type RecieverHandler interface {
 }
 
 type MemberAuthReciverHandle struct {
+	RabbitMQ
+	BindKey   string
+	QueueName string
+}
+
+func NewMemberAuthReciverHandle() *MemberAuthReciverHandle {
+	return &MemberAuthReciverHandle{}
 }
 
 func (h *MemberAuthReciverHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
@@ -31,14 +38,9 @@ func (h *MemberAuthReciverHandle) RecieveDelivery(ctx context.Context, delivery 
 }
 
 type RabbitMQ struct {
-	Conn    *amqp.Connection
-	channel *amqp.Channel
-	//队列名称
-	QueueName string
-	//交换机名称
+	Conn     *amqp.Connection
+	channel  *amqp.Channel
 	Exchange string
-	//bind Key 名称
-	Key string
 }
 
 // 话题模式接受消息
@@ -120,4 +122,27 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{
 
 	return forever, nil
 
+}
+
+func (r RabbitMQ) Create() error {
+	var err error
+	if r.channel, err = r.Conn.Channel(); err != nil {
+		return err
+	}
+	//1.试探性创建交换机
+	err = r.channel.ExchangeDeclare(
+		r.Exchange,
+		//交换机类型
+		amqp.ExchangeTopic,
+		true,
+		true,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
