@@ -6,35 +6,43 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/twiglab/crm/member/orm"
+	"github.com/twiglab/crm/member/orm/ent/member"
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
-// CreateWxMember is the resolver for the CreateWxMember field.
+// CreateWxMember is the resolver for the createWxMember field.
 func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.CreateWxMemberReq) (*data.MemberResp, error) {
-	m, err := r.dbop.InsertNewMember(ctx, orm.Param{Code: input.Code, WxOpenID: input.WxOpenID})
+	q := r.Client.Member.Query()
+	q.Where(member.WxOpenIDEQ(input.WxOpenID))
+	b, err := q.Exist(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &data.MemberResp{Code: m.Code}, nil
-}
-
-// QueryWxMember is the resolver for the QueryWxMember field.
-func (r *queryResolver) QueryWxMember(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
-	m, err := r.dbop.SelectByWxID(ctx, orm.Param{WxOpenID: input.WxOpenID})
-	if m != nil && err == nil {
-		return &data.MemberResp{Code: m.Code}, nil
+	if b {
+		return &data.MemberResp{Code: input.Code, WxOpenID: input.WxOpenID}, nil
 	}
 
-	return nil, err
+	c := r.Client.Member.Create()
+	c.SetCode(input.Code)
+	c.SetWxOpenID(input.WxOpenID)
+	mb, err := c.Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &data.MemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
 }
 
-// QueryMember is the resolver for the QueryMember field.
-func (r *queryResolver) QueryMember(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
-	panic(fmt.Errorf("not implemented: QueryMember - QueryMember"))
+// QueryWxMemberByOpenID is the resolver for the queryWxMemberByOpenID field.
+func (r *queryResolver) QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
+	q := r.Client.Member.Query()
+	q.Where(member.WxOpenIDEQ(input.WxOpenID))
+	mb, err := q.Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &data.MemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
 }
 
 // Mutation returns MutationResolver implementation.

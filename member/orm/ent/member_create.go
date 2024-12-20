@@ -581,6 +581,24 @@ func (u *MemberUpsert) ClearBcmbCode() *MemberUpsert {
 	return u
 }
 
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (u *MemberUpsert) SetBcmbRegTime(v time.Time) *MemberUpsert {
+	u.Set(member.FieldBcmbRegTime, v)
+	return u
+}
+
+// UpdateBcmbRegTime sets the "bcmb_reg_time" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateBcmbRegTime() *MemberUpsert {
+	u.SetExcluded(member.FieldBcmbRegTime)
+	return u
+}
+
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (u *MemberUpsert) ClearBcmbRegTime() *MemberUpsert {
+	u.SetNull(member.FieldBcmbRegTime)
+	return u
+}
+
 // SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
 func (u *MemberUpsert) SetBcmbRegMsgID(v string) *MemberUpsert {
 	u.Set(member.FieldBcmbRegMsgID, v)
@@ -699,9 +717,6 @@ func (u *MemberUpsertOne) UpdateNewValues() *MemberUpsertOne {
 		}
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(member.FieldCode)
-		}
-		if _, exists := u.create.mutation.BcmbRegTime(); exists {
-			s.SetIgnore(member.FieldBcmbRegTime)
 		}
 	}))
 	return u
@@ -836,6 +851,27 @@ func (u *MemberUpsertOne) UpdateBcmbCode() *MemberUpsertOne {
 func (u *MemberUpsertOne) ClearBcmbCode() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.ClearBcmbCode()
+	})
+}
+
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (u *MemberUpsertOne) SetBcmbRegTime(v time.Time) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetBcmbRegTime(v)
+	})
+}
+
+// UpdateBcmbRegTime sets the "bcmb_reg_time" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateBcmbRegTime() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateBcmbRegTime()
+	})
+}
+
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (u *MemberUpsertOne) ClearBcmbRegTime() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearBcmbRegTime()
 	})
 }
 
@@ -1140,9 +1176,6 @@ func (u *MemberUpsertBulk) UpdateNewValues() *MemberUpsertBulk {
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(member.FieldCode)
 			}
-			if _, exists := b.mutation.BcmbRegTime(); exists {
-				s.SetIgnore(member.FieldBcmbRegTime)
-			}
 		}
 	}))
 	return u
@@ -1277,6 +1310,27 @@ func (u *MemberUpsertBulk) UpdateBcmbCode() *MemberUpsertBulk {
 func (u *MemberUpsertBulk) ClearBcmbCode() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.ClearBcmbCode()
+	})
+}
+
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (u *MemberUpsertBulk) SetBcmbRegTime(v time.Time) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetBcmbRegTime(v)
+	})
+}
+
+// UpdateBcmbRegTime sets the "bcmb_reg_time" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateBcmbRegTime() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateBcmbRegTime()
+	})
+}
+
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (u *MemberUpsertBulk) ClearBcmbRegTime() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearBcmbRegTime()
 	})
 }
 

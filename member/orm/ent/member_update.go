@@ -122,6 +122,26 @@ func (mu *MemberUpdate) ClearBcmbCode() *MemberUpdate {
 	return mu
 }
 
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (mu *MemberUpdate) SetBcmbRegTime(t time.Time) *MemberUpdate {
+	mu.mutation.SetBcmbRegTime(t)
+	return mu
+}
+
+// SetNillableBcmbRegTime sets the "bcmb_reg_time" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableBcmbRegTime(t *time.Time) *MemberUpdate {
+	if t != nil {
+		mu.SetBcmbRegTime(*t)
+	}
+	return mu
+}
+
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (mu *MemberUpdate) ClearBcmbRegTime() *MemberUpdate {
+	mu.mutation.ClearBcmbRegTime()
+	return mu
+}
+
 // SetBcmbRegMsgID sets the "bcmb_reg_msg_id" field.
 func (mu *MemberUpdate) SetBcmbRegMsgID(s string) *MemberUpdate {
 	mu.mutation.SetBcmbRegMsgID(s)
@@ -355,6 +375,9 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if mu.mutation.BcmbCodeCleared() {
 		_spec.ClearField(member.FieldBcmbCode, field.TypeString)
 	}
+	if value, ok := mu.mutation.BcmbRegTime(); ok {
+		_spec.SetField(member.FieldBcmbRegTime, field.TypeTime, value)
+	}
 	if mu.mutation.BcmbRegTimeCleared() {
 		_spec.ClearField(member.FieldBcmbRegTime, field.TypeTime)
 	}
@@ -502,6 +525,26 @@ func (muo *MemberUpdateOne) SetNillableBcmbCode(s *string) *MemberUpdateOne {
 // ClearBcmbCode clears the value of the "bcmb_code" field.
 func (muo *MemberUpdateOne) ClearBcmbCode() *MemberUpdateOne {
 	muo.mutation.ClearBcmbCode()
+	return muo
+}
+
+// SetBcmbRegTime sets the "bcmb_reg_time" field.
+func (muo *MemberUpdateOne) SetBcmbRegTime(t time.Time) *MemberUpdateOne {
+	muo.mutation.SetBcmbRegTime(t)
+	return muo
+}
+
+// SetNillableBcmbRegTime sets the "bcmb_reg_time" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableBcmbRegTime(t *time.Time) *MemberUpdateOne {
+	if t != nil {
+		muo.SetBcmbRegTime(*t)
+	}
+	return muo
+}
+
+// ClearBcmbRegTime clears the value of the "bcmb_reg_time" field.
+func (muo *MemberUpdateOne) ClearBcmbRegTime() *MemberUpdateOne {
+	muo.mutation.ClearBcmbRegTime()
 	return muo
 }
 
@@ -767,6 +810,9 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	}
 	if muo.mutation.BcmbCodeCleared() {
 		_spec.ClearField(member.FieldBcmbCode, field.TypeString)
+	}
+	if value, ok := muo.mutation.BcmbRegTime(); ok {
+		_spec.SetField(member.FieldBcmbRegTime, field.TypeTime, value)
 	}
 	if muo.mutation.BcmbRegTimeCleared() {
 		_spec.ClearField(member.FieldBcmbRegTime, field.TypeTime)

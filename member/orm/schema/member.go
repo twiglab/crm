@@ -84,8 +84,7 @@ func (Member) Fields() []ent.Field {
 		// 商圈会员注册时间
 		field.Time("bcmb_reg_time").
 			Optional().
-			Nillable().
-			Immutable(),
+			Nillable(),
 
 		// 商圈会员消息id，用于幂等
 		field.String("bcmb_reg_msg_id").

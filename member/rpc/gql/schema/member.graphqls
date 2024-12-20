@@ -13,8 +13,7 @@ input CreateWxMemberReq {
 }
 
 type Query {
-  queryWxMember (input: OpenIDReq!): MemberResp
-  getWxMember (input: OpenIDReq!): MemberResp
+  queryWxMemberByOpenID (input: OpenIDReq!): MemberResp
 }
 
 

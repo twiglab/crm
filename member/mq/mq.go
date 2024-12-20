@@ -2,10 +2,8 @@ package mq
 
 import (
 	"context"
-	"fmt"
 
 	amqp "github.com/rabbitmq/amqp091-go"
-	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 )
 
 func Dial(url string) (*amqp.Connection, error) {
@@ -14,24 +12,6 @@ func Dial(url string) (*amqp.Connection, error) {
 
 type RecieverHandler interface {
 	RecieveDelivery(ctx context.Context, delivery amqp.Delivery)
-}
-
-type MemberAuthReciverHandle struct {
-}
-
-func NewMemberAuthReciverHandle() *MemberAuthReciverHandle {
-	return &MemberAuthReciverHandle{}
-}
-
-func (h *MemberAuthReciverHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
-	b := &msg.BusinessCircleAuthor{}
-	if _, err := b.UnmarshalMsg(delivery.Body); err != nil {
-		return
-	}
-
-	fmt.Println(b)
-
-	_ = delivery.Ack(false)
 }
 
 type RabbitMQ struct {
