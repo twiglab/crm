@@ -88,20 +88,6 @@ func (mu *MemberUpdate) SetNillableWxOpenID(s *string) *MemberUpdate {
 	return mu
 }
 
-// SetWxUID sets the "wx_uid" field.
-func (mu *MemberUpdate) SetWxUID(s string) *MemberUpdate {
-	mu.mutation.SetWxUID(s)
-	return mu
-}
-
-// SetNillableWxUID sets the "wx_uid" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableWxUID(s *string) *MemberUpdate {
-	if s != nil {
-		mu.SetWxUID(*s)
-	}
-	return mu
-}
-
 // SetBcmbCode sets the "bcmb_code" field.
 func (mu *MemberUpdate) SetBcmbCode(s string) *MemberUpdate {
 	mu.mutation.SetBcmbCode(s)
@@ -318,11 +304,6 @@ func (mu *MemberUpdate) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
-	if v, ok := mu.mutation.WxUID(); ok {
-		if err := member.WxUIDValidator(v); err != nil {
-			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
-		}
-	}
 	if v, ok := mu.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -365,9 +346,6 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := mu.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
-	}
-	if value, ok := mu.mutation.WxUID(); ok {
-		_spec.SetField(member.FieldWxUID, field.TypeString, value)
 	}
 	if value, ok := mu.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
@@ -490,20 +468,6 @@ func (muo *MemberUpdateOne) SetWxOpenID(s string) *MemberUpdateOne {
 func (muo *MemberUpdateOne) SetNillableWxOpenID(s *string) *MemberUpdateOne {
 	if s != nil {
 		muo.SetWxOpenID(*s)
-	}
-	return muo
-}
-
-// SetWxUID sets the "wx_uid" field.
-func (muo *MemberUpdateOne) SetWxUID(s string) *MemberUpdateOne {
-	muo.mutation.SetWxUID(s)
-	return muo
-}
-
-// SetNillableWxUID sets the "wx_uid" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableWxUID(s *string) *MemberUpdateOne {
-	if s != nil {
-		muo.SetWxUID(*s)
 	}
 	return muo
 }
@@ -737,11 +701,6 @@ func (muo *MemberUpdateOne) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
-	if v, ok := muo.mutation.WxUID(); ok {
-		if err := member.WxUIDValidator(v); err != nil {
-			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
-		}
-	}
 	if v, ok := muo.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -801,9 +760,6 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	}
 	if value, ok := muo.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
-	}
-	if value, ok := muo.mutation.WxUID(); ok {
-		_spec.SetField(member.FieldWxUID, field.TypeString, value)
 	}
 	if value, ok := muo.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)

@@ -61,14 +61,16 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
-		field.String("wx_uid").
-			MaxLen(256).
-			Unique().
-			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(256)", // Override MySQL.
-				dialect.Postgres: "varchar(256)", // Override Postgres.
-				dialect.SQLite:   "varchar(256)", // Override Postgres.
-			}),
+		/*
+			field.String("wx_uid").
+				MaxLen(256).
+				Unique().
+				SchemaType(map[string]string{
+					dialect.MySQL:    "varchar(256)", // Override MySQL.
+					dialect.Postgres: "varchar(256)", // Override Postgres.
+					dialect.SQLite:   "varchar(256)", // Override Postgres.
+				}),
+		*/
 
 		// 商圈会员卡号
 		// 用户在商圈会员卡card_id下的唯一标志，用户领取会员卡后获得的code

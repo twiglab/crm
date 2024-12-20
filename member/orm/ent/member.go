@@ -29,8 +29,6 @@ type Member struct {
 	Nickname string `json:"nickname,omitempty"`
 	// WxOpenID holds the value of the "wx_open_id" field.
 	WxOpenID string `json:"wx_open_id,omitempty"`
-	// WxUID holds the value of the "wx_uid" field.
-	WxUID string `json:"wx_uid,omitempty"`
 	// BcmbCode holds the value of the "bcmb_code" field.
 	BcmbCode string `json:"bcmb_code,omitempty"`
 	// BcmbRegTime holds the value of the "bcmb_reg_time" field.
@@ -57,7 +55,7 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldID, member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
+		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime, member.FieldLastTime:
 			values[i] = new(sql.NullTime)
@@ -117,12 +115,6 @@ func (m *Member) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field wx_open_id", values[i])
 			} else if value.Valid {
 				m.WxOpenID = value.String
-			}
-		case member.FieldWxUID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field wx_uid", values[i])
-			} else if value.Valid {
-				m.WxUID = value.String
 			}
 		case member.FieldBcmbCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -226,9 +218,6 @@ func (m *Member) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("wx_open_id=")
 	builder.WriteString(m.WxOpenID)
-	builder.WriteString(", ")
-	builder.WriteString("wx_uid=")
-	builder.WriteString(m.WxUID)
 	builder.WriteString(", ")
 	builder.WriteString("bcmb_code=")
 	builder.WriteString(m.BcmbCode)

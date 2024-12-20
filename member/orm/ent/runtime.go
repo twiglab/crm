@@ -74,36 +74,32 @@ func init() {
 	memberDescWxOpenID := memberFields[3].Descriptor()
 	// member.WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	member.WxOpenIDValidator = memberDescWxOpenID.Validators[0].(func(string) error)
-	// memberDescWxUID is the schema descriptor for wx_uid field.
-	memberDescWxUID := memberFields[4].Descriptor()
-	// member.WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
-	member.WxUIDValidator = memberDescWxUID.Validators[0].(func(string) error)
 	// memberDescBcmbCode is the schema descriptor for bcmb_code field.
-	memberDescBcmbCode := memberFields[5].Descriptor()
+	memberDescBcmbCode := memberFields[4].Descriptor()
 	// member.BcmbCodeValidator is a validator for the "bcmb_code" field. It is called by the builders before save.
 	member.BcmbCodeValidator = memberDescBcmbCode.Validators[0].(func(string) error)
 	// memberDescBcmbRegMsgID is the schema descriptor for bcmb_reg_msg_id field.
-	memberDescBcmbRegMsgID := memberFields[7].Descriptor()
+	memberDescBcmbRegMsgID := memberFields[6].Descriptor()
 	// member.BcmbRegMsgIDValidator is a validator for the "bcmb_reg_msg_id" field. It is called by the builders before save.
 	member.BcmbRegMsgIDValidator = memberDescBcmbRegMsgID.Validators[0].(func(string) error)
 	// memberDescBcmbType is the schema descriptor for bcmb_type field.
-	memberDescBcmbType := memberFields[8].Descriptor()
+	memberDescBcmbType := memberFields[7].Descriptor()
 	// member.DefaultBcmbType holds the default value on creation for the bcmb_type field.
 	member.DefaultBcmbType = memberDescBcmbType.Default.(int)
 	// memberDescLevel is the schema descriptor for level field.
-	memberDescLevel := memberFields[9].Descriptor()
+	memberDescLevel := memberFields[8].Descriptor()
 	// member.DefaultLevel holds the default value on creation for the level field.
 	member.DefaultLevel = memberDescLevel.Default.(int)
 	// memberDescSource is the schema descriptor for source field.
-	memberDescSource := memberFields[10].Descriptor()
+	memberDescSource := memberFields[9].Descriptor()
 	// member.DefaultSource holds the default value on creation for the source field.
 	member.DefaultSource = memberDescSource.Default.(int)
 	// memberDescLastTime is the schema descriptor for last_time field.
-	memberDescLastTime := memberFields[11].Descriptor()
+	memberDescLastTime := memberFields[10].Descriptor()
 	// member.DefaultLastTime holds the default value on creation for the last_time field.
 	member.DefaultLastTime = memberDescLastTime.Default.(func() time.Time)
 	// memberDescStatus is the schema descriptor for status field.
-	memberDescStatus := memberFields[12].Descriptor()
+	memberDescStatus := memberFields[11].Descriptor()
 	// member.DefaultStatus holds the default value on creation for the status field.
 	member.DefaultStatus = memberDescStatus.Default.(int)
 }

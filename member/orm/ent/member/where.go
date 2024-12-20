@@ -84,11 +84,6 @@ func WxOpenID(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldWxOpenID, v))
 }
 
-// WxUID applies equality check predicate on the "wx_uid" field. It's identical to WxUIDEQ.
-func WxUID(v string) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldWxUID, v))
-}
-
 // BcmbCode applies equality check predicate on the "bcmb_code" field. It's identical to BcmbCodeEQ.
 func BcmbCode(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldBcmbCode, v))
@@ -487,71 +482,6 @@ func WxOpenIDEqualFold(v string) predicate.Member {
 // WxOpenIDContainsFold applies the ContainsFold predicate on the "wx_open_id" field.
 func WxOpenIDContainsFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldContainsFold(FieldWxOpenID, v))
-}
-
-// WxUIDEQ applies the EQ predicate on the "wx_uid" field.
-func WxUIDEQ(v string) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldWxUID, v))
-}
-
-// WxUIDNEQ applies the NEQ predicate on the "wx_uid" field.
-func WxUIDNEQ(v string) predicate.Member {
-	return predicate.Member(sql.FieldNEQ(FieldWxUID, v))
-}
-
-// WxUIDIn applies the In predicate on the "wx_uid" field.
-func WxUIDIn(vs ...string) predicate.Member {
-	return predicate.Member(sql.FieldIn(FieldWxUID, vs...))
-}
-
-// WxUIDNotIn applies the NotIn predicate on the "wx_uid" field.
-func WxUIDNotIn(vs ...string) predicate.Member {
-	return predicate.Member(sql.FieldNotIn(FieldWxUID, vs...))
-}
-
-// WxUIDGT applies the GT predicate on the "wx_uid" field.
-func WxUIDGT(v string) predicate.Member {
-	return predicate.Member(sql.FieldGT(FieldWxUID, v))
-}
-
-// WxUIDGTE applies the GTE predicate on the "wx_uid" field.
-func WxUIDGTE(v string) predicate.Member {
-	return predicate.Member(sql.FieldGTE(FieldWxUID, v))
-}
-
-// WxUIDLT applies the LT predicate on the "wx_uid" field.
-func WxUIDLT(v string) predicate.Member {
-	return predicate.Member(sql.FieldLT(FieldWxUID, v))
-}
-
-// WxUIDLTE applies the LTE predicate on the "wx_uid" field.
-func WxUIDLTE(v string) predicate.Member {
-	return predicate.Member(sql.FieldLTE(FieldWxUID, v))
-}
-
-// WxUIDContains applies the Contains predicate on the "wx_uid" field.
-func WxUIDContains(v string) predicate.Member {
-	return predicate.Member(sql.FieldContains(FieldWxUID, v))
-}
-
-// WxUIDHasPrefix applies the HasPrefix predicate on the "wx_uid" field.
-func WxUIDHasPrefix(v string) predicate.Member {
-	return predicate.Member(sql.FieldHasPrefix(FieldWxUID, v))
-}
-
-// WxUIDHasSuffix applies the HasSuffix predicate on the "wx_uid" field.
-func WxUIDHasSuffix(v string) predicate.Member {
-	return predicate.Member(sql.FieldHasSuffix(FieldWxUID, v))
-}
-
-// WxUIDEqualFold applies the EqualFold predicate on the "wx_uid" field.
-func WxUIDEqualFold(v string) predicate.Member {
-	return predicate.Member(sql.FieldEqualFold(FieldWxUID, v))
-}
-
-// WxUIDContainsFold applies the ContainsFold predicate on the "wx_uid" field.
-func WxUIDContainsFold(v string) predicate.Member {
-	return predicate.Member(sql.FieldContainsFold(FieldWxUID, v))
 }
 
 // BcmbCodeEQ applies the EQ predicate on the "bcmb_code" field.

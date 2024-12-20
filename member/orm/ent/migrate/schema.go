@@ -18,7 +18,6 @@ var (
 		{Name: "phone", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "nickname", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "wx_open_id", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
-		{Name: "wx_uid", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
 		{Name: "bcmb_code", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "bcmb_reg_time", Type: field.TypeTime, Nullable: true},
 		{Name: "bcmb_reg_msg_id", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
