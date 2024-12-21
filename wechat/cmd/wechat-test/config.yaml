@@ -1,0 +1,5 @@
+web:
+  addr: 0.0.0.0:10001
+
+mq:
+  addr: amqp://erp:erpPass123@81.71.151.176:5672/?heartbeat=30
