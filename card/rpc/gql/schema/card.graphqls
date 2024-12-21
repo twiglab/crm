@@ -1,0 +1,50 @@
+type CardResp {
+  code: String!
+  cardCode: String!
+  memberCode: String
+  type: Int!
+  balance: Int!
+  amount: Int!
+}
+
+input PaginationReq {
+  cursor: String
+  limit: Int
+  order: String
+}
+
+input queryCardByCode {
+  code: String!
+}
+
+input queryCardByMemberCode {
+  memberCode: String!
+  pageInfo: PaginationReq
+}
+
+input CreateCardReq {
+  type: Int!
+  balance: Int!
+  cardCode: String
+}
+
+input BindCardReq {
+  code: String!
+  memberCode: String!
+}
+
+type Query {
+  # 详情
+  queryCardDetail(input: queryCardByCode): CardResp!
+  # 列表
+  queryCardList(input: PaginationReq): [CardResp]!
+  # 我的卡
+  queryCardByMemberCode(input: queryCardByMemberCode): [CardResp]!
+}
+
+type Mutation {
+  # 开卡
+  createCard(input: CreateCardReq!): CardResp!
+  # 绑定成员
+  bindCard(input: BindCardReq!): CardResp!
+}
