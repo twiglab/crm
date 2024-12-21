@@ -27,6 +27,8 @@ func main() {
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/notify", busiCircle.WxBCNotify(bcc))
 
-	svr := web.NewHttpServer(ctx, cfg.App.Addr, mux)
-	log.Fatal(web.RunServer(ctx, svr))
+	svr := cfg.WebServerConfig.Create(ctx)
+	if err := web.RunServer2(ctx, svr, mux); err != nil {
+		log.Fatal(err)
+	}
 }

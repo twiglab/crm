@@ -60,7 +60,8 @@ type AppConfig struct {
 	APPID    string       `yaml:"appid" mapstructure:"appid"`
 	MQConfig MQConfig     `yaml:"mq" mapstructure:"mq"`
 	Wechat   WechatConfig `yaml:"wechat" mapstructure:"wechat"`
-	BcExchangeConfig
+	BcExchangeConfig BcExchangeConfig
+	WebServerConfig WebServerConfig
 }
 
 func InitConfig(config *AppConfig) {

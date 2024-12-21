@@ -16,7 +16,6 @@ import (
 
 type BcExchange struct {
 	BC       *mq.MQ
-	BCWapper *mq.MQWapper
 	ApiV3Key string
 }
 
