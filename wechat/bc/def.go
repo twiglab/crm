@@ -83,5 +83,5 @@ type BusinessCircleParkingSyncQuery struct {
 	BrandID     int    `json:"brandid"`      // 调用方商户号对应的品牌brandid，调用方商户号需为此品牌brandid的品牌主商户号或品牌服务商商户号
 	PlateNumber string `json:"plate_number"` // 首位需为省份的中文简称，第二位起支持大写字母、数字、中文
 	State       string `json:"state"`        // 停车状态，服务商模式下必传
-	Time        int64  `json:"time"`         // 在场状态更新时间，按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE
+	Time        string `json:"time"`         // 在场状态更新时间，按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE
 }
