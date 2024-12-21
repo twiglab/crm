@@ -18,11 +18,11 @@ type BusinessCircleMsg struct {
 
 // 商圈会员积分服务授权结果通知
 type BusinessCircleAuthor struct {
-	BusinessCircleMsg `json:"business_circle_msg,omitempty"`
-	OpenID            string `json:"open_id,omitempty"`   // 顾客授权时使用的小程序上的OpenID
-	Code              string `json:"code,omitempty"`      // 用户开会员卡时的商圈商户号
-	MchID             string `json:"mch_id,omitempty"`    // 用户开会员卡时的商圈商户号
-	AuthType          string `json:"auth_type,omitempty"` // 用户授权类型
+	BusinessCircleMsg
+	OpenID   string `json:"open_id,omitempty"`   // 顾客授权时使用的小程序上的OpenID
+	Code     string `json:"code,omitempty"`      // 用户开会员卡时的商圈商户号
+	MchID    string `json:"mch_id,omitempty"`    // 用户开会员卡时的商圈商户号
+	AuthType string `json:"auth_type,omitempty"` // 用户授权类型
 }
 
 type BusinessCircleShopBase struct {
