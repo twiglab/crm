@@ -14,7 +14,6 @@ import (
 func main() {
 	cfg := config.App{}
 	config.InitConfig(&cfg)
-
 	conn := cfg.MQ.Create()
 	exchange := cfg.BcExchange.Create(conn)
 
@@ -27,6 +26,7 @@ func main() {
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
 
 	svr := cfg.Web.Create(ctx)
+
 	if err := web.RunServer2(ctx, svr, mux); err != nil {
 		log.Fatal(err)
 	}
