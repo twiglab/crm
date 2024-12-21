@@ -15,7 +15,8 @@ import (
 )
 
 type BcExchange struct {
-	BC       *mq.MQWapper
+	BC       *mq.MQ
+	BCWapper *mq.MQWapper
 	ApiV3Key string
 }
 
@@ -58,7 +59,7 @@ func BusiCircleAuth(exchange BcExchange) http.HandlerFunc {
 
 		ctx := r.Context()
 
-		if err := exchange.BC.SendMemberMessage(ctx, body); err != nil {
+		if err := exchange.BCWapper.SendMemberMessage(ctx, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
@@ -102,7 +103,7 @@ func BusiCirclePayment(exchange BcExchange) http.HandlerFunc {
 
 		body, _ := mq.MsgpMsg(msg)
 
-		if err := exchange.BC.SendPointMessage(ctx, body); err != nil {
+		if err := exchange.BCWapper.SendPointMessage(ctx, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
