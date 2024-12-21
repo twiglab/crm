@@ -1,13 +1,12 @@
 package main
 
 import (
-	"log"
-	"os"
-
 	"github.com/it512/box"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
+	"github.com/twiglab/crm/wechat/config"
+	"log"
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twiglab/crm/wechat/sns"
@@ -18,43 +17,21 @@ import (
 	"github.com/twiglab/crm/wechat/rpc/gql"
 )
 
-const (
-	WECHAT_APPID     = "WECHAT_APPID"
-	WECHAT_APPSECRET = "WECHAT_APPSECRET"
-	WECHAT_MCHID     = "WECHAT_APPSECRET"
-
-	WECHAT_SERIALNO   = "WECHAT_SERIALNO"
-	WECHAT_APIKEY     = "WECHAT_APIKEY"
-	WECHAT_PRIVATEKEY = "WECHAT_PRIVATEKEY"
-
-	SERVER_ADDR = "SERVER_ADDR"
-)
-
-func GetEnv(env string) string {
-	x := os.Getenv(env)
-	log.Printf("%s = %s\n", env, x)
-	return x
-}
-
 func main() {
-	appId := GetEnv(WECHAT_APPID)
-	appSecret := GetEnv(WECHAT_APPSECRET)
-	addr := GetEnv(SERVER_ADDR)
-	/*
-		mchId := os.Getenv(WECHAT_MCHID)
-		serialNo := os.Getenv(WECHAT_SERIALNO)
-		apiKey := os.Getenv(WECHAT_APIKEY)
-		privateKey := os.Getenv(WECHAT_PRIVATEKEY)
-	*/
+	if err := config.InitConfig(); err != nil {
+		panic(err)
+	}
+
+	cfg := config.GetConfig()
 
 	wc := wechat.NewWechat()
 	memory := cache.NewMemory()
-	cfg := &miniConfig.Config{
-		AppID:     appId,
-		AppSecret: appSecret,
+	miniCfg := &miniConfig.Config{
+		AppID:     cfg.Wechat.AppId,
+		AppSecret: cfg.Wechat.AppSecret,
 		Cache:     memory,
 	}
-	prog := wc.GetMiniProgram(cfg)
+	prog := wc.GetMiniProgram(miniCfg)
 
 	auth := sns.NewAuth(prog.GetAuth())
 
@@ -65,7 +42,6 @@ func main() {
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(auth))
 
-	svr := web.NewHttpServer(ctx, addr, mux)
+	svr := web.NewHttpServer(ctx, cfg.App.Addr, mux)
 	log.Fatal(web.RunServer(ctx, svr))
-
 }
