@@ -25,8 +25,6 @@ const (
 	FieldNickname = "nickname"
 	// FieldWxOpenID holds the string denoting the wx_open_id field in the database.
 	FieldWxOpenID = "wx_open_id"
-	// FieldWxUID holds the string denoting the wx_uid field in the database.
-	FieldWxUID = "wx_uid"
 	// FieldBcmbCode holds the string denoting the bcmb_code field in the database.
 	FieldBcmbCode = "bcmb_code"
 	// FieldBcmbRegTime holds the string denoting the bcmb_reg_time field in the database.
@@ -56,7 +54,6 @@ var Columns = []string{
 	FieldPhone,
 	FieldNickname,
 	FieldWxOpenID,
-	FieldWxUID,
 	FieldBcmbCode,
 	FieldBcmbRegTime,
 	FieldBcmbRegMsgID,
@@ -94,8 +91,6 @@ var (
 	NicknameValidator func(string) error
 	// WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	WxOpenIDValidator func(string) error
-	// WxUIDValidator is a validator for the "wx_uid" field. It is called by the builders before save.
-	WxUIDValidator func(string) error
 	// BcmbCodeValidator is a validator for the "bcmb_code" field. It is called by the builders before save.
 	BcmbCodeValidator func(string) error
 	// BcmbRegMsgIDValidator is a validator for the "bcmb_reg_msg_id" field. It is called by the builders before save.
@@ -148,11 +143,6 @@ func ByNickname(opts ...sql.OrderTermOption) OrderOption {
 // ByWxOpenID orders the results by the wx_open_id field.
 func ByWxOpenID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWxOpenID, opts...).ToFunc()
-}
-
-// ByWxUID orders the results by the wx_uid field.
-func ByWxUID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWxUID, opts...).ToFunc()
 }
 
 // ByBcmbCode orders the results by the bcmb_code field.

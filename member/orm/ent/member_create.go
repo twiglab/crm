@@ -98,12 +98,6 @@ func (mc *MemberCreate) SetWxOpenID(s string) *MemberCreate {
 	return mc
 }
 
-// SetWxUID sets the "wx_uid" field.
-func (mc *MemberCreate) SetWxUID(s string) *MemberCreate {
-	mc.mutation.SetWxUID(s)
-	return mc
-}
-
 // SetBcmbCode sets the "bcmb_code" field.
 func (mc *MemberCreate) SetBcmbCode(s string) *MemberCreate {
 	mc.mutation.SetBcmbCode(s)
@@ -319,14 +313,6 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
-	if _, ok := mc.mutation.WxUID(); !ok {
-		return &ValidationError{Name: "wx_uid", err: errors.New(`ent: missing required field "Member.wx_uid"`)}
-	}
-	if v, ok := mc.mutation.WxUID(); ok {
-		if err := member.WxUIDValidator(v); err != nil {
-			return &ValidationError{Name: "wx_uid", err: fmt.Errorf(`ent: validator failed for field "Member.wx_uid": %w`, err)}
-		}
-	}
 	if v, ok := mc.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -402,10 +388,6 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
 		_node.WxOpenID = value
-	}
-	if value, ok := mc.mutation.WxUID(); ok {
-		_spec.SetField(member.FieldWxUID, field.TypeString, value)
-		_node.WxUID = value
 	}
 	if value, ok := mc.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
@@ -548,18 +530,6 @@ func (u *MemberUpsert) SetWxOpenID(v string) *MemberUpsert {
 // UpdateWxOpenID sets the "wx_open_id" field to the value that was provided on create.
 func (u *MemberUpsert) UpdateWxOpenID() *MemberUpsert {
 	u.SetExcluded(member.FieldWxOpenID)
-	return u
-}
-
-// SetWxUID sets the "wx_uid" field.
-func (u *MemberUpsert) SetWxUID(v string) *MemberUpsert {
-	u.Set(member.FieldWxUID, v)
-	return u
-}
-
-// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateWxUID() *MemberUpsert {
-	u.SetExcluded(member.FieldWxUID)
 	return u
 }
 
@@ -816,20 +786,6 @@ func (u *MemberUpsertOne) SetWxOpenID(v string) *MemberUpsertOne {
 func (u *MemberUpsertOne) UpdateWxOpenID() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateWxOpenID()
-	})
-}
-
-// SetWxUID sets the "wx_uid" field.
-func (u *MemberUpsertOne) SetWxUID(v string) *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetWxUID(v)
-	})
-}
-
-// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateWxUID() *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxUID()
 	})
 }
 
@@ -1275,20 +1231,6 @@ func (u *MemberUpsertBulk) SetWxOpenID(v string) *MemberUpsertBulk {
 func (u *MemberUpsertBulk) UpdateWxOpenID() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateWxOpenID()
-	})
-}
-
-// SetWxUID sets the "wx_uid" field.
-func (u *MemberUpsertBulk) SetWxUID(v string) *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetWxUID(v)
-	})
-}
-
-// UpdateWxUID sets the "wx_uid" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateWxUID() *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateWxUID()
 	})
 }
 

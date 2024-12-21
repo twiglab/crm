@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -12,7 +11,7 @@ import (
 	"github.com/twiglab/crm/member/rpc/gql"
 )
 
-const DATABASE_URL = "user=crm password=crm0okm_PL< host=it9i.com port=15432 database=crm sslmode=disable"
+const DATABASE_URL = "user=crm password=cRm9ijn)OKM host=pipi.dev port=5432 database=crm sslmode=disable"
 
 func main() {
 	db, err := orm.FromURL(context.Background(), DATABASE_URL)
@@ -20,10 +19,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(db.Ping())
+	client := orm.OpenClient(db)
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/rpc", gql.New(context.Background()))
-	log.Fatal(http.ListenAndServe(":10009", mux))
+	mux.Mount("/gqlrpc", gql.New(client))
+	log.Fatal(http.ListenAndServe(":10008", mux))
 }

@@ -31,7 +31,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			member.FieldPhone:        {Type: field.TypeString, Column: member.FieldPhone},
 			member.FieldNickname:     {Type: field.TypeString, Column: member.FieldNickname},
 			member.FieldWxOpenID:     {Type: field.TypeString, Column: member.FieldWxOpenID},
-			member.FieldWxUID:        {Type: field.TypeString, Column: member.FieldWxUID},
 			member.FieldBcmbCode:     {Type: field.TypeString, Column: member.FieldBcmbCode},
 			member.FieldBcmbRegTime:  {Type: field.TypeTime, Column: member.FieldBcmbRegTime},
 			member.FieldBcmbRegMsgID: {Type: field.TypeString, Column: member.FieldBcmbRegMsgID},
@@ -119,11 +118,6 @@ func (f *MemberFilter) WhereNickname(p entql.StringP) {
 // WhereWxOpenID applies the entql string predicate on the wx_open_id field.
 func (f *MemberFilter) WhereWxOpenID(p entql.StringP) {
 	f.Where(p.Field(member.FieldWxOpenID))
-}
-
-// WhereWxUID applies the entql string predicate on the wx_uid field.
-func (f *MemberFilter) WhereWxUID(p entql.StringP) {
-	f.Where(p.Field(member.FieldWxUID))
 }
 
 // WhereBcmbCode applies the entql string predicate on the bcmb_code field.
