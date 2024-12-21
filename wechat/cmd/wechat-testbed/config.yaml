@@ -1,0 +1,7 @@
+id: wechat-testbed
+
+web: 
+  addr: 0.0.0.0:10009
+
+mq: 
+  addr: amqp://erp:erpPass123@81.71.151.176:5672
