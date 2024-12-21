@@ -2,16 +2,14 @@ package config
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"log/slog"
 	"net/http"
-	"time"
 
-	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/silenceper/wechat/v2"
+	"github.com/silenceper/wechat/v2/cache"
+	"github.com/silenceper/wechat/v2/miniprogram"
+	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
 	"github.com/spf13/viper"
-	"github.com/twiglab/crm/wechat/mq"
-	"github.com/twiglab/crm/wechat/pkg/bc"
 	"github.com/twiglab/crm/wechat/web"
 )
 
@@ -21,32 +19,6 @@ type Web struct {
 
 func (c Web) Create(ctx context.Context) *http.Server {
 	return web.NewHttpServer(ctx, c.Addr, nil)
-}
-
-type BcExchange struct {
-	Name string `yaml:"name" mapstructure:"name"`
-}
-
-func (c BcExchange) Create(conn *amqp.Connection) *mq.MQ {
-	q := mq.New(slog.Default(), 5*time.Second)
-	if err := q.BuildWith(conn, bc.MQ_BC_EXCHANGE_NAME); err != nil {
-		log.Fatal(err)
-	}
-	return q
-}
-
-type MQ struct {
-	Addr string `yaml:"addr" mapstructure:"addr"`
-}
-
-func (c MQ) Create() *amqp.Connection {
-	fmt.Println(c.Addr)
-	conn, err := mq.Dial(c.Addr)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return conn
 }
 
 type Wechat struct {
@@ -59,12 +31,22 @@ type Wechat struct {
 	PrivateKey string `yaml:"private_key" mapstructure:"private_key"`
 }
 
+func (c Wechat) CreateMiniProfram() *miniprogram.MiniProgram {
+	wc := wechat.NewWechat()
+	memory := cache.NewMemory()
+	miniCfg := &miniConfig.Config{
+		AppID:     c.AppID,
+		AppSecret: c.AppSecret,
+		Cache:     memory,
+	}
+	return wc.GetMiniProgram(miniCfg)
+
+}
+
 type App struct {
-	ID         string     `yaml:"id" mapstructure:"id"`
-	MQ         MQ         `yaml:"mq" mapstructure:"mq"`
-	Wechat     Wechat     `yaml:"wechat" mapstructure:"wechat"`
-	BcExchange BcExchange `yaml:"bc-exchange" mapstructure:"bc-exchange"`
-	Web        Web        `yaml:"web" mapstructure:"web"`
+	ID     string `yaml:"id" mapstructure:"id"`
+	Wechat Wechat `yaml:"wechat" mapstructure:"wechat"`
+	Web    Web    `yaml:"web" mapstructure:"web"`
 }
 
 func InitConfig(config any) {

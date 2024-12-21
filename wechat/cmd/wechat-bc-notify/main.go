@@ -12,8 +12,9 @@ import (
 )
 
 func main() {
-	cfg := config.App{}
-	config.InitConfig(&cfg)
+	cfg := &config.App{}
+	config.InitConfig(cfg)
+
 	conn := cfg.MQ.Create()
 	exchange := cfg.BcExchange.Create(conn)
 
