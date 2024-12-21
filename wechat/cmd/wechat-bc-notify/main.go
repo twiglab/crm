@@ -15,8 +15,8 @@ func main() {
 	cfg := config.App{}
 	config.InitConfig(&cfg)
 
-	conn := cfg.MQConfig.Create()
-	exchange := cfg.BcExchangeConfig.Create(conn)
+	conn := cfg.MQ.Create()
+	exchange := cfg.BcExchange.Create(conn)
 
 	bcc := bc.BcExchange{BC: exchange, ApiV3Key: cfg.Wechat.APIKey}
 
@@ -26,7 +26,7 @@ func main() {
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
 
-	svr := cfg.WebServerConfig.Create(ctx)
+	svr := cfg.Web.Create(ctx)
 	if err := web.RunServer2(ctx, svr, mux); err != nil {
 		log.Fatal(err)
 	}

@@ -60,11 +60,11 @@ type Wechat struct {
 }
 
 type App struct {
-	ID               string     `yaml:"app_id" mapstructure:"id"`
-	MQConfig         MQ         `yaml:"mq" mapstructure:"mq"`
-	Wechat           Wechat     `yaml:"wechat" mapstructure:"wechat"`
-	BcExchangeConfig BcExchange `yaml:"bc-exchange" mapstructure:"bc-exchange"`
-	WebServerConfig  Web        `yaml:"web" mapstructure:"web"`
+	ID         string     `yaml:"app_id" mapstructure:"id"`
+	MQ         MQ         `yaml:"mq" mapstructure:"mq"`
+	Wechat     Wechat     `yaml:"wechat" mapstructure:"wechat"`
+	BcExchange BcExchange `yaml:"bc-exchange" mapstructure:"bc-exchange"`
+	Web        Web        `yaml:"web" mapstructure:"web"`
 }
 
 func InitConfig(config any) {
