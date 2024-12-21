@@ -1,24 +1,24 @@
 package main
 
 import (
+	"log"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/it512/box"
+	"github.com/twiglab/crm/wechat/bc"
 	busiCircle "github.com/twiglab/crm/wechat/bc"
-	"github.com/twiglab/crm/wechat/config"
-	"github.com/twiglab/crm/wechat/mq"
-	"github.com/twiglab/crm/wechat/pkg/bc"
+	"github.com/twiglab/crm/wechat/cmd/wechat-bc-notify/config"
 	"github.com/twiglab/crm/wechat/web"
 	"log"
-	"time"
 )
 
 func main() {
-	if err := config.InitConfig(); err != nil {
-		panic(err)
-	}
+	cfg := config.AppConfig{}
+	config.InitConfig(&cfg)
 
-	cfg := config.GetConfig()
+	conn := cfg.MQConfig.Create()
+	exchange := cfg.BcExchangeConfig.Create(conn)
 
 	var mqConig = &mq.MQConfig{
 		URL:             cfg.MQ.Addr,
