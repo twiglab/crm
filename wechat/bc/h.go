@@ -10,13 +10,12 @@ import (
 
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
-	"github.com/twiglab/crm/wechat/pkg/bc"
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 	"github.com/twiglab/crm/wechat/web"
 )
 
 type BcExchange struct {
-	BC       *mq.MQ
+	BC       *mq.MQWapper
 	ApiV3Key string
 }
 
@@ -59,7 +58,7 @@ func BusiCircleAuth(exchange *BcExchange) http.HandlerFunc {
 
 		ctx := r.Context()
 
-		if err := exchange.BC.Send(ctx, bc.MQ_WX_TOC_BC_AUTH, body); err != nil {
+		if err := exchange.BC.SendMemberMessage(ctx, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
@@ -103,7 +102,7 @@ func BusiCirclePayment(exchange *BcExchange) http.HandlerFunc {
 
 		body, _ := mq.MsgpMsg(msg)
 
-		if err := exchange.BC.Send(ctx, bc.MQ_WX_TOC_BC_PAYMENT, body); err != nil {
+		if err := exchange.BC.SendPointMessage(ctx, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
