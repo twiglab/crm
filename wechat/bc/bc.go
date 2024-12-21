@@ -3,42 +3,13 @@ package bc
 import (
 	"context"
 	"errors"
+
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
 )
 
-var (
-	bcClient *BcClient
-)
-
 type BcClient struct {
 	client *wechat.ClientV3
-}
-
-func GetClient() *BcClient {
-	return bcClient
-}
-
-func InitWeChatClient(MchId, SerialNo, APIv3Key, PrivateKey string) error {
-	// NewClientV3 初始化微信客户端 v3
-	// mchid：商户ID 或者服务商模式的 sp_mchid
-	// serialNo：商户证书的证书序列号
-	// apiV3Key：apiV3Key，商户平台获取
-	// privateKey：私钥 apiclient_key.pem 读取后的内容
-	client, err := wechat.NewClientV3(MchId, SerialNo, APIv3Key, PrivateKey)
-	if err != nil {
-		return err
-	}
-
-	// 启用自动同步返回验签，并定时更新微信平台API证书（开启自动验签时，无需单独设置微信平台API证书和序列号）
-	err = client.AutoVerifySign()
-	if err != nil {
-		return err
-	}
-
-	bcClient = new(BcClient)
-	bcClient.client = client
-	return nil
 }
 
 func NewBcClient(client *wechat.ClientV3) *BcClient {

@@ -62,8 +62,9 @@ func (Member) Fields() []ent.Field {
 			}),
 
 		/*
-			field.String("wx_uid").
+			field.String("wx_unionid").
 				MaxLen(256).
+				Optional().
 				Unique().
 				SchemaType(map[string]string{
 					dialect.MySQL:    "varchar(256)", // Override MySQL.

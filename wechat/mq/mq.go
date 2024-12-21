@@ -2,7 +2,6 @@ package mq
 
 import (
 	"context"
-	"github.com/twiglab/crm/wechat/pkg/bc"
 	"log/slog"
 	"time"
 
@@ -11,24 +10,6 @@ import (
 )
 
 const MSGPACK_MIME = "application/msgpack"
-
-var mqInstance *MQ
-
-func Instance() *MQ {
-	return mqInstance
-}
-
-func InitMQ(uri string) error {
-	mqInstance = New(slog.Default(), 30*time.Second)
-	conn, err := Dial(uri)
-	if err != nil {
-		return err
-	}
-	if err = mqInstance.BuildWith(conn, bc.MQ_BC_EXCHANGE_NAME); err != nil {
-		return err
-	}
-	return nil
-}
 
 func Dial(url string) (*amqp.Connection, error) {
 	return amqp.Dial(url)

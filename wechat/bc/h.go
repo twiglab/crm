@@ -1,9 +1,10 @@
 package bc
 
 import (
-	"github.com/go-chi/chi/v5"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/twiglab/crm/wechat/mq"
 
@@ -14,6 +15,11 @@ import (
 	"github.com/twiglab/crm/wechat/web"
 )
 
+type BcExchange struct {
+	BC       *mq.MQ
+	ApiV3Key string
+}
+
 func parse(s string) time.Time {
 	x, err := time.Parse(time.RFC3339, s)
 	if err != nil {
@@ -22,7 +28,7 @@ func parse(s string) time.Time {
 	return x
 }
 
-func BusiCircleAuth() http.HandlerFunc {
+func BusiCircleAuth(exchange *BcExchange) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
 		if err != nil {
@@ -30,7 +36,7 @@ func BusiCircleAuth() http.HandlerFunc {
 			return
 		}
 		ca := BusinessCircleAuthorSource{}
-		if err := req.DecryptCipherTextToStruct(string(bcClient.client.ApiV3Key), &ca); err != nil {
+		if err := req.DecryptCipherTextToStruct(exchange.ApiV3Key, &ca); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
@@ -53,14 +59,14 @@ func BusiCircleAuth() http.HandlerFunc {
 
 		ctx := r.Context()
 
-		if err := mq.Instance().Send(ctx, bc.MQ_WX_TOC_BC_AUTH, body); err != nil {
+		if err := exchange.BC.Send(ctx, bc.MQ_WX_TOC_BC_AUTH, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
 	}
 }
 
-func BusiCirclePayment() http.HandlerFunc {
+func BusiCirclePayment(exchange *BcExchange) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
 		if err != nil {
@@ -68,7 +74,7 @@ func BusiCirclePayment() http.HandlerFunc {
 			return
 		}
 		ca := BusinessCirclePaymentSource{}
-		if err := req.DecryptCipherTextToStruct("", &ca); err != nil {
+		if err := req.DecryptCipherTextToStruct(exchange.ApiV3Key, &ca); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
@@ -97,7 +103,7 @@ func BusiCirclePayment() http.HandlerFunc {
 
 		body, _ := mq.MsgpMsg(msg)
 
-		if err := mq.Instance().Send(ctx, bc.MQ_WX_TOC_BC_PAYMENT, body); err != nil {
+		if err := exchange.BC.Send(ctx, bc.MQ_WX_TOC_BC_PAYMENT, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
@@ -105,6 +111,7 @@ func BusiCirclePayment() http.HandlerFunc {
 }
 
 // 请黄总将此方法修改正确
+/*
 func BusiCircleRefund() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
@@ -144,14 +151,14 @@ func BusiCircleRefund() http.HandlerFunc {
 		}
 	}
 }
+*/
 
-// 请黄总和运维协商一下notify的url ，并且请运维做好安全措施
-func WxBCNotify() http.Handler {
+func WxBCNotify(exchange *BcExchange) http.Handler {
 	wx := chi.NewRouter()
 
-	wx.Post("/auth", BusiCircleAuth())
-	wx.Post("/payment", BusiCirclePayment())
-	wx.Post("/refund", BusiCircleRefund())
+	wx.Post("/auth", BusiCircleAuth(exchange))
+	wx.Post("/payment", BusiCirclePayment(exchange))
+	//wx.Post("/refund", BusiCircleRefund())
 
 	r := chi.NewRouter()
 	r.Mount("/wx", wx)

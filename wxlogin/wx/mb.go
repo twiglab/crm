@@ -17,21 +17,6 @@ type MemberCli struct {
 	graphql.Client
 }
 
-/*
-func (c *MemberCli) QueryWxMember(ctx context.Context, wxOpenID string) (*Member, error) {
-	req, err := low.QueryWxMember(ctx, c.client, data.OpenIDReq{WxOpenID: wxOpenID})
-	if err != nil {
-		return nil, err
-	}
-	m := req.GetQueryWxMember()
-	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
-}
-
-func (c *MemberCli) Cr(ctx context.Context) {
-	low.CreateWxMember(ctx, c.client, data.CreateWxMemberReq{})
-}
-*/
-
 // LoginOrCr 根据微信openid查询用户信息，如果用户不存在则创建新用户
 //
 //	@param ctx
