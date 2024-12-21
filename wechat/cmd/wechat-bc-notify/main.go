@@ -1,36 +1,31 @@
 package main
 
 import (
+	"log"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/it512/box"
+	"github.com/twiglab/crm/wechat/bc"
 	busiCircle "github.com/twiglab/crm/wechat/bc"
-	"github.com/twiglab/crm/wechat/config"
-	"github.com/twiglab/crm/wechat/mq"
+	"github.com/twiglab/crm/wechat/cmd/wechat-bc-notify/config"
 	"github.com/twiglab/crm/wechat/web"
-	"log"
 )
 
 func main() {
-	if err := config.InitConfig(); err != nil {
-		panic(err)
-	}
+	cfg := config.AppConfig{}
+	config.InitConfig(&cfg)
 
-	cfg := config.GetConfig()
+	conn := cfg.MQConfig.Create()
+	exchange := cfg.BcExchangeConfig.Create(conn)
 
-	if err := mq.InitMQ(cfg.MQ.Addr); err != nil {
-		panic(err)
-	}
-
-	//if err := busiCircle.InitWeChatClient(cfg.BC.MchId, cfg.BC.SerialNo, cfg.BC.APIKey, cfg.BC.PrivateKey); err != nil {
-	//	panic(err)
-	//}
+	bcc := bc.BcExchange{BC: exchange, ApiV3Key: cfg.Wechat.APIKey}
 
 	ctx := box.Background()
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/wxnotify", busiCircle.WxBCNotify())
+	mux.Mount("/notify", busiCircle.WxBCNotify(bcc))
 
 	svr := web.NewHttpServer(ctx, cfg.App.Addr, mux)
 	log.Fatal(web.RunServer(ctx, svr))

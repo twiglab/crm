@@ -28,7 +28,7 @@ func parse(s string) time.Time {
 	return x
 }
 
-func BusiCircleAuth(exchange *BcExchange) http.HandlerFunc {
+func BusiCircleAuth(exchange BcExchange) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
 		if err != nil {
@@ -66,7 +66,7 @@ func BusiCircleAuth(exchange *BcExchange) http.HandlerFunc {
 	}
 }
 
-func BusiCirclePayment(exchange *BcExchange) http.HandlerFunc {
+func BusiCirclePayment(exchange BcExchange) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
 		if err != nil {
@@ -153,7 +153,7 @@ func BusiCircleRefund() http.HandlerFunc {
 }
 */
 
-func WxBCNotify(exchange *BcExchange) http.Handler {
+func WxBCNotify(exchange BcExchange) http.Handler {
 	wx := chi.NewRouter()
 
 	wx.Post("/auth", BusiCircleAuth(exchange))
