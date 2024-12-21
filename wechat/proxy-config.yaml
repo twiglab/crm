@@ -1,7 +1,0 @@
-app:
-  name: proxy
-  addr: 0.0.0.0:12345
-
-wechat:
-  app_id: 1
-  app_secret: 456
