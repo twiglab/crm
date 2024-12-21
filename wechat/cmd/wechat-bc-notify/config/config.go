@@ -2,42 +2,45 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
 	"time"
 
-	"github.com/rabbitmq/amqp091-go"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/spf13/viper"
 	"github.com/twiglab/crm/wechat/mq"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 	"github.com/twiglab/crm/wechat/web"
 )
 
-type WebServerConfig struct {
+type Web struct {
 	Addr string `yaml:"addr" mapstructure:"addr"`
 }
 
-func (c WebServerConfig) Create(ctx context.Context) *http.Server {
+func (c Web) Create(ctx context.Context) *http.Server {
 	return web.NewHttpServer(ctx, c.Addr, nil)
 }
 
-type BcExchangeConfig struct {
-	ExchangeName string
+type BcExchange struct {
+	Name string `yaml:"name" mapstructure:"name"`
 }
 
-func (c BcExchangeConfig) Create(conn *amqp091.Connection) *mq.MQ {
+func (c BcExchange) Create(conn *amqp.Connection) *mq.MQ {
 	q := mq.New(slog.Default(), 5*time.Second)
-	if err := q.BuildWith(conn, c.ExchangeName); err != nil {
+	if err := q.BuildWith(conn, bc.MQ_BC_EXCHANGE_NAME); err != nil {
 		log.Fatal(err)
 	}
 	return q
 }
 
-type MQConfig struct {
+type MQ struct {
 	Addr string `yaml:"addr" mapstructure:"addr"`
 }
 
-func (c MQConfig) Create() *amqp091.Connection {
+func (c MQ) Create() *amqp.Connection {
+	fmt.Println(c.Addr)
 	conn, err := mq.Dial(c.Addr)
 	if err != nil {
 		log.Fatal(err)
@@ -46,8 +49,8 @@ func (c MQConfig) Create() *amqp091.Connection {
 	return conn
 }
 
-type WechatConfig struct {
-	AppId     string `yaml:"app_id" mapstructure:"app_id"`
+type Wechat struct {
+	AppID     string `yaml:"app_id" mapstructure:"app_id"`
 	AppSecret string `yaml:"app_secret" mapstructure:"app_secret"`
 
 	MchId      string `yaml:"mcd_id" mapstructure:"mcd_id"`
@@ -56,27 +59,25 @@ type WechatConfig struct {
 	PrivateKey string `yaml:"private_key" mapstructure:"private_key"`
 }
 
-type AppConfig struct {
-	APPID    string       `yaml:"appid" mapstructure:"appid"`
-	MQConfig MQConfig     `yaml:"mq" mapstructure:"mq"`
-	Wechat   WechatConfig `yaml:"wechat" mapstructure:"wechat"`
-	BcExchangeConfig BcExchangeConfig
-	WebServerConfig WebServerConfig
+type App struct {
+	ID               string     `yaml:"app_id" mapstructure:"id"`
+	MQConfig         MQ         `yaml:"mq" mapstructure:"mq"`
+	Wechat           Wechat     `yaml:"wechat" mapstructure:"wechat"`
+	BcExchangeConfig BcExchange `yaml:"bc-exchange" mapstructure:"bc-exchange"`
+	WebServerConfig  Web        `yaml:"web" mapstructure:"web"`
 }
 
-func InitConfig(config *AppConfig) {
-	viper.SetConfigName("notify-config")
+func InitConfig(config any) {
+	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 
-	err := viper.ReadInConfig()
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err)
 
 	}
 
-	err = viper.Unmarshal(config)
-	if err != nil {
+	if err := viper.Unmarshal(config); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 	"github.com/twiglab/crm/wechat/web"
 )
@@ -58,13 +59,14 @@ func BusiCircleAuth(exchange BcExchange) http.HandlerFunc {
 
 		ctx := r.Context()
 
-		if err := exchange.BCWapper.SendMemberMessage(ctx, body); err != nil {
+		if err := exchange.BC.Send(ctx, bc.MQ_WX_TOC_BC_AUTH, body); err != nil {
 			_ = web.JsonTo(http.StatusInternalServerError, &wechat.V3NotifyRsp{Code: gopay.FAIL, Message: err.Error()}, w)
 			return
 		}
 	}
 }
 
+/*
 func BusiCirclePayment(exchange BcExchange) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req, err := wechat.V3ParseNotify(r)
@@ -108,6 +110,7 @@ func BusiCirclePayment(exchange BcExchange) http.HandlerFunc {
 		}
 	}
 }
+*/
 
 // 请黄总将此方法修改正确
 /*
@@ -156,8 +159,8 @@ func WxBCNotify(exchange BcExchange) http.Handler {
 	wx := chi.NewRouter()
 
 	wx.Post("/auth", BusiCircleAuth(exchange))
-	wx.Post("/payment", BusiCirclePayment(exchange))
-	//wx.Post("/refund", BusiCircleRefund())
+	// wx.Post("/payment", BusiCirclePayment(exchange))
+	// wx.Post("/refund", BusiCircleRefund())
 
 	r := chi.NewRouter()
 	r.Mount("/wx", wx)

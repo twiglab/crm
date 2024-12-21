@@ -22,6 +22,18 @@ func IdlerTimeout(d time.Duration) ServerOptFunc {
 	}
 }
 
+func Handler(h http.Handler) ServerOptFunc {
+	return func(s *http.Server) {
+		s.Handler = h
+	}
+}
+
+func Addr(addr string) ServerOptFunc {
+	return func(s *http.Server) {
+		s.Addr = addr
+	}
+}
+
 func NewHttpServer(ctx context.Context, addr string, handler http.Handler, opts ...ServerOptFunc) *http.Server {
 	s := &http.Server{
 		Addr:        addr,
@@ -34,3 +46,16 @@ func NewHttpServer(ctx context.Context, addr string, handler http.Handler, opts 
 	}
 	return s
 }
+
+/*
+func NewWebServer(ctx context.Context, opts ...ServerOptFunc) *http.Server {
+	s := &http.Server{
+		IdleTimeout: 10 * time.Second,
+		BaseContext: func(_ net.Listener) context.Context { return ctx },
+	}
+	for _, f := range opts {
+		f(s)
+	}
+	return s
+}
+*/

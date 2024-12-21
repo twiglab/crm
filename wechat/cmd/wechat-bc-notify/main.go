@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	cfg := config.AppConfig{}
+	cfg := config.App{}
 	config.InitConfig(&cfg)
 
 	conn := cfg.MQConfig.Create()
