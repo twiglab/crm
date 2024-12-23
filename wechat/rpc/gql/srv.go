@@ -1,4 +1,4 @@
-package rpc
+package gql
 
 import (
 	"github.com/99designs/gqlgen/graphql"
@@ -9,7 +9,7 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
-func New(es graphql.ExecutableSchema) *handler.Server {
+func NewSvr(es graphql.ExecutableSchema) *handler.Server {
 	srv := handler.New(es)
 
 	srv.AddTransport(transport.Options{})

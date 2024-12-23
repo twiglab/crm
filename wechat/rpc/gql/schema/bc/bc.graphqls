@@ -1,0 +1,19 @@
+scalar Time
+
+input BusinessCirclePointsSync {
+  transactionID: String!
+  appID: String!
+  openID: String!
+  earnPoints: Boolean!
+  increasedPoints: Int!
+  pointsUpdateTime: Time!
+}
+
+type BcVoid{
+  result: Int!
+}
+
+extend type Query {
+  bcPointSync(input: BusinessCirclePointsSync!): BcVoid!
+}
+
