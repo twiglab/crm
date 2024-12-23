@@ -77,6 +77,7 @@ call_argument_directives_with_null: true
 # if they match it will use them, otherwise it will generate them.
 autobind:
   - "github.com/twiglab/crm/wechat/pkg/sns"
+  - "github.com/twiglab/crm/wechat/pkg/bc"
 
 # This section declares type mapping between the GraphQL and go type systems
 #

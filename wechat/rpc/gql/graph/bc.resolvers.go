@@ -6,12 +6,12 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/twiglab/crm/wechat/rpc/gql/graph/model"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 )
 
 // BcPointSync is the resolver for the bcPointSync field.
-func (r *queryResolver) BcPointSync(ctx context.Context, input model.BusinessCirclePointsSync) (*model.BcVoid, error) {
-	panic(fmt.Errorf("not implemented: BcPointSync - bcPointSync"))
+func (r *queryResolver) BcPointSync(ctx context.Context, input bc.BusinessCirclePointsSync) (*bc.BcVoid, error) {
+	err := r.BcClinet.BCPointsSync(ctx, input)
+	return &bc.BcVoid{}, err
 }

@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/twiglab/crm/wechat/sns"
+import (
+	"github.com/twiglab/crm/wechat/bc"
+	"github.com/twiglab/crm/wechat/sns"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,4 +11,5 @@ import "github.com/twiglab/crm/wechat/sns"
 
 type Resolver struct{
 	Auth *sns.Auth
+	BcClinet *bc.BcClient
 }

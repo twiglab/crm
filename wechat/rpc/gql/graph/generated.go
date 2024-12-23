@@ -15,8 +15,8 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/99designs/gqlgen/plugin/federation/fedruntime"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 	"github.com/twiglab/crm/wechat/pkg/sns"
-	"github.com/twiglab/crm/wechat/rpc/gql/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -59,7 +59,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		AuthUser           func(childComplexity int, input sns.JsCodeReq) int
-		BcPointSync        func(childComplexity int, input model.BusinessCirclePointsSync) int
+		BcPointSync        func(childComplexity int, input bc.BusinessCirclePointsSync) int
 		__resolve__service func(childComplexity int) int
 	}
 
@@ -70,7 +70,7 @@ type ComplexityRoot struct {
 
 type QueryResolver interface {
 	AuthUser(ctx context.Context, input sns.JsCodeReq) (*sns.AuthUserResp, error)
-	BcPointSync(ctx context.Context, input model.BusinessCirclePointsSync) (*model.BcVoid, error)
+	BcPointSync(ctx context.Context, input bc.BusinessCirclePointsSync) (*bc.BcVoid, error)
 }
 
 type executableSchema struct {
@@ -135,7 +135,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.BcPointSync(childComplexity, args["input"].(model.BusinessCirclePointsSync)), true
+		return e.complexity.Query.BcPointSync(childComplexity, args["input"].(bc.BusinessCirclePointsSync)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -403,13 +403,13 @@ func (ec *executionContext) field_Query_bcPointSync_args(ctx context.Context, ra
 func (ec *executionContext) field_Query_bcPointSync_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (model.BusinessCirclePointsSync, error) {
+) (bc.BusinessCirclePointsSync, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBusinessCirclePointsSync2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋrpcᚋgqlᚋgraphᚋmodelᚐBusinessCirclePointsSync(ctx, tmp)
+		return ec.unmarshalNBusinessCirclePointsSync2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋbcᚐBusinessCirclePointsSync(ctx, tmp)
 	}
 
-	var zeroVal model.BusinessCirclePointsSync
+	var zeroVal bc.BusinessCirclePointsSync
 	return zeroVal, nil
 }
 
@@ -555,7 +555,7 @@ func (ec *executionContext) fieldContext_AuthUserResp_unionID(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _BcVoid_result(ctx context.Context, field graphql.CollectedField, obj *model.BcVoid) (ret graphql.Marshaler) {
+func (ec *executionContext) _BcVoid_result(ctx context.Context, field graphql.CollectedField, obj *bc.BcVoid) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_BcVoid_result(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -674,7 +674,7 @@ func (ec *executionContext) _Query_bcPointSync(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().BcPointSync(rctx, fc.Args["input"].(model.BusinessCirclePointsSync))
+		return ec.resolvers.Query().BcPointSync(rctx, fc.Args["input"].(bc.BusinessCirclePointsSync))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -686,9 +686,9 @@ func (ec *executionContext) _Query_bcPointSync(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.BcVoid)
+	res := resTmp.(*bc.BcVoid)
 	fc.Result = res
-	return ec.marshalNBcVoid2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋrpcᚋgqlᚋgraphᚋmodelᚐBcVoid(ctx, field.Selections, res)
+	return ec.marshalNBcVoid2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋbcᚐBcVoid(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_bcPointSync(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2710,8 +2710,8 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputBusinessCirclePointsSync(ctx context.Context, obj any) (model.BusinessCirclePointsSync, error) {
-	var it model.BusinessCirclePointsSync
+func (ec *executionContext) unmarshalInputBusinessCirclePointsSync(ctx context.Context, obj any) (bc.BusinessCirclePointsSync, error) {
+	var it bc.BusinessCirclePointsSync
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
@@ -2853,7 +2853,7 @@ func (ec *executionContext) _AuthUserResp(ctx context.Context, sel ast.Selection
 
 var bcVoidImplementors = []string{"BcVoid"}
 
-func (ec *executionContext) _BcVoid(ctx context.Context, sel ast.SelectionSet, obj *model.BcVoid) graphql.Marshaler {
+func (ec *executionContext) _BcVoid(ctx context.Context, sel ast.SelectionSet, obj *bc.BcVoid) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, bcVoidImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3382,11 +3382,11 @@ func (ec *executionContext) marshalNAuthUserResp2ᚖgithubᚗcomᚋtwiglabᚋcrm
 	return ec._AuthUserResp(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNBcVoid2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋrpcᚋgqlᚋgraphᚋmodelᚐBcVoid(ctx context.Context, sel ast.SelectionSet, v model.BcVoid) graphql.Marshaler {
+func (ec *executionContext) marshalNBcVoid2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋbcᚐBcVoid(ctx context.Context, sel ast.SelectionSet, v bc.BcVoid) graphql.Marshaler {
 	return ec._BcVoid(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNBcVoid2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋrpcᚋgqlᚋgraphᚋmodelᚐBcVoid(ctx context.Context, sel ast.SelectionSet, v *model.BcVoid) graphql.Marshaler {
+func (ec *executionContext) marshalNBcVoid2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋbcᚐBcVoid(ctx context.Context, sel ast.SelectionSet, v *bc.BcVoid) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3411,7 +3411,7 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNBusinessCirclePointsSync2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋrpcᚋgqlᚋgraphᚋmodelᚐBusinessCirclePointsSync(ctx context.Context, v any) (model.BusinessCirclePointsSync, error) {
+func (ec *executionContext) unmarshalNBusinessCirclePointsSync2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋpkgᚋbcᚐBusinessCirclePointsSync(ctx context.Context, v any) (bc.BusinessCirclePointsSync, error) {
 	res, err := ec.unmarshalInputBusinessCirclePointsSync(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }

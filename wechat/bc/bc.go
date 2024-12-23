@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/wechat/v3"
+	"github.com/twiglab/crm/wechat/pkg/bc"
 )
 
 type BcClient struct {
@@ -16,7 +17,7 @@ func NewBcClient(client *wechat.ClientV3) *BcClient {
 	return &BcClient{client: client}
 }
 
-func (c *BcClient) BCPointsSync(ctx context.Context, query BusinessCirclePointsSync) error {
+func (c *BcClient) BCPointsSync(ctx context.Context, query bc.BusinessCirclePointsSync) error {
 	var bm gopay.BodyMap
 	bm.Set("transaction_id", query.TransactionID)
 	bm.Set("appid", query.AppID)
