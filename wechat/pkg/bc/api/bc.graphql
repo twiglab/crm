@@ -1,0 +1,6 @@
+query BcPointSync($input: BusinessCirclePointsSync!) {
+  bcPointSync(input: $input) {
+    result
+  }
+}
+
