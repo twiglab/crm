@@ -10,51 +10,12 @@ import (
 	"time"
 
 	"github.com/twiglab/crm/card/orm/ent/card"
-	"github.com/twiglab/crm/card/pkg/data"
+	"github.com/twiglab/crm/card/rpc/gql/graph/model"
 	"github.com/twiglab/crm/poly/orm/ent"
 )
 
-// CreateCard is the resolver for the createCard field.
-func (r *mutationResolver) CreateCard(ctx context.Context, input data.CreateCardReq) (*data.CardResp, error) {
-	if input.CardCode == nil {
-		// TODO 生成code，临时使用时间戳代替
-		cardCode := fmt.Sprintf("%d", time.Now().Nanosecond()/1e3)
-		input.CardCode = &cardCode
-	}
-
-	// 指定code时，检查code是否已经存在
-	q := r.Client.Card.Query()
-	q.Where(card.CardCodeEQ(*input.CardCode))
-	b, err := q.Exist(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if b {
-		return nil, fmt.Errorf("card code already exist")
-	}
-
-	c := r.Client.Card.Create()
-	c.SetCardCode(*input.CardCode)
-	c.SetAmount(input.Balance)
-	c.SetBalance(input.Balance)
-	c.SetType(input.Type)
-	cobj, err := c.Save(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &data.CardResp{
-		Code:       cobj.Code,
-		CardCode:   cobj.CardCode,
-		MemberCode: &cobj.MemberCode,
-		Type:       cobj.Type,
-		Balance:    cobj.Balance,
-		Amount:     cobj.Amount,
-	}, nil
-}
-
 // BindCard is the resolver for the bindCard field.
-func (r *mutationResolver) BindCard(ctx context.Context, input data.BindCardReq) (*data.CardResp, error) {
+func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq) (*model.CardResp, error) {
 	q, err := r.Client.Card.Query().Where(card.CodeEQ(input.Code)).First(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -68,23 +29,62 @@ func (r *mutationResolver) BindCard(ctx context.Context, input data.BindCardReq)
 
 	c := r.Client.Card.UpdateOne(q)
 	c.SetMemberCode(input.MemberCode)
+	c.SetBindTime(time.Now())
 	cobj, err := c.Save(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &data.CardResp{
-		Code:       cobj.Code,
-		CardCode:   cobj.CardCode,
-		MemberCode: &cobj.MemberCode,
-		Type:       cobj.Type,
-		Balance:    cobj.Balance,
-		Amount:     cobj.Amount,
+	return &model.CardResp{
+		Code:          cobj.Code,
+		CodeBin:       cobj.CodeBin,
+		Type:          cobj.Type,
+		Pic1:          cobj.Pic1,
+		Pic2:          cobj.Pic2,
+		Balance:       int(cobj.Balance),
+		Amount:        int(cobj.Amount),
+		MemberCode:    &cobj.MemberCode,
+		HitTime:       int(cobj.HitTime),
+		LastCleanTime: nil,
+		Status:        cobj.Status,
+	}, nil
+}
+
+// ActiveCard is the resolver for the activeCard field.
+func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error) {
+	q, err := r.Client.Card.Query().Where(card.CodeBinEQ(input.CodeBin)).First(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return nil, fmt.Errorf("card code not found")
+		}
+		return nil, err
+	}
+
+	c := r.Client.Card.UpdateOne(q)
+	c.SetStatus(1)
+	c.SetHitTime(time.Now().Unix())
+	cobj, err := c.Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.CardResp{
+		Code:          cobj.Code,
+		CodeBin:       cobj.CodeBin,
+		Type:          cobj.Type,
+		Pic1:          cobj.Pic1,
+		Pic2:          cobj.Pic2,
+		Balance:       int(cobj.Balance),
+		Amount:        int(cobj.Amount),
+		MemberCode:    &cobj.MemberCode,
+		HitTime:       int(cobj.HitTime),
+		LastCleanTime: nil,
+		Status:        cobj.Status,
 	}, nil
 }
 
 // QueryCardDetail is the resolver for the queryCardDetail field.
-func (r *queryResolver) QueryCardDetail(ctx context.Context, input *data.QueryCardByCode) (*data.CardResp, error) {
+func (r *queryResolver) QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error) {
 	cobj, err := r.Client.Card.Query().Where(card.CodeEQ(input.Code)).First(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -93,18 +93,23 @@ func (r *queryResolver) QueryCardDetail(ctx context.Context, input *data.QueryCa
 		return nil, err
 	}
 
-	return &data.CardResp{
-		Code:       cobj.Code,
-		CardCode:   cobj.CardCode,
-		MemberCode: &cobj.MemberCode,
-		Type:       cobj.Type,
-		Balance:    cobj.Balance,
-		Amount:     cobj.Amount,
+	return &model.CardResp{
+		Code:          cobj.Code,
+		CodeBin:       cobj.CodeBin,
+		Type:          cobj.Type,
+		Pic1:          cobj.Pic1,
+		Pic2:          cobj.Pic2,
+		Balance:       int(cobj.Balance),
+		Amount:        int(cobj.Amount),
+		MemberCode:    &cobj.MemberCode,
+		HitTime:       int(cobj.HitTime),
+		LastCleanTime: nil,
+		Status:        cobj.Status,
 	}, nil
 }
 
 // QueryCardList is the resolver for the queryCardList field.
-func (r *queryResolver) QueryCardList(ctx context.Context, input *data.PaginationReq) ([]*data.CardResp, error) {
+func (r *queryResolver) QueryCardList(ctx context.Context, input *model.PaginationReq) ([]*model.CardResp, error) {
 	q := r.Client.Card.Query()
 	// q.Where(card.)
 	if input.Order != nil && *input.Order == "desc" {
@@ -122,15 +127,20 @@ func (r *queryResolver) QueryCardList(ctx context.Context, input *data.Paginatio
 		return nil, err
 	}
 
-	var rets []*data.CardResp
+	var rets []*model.CardResp
 	for _, cobj := range cobjs {
-		obj := &data.CardResp{
-			Code:       cobj.Code,
-			CardCode:   cobj.CardCode,
-			MemberCode: &cobj.MemberCode,
-			Type:       cobj.Type,
-			Balance:    cobj.Balance,
-			Amount:     cobj.Amount,
+		obj := &model.CardResp{
+			Code:          cobj.Code,
+			CodeBin:       cobj.CodeBin,
+			Type:          cobj.Type,
+			Pic1:          cobj.Pic1,
+			Pic2:          cobj.Pic2,
+			Balance:       int(cobj.Balance),
+			Amount:        int(cobj.Amount),
+			MemberCode:    &cobj.MemberCode,
+			HitTime:       int(cobj.HitTime),
+			LastCleanTime: nil,
+			Status:        cobj.Status,
 		}
 		rets = append(rets, obj)
 	}
@@ -139,33 +149,24 @@ func (r *queryResolver) QueryCardList(ctx context.Context, input *data.Paginatio
 }
 
 // QueryCardByMemberCode is the resolver for the queryCardByMemberCode field.
-func (r *queryResolver) QueryCardByMemberCode(ctx context.Context, input *data.QueryCardByMemberCode) ([]*data.CardResp, error) {
-	q := r.Client.Card.Query()
-	if input.PageInfo.Order != nil && *input.PageInfo.Order == "desc" {
-		q.Order(ent.Desc(card.FieldCode)).Where(card.CodeGT(*input.PageInfo.Cursor))
-	} else {
-		q.Order(ent.Asc(card.FieldCode)).Where(card.CodeLT(*input.PageInfo.Cursor))
-	}
-	q.Where(card.MemberCodeEQ(input.MemberCode))
-	if input.PageInfo.Limit != nil {
-		q.Limit(*input.PageInfo.Limit)
-	} else {
-		q.Limit(10)
-	}
-	cobjs, err := q.All(ctx)
+func (r *queryResolver) QueryCardByMemberCode(ctx context.Context, input *model.QueryCardByMemberCode) ([]*model.CardResp, error) {
+	cobjs, err := r.Client.Card.Query().
+		Order(ent.Asc(card.FieldHitTime)).
+		Where(card.MemberCodeEQ(input.MemberCode)).
+		All(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	var rets []*data.CardResp
+	var rets []*model.CardResp
 	for _, cobj := range cobjs {
-		obj := &data.CardResp{
+		obj := &model.CardResp{
 			Code:       cobj.Code,
-			CardCode:   cobj.CardCode,
+			CodeBin:    cobj.CodeBin,
 			MemberCode: &cobj.MemberCode,
 			Type:       cobj.Type,
-			Balance:    cobj.Balance,
-			Amount:     cobj.Amount,
+			Balance:    int(cobj.Balance),
+			Amount:     int(cobj.Amount),
 		}
 		rets = append(rets, obj)
 	}

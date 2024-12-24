@@ -19,16 +19,26 @@ const (
 	FieldUpdateTime = "update_time"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
-	// FieldCardCode holds the string denoting the card_code field in the database.
-	FieldCardCode = "card_code"
-	// FieldMemberCode holds the string denoting the member_code field in the database.
-	FieldMemberCode = "member_code"
+	// FieldCodeBin holds the string denoting the code_bin field in the database.
+	FieldCodeBin = "code_bin"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
+	// FieldPic1 holds the string denoting the pic1 field in the database.
+	FieldPic1 = "pic1"
+	// FieldPic2 holds the string denoting the pic2 field in the database.
+	FieldPic2 = "pic2"
 	// FieldBalance holds the string denoting the balance field in the database.
 	FieldBalance = "balance"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
+	// FieldMemberCode holds the string denoting the member_code field in the database.
+	FieldMemberCode = "member_code"
+	// FieldBindTime holds the string denoting the bind_time field in the database.
+	FieldBindTime = "bind_time"
+	// FieldHitTime holds the string denoting the hit_time field in the database.
+	FieldHitTime = "hit_time"
+	// FieldLastCleanTime holds the string denoting the last_clean_time field in the database.
+	FieldLastCleanTime = "last_clean_time"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the card in the database.
@@ -41,11 +51,16 @@ var Columns = []string{
 	FieldCreateTime,
 	FieldUpdateTime,
 	FieldCode,
-	FieldCardCode,
-	FieldMemberCode,
+	FieldCodeBin,
 	FieldType,
+	FieldPic1,
+	FieldPic2,
 	FieldBalance,
 	FieldAmount,
+	FieldMemberCode,
+	FieldBindTime,
+	FieldHitTime,
+	FieldLastCleanTime,
 	FieldStatus,
 }
 
@@ -70,18 +85,22 @@ var (
 	DefaultCode func() string
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
-	// CardCodeValidator is a validator for the "card_code" field. It is called by the builders before save.
-	CardCodeValidator func(string) error
+	// CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
+	CodeBinValidator func(string) error
+	// DefaultType holds the default value on creation for the "type" field.
+	DefaultType int
+	// Pic1Validator is a validator for the "pic1" field. It is called by the builders before save.
+	Pic1Validator func(string) error
+	// Pic2Validator is a validator for the "pic2" field. It is called by the builders before save.
+	Pic2Validator func(string) error
+	// DefaultBalance holds the default value on creation for the "balance" field.
+	DefaultBalance int64
+	// DefaultAmount holds the default value on creation for the "amount" field.
+	DefaultAmount int64
 	// DefaultMemberCode holds the default value on creation for the "member_code" field.
 	DefaultMemberCode func() string
 	// MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	MemberCodeValidator func(string) error
-	// DefaultType holds the default value on creation for the "type" field.
-	DefaultType int
-	// DefaultBalance holds the default value on creation for the "balance" field.
-	DefaultBalance int
-	// DefaultAmount holds the default value on creation for the "amount" field.
-	DefaultAmount int
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 )
@@ -109,19 +128,24 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
-// ByCardCode orders the results by the card_code field.
-func ByCardCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCardCode, opts...).ToFunc()
-}
-
-// ByMemberCode orders the results by the member_code field.
-func ByMemberCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMemberCode, opts...).ToFunc()
+// ByCodeBin orders the results by the code_bin field.
+func ByCodeBin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCodeBin, opts...).ToFunc()
 }
 
 // ByType orders the results by the type field.
 func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
+}
+
+// ByPic1 orders the results by the pic1 field.
+func ByPic1(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic1, opts...).ToFunc()
+}
+
+// ByPic2 orders the results by the pic2 field.
+func ByPic2(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic2, opts...).ToFunc()
 }
 
 // ByBalance orders the results by the balance field.
@@ -132,6 +156,26 @@ func ByBalance(opts ...sql.OrderTermOption) OrderOption {
 // ByAmount orders the results by the amount field.
 func ByAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAmount, opts...).ToFunc()
+}
+
+// ByMemberCode orders the results by the member_code field.
+func ByMemberCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMemberCode, opts...).ToFunc()
+}
+
+// ByBindTime orders the results by the bind_time field.
+func ByBindTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBindTime, opts...).ToFunc()
+}
+
+// ByHitTime orders the results by the hit_time field.
+func ByHitTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHitTime, opts...).ToFunc()
+}
+
+// ByLastCleanTime orders the results by the last_clean_time field.
+func ByLastCleanTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastCleanTime, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

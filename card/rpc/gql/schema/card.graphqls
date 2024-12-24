@@ -1,10 +1,16 @@
 type CardResp {
-  code: String!
-  cardCode: String!
-  memberCode: String
-  type: Int!
-  balance: Int!
-  amount: Int!
+  code: String! # 卡片编码
+  codeBin: String! # 卡片BIN码
+  type: Int! # 卡片类型
+  pic1: String! # 图片1
+  pic2: String! # 图片2
+  balance: Int! # 金额 
+  amount: Int! # 余额
+  memberCode: String # 会员编码
+  bindTime: String # 绑定时间
+  hitTime: Int!
+  lastCleanTime: String 
+  status: Int! # 状态
 }
 
 input PaginationReq {
@@ -19,13 +25,10 @@ input queryCardByCode {
 
 input queryCardByMemberCode {
   memberCode: String!
-  pageInfo: PaginationReq
 }
 
-input CreateCardReq {
-  type: Int!
-  balance: Int!
-  cardCode: String
+input ActiveCardReq {
+  codeBin: String!
 }
 
 input BindCardReq {
@@ -43,8 +46,9 @@ type Query {
 }
 
 type Mutation {
-  # 开卡
-  createCard(input: CreateCardReq!): CardResp!
   # 绑定成员
   bindCard(input: BindCardReq!): CardResp!
+
+  # 激活卡
+  activeCard(input: ActiveCardReq!): CardResp!
 }

@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/99designs/gqlgen/plugin/federation/fedruntime"
-	"github.com/twiglab/crm/card/pkg/data"
+	"github.com/twiglab/crm/card/rpc/gql/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -48,23 +48,29 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	CardResp struct {
-		Amount     func(childComplexity int) int
-		Balance    func(childComplexity int) int
-		CardCode   func(childComplexity int) int
-		Code       func(childComplexity int) int
-		MemberCode func(childComplexity int) int
-		Type       func(childComplexity int) int
+		Amount        func(childComplexity int) int
+		Balance       func(childComplexity int) int
+		BindTime      func(childComplexity int) int
+		Code          func(childComplexity int) int
+		CodeBin       func(childComplexity int) int
+		HitTime       func(childComplexity int) int
+		LastCleanTime func(childComplexity int) int
+		MemberCode    func(childComplexity int) int
+		Pic1          func(childComplexity int) int
+		Pic2          func(childComplexity int) int
+		Status        func(childComplexity int) int
+		Type          func(childComplexity int) int
 	}
 
 	Mutation struct {
-		BindCard   func(childComplexity int, input data.BindCardReq) int
-		CreateCard func(childComplexity int, input data.CreateCardReq) int
+		ActiveCard func(childComplexity int, input model.ActiveCardReq) int
+		BindCard   func(childComplexity int, input model.BindCardReq) int
 	}
 
 	Query struct {
-		QueryCardByMemberCode func(childComplexity int, input *data.QueryCardByMemberCode) int
-		QueryCardDetail       func(childComplexity int, input *data.QueryCardByCode) int
-		QueryCardList         func(childComplexity int, input *data.PaginationReq) int
+		QueryCardByMemberCode func(childComplexity int, input *model.QueryCardByMemberCode) int
+		QueryCardDetail       func(childComplexity int, input *model.QueryCardByCode) int
+		QueryCardList         func(childComplexity int, input *model.PaginationReq) int
 		__resolve__service    func(childComplexity int) int
 	}
 
@@ -74,13 +80,13 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateCard(ctx context.Context, input data.CreateCardReq) (*data.CardResp, error)
-	BindCard(ctx context.Context, input data.BindCardReq) (*data.CardResp, error)
+	BindCard(ctx context.Context, input model.BindCardReq) (*model.CardResp, error)
+	ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error)
 }
 type QueryResolver interface {
-	QueryCardDetail(ctx context.Context, input *data.QueryCardByCode) (*data.CardResp, error)
-	QueryCardList(ctx context.Context, input *data.PaginationReq) ([]*data.CardResp, error)
-	QueryCardByMemberCode(ctx context.Context, input *data.QueryCardByMemberCode) ([]*data.CardResp, error)
+	QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error)
+	QueryCardList(ctx context.Context, input *model.PaginationReq) ([]*model.CardResp, error)
+	QueryCardByMemberCode(ctx context.Context, input *model.QueryCardByMemberCode) ([]*model.CardResp, error)
 }
 
 type executableSchema struct {
@@ -116,12 +122,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CardResp.Balance(childComplexity), true
 
-	case "CardResp.cardCode":
-		if e.complexity.CardResp.CardCode == nil {
+	case "CardResp.bindTime":
+		if e.complexity.CardResp.BindTime == nil {
 			break
 		}
 
-		return e.complexity.CardResp.CardCode(childComplexity), true
+		return e.complexity.CardResp.BindTime(childComplexity), true
 
 	case "CardResp.code":
 		if e.complexity.CardResp.Code == nil {
@@ -130,6 +136,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CardResp.Code(childComplexity), true
 
+	case "CardResp.codeBin":
+		if e.complexity.CardResp.CodeBin == nil {
+			break
+		}
+
+		return e.complexity.CardResp.CodeBin(childComplexity), true
+
+	case "CardResp.hitTime":
+		if e.complexity.CardResp.HitTime == nil {
+			break
+		}
+
+		return e.complexity.CardResp.HitTime(childComplexity), true
+
+	case "CardResp.lastCleanTime":
+		if e.complexity.CardResp.LastCleanTime == nil {
+			break
+		}
+
+		return e.complexity.CardResp.LastCleanTime(childComplexity), true
+
 	case "CardResp.memberCode":
 		if e.complexity.CardResp.MemberCode == nil {
 			break
@@ -137,12 +164,45 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CardResp.MemberCode(childComplexity), true
 
+	case "CardResp.pic1":
+		if e.complexity.CardResp.Pic1 == nil {
+			break
+		}
+
+		return e.complexity.CardResp.Pic1(childComplexity), true
+
+	case "CardResp.pic2":
+		if e.complexity.CardResp.Pic2 == nil {
+			break
+		}
+
+		return e.complexity.CardResp.Pic2(childComplexity), true
+
+	case "CardResp.status":
+		if e.complexity.CardResp.Status == nil {
+			break
+		}
+
+		return e.complexity.CardResp.Status(childComplexity), true
+
 	case "CardResp.type":
 		if e.complexity.CardResp.Type == nil {
 			break
 		}
 
 		return e.complexity.CardResp.Type(childComplexity), true
+
+	case "Mutation.activeCard":
+		if e.complexity.Mutation.ActiveCard == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_activeCard_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ActiveCard(childComplexity, args["input"].(model.ActiveCardReq)), true
 
 	case "Mutation.bindCard":
 		if e.complexity.Mutation.BindCard == nil {
@@ -154,19 +214,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.BindCard(childComplexity, args["input"].(data.BindCardReq)), true
-
-	case "Mutation.createCard":
-		if e.complexity.Mutation.CreateCard == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createCard_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.CreateCard(childComplexity, args["input"].(data.CreateCardReq)), true
+		return e.complexity.Mutation.BindCard(childComplexity, args["input"].(model.BindCardReq)), true
 
 	case "Query.queryCardByMemberCode":
 		if e.complexity.Query.QueryCardByMemberCode == nil {
@@ -178,7 +226,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.QueryCardByMemberCode(childComplexity, args["input"].(*data.QueryCardByMemberCode)), true
+		return e.complexity.Query.QueryCardByMemberCode(childComplexity, args["input"].(*model.QueryCardByMemberCode)), true
 
 	case "Query.queryCardDetail":
 		if e.complexity.Query.QueryCardDetail == nil {
@@ -190,7 +238,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.QueryCardDetail(childComplexity, args["input"].(*data.QueryCardByCode)), true
+		return e.complexity.Query.QueryCardDetail(childComplexity, args["input"].(*model.QueryCardByCode)), true
 
 	case "Query.queryCardList":
 		if e.complexity.Query.QueryCardList == nil {
@@ -202,7 +250,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.QueryCardList(childComplexity, args["input"].(*data.PaginationReq)), true
+		return e.complexity.Query.QueryCardList(childComplexity, args["input"].(*model.PaginationReq)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -226,8 +274,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputActiveCardReq,
 		ec.unmarshalInputBindCardReq,
-		ec.unmarshalInputCreateCardReq,
 		ec.unmarshalInputPaginationReq,
 		ec.unmarshalInputqueryCardByCode,
 		ec.unmarshalInputqueryCardByMemberCode,
@@ -329,12 +377,18 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 
 var sources = []*ast.Source{
 	{Name: "../schema/card.graphqls", Input: `type CardResp {
-  code: String!
-  cardCode: String!
-  memberCode: String
-  type: Int!
-  balance: Int!
-  amount: Int!
+  code: String! # 卡片编码
+  codeBin: String! # 卡片BIN码
+  type: Int! # 卡片类型
+  pic1: String! # 图片1
+  pic2: String! # 图片2
+  balance: Int! # 金额 
+  amount: Int! # 余额
+  memberCode: String # 会员编码
+  bindTime: String # 绑定时间
+  hitTime: Int!
+  lastCleanTime: String 
+  status: Int! # 状态
 }
 
 input PaginationReq {
@@ -349,13 +403,10 @@ input queryCardByCode {
 
 input queryCardByMemberCode {
   memberCode: String!
-  pageInfo: PaginationReq
 }
 
-input CreateCardReq {
-  type: Int!
-  balance: Int!
-  cardCode: String
+input ActiveCardReq {
+  codeBin: String!
 }
 
 input BindCardReq {
@@ -373,10 +424,11 @@ type Query {
 }
 
 type Mutation {
-  # 开卡
-  createCard(input: CreateCardReq!): CardResp!
   # 绑定成员
   bindCard(input: BindCardReq!): CardResp!
+
+  # 激活卡
+  activeCard(input: ActiveCardReq!): CardResp!
 }
 `, BuiltIn: false},
 	{Name: "../federation/directives.graphql", Input: `
@@ -446,6 +498,29 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
+func (ec *executionContext) field_Mutation_activeCard_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_activeCard_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_activeCard_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.ActiveCardReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNActiveCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐActiveCardReq(ctx, tmp)
+	}
+
+	var zeroVal model.ActiveCardReq
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_bindCard_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -459,36 +534,13 @@ func (ec *executionContext) field_Mutation_bindCard_args(ctx context.Context, ra
 func (ec *executionContext) field_Mutation_bindCard_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (data.BindCardReq, error) {
+) (model.BindCardReq, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBindCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐBindCardReq(ctx, tmp)
+		return ec.unmarshalNBindCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐBindCardReq(ctx, tmp)
 	}
 
-	var zeroVal data.BindCardReq
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createCard_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := ec.field_Mutation_createCard_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_createCard_argsInput(
-	ctx context.Context,
-	rawArgs map[string]any,
-) (data.CreateCardReq, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCreateCardReq(ctx, tmp)
-	}
-
-	var zeroVal data.CreateCardReq
+	var zeroVal model.BindCardReq
 	return zeroVal, nil
 }
 
@@ -528,13 +580,13 @@ func (ec *executionContext) field_Query_queryCardByMemberCode_args(ctx context.C
 func (ec *executionContext) field_Query_queryCardByMemberCode_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*data.QueryCardByMemberCode, error) {
+) (*model.QueryCardByMemberCode, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalOqueryCardByMemberCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐQueryCardByMemberCode(ctx, tmp)
+		return ec.unmarshalOqueryCardByMemberCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐQueryCardByMemberCode(ctx, tmp)
 	}
 
-	var zeroVal *data.QueryCardByMemberCode
+	var zeroVal *model.QueryCardByMemberCode
 	return zeroVal, nil
 }
 
@@ -551,13 +603,13 @@ func (ec *executionContext) field_Query_queryCardDetail_args(ctx context.Context
 func (ec *executionContext) field_Query_queryCardDetail_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*data.QueryCardByCode, error) {
+) (*model.QueryCardByCode, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐQueryCardByCode(ctx, tmp)
+		return ec.unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐQueryCardByCode(ctx, tmp)
 	}
 
-	var zeroVal *data.QueryCardByCode
+	var zeroVal *model.QueryCardByCode
 	return zeroVal, nil
 }
 
@@ -574,13 +626,13 @@ func (ec *executionContext) field_Query_queryCardList_args(ctx context.Context, 
 func (ec *executionContext) field_Query_queryCardList_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*data.PaginationReq, error) {
+) (*model.PaginationReq, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalOPaginationReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐPaginationReq(ctx, tmp)
+		return ec.unmarshalOPaginationReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐPaginationReq(ctx, tmp)
 	}
 
-	var zeroVal *data.PaginationReq
+	var zeroVal *model.PaginationReq
 	return zeroVal, nil
 }
 
@@ -638,7 +690,7 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _CardResp_code(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardResp_code(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CardResp_code(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -682,8 +734,8 @@ func (ec *executionContext) fieldContext_CardResp_code(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _CardResp_cardCode(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardResp_cardCode(ctx, field)
+func (ec *executionContext) _CardResp_codeBin(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_codeBin(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -696,7 +748,7 @@ func (ec *executionContext) _CardResp_cardCode(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CardCode, nil
+		return obj.CodeBin, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -713,7 +765,7 @@ func (ec *executionContext) _CardResp_cardCode(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_CardResp_cardCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_CardResp_codeBin(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "CardResp",
 		Field:      field,
@@ -726,48 +778,7 @@ func (ec *executionContext) fieldContext_CardResp_cardCode(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _CardResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardResp_memberCode(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.MemberCode, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CardResp_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CardResp",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CardResp_type(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardResp_type(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CardResp_type(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -811,7 +822,95 @@ func (ec *executionContext) fieldContext_CardResp_type(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _CardResp_balance(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardResp_pic1(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_pic1(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Pic1, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_pic1(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_pic2(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_pic2(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Pic2, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_pic2(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_balance(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CardResp_balance(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -855,7 +954,7 @@ func (ec *executionContext) fieldContext_CardResp_balance(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _CardResp_amount(ctx context.Context, field graphql.CollectedField, obj *data.CardResp) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardResp_amount(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CardResp_amount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -899,8 +998,8 @@ func (ec *executionContext) fieldContext_CardResp_amount(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_createCard(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createCard(ctx, field)
+func (ec *executionContext) _CardResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_memberCode(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -913,7 +1012,89 @@ func (ec *executionContext) _Mutation_createCard(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateCard(rctx, fc.Args["input"].(data.CreateCardReq))
+		return obj.MemberCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_bindTime(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_bindTime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BindTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_bindTime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_hitTime(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_hitTime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HitTime, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -925,45 +1106,105 @@ func (ec *executionContext) _Mutation_createCard(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*data.CardResp)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_createCard(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_CardResp_hitTime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Mutation",
+		Object:     "CardResp",
 		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "code":
-				return ec.fieldContext_CardResp_code(ctx, field)
-			case "cardCode":
-				return ec.fieldContext_CardResp_cardCode(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
-			case "type":
-				return ec.fieldContext_CardResp_type(ctx, field)
-			case "balance":
-				return ec.fieldContext_CardResp_balance(ctx, field)
-			case "amount":
-				return ec.fieldContext_CardResp_amount(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_lastCleanTime(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
 	defer func() {
 		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
 		}
 	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createCard_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastCleanTime, nil
+	})
+	if err != nil {
 		ec.Error(ctx, err)
-		return fc, err
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_lastCleanTime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CardResp_status(ctx context.Context, field graphql.CollectedField, obj *model.CardResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CardResp_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CardResp_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CardResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
 	}
 	return fc, nil
 }
@@ -982,7 +1223,7 @@ func (ec *executionContext) _Mutation_bindCard(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().BindCard(rctx, fc.Args["input"].(data.BindCardReq))
+		return ec.resolvers.Mutation().BindCard(rctx, fc.Args["input"].(model.BindCardReq))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -994,9 +1235,9 @@ func (ec *executionContext) _Mutation_bindCard(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*data.CardResp)
+	res := resTmp.(*model.CardResp)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_bindCard(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1009,16 +1250,28 @@ func (ec *executionContext) fieldContext_Mutation_bindCard(ctx context.Context, 
 			switch field.Name {
 			case "code":
 				return ec.fieldContext_CardResp_code(ctx, field)
-			case "cardCode":
-				return ec.fieldContext_CardResp_cardCode(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "codeBin":
+				return ec.fieldContext_CardResp_codeBin(ctx, field)
 			case "type":
 				return ec.fieldContext_CardResp_type(ctx, field)
+			case "pic1":
+				return ec.fieldContext_CardResp_pic1(ctx, field)
+			case "pic2":
+				return ec.fieldContext_CardResp_pic2(ctx, field)
 			case "balance":
 				return ec.fieldContext_CardResp_balance(ctx, field)
 			case "amount":
 				return ec.fieldContext_CardResp_amount(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "bindTime":
+				return ec.fieldContext_CardResp_bindTime(ctx, field)
+			case "hitTime":
+				return ec.fieldContext_CardResp_hitTime(ctx, field)
+			case "lastCleanTime":
+				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+			case "status":
+				return ec.fieldContext_CardResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
 		},
@@ -1031,6 +1284,87 @@ func (ec *executionContext) fieldContext_Mutation_bindCard(ctx context.Context, 
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_bindCard_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_activeCard(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_activeCard(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().ActiveCard(rctx, fc.Args["input"].(model.ActiveCardReq))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.CardResp)
+	fc.Result = res
+	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_activeCard(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "code":
+				return ec.fieldContext_CardResp_code(ctx, field)
+			case "codeBin":
+				return ec.fieldContext_CardResp_codeBin(ctx, field)
+			case "type":
+				return ec.fieldContext_CardResp_type(ctx, field)
+			case "pic1":
+				return ec.fieldContext_CardResp_pic1(ctx, field)
+			case "pic2":
+				return ec.fieldContext_CardResp_pic2(ctx, field)
+			case "balance":
+				return ec.fieldContext_CardResp_balance(ctx, field)
+			case "amount":
+				return ec.fieldContext_CardResp_amount(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "bindTime":
+				return ec.fieldContext_CardResp_bindTime(ctx, field)
+			case "hitTime":
+				return ec.fieldContext_CardResp_hitTime(ctx, field)
+			case "lastCleanTime":
+				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+			case "status":
+				return ec.fieldContext_CardResp_status(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_activeCard_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -1051,7 +1385,7 @@ func (ec *executionContext) _Query_queryCardDetail(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().QueryCardDetail(rctx, fc.Args["input"].(*data.QueryCardByCode))
+		return ec.resolvers.Query().QueryCardDetail(rctx, fc.Args["input"].(*model.QueryCardByCode))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1063,9 +1397,9 @@ func (ec *executionContext) _Query_queryCardDetail(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*data.CardResp)
+	res := resTmp.(*model.CardResp)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_queryCardDetail(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1078,16 +1412,28 @@ func (ec *executionContext) fieldContext_Query_queryCardDetail(ctx context.Conte
 			switch field.Name {
 			case "code":
 				return ec.fieldContext_CardResp_code(ctx, field)
-			case "cardCode":
-				return ec.fieldContext_CardResp_cardCode(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "codeBin":
+				return ec.fieldContext_CardResp_codeBin(ctx, field)
 			case "type":
 				return ec.fieldContext_CardResp_type(ctx, field)
+			case "pic1":
+				return ec.fieldContext_CardResp_pic1(ctx, field)
+			case "pic2":
+				return ec.fieldContext_CardResp_pic2(ctx, field)
 			case "balance":
 				return ec.fieldContext_CardResp_balance(ctx, field)
 			case "amount":
 				return ec.fieldContext_CardResp_amount(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "bindTime":
+				return ec.fieldContext_CardResp_bindTime(ctx, field)
+			case "hitTime":
+				return ec.fieldContext_CardResp_hitTime(ctx, field)
+			case "lastCleanTime":
+				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+			case "status":
+				return ec.fieldContext_CardResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
 		},
@@ -1120,7 +1466,7 @@ func (ec *executionContext) _Query_queryCardList(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().QueryCardList(rctx, fc.Args["input"].(*data.PaginationReq))
+		return ec.resolvers.Query().QueryCardList(rctx, fc.Args["input"].(*model.PaginationReq))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1132,9 +1478,9 @@ func (ec *executionContext) _Query_queryCardList(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*data.CardResp)
+	res := resTmp.([]*model.CardResp)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_queryCardList(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1147,16 +1493,28 @@ func (ec *executionContext) fieldContext_Query_queryCardList(ctx context.Context
 			switch field.Name {
 			case "code":
 				return ec.fieldContext_CardResp_code(ctx, field)
-			case "cardCode":
-				return ec.fieldContext_CardResp_cardCode(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "codeBin":
+				return ec.fieldContext_CardResp_codeBin(ctx, field)
 			case "type":
 				return ec.fieldContext_CardResp_type(ctx, field)
+			case "pic1":
+				return ec.fieldContext_CardResp_pic1(ctx, field)
+			case "pic2":
+				return ec.fieldContext_CardResp_pic2(ctx, field)
 			case "balance":
 				return ec.fieldContext_CardResp_balance(ctx, field)
 			case "amount":
 				return ec.fieldContext_CardResp_amount(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "bindTime":
+				return ec.fieldContext_CardResp_bindTime(ctx, field)
+			case "hitTime":
+				return ec.fieldContext_CardResp_hitTime(ctx, field)
+			case "lastCleanTime":
+				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+			case "status":
+				return ec.fieldContext_CardResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
 		},
@@ -1189,7 +1547,7 @@ func (ec *executionContext) _Query_queryCardByMemberCode(ctx context.Context, fi
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().QueryCardByMemberCode(rctx, fc.Args["input"].(*data.QueryCardByMemberCode))
+		return ec.resolvers.Query().QueryCardByMemberCode(rctx, fc.Args["input"].(*model.QueryCardByMemberCode))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1201,9 +1559,9 @@ func (ec *executionContext) _Query_queryCardByMemberCode(ctx context.Context, fi
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*data.CardResp)
+	res := resTmp.([]*model.CardResp)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_queryCardByMemberCode(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1216,16 +1574,28 @@ func (ec *executionContext) fieldContext_Query_queryCardByMemberCode(ctx context
 			switch field.Name {
 			case "code":
 				return ec.fieldContext_CardResp_code(ctx, field)
-			case "cardCode":
-				return ec.fieldContext_CardResp_cardCode(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "codeBin":
+				return ec.fieldContext_CardResp_codeBin(ctx, field)
 			case "type":
 				return ec.fieldContext_CardResp_type(ctx, field)
+			case "pic1":
+				return ec.fieldContext_CardResp_pic1(ctx, field)
+			case "pic2":
+				return ec.fieldContext_CardResp_pic2(ctx, field)
 			case "balance":
 				return ec.fieldContext_CardResp_balance(ctx, field)
 			case "amount":
 				return ec.fieldContext_CardResp_amount(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_CardResp_memberCode(ctx, field)
+			case "bindTime":
+				return ec.fieldContext_CardResp_bindTime(ctx, field)
+			case "hitTime":
+				return ec.fieldContext_CardResp_hitTime(ctx, field)
+			case "lastCleanTime":
+				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
+			case "status":
+				return ec.fieldContext_CardResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
 		},
@@ -3235,8 +3605,35 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputBindCardReq(ctx context.Context, obj any) (data.BindCardReq, error) {
-	var it data.BindCardReq
+func (ec *executionContext) unmarshalInputActiveCardReq(ctx context.Context, obj any) (model.ActiveCardReq, error) {
+	var it model.ActiveCardReq
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"codeBin"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "codeBin":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codeBin"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CodeBin = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputBindCardReq(ctx context.Context, obj any) (model.BindCardReq, error) {
+	var it model.BindCardReq
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
@@ -3269,49 +3666,8 @@ func (ec *executionContext) unmarshalInputBindCardReq(ctx context.Context, obj a
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateCardReq(ctx context.Context, obj any) (data.CreateCardReq, error) {
-	var it data.CreateCardReq
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"type", "balance", "cardCode"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "type":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Type = data
-		case "balance":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("balance"))
-			data, err := ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Balance = data
-		case "cardCode":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cardCode"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CardCode = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputPaginationReq(ctx context.Context, obj any) (data.PaginationReq, error) {
-	var it data.PaginationReq
+func (ec *executionContext) unmarshalInputPaginationReq(ctx context.Context, obj any) (model.PaginationReq, error) {
+	var it model.PaginationReq
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
@@ -3351,8 +3707,8 @@ func (ec *executionContext) unmarshalInputPaginationReq(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputqueryCardByCode(ctx context.Context, obj any) (data.QueryCardByCode, error) {
-	var it data.QueryCardByCode
+func (ec *executionContext) unmarshalInputqueryCardByCode(ctx context.Context, obj any) (model.QueryCardByCode, error) {
+	var it model.QueryCardByCode
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
@@ -3378,14 +3734,14 @@ func (ec *executionContext) unmarshalInputqueryCardByCode(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputqueryCardByMemberCode(ctx context.Context, obj any) (data.QueryCardByMemberCode, error) {
-	var it data.QueryCardByMemberCode
+func (ec *executionContext) unmarshalInputqueryCardByMemberCode(ctx context.Context, obj any) (model.QueryCardByMemberCode, error) {
+	var it model.QueryCardByMemberCode
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"memberCode", "pageInfo"}
+	fieldsInOrder := [...]string{"memberCode"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3399,13 +3755,6 @@ func (ec *executionContext) unmarshalInputqueryCardByMemberCode(ctx context.Cont
 				return it, err
 			}
 			it.MemberCode = data
-		case "pageInfo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pageInfo"))
-			data, err := ec.unmarshalOPaginationReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐPaginationReq(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PageInfo = data
 		}
 	}
 
@@ -3422,7 +3771,7 @@ func (ec *executionContext) unmarshalInputqueryCardByMemberCode(ctx context.Cont
 
 var cardRespImplementors = []string{"CardResp"}
 
-func (ec *executionContext) _CardResp(ctx context.Context, sel ast.SelectionSet, obj *data.CardResp) graphql.Marshaler {
+func (ec *executionContext) _CardResp(ctx context.Context, sel ast.SelectionSet, obj *model.CardResp) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, cardRespImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3436,15 +3785,23 @@ func (ec *executionContext) _CardResp(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "cardCode":
-			out.Values[i] = ec._CardResp_cardCode(ctx, field, obj)
+		case "codeBin":
+			out.Values[i] = ec._CardResp_codeBin(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "memberCode":
-			out.Values[i] = ec._CardResp_memberCode(ctx, field, obj)
 		case "type":
 			out.Values[i] = ec._CardResp_type(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "pic1":
+			out.Values[i] = ec._CardResp_pic1(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "pic2":
+			out.Values[i] = ec._CardResp_pic2(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3455,6 +3812,22 @@ func (ec *executionContext) _CardResp(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "amount":
 			out.Values[i] = ec._CardResp_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "memberCode":
+			out.Values[i] = ec._CardResp_memberCode(ctx, field, obj)
+		case "bindTime":
+			out.Values[i] = ec._CardResp_bindTime(ctx, field, obj)
+		case "hitTime":
+			out.Values[i] = ec._CardResp_hitTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lastCleanTime":
+			out.Values[i] = ec._CardResp_lastCleanTime(ctx, field, obj)
+		case "status":
+			out.Values[i] = ec._CardResp_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3500,16 +3873,16 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "createCard":
+		case "bindCard":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createCard(ctx, field)
+				return ec._Mutation_bindCard(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "bindCard":
+		case "activeCard":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_bindCard(ctx, field)
+				return ec._Mutation_activeCard(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -4037,7 +4410,12 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) unmarshalNBindCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐBindCardReq(ctx context.Context, v any) (data.BindCardReq, error) {
+func (ec *executionContext) unmarshalNActiveCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐActiveCardReq(ctx context.Context, v any) (model.ActiveCardReq, error) {
+	res, err := ec.unmarshalInputActiveCardReq(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNBindCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐBindCardReq(ctx context.Context, v any) (model.BindCardReq, error) {
 	res, err := ec.unmarshalInputBindCardReq(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -4057,11 +4435,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCardResp2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx context.Context, sel ast.SelectionSet, v data.CardResp) graphql.Marshaler {
+func (ec *executionContext) marshalNCardResp2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx context.Context, sel ast.SelectionSet, v model.CardResp) graphql.Marshaler {
 	return ec._CardResp(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx context.Context, sel ast.SelectionSet, v []*data.CardResp) graphql.Marshaler {
+func (ec *executionContext) marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx context.Context, sel ast.SelectionSet, v []*model.CardResp) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4085,7 +4463,7 @@ func (ec *executionContext) marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrm�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx, sel, v[i])
+			ret[i] = ec.marshalOCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4099,7 +4477,7 @@ func (ec *executionContext) marshalNCardResp2ᚕᚖgithubᚗcomᚋtwiglabᚋcrm�
 	return ret
 }
 
-func (ec *executionContext) marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx context.Context, sel ast.SelectionSet, v *data.CardResp) graphql.Marshaler {
+func (ec *executionContext) marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx context.Context, sel ast.SelectionSet, v *model.CardResp) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4107,11 +4485,6 @@ func (ec *executionContext) marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋc
 		return graphql.Null
 	}
 	return ec._CardResp(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNCreateCardReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCreateCardReq(ctx context.Context, v any) (data.CreateCardReq, error) {
-	res, err := ec.unmarshalInputCreateCardReq(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNFieldSet2string(ctx context.Context, v any) (string, error) {
@@ -4600,7 +4973,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐCardResp(ctx context.Context, sel ast.SelectionSet, v *data.CardResp) graphql.Marshaler {
+func (ec *executionContext) marshalOCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐCardResp(ctx context.Context, sel ast.SelectionSet, v *model.CardResp) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4623,7 +4996,7 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	return res
 }
 
-func (ec *executionContext) unmarshalOPaginationReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐPaginationReq(ctx context.Context, v any) (*data.PaginationReq, error) {
+func (ec *executionContext) unmarshalOPaginationReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐPaginationReq(ctx context.Context, v any) (*model.PaginationReq, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -4897,7 +5270,7 @@ func (ec *executionContext) marshalO__Type2ᚖgithubᚗcomᚋ99designsᚋgqlgen�
 	return ec.___Type(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐQueryCardByCode(ctx context.Context, v any) (*data.QueryCardByCode, error) {
+func (ec *executionContext) unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐQueryCardByCode(ctx context.Context, v any) (*model.QueryCardByCode, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -4905,7 +5278,7 @@ func (ec *executionContext) unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglab�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOqueryCardByMemberCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋpkgᚋdataᚐQueryCardByMemberCode(ctx context.Context, v any) (*data.QueryCardByMemberCode, error) {
+func (ec *executionContext) unmarshalOqueryCardByMemberCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋrpcᚋgqlᚋgraphᚋmodelᚐQueryCardByMemberCode(ctx context.Context, v any) (*model.QueryCardByMemberCode, error) {
 	if v == nil {
 		return nil, nil
 	}

@@ -69,14 +69,9 @@ func Code(v string) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldCode, v))
 }
 
-// CardCode applies equality check predicate on the "card_code" field. It's identical to CardCodeEQ.
-func CardCode(v string) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldCardCode, v))
-}
-
-// MemberCode applies equality check predicate on the "member_code" field. It's identical to MemberCodeEQ.
-func MemberCode(v string) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldMemberCode, v))
+// CodeBin applies equality check predicate on the "code_bin" field. It's identical to CodeBinEQ.
+func CodeBin(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldCodeBin, v))
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
@@ -84,14 +79,44 @@ func Type(v int) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldType, v))
 }
 
+// Pic1 applies equality check predicate on the "pic1" field. It's identical to Pic1EQ.
+func Pic1(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldPic1, v))
+}
+
+// Pic2 applies equality check predicate on the "pic2" field. It's identical to Pic2EQ.
+func Pic2(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldPic2, v))
+}
+
 // Balance applies equality check predicate on the "balance" field. It's identical to BalanceEQ.
-func Balance(v int) predicate.Card {
+func Balance(v int64) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldBalance, v))
 }
 
 // Amount applies equality check predicate on the "amount" field. It's identical to AmountEQ.
-func Amount(v int) predicate.Card {
+func Amount(v int64) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldAmount, v))
+}
+
+// MemberCode applies equality check predicate on the "member_code" field. It's identical to MemberCodeEQ.
+func MemberCode(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldMemberCode, v))
+}
+
+// BindTime applies equality check predicate on the "bind_time" field. It's identical to BindTimeEQ.
+func BindTime(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldBindTime, v))
+}
+
+// HitTime applies equality check predicate on the "hit_time" field. It's identical to HitTimeEQ.
+func HitTime(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldHitTime, v))
+}
+
+// LastCleanTime applies equality check predicate on the "last_clean_time" field. It's identical to LastCleanTimeEQ.
+func LastCleanTime(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanTime, v))
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
@@ -244,69 +269,319 @@ func CodeContainsFold(v string) predicate.Card {
 	return predicate.Card(sql.FieldContainsFold(FieldCode, v))
 }
 
-// CardCodeEQ applies the EQ predicate on the "card_code" field.
-func CardCodeEQ(v string) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldCardCode, v))
+// CodeBinEQ applies the EQ predicate on the "code_bin" field.
+func CodeBinEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldCodeBin, v))
 }
 
-// CardCodeNEQ applies the NEQ predicate on the "card_code" field.
-func CardCodeNEQ(v string) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldCardCode, v))
+// CodeBinNEQ applies the NEQ predicate on the "code_bin" field.
+func CodeBinNEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldCodeBin, v))
 }
 
-// CardCodeIn applies the In predicate on the "card_code" field.
-func CardCodeIn(vs ...string) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldCardCode, vs...))
+// CodeBinIn applies the In predicate on the "code_bin" field.
+func CodeBinIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldCodeBin, vs...))
 }
 
-// CardCodeNotIn applies the NotIn predicate on the "card_code" field.
-func CardCodeNotIn(vs ...string) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldCardCode, vs...))
+// CodeBinNotIn applies the NotIn predicate on the "code_bin" field.
+func CodeBinNotIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldCodeBin, vs...))
 }
 
-// CardCodeGT applies the GT predicate on the "card_code" field.
-func CardCodeGT(v string) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldCardCode, v))
+// CodeBinGT applies the GT predicate on the "code_bin" field.
+func CodeBinGT(v string) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldCodeBin, v))
 }
 
-// CardCodeGTE applies the GTE predicate on the "card_code" field.
-func CardCodeGTE(v string) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldCardCode, v))
+// CodeBinGTE applies the GTE predicate on the "code_bin" field.
+func CodeBinGTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldCodeBin, v))
 }
 
-// CardCodeLT applies the LT predicate on the "card_code" field.
-func CardCodeLT(v string) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldCardCode, v))
+// CodeBinLT applies the LT predicate on the "code_bin" field.
+func CodeBinLT(v string) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldCodeBin, v))
 }
 
-// CardCodeLTE applies the LTE predicate on the "card_code" field.
-func CardCodeLTE(v string) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldCardCode, v))
+// CodeBinLTE applies the LTE predicate on the "code_bin" field.
+func CodeBinLTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldCodeBin, v))
 }
 
-// CardCodeContains applies the Contains predicate on the "card_code" field.
-func CardCodeContains(v string) predicate.Card {
-	return predicate.Card(sql.FieldContains(FieldCardCode, v))
+// CodeBinContains applies the Contains predicate on the "code_bin" field.
+func CodeBinContains(v string) predicate.Card {
+	return predicate.Card(sql.FieldContains(FieldCodeBin, v))
 }
 
-// CardCodeHasPrefix applies the HasPrefix predicate on the "card_code" field.
-func CardCodeHasPrefix(v string) predicate.Card {
-	return predicate.Card(sql.FieldHasPrefix(FieldCardCode, v))
+// CodeBinHasPrefix applies the HasPrefix predicate on the "code_bin" field.
+func CodeBinHasPrefix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasPrefix(FieldCodeBin, v))
 }
 
-// CardCodeHasSuffix applies the HasSuffix predicate on the "card_code" field.
-func CardCodeHasSuffix(v string) predicate.Card {
-	return predicate.Card(sql.FieldHasSuffix(FieldCardCode, v))
+// CodeBinHasSuffix applies the HasSuffix predicate on the "code_bin" field.
+func CodeBinHasSuffix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasSuffix(FieldCodeBin, v))
 }
 
-// CardCodeEqualFold applies the EqualFold predicate on the "card_code" field.
-func CardCodeEqualFold(v string) predicate.Card {
-	return predicate.Card(sql.FieldEqualFold(FieldCardCode, v))
+// CodeBinEqualFold applies the EqualFold predicate on the "code_bin" field.
+func CodeBinEqualFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldEqualFold(FieldCodeBin, v))
 }
 
-// CardCodeContainsFold applies the ContainsFold predicate on the "card_code" field.
-func CardCodeContainsFold(v string) predicate.Card {
-	return predicate.Card(sql.FieldContainsFold(FieldCardCode, v))
+// CodeBinContainsFold applies the ContainsFold predicate on the "code_bin" field.
+func CodeBinContainsFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldContainsFold(FieldCodeBin, v))
+}
+
+// TypeEQ applies the EQ predicate on the "type" field.
+func TypeEQ(v int) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldType, v))
+}
+
+// TypeNEQ applies the NEQ predicate on the "type" field.
+func TypeNEQ(v int) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldType, v))
+}
+
+// TypeIn applies the In predicate on the "type" field.
+func TypeIn(vs ...int) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldType, vs...))
+}
+
+// TypeNotIn applies the NotIn predicate on the "type" field.
+func TypeNotIn(vs ...int) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldType, vs...))
+}
+
+// TypeGT applies the GT predicate on the "type" field.
+func TypeGT(v int) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldType, v))
+}
+
+// TypeGTE applies the GTE predicate on the "type" field.
+func TypeGTE(v int) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldType, v))
+}
+
+// TypeLT applies the LT predicate on the "type" field.
+func TypeLT(v int) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldType, v))
+}
+
+// TypeLTE applies the LTE predicate on the "type" field.
+func TypeLTE(v int) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldType, v))
+}
+
+// Pic1EQ applies the EQ predicate on the "pic1" field.
+func Pic1EQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldPic1, v))
+}
+
+// Pic1NEQ applies the NEQ predicate on the "pic1" field.
+func Pic1NEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldPic1, v))
+}
+
+// Pic1In applies the In predicate on the "pic1" field.
+func Pic1In(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldPic1, vs...))
+}
+
+// Pic1NotIn applies the NotIn predicate on the "pic1" field.
+func Pic1NotIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldPic1, vs...))
+}
+
+// Pic1GT applies the GT predicate on the "pic1" field.
+func Pic1GT(v string) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldPic1, v))
+}
+
+// Pic1GTE applies the GTE predicate on the "pic1" field.
+func Pic1GTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldPic1, v))
+}
+
+// Pic1LT applies the LT predicate on the "pic1" field.
+func Pic1LT(v string) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldPic1, v))
+}
+
+// Pic1LTE applies the LTE predicate on the "pic1" field.
+func Pic1LTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldPic1, v))
+}
+
+// Pic1Contains applies the Contains predicate on the "pic1" field.
+func Pic1Contains(v string) predicate.Card {
+	return predicate.Card(sql.FieldContains(FieldPic1, v))
+}
+
+// Pic1HasPrefix applies the HasPrefix predicate on the "pic1" field.
+func Pic1HasPrefix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasPrefix(FieldPic1, v))
+}
+
+// Pic1HasSuffix applies the HasSuffix predicate on the "pic1" field.
+func Pic1HasSuffix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasSuffix(FieldPic1, v))
+}
+
+// Pic1EqualFold applies the EqualFold predicate on the "pic1" field.
+func Pic1EqualFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldEqualFold(FieldPic1, v))
+}
+
+// Pic1ContainsFold applies the ContainsFold predicate on the "pic1" field.
+func Pic1ContainsFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldContainsFold(FieldPic1, v))
+}
+
+// Pic2EQ applies the EQ predicate on the "pic2" field.
+func Pic2EQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldPic2, v))
+}
+
+// Pic2NEQ applies the NEQ predicate on the "pic2" field.
+func Pic2NEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldPic2, v))
+}
+
+// Pic2In applies the In predicate on the "pic2" field.
+func Pic2In(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldPic2, vs...))
+}
+
+// Pic2NotIn applies the NotIn predicate on the "pic2" field.
+func Pic2NotIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldPic2, vs...))
+}
+
+// Pic2GT applies the GT predicate on the "pic2" field.
+func Pic2GT(v string) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldPic2, v))
+}
+
+// Pic2GTE applies the GTE predicate on the "pic2" field.
+func Pic2GTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldPic2, v))
+}
+
+// Pic2LT applies the LT predicate on the "pic2" field.
+func Pic2LT(v string) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldPic2, v))
+}
+
+// Pic2LTE applies the LTE predicate on the "pic2" field.
+func Pic2LTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldPic2, v))
+}
+
+// Pic2Contains applies the Contains predicate on the "pic2" field.
+func Pic2Contains(v string) predicate.Card {
+	return predicate.Card(sql.FieldContains(FieldPic2, v))
+}
+
+// Pic2HasPrefix applies the HasPrefix predicate on the "pic2" field.
+func Pic2HasPrefix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasPrefix(FieldPic2, v))
+}
+
+// Pic2HasSuffix applies the HasSuffix predicate on the "pic2" field.
+func Pic2HasSuffix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasSuffix(FieldPic2, v))
+}
+
+// Pic2EqualFold applies the EqualFold predicate on the "pic2" field.
+func Pic2EqualFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldEqualFold(FieldPic2, v))
+}
+
+// Pic2ContainsFold applies the ContainsFold predicate on the "pic2" field.
+func Pic2ContainsFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldContainsFold(FieldPic2, v))
+}
+
+// BalanceEQ applies the EQ predicate on the "balance" field.
+func BalanceEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldBalance, v))
+}
+
+// BalanceNEQ applies the NEQ predicate on the "balance" field.
+func BalanceNEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldBalance, v))
+}
+
+// BalanceIn applies the In predicate on the "balance" field.
+func BalanceIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldBalance, vs...))
+}
+
+// BalanceNotIn applies the NotIn predicate on the "balance" field.
+func BalanceNotIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldBalance, vs...))
+}
+
+// BalanceGT applies the GT predicate on the "balance" field.
+func BalanceGT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldBalance, v))
+}
+
+// BalanceGTE applies the GTE predicate on the "balance" field.
+func BalanceGTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldBalance, v))
+}
+
+// BalanceLT applies the LT predicate on the "balance" field.
+func BalanceLT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldBalance, v))
+}
+
+// BalanceLTE applies the LTE predicate on the "balance" field.
+func BalanceLTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldBalance, v))
+}
+
+// AmountEQ applies the EQ predicate on the "amount" field.
+func AmountEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldAmount, v))
+}
+
+// AmountNEQ applies the NEQ predicate on the "amount" field.
+func AmountNEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldAmount, v))
+}
+
+// AmountIn applies the In predicate on the "amount" field.
+func AmountIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldAmount, vs...))
+}
+
+// AmountNotIn applies the NotIn predicate on the "amount" field.
+func AmountNotIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldAmount, vs...))
+}
+
+// AmountGT applies the GT predicate on the "amount" field.
+func AmountGT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldAmount, v))
+}
+
+// AmountGTE applies the GTE predicate on the "amount" field.
+func AmountGTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldAmount, v))
+}
+
+// AmountLT applies the LT predicate on the "amount" field.
+func AmountLT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldAmount, v))
+}
+
+// AmountLTE applies the LTE predicate on the "amount" field.
+func AmountLTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldAmount, v))
 }
 
 // MemberCodeEQ applies the EQ predicate on the "member_code" field.
@@ -374,124 +649,144 @@ func MemberCodeContainsFold(v string) predicate.Card {
 	return predicate.Card(sql.FieldContainsFold(FieldMemberCode, v))
 }
 
-// TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldType, v))
+// BindTimeEQ applies the EQ predicate on the "bind_time" field.
+func BindTimeEQ(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldBindTime, v))
 }
 
-// TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldType, v))
+// BindTimeNEQ applies the NEQ predicate on the "bind_time" field.
+func BindTimeNEQ(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldBindTime, v))
 }
 
-// TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldType, vs...))
+// BindTimeIn applies the In predicate on the "bind_time" field.
+func BindTimeIn(vs ...time.Time) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldBindTime, vs...))
 }
 
-// TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldType, vs...))
+// BindTimeNotIn applies the NotIn predicate on the "bind_time" field.
+func BindTimeNotIn(vs ...time.Time) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldBindTime, vs...))
 }
 
-// TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v int) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldType, v))
+// BindTimeGT applies the GT predicate on the "bind_time" field.
+func BindTimeGT(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldBindTime, v))
 }
 
-// TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldType, v))
+// BindTimeGTE applies the GTE predicate on the "bind_time" field.
+func BindTimeGTE(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldBindTime, v))
 }
 
-// TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v int) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldType, v))
+// BindTimeLT applies the LT predicate on the "bind_time" field.
+func BindTimeLT(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldBindTime, v))
 }
 
-// TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldType, v))
+// BindTimeLTE applies the LTE predicate on the "bind_time" field.
+func BindTimeLTE(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldBindTime, v))
 }
 
-// BalanceEQ applies the EQ predicate on the "balance" field.
-func BalanceEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldBalance, v))
+// BindTimeIsNil applies the IsNil predicate on the "bind_time" field.
+func BindTimeIsNil() predicate.Card {
+	return predicate.Card(sql.FieldIsNull(FieldBindTime))
 }
 
-// BalanceNEQ applies the NEQ predicate on the "balance" field.
-func BalanceNEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldBalance, v))
+// BindTimeNotNil applies the NotNil predicate on the "bind_time" field.
+func BindTimeNotNil() predicate.Card {
+	return predicate.Card(sql.FieldNotNull(FieldBindTime))
 }
 
-// BalanceIn applies the In predicate on the "balance" field.
-func BalanceIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldBalance, vs...))
+// HitTimeEQ applies the EQ predicate on the "hit_time" field.
+func HitTimeEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldHitTime, v))
 }
 
-// BalanceNotIn applies the NotIn predicate on the "balance" field.
-func BalanceNotIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldBalance, vs...))
+// HitTimeNEQ applies the NEQ predicate on the "hit_time" field.
+func HitTimeNEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldHitTime, v))
 }
 
-// BalanceGT applies the GT predicate on the "balance" field.
-func BalanceGT(v int) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldBalance, v))
+// HitTimeIn applies the In predicate on the "hit_time" field.
+func HitTimeIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldHitTime, vs...))
 }
 
-// BalanceGTE applies the GTE predicate on the "balance" field.
-func BalanceGTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldBalance, v))
+// HitTimeNotIn applies the NotIn predicate on the "hit_time" field.
+func HitTimeNotIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldHitTime, vs...))
 }
 
-// BalanceLT applies the LT predicate on the "balance" field.
-func BalanceLT(v int) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldBalance, v))
+// HitTimeGT applies the GT predicate on the "hit_time" field.
+func HitTimeGT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldHitTime, v))
 }
 
-// BalanceLTE applies the LTE predicate on the "balance" field.
-func BalanceLTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldBalance, v))
+// HitTimeGTE applies the GTE predicate on the "hit_time" field.
+func HitTimeGTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldHitTime, v))
 }
 
-// AmountEQ applies the EQ predicate on the "amount" field.
-func AmountEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldAmount, v))
+// HitTimeLT applies the LT predicate on the "hit_time" field.
+func HitTimeLT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldHitTime, v))
 }
 
-// AmountNEQ applies the NEQ predicate on the "amount" field.
-func AmountNEQ(v int) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldAmount, v))
+// HitTimeLTE applies the LTE predicate on the "hit_time" field.
+func HitTimeLTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldHitTime, v))
 }
 
-// AmountIn applies the In predicate on the "amount" field.
-func AmountIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldAmount, vs...))
+// LastCleanTimeEQ applies the EQ predicate on the "last_clean_time" field.
+func LastCleanTimeEQ(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanTime, v))
 }
 
-// AmountNotIn applies the NotIn predicate on the "amount" field.
-func AmountNotIn(vs ...int) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldAmount, vs...))
+// LastCleanTimeNEQ applies the NEQ predicate on the "last_clean_time" field.
+func LastCleanTimeNEQ(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldLastCleanTime, v))
 }
 
-// AmountGT applies the GT predicate on the "amount" field.
-func AmountGT(v int) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldAmount, v))
+// LastCleanTimeIn applies the In predicate on the "last_clean_time" field.
+func LastCleanTimeIn(vs ...time.Time) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldLastCleanTime, vs...))
 }
 
-// AmountGTE applies the GTE predicate on the "amount" field.
-func AmountGTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldAmount, v))
+// LastCleanTimeNotIn applies the NotIn predicate on the "last_clean_time" field.
+func LastCleanTimeNotIn(vs ...time.Time) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldLastCleanTime, vs...))
 }
 
-// AmountLT applies the LT predicate on the "amount" field.
-func AmountLT(v int) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldAmount, v))
+// LastCleanTimeGT applies the GT predicate on the "last_clean_time" field.
+func LastCleanTimeGT(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldLastCleanTime, v))
 }
 
-// AmountLTE applies the LTE predicate on the "amount" field.
-func AmountLTE(v int) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldAmount, v))
+// LastCleanTimeGTE applies the GTE predicate on the "last_clean_time" field.
+func LastCleanTimeGTE(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldLastCleanTime, v))
+}
+
+// LastCleanTimeLT applies the LT predicate on the "last_clean_time" field.
+func LastCleanTimeLT(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldLastCleanTime, v))
+}
+
+// LastCleanTimeLTE applies the LTE predicate on the "last_clean_time" field.
+func LastCleanTimeLTE(v time.Time) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldLastCleanTime, v))
+}
+
+// LastCleanTimeIsNil applies the IsNil predicate on the "last_clean_time" field.
+func LastCleanTimeIsNil() predicate.Card {
+	return predicate.Card(sql.FieldIsNull(FieldLastCleanTime))
+}
+
+// LastCleanTimeNotNil applies the NotNil predicate on the "last_clean_time" field.
+func LastCleanTimeNotNil() predicate.Card {
+	return predicate.Card(sql.FieldNotNull(FieldLastCleanTime))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

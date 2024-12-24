@@ -30,26 +30,32 @@ const (
 // CardMutation represents an operation that mutates the Card nodes in the graph.
 type CardMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	create_time   *time.Time
-	update_time   *time.Time
-	code          *string
-	card_code     *string
-	member_code   *string
-	_type         *int
-	add_type      *int
-	balance       *int
-	addbalance    *int
-	amount        *int
-	addamount     *int
-	status        *int
-	addstatus     *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Card, error)
-	predicates    []predicate.Card
+	op              Op
+	typ             string
+	id              *int
+	create_time     *time.Time
+	update_time     *time.Time
+	code            *string
+	code_bin        *string
+	_type           *int
+	add_type        *int
+	pic1            *string
+	pic2            *string
+	balance         *int64
+	addbalance      *int64
+	amount          *int64
+	addamount       *int64
+	member_code     *string
+	bind_time       *time.Time
+	hit_time        *int64
+	addhit_time     *int64
+	last_clean_time *time.Time
+	status          *int
+	addstatus       *int
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*Card, error)
+	predicates      []predicate.Card
 }
 
 var _ ent.Mutation = (*CardMutation)(nil)
@@ -258,76 +264,40 @@ func (m *CardMutation) ResetCode() {
 	m.code = nil
 }
 
-// SetCardCode sets the "card_code" field.
-func (m *CardMutation) SetCardCode(s string) {
-	m.card_code = &s
+// SetCodeBin sets the "code_bin" field.
+func (m *CardMutation) SetCodeBin(s string) {
+	m.code_bin = &s
 }
 
-// CardCode returns the value of the "card_code" field in the mutation.
-func (m *CardMutation) CardCode() (r string, exists bool) {
-	v := m.card_code
+// CodeBin returns the value of the "code_bin" field in the mutation.
+func (m *CardMutation) CodeBin() (r string, exists bool) {
+	v := m.code_bin
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCardCode returns the old "card_code" field's value of the Card entity.
+// OldCodeBin returns the old "code_bin" field's value of the Card entity.
 // If the Card object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CardMutation) OldCardCode(ctx context.Context) (v string, err error) {
+func (m *CardMutation) OldCodeBin(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCardCode is only allowed on UpdateOne operations")
+		return v, errors.New("OldCodeBin is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCardCode requires an ID field in the mutation")
+		return v, errors.New("OldCodeBin requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCardCode: %w", err)
+		return v, fmt.Errorf("querying old value for OldCodeBin: %w", err)
 	}
-	return oldValue.CardCode, nil
+	return oldValue.CodeBin, nil
 }
 
-// ResetCardCode resets all changes to the "card_code" field.
-func (m *CardMutation) ResetCardCode() {
-	m.card_code = nil
-}
-
-// SetMemberCode sets the "member_code" field.
-func (m *CardMutation) SetMemberCode(s string) {
-	m.member_code = &s
-}
-
-// MemberCode returns the value of the "member_code" field in the mutation.
-func (m *CardMutation) MemberCode() (r string, exists bool) {
-	v := m.member_code
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMemberCode returns the old "member_code" field's value of the Card entity.
-// If the Card object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CardMutation) OldMemberCode(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMemberCode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMemberCode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMemberCode: %w", err)
-	}
-	return oldValue.MemberCode, nil
-}
-
-// ResetMemberCode resets all changes to the "member_code" field.
-func (m *CardMutation) ResetMemberCode() {
-	m.member_code = nil
+// ResetCodeBin resets all changes to the "code_bin" field.
+func (m *CardMutation) ResetCodeBin() {
+	m.code_bin = nil
 }
 
 // SetType sets the "type" field.
@@ -386,14 +356,86 @@ func (m *CardMutation) ResetType() {
 	m.add_type = nil
 }
 
+// SetPic1 sets the "pic1" field.
+func (m *CardMutation) SetPic1(s string) {
+	m.pic1 = &s
+}
+
+// Pic1 returns the value of the "pic1" field in the mutation.
+func (m *CardMutation) Pic1() (r string, exists bool) {
+	v := m.pic1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPic1 returns the old "pic1" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldPic1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPic1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPic1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPic1: %w", err)
+	}
+	return oldValue.Pic1, nil
+}
+
+// ResetPic1 resets all changes to the "pic1" field.
+func (m *CardMutation) ResetPic1() {
+	m.pic1 = nil
+}
+
+// SetPic2 sets the "pic2" field.
+func (m *CardMutation) SetPic2(s string) {
+	m.pic2 = &s
+}
+
+// Pic2 returns the value of the "pic2" field in the mutation.
+func (m *CardMutation) Pic2() (r string, exists bool) {
+	v := m.pic2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPic2 returns the old "pic2" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldPic2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPic2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPic2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPic2: %w", err)
+	}
+	return oldValue.Pic2, nil
+}
+
+// ResetPic2 resets all changes to the "pic2" field.
+func (m *CardMutation) ResetPic2() {
+	m.pic2 = nil
+}
+
 // SetBalance sets the "balance" field.
-func (m *CardMutation) SetBalance(i int) {
+func (m *CardMutation) SetBalance(i int64) {
 	m.balance = &i
 	m.addbalance = nil
 }
 
 // Balance returns the value of the "balance" field in the mutation.
-func (m *CardMutation) Balance() (r int, exists bool) {
+func (m *CardMutation) Balance() (r int64, exists bool) {
 	v := m.balance
 	if v == nil {
 		return
@@ -404,7 +446,7 @@ func (m *CardMutation) Balance() (r int, exists bool) {
 // OldBalance returns the old "balance" field's value of the Card entity.
 // If the Card object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CardMutation) OldBalance(ctx context.Context) (v int, err error) {
+func (m *CardMutation) OldBalance(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldBalance is only allowed on UpdateOne operations")
 	}
@@ -419,7 +461,7 @@ func (m *CardMutation) OldBalance(ctx context.Context) (v int, err error) {
 }
 
 // AddBalance adds i to the "balance" field.
-func (m *CardMutation) AddBalance(i int) {
+func (m *CardMutation) AddBalance(i int64) {
 	if m.addbalance != nil {
 		*m.addbalance += i
 	} else {
@@ -428,7 +470,7 @@ func (m *CardMutation) AddBalance(i int) {
 }
 
 // AddedBalance returns the value that was added to the "balance" field in this mutation.
-func (m *CardMutation) AddedBalance() (r int, exists bool) {
+func (m *CardMutation) AddedBalance() (r int64, exists bool) {
 	v := m.addbalance
 	if v == nil {
 		return
@@ -443,13 +485,13 @@ func (m *CardMutation) ResetBalance() {
 }
 
 // SetAmount sets the "amount" field.
-func (m *CardMutation) SetAmount(i int) {
+func (m *CardMutation) SetAmount(i int64) {
 	m.amount = &i
 	m.addamount = nil
 }
 
 // Amount returns the value of the "amount" field in the mutation.
-func (m *CardMutation) Amount() (r int, exists bool) {
+func (m *CardMutation) Amount() (r int64, exists bool) {
 	v := m.amount
 	if v == nil {
 		return
@@ -460,7 +502,7 @@ func (m *CardMutation) Amount() (r int, exists bool) {
 // OldAmount returns the old "amount" field's value of the Card entity.
 // If the Card object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CardMutation) OldAmount(ctx context.Context) (v int, err error) {
+func (m *CardMutation) OldAmount(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldAmount is only allowed on UpdateOne operations")
 	}
@@ -475,7 +517,7 @@ func (m *CardMutation) OldAmount(ctx context.Context) (v int, err error) {
 }
 
 // AddAmount adds i to the "amount" field.
-func (m *CardMutation) AddAmount(i int) {
+func (m *CardMutation) AddAmount(i int64) {
 	if m.addamount != nil {
 		*m.addamount += i
 	} else {
@@ -484,7 +526,7 @@ func (m *CardMutation) AddAmount(i int) {
 }
 
 // AddedAmount returns the value that was added to the "amount" field in this mutation.
-func (m *CardMutation) AddedAmount() (r int, exists bool) {
+func (m *CardMutation) AddedAmount() (r int64, exists bool) {
 	v := m.addamount
 	if v == nil {
 		return
@@ -496,6 +538,196 @@ func (m *CardMutation) AddedAmount() (r int, exists bool) {
 func (m *CardMutation) ResetAmount() {
 	m.amount = nil
 	m.addamount = nil
+}
+
+// SetMemberCode sets the "member_code" field.
+func (m *CardMutation) SetMemberCode(s string) {
+	m.member_code = &s
+}
+
+// MemberCode returns the value of the "member_code" field in the mutation.
+func (m *CardMutation) MemberCode() (r string, exists bool) {
+	v := m.member_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemberCode returns the old "member_code" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldMemberCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMemberCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMemberCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemberCode: %w", err)
+	}
+	return oldValue.MemberCode, nil
+}
+
+// ResetMemberCode resets all changes to the "member_code" field.
+func (m *CardMutation) ResetMemberCode() {
+	m.member_code = nil
+}
+
+// SetBindTime sets the "bind_time" field.
+func (m *CardMutation) SetBindTime(t time.Time) {
+	m.bind_time = &t
+}
+
+// BindTime returns the value of the "bind_time" field in the mutation.
+func (m *CardMutation) BindTime() (r time.Time, exists bool) {
+	v := m.bind_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBindTime returns the old "bind_time" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldBindTime(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBindTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBindTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBindTime: %w", err)
+	}
+	return oldValue.BindTime, nil
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (m *CardMutation) ClearBindTime() {
+	m.bind_time = nil
+	m.clearedFields[card.FieldBindTime] = struct{}{}
+}
+
+// BindTimeCleared returns if the "bind_time" field was cleared in this mutation.
+func (m *CardMutation) BindTimeCleared() bool {
+	_, ok := m.clearedFields[card.FieldBindTime]
+	return ok
+}
+
+// ResetBindTime resets all changes to the "bind_time" field.
+func (m *CardMutation) ResetBindTime() {
+	m.bind_time = nil
+	delete(m.clearedFields, card.FieldBindTime)
+}
+
+// SetHitTime sets the "hit_time" field.
+func (m *CardMutation) SetHitTime(i int64) {
+	m.hit_time = &i
+	m.addhit_time = nil
+}
+
+// HitTime returns the value of the "hit_time" field in the mutation.
+func (m *CardMutation) HitTime() (r int64, exists bool) {
+	v := m.hit_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHitTime returns the old "hit_time" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldHitTime(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHitTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHitTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHitTime: %w", err)
+	}
+	return oldValue.HitTime, nil
+}
+
+// AddHitTime adds i to the "hit_time" field.
+func (m *CardMutation) AddHitTime(i int64) {
+	if m.addhit_time != nil {
+		*m.addhit_time += i
+	} else {
+		m.addhit_time = &i
+	}
+}
+
+// AddedHitTime returns the value that was added to the "hit_time" field in this mutation.
+func (m *CardMutation) AddedHitTime() (r int64, exists bool) {
+	v := m.addhit_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetHitTime resets all changes to the "hit_time" field.
+func (m *CardMutation) ResetHitTime() {
+	m.hit_time = nil
+	m.addhit_time = nil
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (m *CardMutation) SetLastCleanTime(t time.Time) {
+	m.last_clean_time = &t
+}
+
+// LastCleanTime returns the value of the "last_clean_time" field in the mutation.
+func (m *CardMutation) LastCleanTime() (r time.Time, exists bool) {
+	v := m.last_clean_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastCleanTime returns the old "last_clean_time" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldLastCleanTime(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastCleanTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastCleanTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastCleanTime: %w", err)
+	}
+	return oldValue.LastCleanTime, nil
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (m *CardMutation) ClearLastCleanTime() {
+	m.last_clean_time = nil
+	m.clearedFields[card.FieldLastCleanTime] = struct{}{}
+}
+
+// LastCleanTimeCleared returns if the "last_clean_time" field was cleared in this mutation.
+func (m *CardMutation) LastCleanTimeCleared() bool {
+	_, ok := m.clearedFields[card.FieldLastCleanTime]
+	return ok
+}
+
+// ResetLastCleanTime resets all changes to the "last_clean_time" field.
+func (m *CardMutation) ResetLastCleanTime() {
+	m.last_clean_time = nil
+	delete(m.clearedFields, card.FieldLastCleanTime)
 }
 
 // SetStatus sets the "status" field.
@@ -588,7 +820,7 @@ func (m *CardMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CardMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 14)
 	if m.create_time != nil {
 		fields = append(fields, card.FieldCreateTime)
 	}
@@ -598,20 +830,35 @@ func (m *CardMutation) Fields() []string {
 	if m.code != nil {
 		fields = append(fields, card.FieldCode)
 	}
-	if m.card_code != nil {
-		fields = append(fields, card.FieldCardCode)
-	}
-	if m.member_code != nil {
-		fields = append(fields, card.FieldMemberCode)
+	if m.code_bin != nil {
+		fields = append(fields, card.FieldCodeBin)
 	}
 	if m._type != nil {
 		fields = append(fields, card.FieldType)
+	}
+	if m.pic1 != nil {
+		fields = append(fields, card.FieldPic1)
+	}
+	if m.pic2 != nil {
+		fields = append(fields, card.FieldPic2)
 	}
 	if m.balance != nil {
 		fields = append(fields, card.FieldBalance)
 	}
 	if m.amount != nil {
 		fields = append(fields, card.FieldAmount)
+	}
+	if m.member_code != nil {
+		fields = append(fields, card.FieldMemberCode)
+	}
+	if m.bind_time != nil {
+		fields = append(fields, card.FieldBindTime)
+	}
+	if m.hit_time != nil {
+		fields = append(fields, card.FieldHitTime)
+	}
+	if m.last_clean_time != nil {
+		fields = append(fields, card.FieldLastCleanTime)
 	}
 	if m.status != nil {
 		fields = append(fields, card.FieldStatus)
@@ -630,16 +877,26 @@ func (m *CardMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdateTime()
 	case card.FieldCode:
 		return m.Code()
-	case card.FieldCardCode:
-		return m.CardCode()
-	case card.FieldMemberCode:
-		return m.MemberCode()
+	case card.FieldCodeBin:
+		return m.CodeBin()
 	case card.FieldType:
 		return m.GetType()
+	case card.FieldPic1:
+		return m.Pic1()
+	case card.FieldPic2:
+		return m.Pic2()
 	case card.FieldBalance:
 		return m.Balance()
 	case card.FieldAmount:
 		return m.Amount()
+	case card.FieldMemberCode:
+		return m.MemberCode()
+	case card.FieldBindTime:
+		return m.BindTime()
+	case card.FieldHitTime:
+		return m.HitTime()
+	case card.FieldLastCleanTime:
+		return m.LastCleanTime()
 	case card.FieldStatus:
 		return m.Status()
 	}
@@ -657,16 +914,26 @@ func (m *CardMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdateTime(ctx)
 	case card.FieldCode:
 		return m.OldCode(ctx)
-	case card.FieldCardCode:
-		return m.OldCardCode(ctx)
-	case card.FieldMemberCode:
-		return m.OldMemberCode(ctx)
+	case card.FieldCodeBin:
+		return m.OldCodeBin(ctx)
 	case card.FieldType:
 		return m.OldType(ctx)
+	case card.FieldPic1:
+		return m.OldPic1(ctx)
+	case card.FieldPic2:
+		return m.OldPic2(ctx)
 	case card.FieldBalance:
 		return m.OldBalance(ctx)
 	case card.FieldAmount:
 		return m.OldAmount(ctx)
+	case card.FieldMemberCode:
+		return m.OldMemberCode(ctx)
+	case card.FieldBindTime:
+		return m.OldBindTime(ctx)
+	case card.FieldHitTime:
+		return m.OldHitTime(ctx)
+	case card.FieldLastCleanTime:
+		return m.OldLastCleanTime(ctx)
 	case card.FieldStatus:
 		return m.OldStatus(ctx)
 	}
@@ -699,19 +966,12 @@ func (m *CardMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCode(v)
 		return nil
-	case card.FieldCardCode:
+	case card.FieldCodeBin:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCardCode(v)
-		return nil
-	case card.FieldMemberCode:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMemberCode(v)
+		m.SetCodeBin(v)
 		return nil
 	case card.FieldType:
 		v, ok := value.(int)
@@ -720,19 +980,61 @@ func (m *CardMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetType(v)
 		return nil
+	case card.FieldPic1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPic1(v)
+		return nil
+	case card.FieldPic2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPic2(v)
+		return nil
 	case card.FieldBalance:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBalance(v)
 		return nil
 	case card.FieldAmount:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAmount(v)
+		return nil
+	case card.FieldMemberCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemberCode(v)
+		return nil
+	case card.FieldBindTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBindTime(v)
+		return nil
+	case card.FieldHitTime:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHitTime(v)
+		return nil
+	case card.FieldLastCleanTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastCleanTime(v)
 		return nil
 	case card.FieldStatus:
 		v, ok := value.(int)
@@ -758,6 +1060,9 @@ func (m *CardMutation) AddedFields() []string {
 	if m.addamount != nil {
 		fields = append(fields, card.FieldAmount)
 	}
+	if m.addhit_time != nil {
+		fields = append(fields, card.FieldHitTime)
+	}
 	if m.addstatus != nil {
 		fields = append(fields, card.FieldStatus)
 	}
@@ -775,6 +1080,8 @@ func (m *CardMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedBalance()
 	case card.FieldAmount:
 		return m.AddedAmount()
+	case card.FieldHitTime:
+		return m.AddedHitTime()
 	case card.FieldStatus:
 		return m.AddedStatus()
 	}
@@ -794,18 +1101,25 @@ func (m *CardMutation) AddField(name string, value ent.Value) error {
 		m.AddType(v)
 		return nil
 	case card.FieldBalance:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddBalance(v)
 		return nil
 	case card.FieldAmount:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddAmount(v)
+		return nil
+	case card.FieldHitTime:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddHitTime(v)
 		return nil
 	case card.FieldStatus:
 		v, ok := value.(int)
@@ -821,7 +1135,14 @@ func (m *CardMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *CardMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(card.FieldBindTime) {
+		fields = append(fields, card.FieldBindTime)
+	}
+	if m.FieldCleared(card.FieldLastCleanTime) {
+		fields = append(fields, card.FieldLastCleanTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -834,6 +1155,14 @@ func (m *CardMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *CardMutation) ClearField(name string) error {
+	switch name {
+	case card.FieldBindTime:
+		m.ClearBindTime()
+		return nil
+	case card.FieldLastCleanTime:
+		m.ClearLastCleanTime()
+		return nil
+	}
 	return fmt.Errorf("unknown Card nullable field %s", name)
 }
 
@@ -850,20 +1179,35 @@ func (m *CardMutation) ResetField(name string) error {
 	case card.FieldCode:
 		m.ResetCode()
 		return nil
-	case card.FieldCardCode:
-		m.ResetCardCode()
-		return nil
-	case card.FieldMemberCode:
-		m.ResetMemberCode()
+	case card.FieldCodeBin:
+		m.ResetCodeBin()
 		return nil
 	case card.FieldType:
 		m.ResetType()
+		return nil
+	case card.FieldPic1:
+		m.ResetPic1()
+		return nil
+	case card.FieldPic2:
+		m.ResetPic2()
 		return nil
 	case card.FieldBalance:
 		m.ResetBalance()
 		return nil
 	case card.FieldAmount:
 		m.ResetAmount()
+		return nil
+	case card.FieldMemberCode:
+		m.ResetMemberCode()
+		return nil
+	case card.FieldBindTime:
+		m.ResetBindTime()
+		return nil
+	case card.FieldHitTime:
+		m.ResetHitTime()
+		return nil
+	case card.FieldLastCleanTime:
+		m.ResetLastCleanTime()
 		return nil
 	case card.FieldStatus:
 		m.ResetStatus()

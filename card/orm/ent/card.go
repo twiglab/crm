@@ -23,16 +23,26 @@ type Card struct {
 	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// CardCode holds the value of the "card_code" field.
-	CardCode string `json:"card_code,omitempty"`
-	// MemberCode holds the value of the "member_code" field.
-	MemberCode string `json:"member_code,omitempty"`
+	// CodeBin holds the value of the "code_bin" field.
+	CodeBin string `json:"code_bin,omitempty"`
 	// Type holds the value of the "type" field.
 	Type int `json:"type,omitempty"`
+	// Pic1 holds the value of the "pic1" field.
+	Pic1 string `json:"pic1,omitempty"`
+	// Pic2 holds the value of the "pic2" field.
+	Pic2 string `json:"pic2,omitempty"`
 	// Balance holds the value of the "balance" field.
-	Balance int `json:"balance,omitempty"`
+	Balance int64 `json:"balance,omitempty"`
 	// Amount holds the value of the "amount" field.
-	Amount int `json:"amount,omitempty"`
+	Amount int64 `json:"amount,omitempty"`
+	// MemberCode holds the value of the "member_code" field.
+	MemberCode string `json:"member_code,omitempty"`
+	// BindTime holds the value of the "bind_time" field.
+	BindTime *time.Time `json:"bind_time,omitempty"`
+	// HitTime holds the value of the "hit_time" field.
+	HitTime int64 `json:"hit_time,omitempty"`
+	// LastCleanTime holds the value of the "last_clean_time" field.
+	LastCleanTime *time.Time `json:"last_clean_time,omitempty"`
 	// Status holds the value of the "status" field.
 	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
@@ -43,11 +53,11 @@ func (*Card) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case card.FieldID, card.FieldType, card.FieldBalance, card.FieldAmount, card.FieldStatus:
+		case card.FieldID, card.FieldType, card.FieldBalance, card.FieldAmount, card.FieldHitTime, card.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case card.FieldCode, card.FieldCardCode, card.FieldMemberCode:
+		case card.FieldCode, card.FieldCodeBin, card.FieldPic1, card.FieldPic2, card.FieldMemberCode:
 			values[i] = new(sql.NullString)
-		case card.FieldCreateTime, card.FieldUpdateTime:
+		case card.FieldCreateTime, card.FieldUpdateTime, card.FieldBindTime, card.FieldLastCleanTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -88,17 +98,11 @@ func (c *Card) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Code = value.String
 			}
-		case card.FieldCardCode:
+		case card.FieldCodeBin:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field card_code", values[i])
+				return fmt.Errorf("unexpected type %T for field code_bin", values[i])
 			} else if value.Valid {
-				c.CardCode = value.String
-			}
-		case card.FieldMemberCode:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field member_code", values[i])
-			} else if value.Valid {
-				c.MemberCode = value.String
+				c.CodeBin = value.String
 			}
 		case card.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -106,17 +110,55 @@ func (c *Card) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Type = int(value.Int64)
 			}
+		case card.FieldPic1:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic1", values[i])
+			} else if value.Valid {
+				c.Pic1 = value.String
+			}
+		case card.FieldPic2:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic2", values[i])
+			} else if value.Valid {
+				c.Pic2 = value.String
+			}
 		case card.FieldBalance:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field balance", values[i])
 			} else if value.Valid {
-				c.Balance = int(value.Int64)
+				c.Balance = value.Int64
 			}
 		case card.FieldAmount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field amount", values[i])
 			} else if value.Valid {
-				c.Amount = int(value.Int64)
+				c.Amount = value.Int64
+			}
+		case card.FieldMemberCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field member_code", values[i])
+			} else if value.Valid {
+				c.MemberCode = value.String
+			}
+		case card.FieldBindTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field bind_time", values[i])
+			} else if value.Valid {
+				c.BindTime = new(time.Time)
+				*c.BindTime = value.Time
+			}
+		case card.FieldHitTime:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field hit_time", values[i])
+			} else if value.Valid {
+				c.HitTime = value.Int64
+			}
+		case card.FieldLastCleanTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field last_clean_time", values[i])
+			} else if value.Valid {
+				c.LastCleanTime = new(time.Time)
+				*c.LastCleanTime = value.Time
 			}
 		case card.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -169,20 +211,39 @@ func (c *Card) String() string {
 	builder.WriteString("code=")
 	builder.WriteString(c.Code)
 	builder.WriteString(", ")
-	builder.WriteString("card_code=")
-	builder.WriteString(c.CardCode)
-	builder.WriteString(", ")
-	builder.WriteString("member_code=")
-	builder.WriteString(c.MemberCode)
+	builder.WriteString("code_bin=")
+	builder.WriteString(c.CodeBin)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
 	builder.WriteString(fmt.Sprintf("%v", c.Type))
+	builder.WriteString(", ")
+	builder.WriteString("pic1=")
+	builder.WriteString(c.Pic1)
+	builder.WriteString(", ")
+	builder.WriteString("pic2=")
+	builder.WriteString(c.Pic2)
 	builder.WriteString(", ")
 	builder.WriteString("balance=")
 	builder.WriteString(fmt.Sprintf("%v", c.Balance))
 	builder.WriteString(", ")
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", c.Amount))
+	builder.WriteString(", ")
+	builder.WriteString("member_code=")
+	builder.WriteString(c.MemberCode)
+	builder.WriteString(", ")
+	if v := c.BindTime; v != nil {
+		builder.WriteString("bind_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("hit_time=")
+	builder.WriteString(fmt.Sprintf("%v", c.HitTime))
+	builder.WriteString(", ")
+	if v := c.LastCleanTime; v != nil {
+		builder.WriteString("last_clean_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", c.Status))

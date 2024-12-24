@@ -48,44 +48,52 @@ func init() {
 			return nil
 		}
 	}()
-	// cardDescCardCode is the schema descriptor for card_code field.
-	cardDescCardCode := cardFields[1].Descriptor()
-	// card.CardCodeValidator is a validator for the "card_code" field. It is called by the builders before save.
-	card.CardCodeValidator = func() func(string) error {
-		validators := cardDescCardCode.Validators
+	// cardDescCodeBin is the schema descriptor for code_bin field.
+	cardDescCodeBin := cardFields[1].Descriptor()
+	// card.CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
+	card.CodeBinValidator = func() func(string) error {
+		validators := cardDescCodeBin.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(card_code string) error {
+		return func(code_bin string) error {
 			for _, fn := range fns {
-				if err := fn(card_code); err != nil {
+				if err := fn(code_bin); err != nil {
 					return err
 				}
 			}
 			return nil
 		}
 	}()
+	// cardDescType is the schema descriptor for type field.
+	cardDescType := cardFields[2].Descriptor()
+	// card.DefaultType holds the default value on creation for the type field.
+	card.DefaultType = cardDescType.Default.(int)
+	// cardDescPic1 is the schema descriptor for pic1 field.
+	cardDescPic1 := cardFields[3].Descriptor()
+	// card.Pic1Validator is a validator for the "pic1" field. It is called by the builders before save.
+	card.Pic1Validator = cardDescPic1.Validators[0].(func(string) error)
+	// cardDescPic2 is the schema descriptor for pic2 field.
+	cardDescPic2 := cardFields[4].Descriptor()
+	// card.Pic2Validator is a validator for the "pic2" field. It is called by the builders before save.
+	card.Pic2Validator = cardDescPic2.Validators[0].(func(string) error)
+	// cardDescBalance is the schema descriptor for balance field.
+	cardDescBalance := cardFields[5].Descriptor()
+	// card.DefaultBalance holds the default value on creation for the balance field.
+	card.DefaultBalance = cardDescBalance.Default.(int64)
+	// cardDescAmount is the schema descriptor for amount field.
+	cardDescAmount := cardFields[6].Descriptor()
+	// card.DefaultAmount holds the default value on creation for the amount field.
+	card.DefaultAmount = cardDescAmount.Default.(int64)
 	// cardDescMemberCode is the schema descriptor for member_code field.
-	cardDescMemberCode := cardFields[2].Descriptor()
+	cardDescMemberCode := cardFields[7].Descriptor()
 	// card.DefaultMemberCode holds the default value on creation for the member_code field.
 	card.DefaultMemberCode = cardDescMemberCode.Default.(func() string)
 	// card.MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	card.MemberCodeValidator = cardDescMemberCode.Validators[0].(func(string) error)
-	// cardDescType is the schema descriptor for type field.
-	cardDescType := cardFields[3].Descriptor()
-	// card.DefaultType holds the default value on creation for the type field.
-	card.DefaultType = cardDescType.Default.(int)
-	// cardDescBalance is the schema descriptor for balance field.
-	cardDescBalance := cardFields[4].Descriptor()
-	// card.DefaultBalance holds the default value on creation for the balance field.
-	card.DefaultBalance = cardDescBalance.Default.(int)
-	// cardDescAmount is the schema descriptor for amount field.
-	cardDescAmount := cardFields[5].Descriptor()
-	// card.DefaultAmount holds the default value on creation for the amount field.
-	card.DefaultAmount = cardDescAmount.Default.(int)
 	// cardDescStatus is the schema descriptor for status field.
-	cardDescStatus := cardFields[6].Descriptor()
+	cardDescStatus := cardFields[11].Descriptor()
 	// card.DefaultStatus holds the default value on creation for the status field.
 	card.DefaultStatus = cardDescStatus.Default.(int)
 }

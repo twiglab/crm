@@ -64,23 +64,9 @@ func (cc *CardCreate) SetNillableCode(s *string) *CardCreate {
 	return cc
 }
 
-// SetCardCode sets the "card_code" field.
-func (cc *CardCreate) SetCardCode(s string) *CardCreate {
-	cc.mutation.SetCardCode(s)
-	return cc
-}
-
-// SetMemberCode sets the "member_code" field.
-func (cc *CardCreate) SetMemberCode(s string) *CardCreate {
-	cc.mutation.SetMemberCode(s)
-	return cc
-}
-
-// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
-func (cc *CardCreate) SetNillableMemberCode(s *string) *CardCreate {
-	if s != nil {
-		cc.SetMemberCode(*s)
-	}
+// SetCodeBin sets the "code_bin" field.
+func (cc *CardCreate) SetCodeBin(s string) *CardCreate {
+	cc.mutation.SetCodeBin(s)
 	return cc
 }
 
@@ -98,14 +84,26 @@ func (cc *CardCreate) SetNillableType(i *int) *CardCreate {
 	return cc
 }
 
+// SetPic1 sets the "pic1" field.
+func (cc *CardCreate) SetPic1(s string) *CardCreate {
+	cc.mutation.SetPic1(s)
+	return cc
+}
+
+// SetPic2 sets the "pic2" field.
+func (cc *CardCreate) SetPic2(s string) *CardCreate {
+	cc.mutation.SetPic2(s)
+	return cc
+}
+
 // SetBalance sets the "balance" field.
-func (cc *CardCreate) SetBalance(i int) *CardCreate {
+func (cc *CardCreate) SetBalance(i int64) *CardCreate {
 	cc.mutation.SetBalance(i)
 	return cc
 }
 
 // SetNillableBalance sets the "balance" field if the given value is not nil.
-func (cc *CardCreate) SetNillableBalance(i *int) *CardCreate {
+func (cc *CardCreate) SetNillableBalance(i *int64) *CardCreate {
 	if i != nil {
 		cc.SetBalance(*i)
 	}
@@ -113,15 +111,63 @@ func (cc *CardCreate) SetNillableBalance(i *int) *CardCreate {
 }
 
 // SetAmount sets the "amount" field.
-func (cc *CardCreate) SetAmount(i int) *CardCreate {
+func (cc *CardCreate) SetAmount(i int64) *CardCreate {
 	cc.mutation.SetAmount(i)
 	return cc
 }
 
 // SetNillableAmount sets the "amount" field if the given value is not nil.
-func (cc *CardCreate) SetNillableAmount(i *int) *CardCreate {
+func (cc *CardCreate) SetNillableAmount(i *int64) *CardCreate {
 	if i != nil {
 		cc.SetAmount(*i)
+	}
+	return cc
+}
+
+// SetMemberCode sets the "member_code" field.
+func (cc *CardCreate) SetMemberCode(s string) *CardCreate {
+	cc.mutation.SetMemberCode(s)
+	return cc
+}
+
+// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
+func (cc *CardCreate) SetNillableMemberCode(s *string) *CardCreate {
+	if s != nil {
+		cc.SetMemberCode(*s)
+	}
+	return cc
+}
+
+// SetBindTime sets the "bind_time" field.
+func (cc *CardCreate) SetBindTime(t time.Time) *CardCreate {
+	cc.mutation.SetBindTime(t)
+	return cc
+}
+
+// SetNillableBindTime sets the "bind_time" field if the given value is not nil.
+func (cc *CardCreate) SetNillableBindTime(t *time.Time) *CardCreate {
+	if t != nil {
+		cc.SetBindTime(*t)
+	}
+	return cc
+}
+
+// SetHitTime sets the "hit_time" field.
+func (cc *CardCreate) SetHitTime(i int64) *CardCreate {
+	cc.mutation.SetHitTime(i)
+	return cc
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (cc *CardCreate) SetLastCleanTime(t time.Time) *CardCreate {
+	cc.mutation.SetLastCleanTime(t)
+	return cc
+}
+
+// SetNillableLastCleanTime sets the "last_clean_time" field if the given value is not nil.
+func (cc *CardCreate) SetNillableLastCleanTime(t *time.Time) *CardCreate {
+	if t != nil {
+		cc.SetLastCleanTime(*t)
 	}
 	return cc
 }
@@ -187,10 +233,6 @@ func (cc *CardCreate) defaults() {
 		v := card.DefaultCode()
 		cc.mutation.SetCode(v)
 	}
-	if _, ok := cc.mutation.MemberCode(); !ok {
-		v := card.DefaultMemberCode()
-		cc.mutation.SetMemberCode(v)
-	}
 	if _, ok := cc.mutation.GetType(); !ok {
 		v := card.DefaultType
 		cc.mutation.SetType(v)
@@ -202,6 +244,10 @@ func (cc *CardCreate) defaults() {
 	if _, ok := cc.mutation.Amount(); !ok {
 		v := card.DefaultAmount
 		cc.mutation.SetAmount(v)
+	}
+	if _, ok := cc.mutation.MemberCode(); !ok {
+		v := card.DefaultMemberCode()
+		cc.mutation.SetMemberCode(v)
 	}
 	if _, ok := cc.mutation.Status(); !ok {
 		v := card.DefaultStatus
@@ -225,13 +271,38 @@ func (cc *CardCreate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Card.code": %w`, err)}
 		}
 	}
-	if _, ok := cc.mutation.CardCode(); !ok {
-		return &ValidationError{Name: "card_code", err: errors.New(`ent: missing required field "Card.card_code"`)}
+	if _, ok := cc.mutation.CodeBin(); !ok {
+		return &ValidationError{Name: "code_bin", err: errors.New(`ent: missing required field "Card.code_bin"`)}
 	}
-	if v, ok := cc.mutation.CardCode(); ok {
-		if err := card.CardCodeValidator(v); err != nil {
-			return &ValidationError{Name: "card_code", err: fmt.Errorf(`ent: validator failed for field "Card.card_code": %w`, err)}
+	if v, ok := cc.mutation.CodeBin(); ok {
+		if err := card.CodeBinValidator(v); err != nil {
+			return &ValidationError{Name: "code_bin", err: fmt.Errorf(`ent: validator failed for field "Card.code_bin": %w`, err)}
 		}
+	}
+	if _, ok := cc.mutation.GetType(); !ok {
+		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Card.type"`)}
+	}
+	if _, ok := cc.mutation.Pic1(); !ok {
+		return &ValidationError{Name: "pic1", err: errors.New(`ent: missing required field "Card.pic1"`)}
+	}
+	if v, ok := cc.mutation.Pic1(); ok {
+		if err := card.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Card.pic1": %w`, err)}
+		}
+	}
+	if _, ok := cc.mutation.Pic2(); !ok {
+		return &ValidationError{Name: "pic2", err: errors.New(`ent: missing required field "Card.pic2"`)}
+	}
+	if v, ok := cc.mutation.Pic2(); ok {
+		if err := card.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Card.pic2": %w`, err)}
+		}
+	}
+	if _, ok := cc.mutation.Balance(); !ok {
+		return &ValidationError{Name: "balance", err: errors.New(`ent: missing required field "Card.balance"`)}
+	}
+	if _, ok := cc.mutation.Amount(); !ok {
+		return &ValidationError{Name: "amount", err: errors.New(`ent: missing required field "Card.amount"`)}
 	}
 	if _, ok := cc.mutation.MemberCode(); !ok {
 		return &ValidationError{Name: "member_code", err: errors.New(`ent: missing required field "Card.member_code"`)}
@@ -241,14 +312,8 @@ func (cc *CardCreate) check() error {
 			return &ValidationError{Name: "member_code", err: fmt.Errorf(`ent: validator failed for field "Card.member_code": %w`, err)}
 		}
 	}
-	if _, ok := cc.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Card.type"`)}
-	}
-	if _, ok := cc.mutation.Balance(); !ok {
-		return &ValidationError{Name: "balance", err: errors.New(`ent: missing required field "Card.balance"`)}
-	}
-	if _, ok := cc.mutation.Amount(); !ok {
-		return &ValidationError{Name: "amount", err: errors.New(`ent: missing required field "Card.amount"`)}
+	if _, ok := cc.mutation.HitTime(); !ok {
+		return &ValidationError{Name: "hit_time", err: errors.New(`ent: missing required field "Card.hit_time"`)}
 	}
 	if _, ok := cc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Card.status"`)}
@@ -292,25 +357,45 @@ func (cc *CardCreate) createSpec() (*Card, *sqlgraph.CreateSpec) {
 		_spec.SetField(card.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
-	if value, ok := cc.mutation.CardCode(); ok {
-		_spec.SetField(card.FieldCardCode, field.TypeString, value)
-		_node.CardCode = value
-	}
-	if value, ok := cc.mutation.MemberCode(); ok {
-		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
-		_node.MemberCode = value
+	if value, ok := cc.mutation.CodeBin(); ok {
+		_spec.SetField(card.FieldCodeBin, field.TypeString, value)
+		_node.CodeBin = value
 	}
 	if value, ok := cc.mutation.GetType(); ok {
 		_spec.SetField(card.FieldType, field.TypeInt, value)
 		_node.Type = value
 	}
+	if value, ok := cc.mutation.Pic1(); ok {
+		_spec.SetField(card.FieldPic1, field.TypeString, value)
+		_node.Pic1 = value
+	}
+	if value, ok := cc.mutation.Pic2(); ok {
+		_spec.SetField(card.FieldPic2, field.TypeString, value)
+		_node.Pic2 = value
+	}
 	if value, ok := cc.mutation.Balance(); ok {
-		_spec.SetField(card.FieldBalance, field.TypeInt, value)
+		_spec.SetField(card.FieldBalance, field.TypeInt64, value)
 		_node.Balance = value
 	}
 	if value, ok := cc.mutation.Amount(); ok {
-		_spec.SetField(card.FieldAmount, field.TypeInt, value)
+		_spec.SetField(card.FieldAmount, field.TypeInt64, value)
 		_node.Amount = value
+	}
+	if value, ok := cc.mutation.MemberCode(); ok {
+		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
+		_node.MemberCode = value
+	}
+	if value, ok := cc.mutation.BindTime(); ok {
+		_spec.SetField(card.FieldBindTime, field.TypeTime, value)
+		_node.BindTime = &value
+	}
+	if value, ok := cc.mutation.HitTime(); ok {
+		_spec.SetField(card.FieldHitTime, field.TypeInt64, value)
+		_node.HitTime = value
+	}
+	if value, ok := cc.mutation.LastCleanTime(); ok {
+		_spec.SetField(card.FieldLastCleanTime, field.TypeTime, value)
+		_node.LastCleanTime = &value
 	}
 	if value, ok := cc.mutation.Status(); ok {
 		_spec.SetField(card.FieldStatus, field.TypeInt, value)
@@ -380,18 +465,6 @@ func (u *CardUpsert) UpdateUpdateTime() *CardUpsert {
 	return u
 }
 
-// SetMemberCode sets the "member_code" field.
-func (u *CardUpsert) SetMemberCode(v string) *CardUpsert {
-	u.Set(card.FieldMemberCode, v)
-	return u
-}
-
-// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
-func (u *CardUpsert) UpdateMemberCode() *CardUpsert {
-	u.SetExcluded(card.FieldMemberCode)
-	return u
-}
-
 // SetType sets the "type" field.
 func (u *CardUpsert) SetType(v int) *CardUpsert {
 	u.Set(card.FieldType, v)
@@ -410,8 +483,32 @@ func (u *CardUpsert) AddType(v int) *CardUpsert {
 	return u
 }
 
+// SetPic1 sets the "pic1" field.
+func (u *CardUpsert) SetPic1(v string) *CardUpsert {
+	u.Set(card.FieldPic1, v)
+	return u
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *CardUpsert) UpdatePic1() *CardUpsert {
+	u.SetExcluded(card.FieldPic1)
+	return u
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *CardUpsert) SetPic2(v string) *CardUpsert {
+	u.Set(card.FieldPic2, v)
+	return u
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *CardUpsert) UpdatePic2() *CardUpsert {
+	u.SetExcluded(card.FieldPic2)
+	return u
+}
+
 // SetBalance sets the "balance" field.
-func (u *CardUpsert) SetBalance(v int) *CardUpsert {
+func (u *CardUpsert) SetBalance(v int64) *CardUpsert {
 	u.Set(card.FieldBalance, v)
 	return u
 }
@@ -423,13 +520,13 @@ func (u *CardUpsert) UpdateBalance() *CardUpsert {
 }
 
 // AddBalance adds v to the "balance" field.
-func (u *CardUpsert) AddBalance(v int) *CardUpsert {
+func (u *CardUpsert) AddBalance(v int64) *CardUpsert {
 	u.Add(card.FieldBalance, v)
 	return u
 }
 
 // SetAmount sets the "amount" field.
-func (u *CardUpsert) SetAmount(v int) *CardUpsert {
+func (u *CardUpsert) SetAmount(v int64) *CardUpsert {
 	u.Set(card.FieldAmount, v)
 	return u
 }
@@ -441,8 +538,74 @@ func (u *CardUpsert) UpdateAmount() *CardUpsert {
 }
 
 // AddAmount adds v to the "amount" field.
-func (u *CardUpsert) AddAmount(v int) *CardUpsert {
+func (u *CardUpsert) AddAmount(v int64) *CardUpsert {
 	u.Add(card.FieldAmount, v)
+	return u
+}
+
+// SetMemberCode sets the "member_code" field.
+func (u *CardUpsert) SetMemberCode(v string) *CardUpsert {
+	u.Set(card.FieldMemberCode, v)
+	return u
+}
+
+// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
+func (u *CardUpsert) UpdateMemberCode() *CardUpsert {
+	u.SetExcluded(card.FieldMemberCode)
+	return u
+}
+
+// SetBindTime sets the "bind_time" field.
+func (u *CardUpsert) SetBindTime(v time.Time) *CardUpsert {
+	u.Set(card.FieldBindTime, v)
+	return u
+}
+
+// UpdateBindTime sets the "bind_time" field to the value that was provided on create.
+func (u *CardUpsert) UpdateBindTime() *CardUpsert {
+	u.SetExcluded(card.FieldBindTime)
+	return u
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (u *CardUpsert) ClearBindTime() *CardUpsert {
+	u.SetNull(card.FieldBindTime)
+	return u
+}
+
+// SetHitTime sets the "hit_time" field.
+func (u *CardUpsert) SetHitTime(v int64) *CardUpsert {
+	u.Set(card.FieldHitTime, v)
+	return u
+}
+
+// UpdateHitTime sets the "hit_time" field to the value that was provided on create.
+func (u *CardUpsert) UpdateHitTime() *CardUpsert {
+	u.SetExcluded(card.FieldHitTime)
+	return u
+}
+
+// AddHitTime adds v to the "hit_time" field.
+func (u *CardUpsert) AddHitTime(v int64) *CardUpsert {
+	u.Add(card.FieldHitTime, v)
+	return u
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (u *CardUpsert) SetLastCleanTime(v time.Time) *CardUpsert {
+	u.Set(card.FieldLastCleanTime, v)
+	return u
+}
+
+// UpdateLastCleanTime sets the "last_clean_time" field to the value that was provided on create.
+func (u *CardUpsert) UpdateLastCleanTime() *CardUpsert {
+	u.SetExcluded(card.FieldLastCleanTime)
+	return u
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (u *CardUpsert) ClearLastCleanTime() *CardUpsert {
+	u.SetNull(card.FieldLastCleanTime)
 	return u
 }
 
@@ -481,8 +644,8 @@ func (u *CardUpsertOne) UpdateNewValues() *CardUpsertOne {
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(card.FieldCode)
 		}
-		if _, exists := u.create.mutation.CardCode(); exists {
-			s.SetIgnore(card.FieldCardCode)
+		if _, exists := u.create.mutation.CodeBin(); exists {
+			s.SetIgnore(card.FieldCodeBin)
 		}
 	}))
 	return u
@@ -529,20 +692,6 @@ func (u *CardUpsertOne) UpdateUpdateTime() *CardUpsertOne {
 	})
 }
 
-// SetMemberCode sets the "member_code" field.
-func (u *CardUpsertOne) SetMemberCode(v string) *CardUpsertOne {
-	return u.Update(func(s *CardUpsert) {
-		s.SetMemberCode(v)
-	})
-}
-
-// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
-func (u *CardUpsertOne) UpdateMemberCode() *CardUpsertOne {
-	return u.Update(func(s *CardUpsert) {
-		s.UpdateMemberCode()
-	})
-}
-
 // SetType sets the "type" field.
 func (u *CardUpsertOne) SetType(v int) *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
@@ -564,15 +713,43 @@ func (u *CardUpsertOne) UpdateType() *CardUpsertOne {
 	})
 }
 
+// SetPic1 sets the "pic1" field.
+func (u *CardUpsertOne) SetPic1(v string) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetPic1(v)
+	})
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdatePic1() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdatePic1()
+	})
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *CardUpsertOne) SetPic2(v string) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetPic2(v)
+	})
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdatePic2() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdatePic2()
+	})
+}
+
 // SetBalance sets the "balance" field.
-func (u *CardUpsertOne) SetBalance(v int) *CardUpsertOne {
+func (u *CardUpsertOne) SetBalance(v int64) *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.SetBalance(v)
 	})
 }
 
 // AddBalance adds v to the "balance" field.
-func (u *CardUpsertOne) AddBalance(v int) *CardUpsertOne {
+func (u *CardUpsertOne) AddBalance(v int64) *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.AddBalance(v)
 	})
@@ -586,14 +763,14 @@ func (u *CardUpsertOne) UpdateBalance() *CardUpsertOne {
 }
 
 // SetAmount sets the "amount" field.
-func (u *CardUpsertOne) SetAmount(v int) *CardUpsertOne {
+func (u *CardUpsertOne) SetAmount(v int64) *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.SetAmount(v)
 	})
 }
 
 // AddAmount adds v to the "amount" field.
-func (u *CardUpsertOne) AddAmount(v int) *CardUpsertOne {
+func (u *CardUpsertOne) AddAmount(v int64) *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.AddAmount(v)
 	})
@@ -603,6 +780,83 @@ func (u *CardUpsertOne) AddAmount(v int) *CardUpsertOne {
 func (u *CardUpsertOne) UpdateAmount() *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.UpdateAmount()
+	})
+}
+
+// SetMemberCode sets the "member_code" field.
+func (u *CardUpsertOne) SetMemberCode(v string) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetMemberCode(v)
+	})
+}
+
+// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdateMemberCode() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateMemberCode()
+	})
+}
+
+// SetBindTime sets the "bind_time" field.
+func (u *CardUpsertOne) SetBindTime(v time.Time) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetBindTime(v)
+	})
+}
+
+// UpdateBindTime sets the "bind_time" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdateBindTime() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateBindTime()
+	})
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (u *CardUpsertOne) ClearBindTime() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.ClearBindTime()
+	})
+}
+
+// SetHitTime sets the "hit_time" field.
+func (u *CardUpsertOne) SetHitTime(v int64) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetHitTime(v)
+	})
+}
+
+// AddHitTime adds v to the "hit_time" field.
+func (u *CardUpsertOne) AddHitTime(v int64) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.AddHitTime(v)
+	})
+}
+
+// UpdateHitTime sets the "hit_time" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdateHitTime() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateHitTime()
+	})
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (u *CardUpsertOne) SetLastCleanTime(v time.Time) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetLastCleanTime(v)
+	})
+}
+
+// UpdateLastCleanTime sets the "last_clean_time" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdateLastCleanTime() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateLastCleanTime()
+	})
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (u *CardUpsertOne) ClearLastCleanTime() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.ClearLastCleanTime()
 	})
 }
 
@@ -809,8 +1063,8 @@ func (u *CardUpsertBulk) UpdateNewValues() *CardUpsertBulk {
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(card.FieldCode)
 			}
-			if _, exists := b.mutation.CardCode(); exists {
-				s.SetIgnore(card.FieldCardCode)
+			if _, exists := b.mutation.CodeBin(); exists {
+				s.SetIgnore(card.FieldCodeBin)
 			}
 		}
 	}))
@@ -858,20 +1112,6 @@ func (u *CardUpsertBulk) UpdateUpdateTime() *CardUpsertBulk {
 	})
 }
 
-// SetMemberCode sets the "member_code" field.
-func (u *CardUpsertBulk) SetMemberCode(v string) *CardUpsertBulk {
-	return u.Update(func(s *CardUpsert) {
-		s.SetMemberCode(v)
-	})
-}
-
-// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
-func (u *CardUpsertBulk) UpdateMemberCode() *CardUpsertBulk {
-	return u.Update(func(s *CardUpsert) {
-		s.UpdateMemberCode()
-	})
-}
-
 // SetType sets the "type" field.
 func (u *CardUpsertBulk) SetType(v int) *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
@@ -893,15 +1133,43 @@ func (u *CardUpsertBulk) UpdateType() *CardUpsertBulk {
 	})
 }
 
+// SetPic1 sets the "pic1" field.
+func (u *CardUpsertBulk) SetPic1(v string) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetPic1(v)
+	})
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdatePic1() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdatePic1()
+	})
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *CardUpsertBulk) SetPic2(v string) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetPic2(v)
+	})
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdatePic2() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdatePic2()
+	})
+}
+
 // SetBalance sets the "balance" field.
-func (u *CardUpsertBulk) SetBalance(v int) *CardUpsertBulk {
+func (u *CardUpsertBulk) SetBalance(v int64) *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.SetBalance(v)
 	})
 }
 
 // AddBalance adds v to the "balance" field.
-func (u *CardUpsertBulk) AddBalance(v int) *CardUpsertBulk {
+func (u *CardUpsertBulk) AddBalance(v int64) *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.AddBalance(v)
 	})
@@ -915,14 +1183,14 @@ func (u *CardUpsertBulk) UpdateBalance() *CardUpsertBulk {
 }
 
 // SetAmount sets the "amount" field.
-func (u *CardUpsertBulk) SetAmount(v int) *CardUpsertBulk {
+func (u *CardUpsertBulk) SetAmount(v int64) *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.SetAmount(v)
 	})
 }
 
 // AddAmount adds v to the "amount" field.
-func (u *CardUpsertBulk) AddAmount(v int) *CardUpsertBulk {
+func (u *CardUpsertBulk) AddAmount(v int64) *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.AddAmount(v)
 	})
@@ -932,6 +1200,83 @@ func (u *CardUpsertBulk) AddAmount(v int) *CardUpsertBulk {
 func (u *CardUpsertBulk) UpdateAmount() *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.UpdateAmount()
+	})
+}
+
+// SetMemberCode sets the "member_code" field.
+func (u *CardUpsertBulk) SetMemberCode(v string) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetMemberCode(v)
+	})
+}
+
+// UpdateMemberCode sets the "member_code" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdateMemberCode() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateMemberCode()
+	})
+}
+
+// SetBindTime sets the "bind_time" field.
+func (u *CardUpsertBulk) SetBindTime(v time.Time) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetBindTime(v)
+	})
+}
+
+// UpdateBindTime sets the "bind_time" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdateBindTime() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateBindTime()
+	})
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (u *CardUpsertBulk) ClearBindTime() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.ClearBindTime()
+	})
+}
+
+// SetHitTime sets the "hit_time" field.
+func (u *CardUpsertBulk) SetHitTime(v int64) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetHitTime(v)
+	})
+}
+
+// AddHitTime adds v to the "hit_time" field.
+func (u *CardUpsertBulk) AddHitTime(v int64) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.AddHitTime(v)
+	})
+}
+
+// UpdateHitTime sets the "hit_time" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdateHitTime() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateHitTime()
+	})
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (u *CardUpsertBulk) SetLastCleanTime(v time.Time) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetLastCleanTime(v)
+	})
+}
+
+// UpdateLastCleanTime sets the "last_clean_time" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdateLastCleanTime() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateLastCleanTime()
+	})
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (u *CardUpsertBulk) ClearLastCleanTime() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.ClearLastCleanTime()
 	})
 }
 

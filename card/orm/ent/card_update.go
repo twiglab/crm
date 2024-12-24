@@ -34,20 +34,6 @@ func (cu *CardUpdate) SetUpdateTime(t time.Time) *CardUpdate {
 	return cu
 }
 
-// SetMemberCode sets the "member_code" field.
-func (cu *CardUpdate) SetMemberCode(s string) *CardUpdate {
-	cu.mutation.SetMemberCode(s)
-	return cu
-}
-
-// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
-func (cu *CardUpdate) SetNillableMemberCode(s *string) *CardUpdate {
-	if s != nil {
-		cu.SetMemberCode(*s)
-	}
-	return cu
-}
-
 // SetType sets the "type" field.
 func (cu *CardUpdate) SetType(i int) *CardUpdate {
 	cu.mutation.ResetType()
@@ -69,15 +55,43 @@ func (cu *CardUpdate) AddType(i int) *CardUpdate {
 	return cu
 }
 
+// SetPic1 sets the "pic1" field.
+func (cu *CardUpdate) SetPic1(s string) *CardUpdate {
+	cu.mutation.SetPic1(s)
+	return cu
+}
+
+// SetNillablePic1 sets the "pic1" field if the given value is not nil.
+func (cu *CardUpdate) SetNillablePic1(s *string) *CardUpdate {
+	if s != nil {
+		cu.SetPic1(*s)
+	}
+	return cu
+}
+
+// SetPic2 sets the "pic2" field.
+func (cu *CardUpdate) SetPic2(s string) *CardUpdate {
+	cu.mutation.SetPic2(s)
+	return cu
+}
+
+// SetNillablePic2 sets the "pic2" field if the given value is not nil.
+func (cu *CardUpdate) SetNillablePic2(s *string) *CardUpdate {
+	if s != nil {
+		cu.SetPic2(*s)
+	}
+	return cu
+}
+
 // SetBalance sets the "balance" field.
-func (cu *CardUpdate) SetBalance(i int) *CardUpdate {
+func (cu *CardUpdate) SetBalance(i int64) *CardUpdate {
 	cu.mutation.ResetBalance()
 	cu.mutation.SetBalance(i)
 	return cu
 }
 
 // SetNillableBalance sets the "balance" field if the given value is not nil.
-func (cu *CardUpdate) SetNillableBalance(i *int) *CardUpdate {
+func (cu *CardUpdate) SetNillableBalance(i *int64) *CardUpdate {
 	if i != nil {
 		cu.SetBalance(*i)
 	}
@@ -85,20 +99,20 @@ func (cu *CardUpdate) SetNillableBalance(i *int) *CardUpdate {
 }
 
 // AddBalance adds i to the "balance" field.
-func (cu *CardUpdate) AddBalance(i int) *CardUpdate {
+func (cu *CardUpdate) AddBalance(i int64) *CardUpdate {
 	cu.mutation.AddBalance(i)
 	return cu
 }
 
 // SetAmount sets the "amount" field.
-func (cu *CardUpdate) SetAmount(i int) *CardUpdate {
+func (cu *CardUpdate) SetAmount(i int64) *CardUpdate {
 	cu.mutation.ResetAmount()
 	cu.mutation.SetAmount(i)
 	return cu
 }
 
 // SetNillableAmount sets the "amount" field if the given value is not nil.
-func (cu *CardUpdate) SetNillableAmount(i *int) *CardUpdate {
+func (cu *CardUpdate) SetNillableAmount(i *int64) *CardUpdate {
 	if i != nil {
 		cu.SetAmount(*i)
 	}
@@ -106,8 +120,83 @@ func (cu *CardUpdate) SetNillableAmount(i *int) *CardUpdate {
 }
 
 // AddAmount adds i to the "amount" field.
-func (cu *CardUpdate) AddAmount(i int) *CardUpdate {
+func (cu *CardUpdate) AddAmount(i int64) *CardUpdate {
 	cu.mutation.AddAmount(i)
+	return cu
+}
+
+// SetMemberCode sets the "member_code" field.
+func (cu *CardUpdate) SetMemberCode(s string) *CardUpdate {
+	cu.mutation.SetMemberCode(s)
+	return cu
+}
+
+// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
+func (cu *CardUpdate) SetNillableMemberCode(s *string) *CardUpdate {
+	if s != nil {
+		cu.SetMemberCode(*s)
+	}
+	return cu
+}
+
+// SetBindTime sets the "bind_time" field.
+func (cu *CardUpdate) SetBindTime(t time.Time) *CardUpdate {
+	cu.mutation.SetBindTime(t)
+	return cu
+}
+
+// SetNillableBindTime sets the "bind_time" field if the given value is not nil.
+func (cu *CardUpdate) SetNillableBindTime(t *time.Time) *CardUpdate {
+	if t != nil {
+		cu.SetBindTime(*t)
+	}
+	return cu
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (cu *CardUpdate) ClearBindTime() *CardUpdate {
+	cu.mutation.ClearBindTime()
+	return cu
+}
+
+// SetHitTime sets the "hit_time" field.
+func (cu *CardUpdate) SetHitTime(i int64) *CardUpdate {
+	cu.mutation.ResetHitTime()
+	cu.mutation.SetHitTime(i)
+	return cu
+}
+
+// SetNillableHitTime sets the "hit_time" field if the given value is not nil.
+func (cu *CardUpdate) SetNillableHitTime(i *int64) *CardUpdate {
+	if i != nil {
+		cu.SetHitTime(*i)
+	}
+	return cu
+}
+
+// AddHitTime adds i to the "hit_time" field.
+func (cu *CardUpdate) AddHitTime(i int64) *CardUpdate {
+	cu.mutation.AddHitTime(i)
+	return cu
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (cu *CardUpdate) SetLastCleanTime(t time.Time) *CardUpdate {
+	cu.mutation.SetLastCleanTime(t)
+	return cu
+}
+
+// SetNillableLastCleanTime sets the "last_clean_time" field if the given value is not nil.
+func (cu *CardUpdate) SetNillableLastCleanTime(t *time.Time) *CardUpdate {
+	if t != nil {
+		cu.SetLastCleanTime(*t)
+	}
+	return cu
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (cu *CardUpdate) ClearLastCleanTime() *CardUpdate {
+	cu.mutation.ClearLastCleanTime()
 	return cu
 }
 
@@ -175,6 +264,16 @@ func (cu *CardUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (cu *CardUpdate) check() error {
+	if v, ok := cu.mutation.Pic1(); ok {
+		if err := card.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Card.pic1": %w`, err)}
+		}
+	}
+	if v, ok := cu.mutation.Pic2(); ok {
+		if err := card.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Card.pic2": %w`, err)}
+		}
+	}
 	if v, ok := cu.mutation.MemberCode(); ok {
 		if err := card.MemberCodeValidator(v); err != nil {
 			return &ValidationError{Name: "member_code", err: fmt.Errorf(`ent: validator failed for field "Card.member_code": %w`, err)}
@@ -198,26 +297,50 @@ func (cu *CardUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.UpdateTime(); ok {
 		_spec.SetField(card.FieldUpdateTime, field.TypeTime, value)
 	}
-	if value, ok := cu.mutation.MemberCode(); ok {
-		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
-	}
 	if value, ok := cu.mutation.GetType(); ok {
 		_spec.SetField(card.FieldType, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.AddedType(); ok {
 		_spec.AddField(card.FieldType, field.TypeInt, value)
 	}
+	if value, ok := cu.mutation.Pic1(); ok {
+		_spec.SetField(card.FieldPic1, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Pic2(); ok {
+		_spec.SetField(card.FieldPic2, field.TypeString, value)
+	}
 	if value, ok := cu.mutation.Balance(); ok {
-		_spec.SetField(card.FieldBalance, field.TypeInt, value)
+		_spec.SetField(card.FieldBalance, field.TypeInt64, value)
 	}
 	if value, ok := cu.mutation.AddedBalance(); ok {
-		_spec.AddField(card.FieldBalance, field.TypeInt, value)
+		_spec.AddField(card.FieldBalance, field.TypeInt64, value)
 	}
 	if value, ok := cu.mutation.Amount(); ok {
-		_spec.SetField(card.FieldAmount, field.TypeInt, value)
+		_spec.SetField(card.FieldAmount, field.TypeInt64, value)
 	}
 	if value, ok := cu.mutation.AddedAmount(); ok {
-		_spec.AddField(card.FieldAmount, field.TypeInt, value)
+		_spec.AddField(card.FieldAmount, field.TypeInt64, value)
+	}
+	if value, ok := cu.mutation.MemberCode(); ok {
+		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.BindTime(); ok {
+		_spec.SetField(card.FieldBindTime, field.TypeTime, value)
+	}
+	if cu.mutation.BindTimeCleared() {
+		_spec.ClearField(card.FieldBindTime, field.TypeTime)
+	}
+	if value, ok := cu.mutation.HitTime(); ok {
+		_spec.SetField(card.FieldHitTime, field.TypeInt64, value)
+	}
+	if value, ok := cu.mutation.AddedHitTime(); ok {
+		_spec.AddField(card.FieldHitTime, field.TypeInt64, value)
+	}
+	if value, ok := cu.mutation.LastCleanTime(); ok {
+		_spec.SetField(card.FieldLastCleanTime, field.TypeTime, value)
+	}
+	if cu.mutation.LastCleanTimeCleared() {
+		_spec.ClearField(card.FieldLastCleanTime, field.TypeTime)
 	}
 	if value, ok := cu.mutation.Status(); ok {
 		_spec.SetField(card.FieldStatus, field.TypeInt, value)
@@ -251,20 +374,6 @@ func (cuo *CardUpdateOne) SetUpdateTime(t time.Time) *CardUpdateOne {
 	return cuo
 }
 
-// SetMemberCode sets the "member_code" field.
-func (cuo *CardUpdateOne) SetMemberCode(s string) *CardUpdateOne {
-	cuo.mutation.SetMemberCode(s)
-	return cuo
-}
-
-// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
-func (cuo *CardUpdateOne) SetNillableMemberCode(s *string) *CardUpdateOne {
-	if s != nil {
-		cuo.SetMemberCode(*s)
-	}
-	return cuo
-}
-
 // SetType sets the "type" field.
 func (cuo *CardUpdateOne) SetType(i int) *CardUpdateOne {
 	cuo.mutation.ResetType()
@@ -286,15 +395,43 @@ func (cuo *CardUpdateOne) AddType(i int) *CardUpdateOne {
 	return cuo
 }
 
+// SetPic1 sets the "pic1" field.
+func (cuo *CardUpdateOne) SetPic1(s string) *CardUpdateOne {
+	cuo.mutation.SetPic1(s)
+	return cuo
+}
+
+// SetNillablePic1 sets the "pic1" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillablePic1(s *string) *CardUpdateOne {
+	if s != nil {
+		cuo.SetPic1(*s)
+	}
+	return cuo
+}
+
+// SetPic2 sets the "pic2" field.
+func (cuo *CardUpdateOne) SetPic2(s string) *CardUpdateOne {
+	cuo.mutation.SetPic2(s)
+	return cuo
+}
+
+// SetNillablePic2 sets the "pic2" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillablePic2(s *string) *CardUpdateOne {
+	if s != nil {
+		cuo.SetPic2(*s)
+	}
+	return cuo
+}
+
 // SetBalance sets the "balance" field.
-func (cuo *CardUpdateOne) SetBalance(i int) *CardUpdateOne {
+func (cuo *CardUpdateOne) SetBalance(i int64) *CardUpdateOne {
 	cuo.mutation.ResetBalance()
 	cuo.mutation.SetBalance(i)
 	return cuo
 }
 
 // SetNillableBalance sets the "balance" field if the given value is not nil.
-func (cuo *CardUpdateOne) SetNillableBalance(i *int) *CardUpdateOne {
+func (cuo *CardUpdateOne) SetNillableBalance(i *int64) *CardUpdateOne {
 	if i != nil {
 		cuo.SetBalance(*i)
 	}
@@ -302,20 +439,20 @@ func (cuo *CardUpdateOne) SetNillableBalance(i *int) *CardUpdateOne {
 }
 
 // AddBalance adds i to the "balance" field.
-func (cuo *CardUpdateOne) AddBalance(i int) *CardUpdateOne {
+func (cuo *CardUpdateOne) AddBalance(i int64) *CardUpdateOne {
 	cuo.mutation.AddBalance(i)
 	return cuo
 }
 
 // SetAmount sets the "amount" field.
-func (cuo *CardUpdateOne) SetAmount(i int) *CardUpdateOne {
+func (cuo *CardUpdateOne) SetAmount(i int64) *CardUpdateOne {
 	cuo.mutation.ResetAmount()
 	cuo.mutation.SetAmount(i)
 	return cuo
 }
 
 // SetNillableAmount sets the "amount" field if the given value is not nil.
-func (cuo *CardUpdateOne) SetNillableAmount(i *int) *CardUpdateOne {
+func (cuo *CardUpdateOne) SetNillableAmount(i *int64) *CardUpdateOne {
 	if i != nil {
 		cuo.SetAmount(*i)
 	}
@@ -323,8 +460,83 @@ func (cuo *CardUpdateOne) SetNillableAmount(i *int) *CardUpdateOne {
 }
 
 // AddAmount adds i to the "amount" field.
-func (cuo *CardUpdateOne) AddAmount(i int) *CardUpdateOne {
+func (cuo *CardUpdateOne) AddAmount(i int64) *CardUpdateOne {
 	cuo.mutation.AddAmount(i)
+	return cuo
+}
+
+// SetMemberCode sets the "member_code" field.
+func (cuo *CardUpdateOne) SetMemberCode(s string) *CardUpdateOne {
+	cuo.mutation.SetMemberCode(s)
+	return cuo
+}
+
+// SetNillableMemberCode sets the "member_code" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillableMemberCode(s *string) *CardUpdateOne {
+	if s != nil {
+		cuo.SetMemberCode(*s)
+	}
+	return cuo
+}
+
+// SetBindTime sets the "bind_time" field.
+func (cuo *CardUpdateOne) SetBindTime(t time.Time) *CardUpdateOne {
+	cuo.mutation.SetBindTime(t)
+	return cuo
+}
+
+// SetNillableBindTime sets the "bind_time" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillableBindTime(t *time.Time) *CardUpdateOne {
+	if t != nil {
+		cuo.SetBindTime(*t)
+	}
+	return cuo
+}
+
+// ClearBindTime clears the value of the "bind_time" field.
+func (cuo *CardUpdateOne) ClearBindTime() *CardUpdateOne {
+	cuo.mutation.ClearBindTime()
+	return cuo
+}
+
+// SetHitTime sets the "hit_time" field.
+func (cuo *CardUpdateOne) SetHitTime(i int64) *CardUpdateOne {
+	cuo.mutation.ResetHitTime()
+	cuo.mutation.SetHitTime(i)
+	return cuo
+}
+
+// SetNillableHitTime sets the "hit_time" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillableHitTime(i *int64) *CardUpdateOne {
+	if i != nil {
+		cuo.SetHitTime(*i)
+	}
+	return cuo
+}
+
+// AddHitTime adds i to the "hit_time" field.
+func (cuo *CardUpdateOne) AddHitTime(i int64) *CardUpdateOne {
+	cuo.mutation.AddHitTime(i)
+	return cuo
+}
+
+// SetLastCleanTime sets the "last_clean_time" field.
+func (cuo *CardUpdateOne) SetLastCleanTime(t time.Time) *CardUpdateOne {
+	cuo.mutation.SetLastCleanTime(t)
+	return cuo
+}
+
+// SetNillableLastCleanTime sets the "last_clean_time" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillableLastCleanTime(t *time.Time) *CardUpdateOne {
+	if t != nil {
+		cuo.SetLastCleanTime(*t)
+	}
+	return cuo
+}
+
+// ClearLastCleanTime clears the value of the "last_clean_time" field.
+func (cuo *CardUpdateOne) ClearLastCleanTime() *CardUpdateOne {
+	cuo.mutation.ClearLastCleanTime()
 	return cuo
 }
 
@@ -405,6 +617,16 @@ func (cuo *CardUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (cuo *CardUpdateOne) check() error {
+	if v, ok := cuo.mutation.Pic1(); ok {
+		if err := card.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Card.pic1": %w`, err)}
+		}
+	}
+	if v, ok := cuo.mutation.Pic2(); ok {
+		if err := card.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Card.pic2": %w`, err)}
+		}
+	}
 	if v, ok := cuo.mutation.MemberCode(); ok {
 		if err := card.MemberCodeValidator(v); err != nil {
 			return &ValidationError{Name: "member_code", err: fmt.Errorf(`ent: validator failed for field "Card.member_code": %w`, err)}
@@ -445,26 +667,50 @@ func (cuo *CardUpdateOne) sqlSave(ctx context.Context) (_node *Card, err error) 
 	if value, ok := cuo.mutation.UpdateTime(); ok {
 		_spec.SetField(card.FieldUpdateTime, field.TypeTime, value)
 	}
-	if value, ok := cuo.mutation.MemberCode(); ok {
-		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
-	}
 	if value, ok := cuo.mutation.GetType(); ok {
 		_spec.SetField(card.FieldType, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.AddedType(); ok {
 		_spec.AddField(card.FieldType, field.TypeInt, value)
 	}
+	if value, ok := cuo.mutation.Pic1(); ok {
+		_spec.SetField(card.FieldPic1, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Pic2(); ok {
+		_spec.SetField(card.FieldPic2, field.TypeString, value)
+	}
 	if value, ok := cuo.mutation.Balance(); ok {
-		_spec.SetField(card.FieldBalance, field.TypeInt, value)
+		_spec.SetField(card.FieldBalance, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.AddedBalance(); ok {
-		_spec.AddField(card.FieldBalance, field.TypeInt, value)
+		_spec.AddField(card.FieldBalance, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.Amount(); ok {
-		_spec.SetField(card.FieldAmount, field.TypeInt, value)
+		_spec.SetField(card.FieldAmount, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.AddedAmount(); ok {
-		_spec.AddField(card.FieldAmount, field.TypeInt, value)
+		_spec.AddField(card.FieldAmount, field.TypeInt64, value)
+	}
+	if value, ok := cuo.mutation.MemberCode(); ok {
+		_spec.SetField(card.FieldMemberCode, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.BindTime(); ok {
+		_spec.SetField(card.FieldBindTime, field.TypeTime, value)
+	}
+	if cuo.mutation.BindTimeCleared() {
+		_spec.ClearField(card.FieldBindTime, field.TypeTime)
+	}
+	if value, ok := cuo.mutation.HitTime(); ok {
+		_spec.SetField(card.FieldHitTime, field.TypeInt64, value)
+	}
+	if value, ok := cuo.mutation.AddedHitTime(); ok {
+		_spec.AddField(card.FieldHitTime, field.TypeInt64, value)
+	}
+	if value, ok := cuo.mutation.LastCleanTime(); ok {
+		_spec.SetField(card.FieldLastCleanTime, field.TypeTime, value)
+	}
+	if cuo.mutation.LastCleanTimeCleared() {
+		_spec.ClearField(card.FieldLastCleanTime, field.TypeTime)
 	}
 	if value, ok := cuo.mutation.Status(); ok {
 		_spec.SetField(card.FieldStatus, field.TypeInt, value)

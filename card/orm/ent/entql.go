@@ -25,15 +25,20 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Card",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			card.FieldCreateTime: {Type: field.TypeTime, Column: card.FieldCreateTime},
-			card.FieldUpdateTime: {Type: field.TypeTime, Column: card.FieldUpdateTime},
-			card.FieldCode:       {Type: field.TypeString, Column: card.FieldCode},
-			card.FieldCardCode:   {Type: field.TypeString, Column: card.FieldCardCode},
-			card.FieldMemberCode: {Type: field.TypeString, Column: card.FieldMemberCode},
-			card.FieldType:       {Type: field.TypeInt, Column: card.FieldType},
-			card.FieldBalance:    {Type: field.TypeInt, Column: card.FieldBalance},
-			card.FieldAmount:     {Type: field.TypeInt, Column: card.FieldAmount},
-			card.FieldStatus:     {Type: field.TypeInt, Column: card.FieldStatus},
+			card.FieldCreateTime:    {Type: field.TypeTime, Column: card.FieldCreateTime},
+			card.FieldUpdateTime:    {Type: field.TypeTime, Column: card.FieldUpdateTime},
+			card.FieldCode:          {Type: field.TypeString, Column: card.FieldCode},
+			card.FieldCodeBin:       {Type: field.TypeString, Column: card.FieldCodeBin},
+			card.FieldType:          {Type: field.TypeInt, Column: card.FieldType},
+			card.FieldPic1:          {Type: field.TypeString, Column: card.FieldPic1},
+			card.FieldPic2:          {Type: field.TypeString, Column: card.FieldPic2},
+			card.FieldBalance:       {Type: field.TypeInt64, Column: card.FieldBalance},
+			card.FieldAmount:        {Type: field.TypeInt64, Column: card.FieldAmount},
+			card.FieldMemberCode:    {Type: field.TypeString, Column: card.FieldMemberCode},
+			card.FieldBindTime:      {Type: field.TypeTime, Column: card.FieldBindTime},
+			card.FieldHitTime:       {Type: field.TypeInt64, Column: card.FieldHitTime},
+			card.FieldLastCleanTime: {Type: field.TypeTime, Column: card.FieldLastCleanTime},
+			card.FieldStatus:        {Type: field.TypeInt, Column: card.FieldStatus},
 		},
 	}
 	return graph
@@ -100,14 +105,9 @@ func (f *CardFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(card.FieldCode))
 }
 
-// WhereCardCode applies the entql string predicate on the card_code field.
-func (f *CardFilter) WhereCardCode(p entql.StringP) {
-	f.Where(p.Field(card.FieldCardCode))
-}
-
-// WhereMemberCode applies the entql string predicate on the member_code field.
-func (f *CardFilter) WhereMemberCode(p entql.StringP) {
-	f.Where(p.Field(card.FieldMemberCode))
+// WhereCodeBin applies the entql string predicate on the code_bin field.
+func (f *CardFilter) WhereCodeBin(p entql.StringP) {
+	f.Where(p.Field(card.FieldCodeBin))
 }
 
 // WhereType applies the entql int predicate on the type field.
@@ -115,14 +115,44 @@ func (f *CardFilter) WhereType(p entql.IntP) {
 	f.Where(p.Field(card.FieldType))
 }
 
-// WhereBalance applies the entql int predicate on the balance field.
-func (f *CardFilter) WhereBalance(p entql.IntP) {
+// WherePic1 applies the entql string predicate on the pic1 field.
+func (f *CardFilter) WherePic1(p entql.StringP) {
+	f.Where(p.Field(card.FieldPic1))
+}
+
+// WherePic2 applies the entql string predicate on the pic2 field.
+func (f *CardFilter) WherePic2(p entql.StringP) {
+	f.Where(p.Field(card.FieldPic2))
+}
+
+// WhereBalance applies the entql int64 predicate on the balance field.
+func (f *CardFilter) WhereBalance(p entql.Int64P) {
 	f.Where(p.Field(card.FieldBalance))
 }
 
-// WhereAmount applies the entql int predicate on the amount field.
-func (f *CardFilter) WhereAmount(p entql.IntP) {
+// WhereAmount applies the entql int64 predicate on the amount field.
+func (f *CardFilter) WhereAmount(p entql.Int64P) {
 	f.Where(p.Field(card.FieldAmount))
+}
+
+// WhereMemberCode applies the entql string predicate on the member_code field.
+func (f *CardFilter) WhereMemberCode(p entql.StringP) {
+	f.Where(p.Field(card.FieldMemberCode))
+}
+
+// WhereBindTime applies the entql time.Time predicate on the bind_time field.
+func (f *CardFilter) WhereBindTime(p entql.TimeP) {
+	f.Where(p.Field(card.FieldBindTime))
+}
+
+// WhereHitTime applies the entql int64 predicate on the hit_time field.
+func (f *CardFilter) WhereHitTime(p entql.Int64P) {
+	f.Where(p.Field(card.FieldHitTime))
+}
+
+// WhereLastCleanTime applies the entql time.Time predicate on the last_clean_time field.
+func (f *CardFilter) WhereLastCleanTime(p entql.TimeP) {
+	f.Where(p.Field(card.FieldLastCleanTime))
 }
 
 // WhereStatus applies the entql int predicate on the status field.
