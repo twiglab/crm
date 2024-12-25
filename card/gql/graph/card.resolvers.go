@@ -37,14 +37,12 @@ func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq
 
 	return &model.CardResp{
 		Code:          cobj.Code,
-		CodeBin:       cobj.CodeBin,
+		CodeBin:       cobj.CardBin,
 		Type:          cobj.Type,
 		Pic1:          cobj.Pic1,
 		Pic2:          cobj.Pic2,
-		Balance:       int(cobj.Balance),
 		Amount:        int(cobj.Amount),
 		MemberCode:    &cobj.MemberCode,
-		HitTime:       int(cobj.HitTime),
 		LastCleanTime: nil,
 		Status:        cobj.Status,
 	}, nil
@@ -52,7 +50,7 @@ func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq
 
 // ActiveCard is the resolver for the activeCard field.
 func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error) {
-	q, err := r.Client.Card.Query().Where(card.CodeBinEQ(input.CodeBin)).First(ctx)
+	q, err := r.Client.Card.Query().Where(card.CardBinEQ(input.CodeBin)).First(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
 			return nil, fmt.Errorf("card code not found")
@@ -62,7 +60,6 @@ func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCar
 
 	c := r.Client.Card.UpdateOne(q)
 	c.SetStatus(1)
-	c.SetHitTime(time.Now().Unix())
 	cobj, err := c.Save(ctx)
 	if err != nil {
 		return nil, err
@@ -70,14 +67,12 @@ func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCar
 
 	return &model.CardResp{
 		Code:          cobj.Code,
-		CodeBin:       cobj.CodeBin,
+		CodeBin:       cobj.CardBin,
 		Type:          cobj.Type,
 		Pic1:          cobj.Pic1,
 		Pic2:          cobj.Pic2,
-		Balance:       int(cobj.Balance),
 		Amount:        int(cobj.Amount),
 		MemberCode:    &cobj.MemberCode,
-		HitTime:       int(cobj.HitTime),
 		LastCleanTime: nil,
 		Status:        cobj.Status,
 	}, nil
@@ -95,14 +90,12 @@ func (r *queryResolver) QueryCardDetail(ctx context.Context, input *model.QueryC
 
 	return &model.CardResp{
 		Code:          cobj.Code,
-		CodeBin:       cobj.CodeBin,
+		CodeBin:       cobj.CardBin,
 		Type:          cobj.Type,
 		Pic1:          cobj.Pic1,
 		Pic2:          cobj.Pic2,
-		Balance:       int(cobj.Balance),
 		Amount:        int(cobj.Amount),
 		MemberCode:    &cobj.MemberCode,
-		HitTime:       int(cobj.HitTime),
 		LastCleanTime: nil,
 		Status:        cobj.Status,
 	}, nil
@@ -131,14 +124,12 @@ func (r *queryResolver) QueryCardList(ctx context.Context, input *model.Paginati
 	for _, cobj := range cobjs {
 		obj := &model.CardResp{
 			Code:          cobj.Code,
-			CodeBin:       cobj.CodeBin,
+			CodeBin:       cobj.CardBin,
 			Type:          cobj.Type,
 			Pic1:          cobj.Pic1,
 			Pic2:          cobj.Pic2,
-			Balance:       int(cobj.Balance),
 			Amount:        int(cobj.Amount),
 			MemberCode:    &cobj.MemberCode,
-			HitTime:       int(cobj.HitTime),
 			LastCleanTime: nil,
 			Status:        cobj.Status,
 		}
@@ -151,7 +142,6 @@ func (r *queryResolver) QueryCardList(ctx context.Context, input *model.Paginati
 // QueryCardByMemberCode is the resolver for the queryCardByMemberCode field.
 func (r *queryResolver) QueryCardByMemberCode(ctx context.Context, input *model.QueryCardByMemberCode) ([]*model.CardResp, error) {
 	cobjs, err := r.Client.Card.Query().
-		Order(ent.Asc(card.FieldHitTime)).
 		Where(card.MemberCodeEQ(input.MemberCode)).
 		All(ctx)
 	if err != nil {
@@ -162,10 +152,9 @@ func (r *queryResolver) QueryCardByMemberCode(ctx context.Context, input *model.
 	for _, cobj := range cobjs {
 		obj := &model.CardResp{
 			Code:       cobj.Code,
-			CodeBin:    cobj.CodeBin,
+			CodeBin:    cobj.CardBin,
 			MemberCode: &cobj.MemberCode,
 			Type:       cobj.Type,
-			Balance:    int(cobj.Balance),
 			Amount:     int(cobj.Amount),
 		}
 		rets = append(rets, obj)
