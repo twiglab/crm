@@ -6,7 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.17.61
 	github.com/Khan/genqlient v0.7.0
 	github.com/go-chi/chi/v5 v5.2.0
-	github.com/go-pay/gopay v1.5.106
+	github.com/go-pay/gopay v1.5.107
 	github.com/it512/box v0.0.4
 	github.com/joho/godotenv v1.5.1
 	github.com/rabbitmq/amqp091-go v1.10.0
@@ -29,7 +29,8 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-pay/crypto v0.0.1 // indirect
-	github.com/go-pay/errgroup v0.0.2 // indirect
+	github.com/go-pay/errgroup v0.0.3 // indirect
+	github.com/go-pay/smap v0.0.2 // indirect
 	github.com/go-pay/util v0.0.4 // indirect
 	github.com/go-pay/xlog v0.0.3 // indirect
 	github.com/go-pay/xtime v0.0.2 // indirect
