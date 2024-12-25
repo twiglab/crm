@@ -28,7 +28,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			card.FieldCreateTime:       {Type: field.TypeTime, Column: card.FieldCreateTime},
 			card.FieldUpdateTime:       {Type: field.TypeTime, Column: card.FieldUpdateTime},
 			card.FieldCode:             {Type: field.TypeString, Column: card.FieldCode},
-			card.FieldCodeBin:          {Type: field.TypeString, Column: card.FieldCodeBin},
+			card.FieldCardBin:          {Type: field.TypeString, Column: card.FieldCardBin},
 			card.FieldType:             {Type: field.TypeInt, Column: card.FieldType},
 			card.FieldPic1:             {Type: field.TypeString, Column: card.FieldPic1},
 			card.FieldPic2:             {Type: field.TypeString, Column: card.FieldPic2},
@@ -104,9 +104,9 @@ func (f *CardFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(card.FieldCode))
 }
 
-// WhereCodeBin applies the entql string predicate on the code_bin field.
-func (f *CardFilter) WhereCodeBin(p entql.StringP) {
-	f.Where(p.Field(card.FieldCodeBin))
+// WhereCardBin applies the entql string predicate on the card_bin field.
+func (f *CardFilter) WhereCardBin(p entql.StringP) {
+	f.Where(p.Field(card.FieldCardBin))
 }
 
 // WhereType applies the entql int predicate on the type field.

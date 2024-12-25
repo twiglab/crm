@@ -69,9 +69,9 @@ func Code(v string) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldCode, v))
 }
 
-// CodeBin applies equality check predicate on the "code_bin" field. It's identical to CodeBinEQ.
-func CodeBin(v string) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldCodeBin, v))
+// CardBin applies equality check predicate on the "card_bin" field. It's identical to CardBinEQ.
+func CardBin(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldCardBin, v))
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
@@ -264,69 +264,69 @@ func CodeContainsFold(v string) predicate.Card {
 	return predicate.Card(sql.FieldContainsFold(FieldCode, v))
 }
 
-// CodeBinEQ applies the EQ predicate on the "code_bin" field.
-func CodeBinEQ(v string) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldCodeBin, v))
+// CardBinEQ applies the EQ predicate on the "card_bin" field.
+func CardBinEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldCardBin, v))
 }
 
-// CodeBinNEQ applies the NEQ predicate on the "code_bin" field.
-func CodeBinNEQ(v string) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldCodeBin, v))
+// CardBinNEQ applies the NEQ predicate on the "card_bin" field.
+func CardBinNEQ(v string) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldCardBin, v))
 }
 
-// CodeBinIn applies the In predicate on the "code_bin" field.
-func CodeBinIn(vs ...string) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldCodeBin, vs...))
+// CardBinIn applies the In predicate on the "card_bin" field.
+func CardBinIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldCardBin, vs...))
 }
 
-// CodeBinNotIn applies the NotIn predicate on the "code_bin" field.
-func CodeBinNotIn(vs ...string) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldCodeBin, vs...))
+// CardBinNotIn applies the NotIn predicate on the "card_bin" field.
+func CardBinNotIn(vs ...string) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldCardBin, vs...))
 }
 
-// CodeBinGT applies the GT predicate on the "code_bin" field.
-func CodeBinGT(v string) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldCodeBin, v))
+// CardBinGT applies the GT predicate on the "card_bin" field.
+func CardBinGT(v string) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldCardBin, v))
 }
 
-// CodeBinGTE applies the GTE predicate on the "code_bin" field.
-func CodeBinGTE(v string) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldCodeBin, v))
+// CardBinGTE applies the GTE predicate on the "card_bin" field.
+func CardBinGTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldCardBin, v))
 }
 
-// CodeBinLT applies the LT predicate on the "code_bin" field.
-func CodeBinLT(v string) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldCodeBin, v))
+// CardBinLT applies the LT predicate on the "card_bin" field.
+func CardBinLT(v string) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldCardBin, v))
 }
 
-// CodeBinLTE applies the LTE predicate on the "code_bin" field.
-func CodeBinLTE(v string) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldCodeBin, v))
+// CardBinLTE applies the LTE predicate on the "card_bin" field.
+func CardBinLTE(v string) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldCardBin, v))
 }
 
-// CodeBinContains applies the Contains predicate on the "code_bin" field.
-func CodeBinContains(v string) predicate.Card {
-	return predicate.Card(sql.FieldContains(FieldCodeBin, v))
+// CardBinContains applies the Contains predicate on the "card_bin" field.
+func CardBinContains(v string) predicate.Card {
+	return predicate.Card(sql.FieldContains(FieldCardBin, v))
 }
 
-// CodeBinHasPrefix applies the HasPrefix predicate on the "code_bin" field.
-func CodeBinHasPrefix(v string) predicate.Card {
-	return predicate.Card(sql.FieldHasPrefix(FieldCodeBin, v))
+// CardBinHasPrefix applies the HasPrefix predicate on the "card_bin" field.
+func CardBinHasPrefix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasPrefix(FieldCardBin, v))
 }
 
-// CodeBinHasSuffix applies the HasSuffix predicate on the "code_bin" field.
-func CodeBinHasSuffix(v string) predicate.Card {
-	return predicate.Card(sql.FieldHasSuffix(FieldCodeBin, v))
+// CardBinHasSuffix applies the HasSuffix predicate on the "card_bin" field.
+func CardBinHasSuffix(v string) predicate.Card {
+	return predicate.Card(sql.FieldHasSuffix(FieldCardBin, v))
 }
 
-// CodeBinEqualFold applies the EqualFold predicate on the "code_bin" field.
-func CodeBinEqualFold(v string) predicate.Card {
-	return predicate.Card(sql.FieldEqualFold(FieldCodeBin, v))
+// CardBinEqualFold applies the EqualFold predicate on the "card_bin" field.
+func CardBinEqualFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldEqualFold(FieldCardBin, v))
 }
 
-// CodeBinContainsFold applies the ContainsFold predicate on the "code_bin" field.
-func CodeBinContainsFold(v string) predicate.Card {
-	return predicate.Card(sql.FieldContainsFold(FieldCodeBin, v))
+// CardBinContainsFold applies the ContainsFold predicate on the "card_bin" field.
+func CardBinContainsFold(v string) predicate.Card {
+	return predicate.Card(sql.FieldContainsFold(FieldCardBin, v))
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.

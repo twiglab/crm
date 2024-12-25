@@ -36,7 +36,7 @@ type CardMutation struct {
 	create_time           *time.Time
 	update_time           *time.Time
 	code                  *string
-	code_bin              *string
+	card_bin              *string
 	_type                 *int
 	add_type              *int
 	pic1                  *string
@@ -263,40 +263,40 @@ func (m *CardMutation) ResetCode() {
 	m.code = nil
 }
 
-// SetCodeBin sets the "code_bin" field.
-func (m *CardMutation) SetCodeBin(s string) {
-	m.code_bin = &s
+// SetCardBin sets the "card_bin" field.
+func (m *CardMutation) SetCardBin(s string) {
+	m.card_bin = &s
 }
 
-// CodeBin returns the value of the "code_bin" field in the mutation.
-func (m *CardMutation) CodeBin() (r string, exists bool) {
-	v := m.code_bin
+// CardBin returns the value of the "card_bin" field in the mutation.
+func (m *CardMutation) CardBin() (r string, exists bool) {
+	v := m.card_bin
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCodeBin returns the old "code_bin" field's value of the Card entity.
+// OldCardBin returns the old "card_bin" field's value of the Card entity.
 // If the Card object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CardMutation) OldCodeBin(ctx context.Context) (v string, err error) {
+func (m *CardMutation) OldCardBin(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCodeBin is only allowed on UpdateOne operations")
+		return v, errors.New("OldCardBin is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCodeBin requires an ID field in the mutation")
+		return v, errors.New("OldCardBin requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCodeBin: %w", err)
+		return v, fmt.Errorf("querying old value for OldCardBin: %w", err)
 	}
-	return oldValue.CodeBin, nil
+	return oldValue.CardBin, nil
 }
 
-// ResetCodeBin resets all changes to the "code_bin" field.
-func (m *CardMutation) ResetCodeBin() {
-	m.code_bin = nil
+// ResetCardBin resets all changes to the "card_bin" field.
+func (m *CardMutation) ResetCardBin() {
+	m.card_bin = nil
 }
 
 // SetType sets the "type" field.
@@ -793,8 +793,8 @@ func (m *CardMutation) Fields() []string {
 	if m.code != nil {
 		fields = append(fields, card.FieldCode)
 	}
-	if m.code_bin != nil {
-		fields = append(fields, card.FieldCodeBin)
+	if m.card_bin != nil {
+		fields = append(fields, card.FieldCardBin)
 	}
 	if m._type != nil {
 		fields = append(fields, card.FieldType)
@@ -837,8 +837,8 @@ func (m *CardMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdateTime()
 	case card.FieldCode:
 		return m.Code()
-	case card.FieldCodeBin:
-		return m.CodeBin()
+	case card.FieldCardBin:
+		return m.CardBin()
 	case card.FieldType:
 		return m.GetType()
 	case card.FieldPic1:
@@ -872,8 +872,8 @@ func (m *CardMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdateTime(ctx)
 	case card.FieldCode:
 		return m.OldCode(ctx)
-	case card.FieldCodeBin:
-		return m.OldCodeBin(ctx)
+	case card.FieldCardBin:
+		return m.OldCardBin(ctx)
 	case card.FieldType:
 		return m.OldType(ctx)
 	case card.FieldPic1:
@@ -922,12 +922,12 @@ func (m *CardMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCode(v)
 		return nil
-	case card.FieldCodeBin:
+	case card.FieldCardBin:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCodeBin(v)
+		m.SetCardBin(v)
 		return nil
 	case card.FieldType:
 		v, ok := value.(int)
@@ -1128,8 +1128,8 @@ func (m *CardMutation) ResetField(name string) error {
 	case card.FieldCode:
 		m.ResetCode()
 		return nil
-	case card.FieldCodeBin:
-		m.ResetCodeBin()
+	case card.FieldCardBin:
+		m.ResetCardBin()
 		return nil
 	case card.FieldType:
 		m.ResetType()

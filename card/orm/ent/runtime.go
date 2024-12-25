@@ -48,18 +48,18 @@ func init() {
 			return nil
 		}
 	}()
-	// cardDescCodeBin is the schema descriptor for code_bin field.
-	cardDescCodeBin := cardFields[1].Descriptor()
-	// card.CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
-	card.CodeBinValidator = func() func(string) error {
-		validators := cardDescCodeBin.Validators
+	// cardDescCardBin is the schema descriptor for card_bin field.
+	cardDescCardBin := cardFields[1].Descriptor()
+	// card.CardBinValidator is a validator for the "card_bin" field. It is called by the builders before save.
+	card.CardBinValidator = func() func(string) error {
+		validators := cardDescCardBin.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(code_bin string) error {
+		return func(card_bin string) error {
 			for _, fn := range fns {
-				if err := fn(code_bin); err != nil {
+				if err := fn(card_bin); err != nil {
 					return err
 				}
 			}

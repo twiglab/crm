@@ -32,7 +32,7 @@ func (Card) Fields() []ent.Field {
 			}),
 
 		// card code 就是一个普通的业务字段，卡上面显示的号码，全局唯一，不重复
-		field.String("code_bin").
+		field.String("card_bin").
 			MaxLen(16).
 			NotEmpty().
 			Unique().
@@ -103,7 +103,9 @@ func (Card) Mixin() []ent.Mixin {
 func (Card) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("code"),
+		index.Fields("card_bin"),
 		index.Fields("member_code"),
+		index.Fields("status"),
 	}
 }
 

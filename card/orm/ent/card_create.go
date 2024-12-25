@@ -64,9 +64,9 @@ func (cc *CardCreate) SetNillableCode(s *string) *CardCreate {
 	return cc
 }
 
-// SetCodeBin sets the "code_bin" field.
-func (cc *CardCreate) SetCodeBin(s string) *CardCreate {
-	cc.mutation.SetCodeBin(s)
+// SetCardBin sets the "card_bin" field.
+func (cc *CardCreate) SetCardBin(s string) *CardCreate {
+	cc.mutation.SetCardBin(s)
 	return cc
 }
 
@@ -265,12 +265,12 @@ func (cc *CardCreate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Card.code": %w`, err)}
 		}
 	}
-	if _, ok := cc.mutation.CodeBin(); !ok {
-		return &ValidationError{Name: "code_bin", err: errors.New(`ent: missing required field "Card.code_bin"`)}
+	if _, ok := cc.mutation.CardBin(); !ok {
+		return &ValidationError{Name: "card_bin", err: errors.New(`ent: missing required field "Card.card_bin"`)}
 	}
-	if v, ok := cc.mutation.CodeBin(); ok {
-		if err := card.CodeBinValidator(v); err != nil {
-			return &ValidationError{Name: "code_bin", err: fmt.Errorf(`ent: validator failed for field "Card.code_bin": %w`, err)}
+	if v, ok := cc.mutation.CardBin(); ok {
+		if err := card.CardBinValidator(v); err != nil {
+			return &ValidationError{Name: "card_bin", err: fmt.Errorf(`ent: validator failed for field "Card.card_bin": %w`, err)}
 		}
 	}
 	if _, ok := cc.mutation.GetType(); !ok {
@@ -348,9 +348,9 @@ func (cc *CardCreate) createSpec() (*Card, *sqlgraph.CreateSpec) {
 		_spec.SetField(card.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
-	if value, ok := cc.mutation.CodeBin(); ok {
-		_spec.SetField(card.FieldCodeBin, field.TypeString, value)
-		_node.CodeBin = value
+	if value, ok := cc.mutation.CardBin(); ok {
+		_spec.SetField(card.FieldCardBin, field.TypeString, value)
+		_node.CardBin = value
 	}
 	if value, ok := cc.mutation.GetType(); ok {
 		_spec.SetField(card.FieldType, field.TypeInt, value)
@@ -541,8 +541,8 @@ func (u *CardUpsertOne) UpdateNewValues() *CardUpsertOne {
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(card.FieldCode)
 		}
-		if _, exists := u.create.mutation.CodeBin(); exists {
-			s.SetIgnore(card.FieldCodeBin)
+		if _, exists := u.create.mutation.CardBin(); exists {
+			s.SetIgnore(card.FieldCardBin)
 		}
 		if _, exists := u.create.mutation.Pic1(); exists {
 			s.SetIgnore(card.FieldPic1)
@@ -870,8 +870,8 @@ func (u *CardUpsertBulk) UpdateNewValues() *CardUpsertBulk {
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(card.FieldCode)
 			}
-			if _, exists := b.mutation.CodeBin(); exists {
-				s.SetIgnore(card.FieldCodeBin)
+			if _, exists := b.mutation.CardBin(); exists {
+				s.SetIgnore(card.FieldCardBin)
 			}
 			if _, exists := b.mutation.Pic1(); exists {
 				s.SetIgnore(card.FieldPic1)

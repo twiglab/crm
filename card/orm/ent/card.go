@@ -23,8 +23,8 @@ type Card struct {
 	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// CodeBin holds the value of the "code_bin" field.
-	CodeBin string `json:"code_bin,omitempty"`
+	// CardBin holds the value of the "card_bin" field.
+	CardBin string `json:"card_bin,omitempty"`
 	// Type holds the value of the "type" field.
 	Type int `json:"type,omitempty"`
 	// Pic1 holds the value of the "pic1" field.
@@ -53,7 +53,7 @@ func (*Card) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case card.FieldID, card.FieldType, card.FieldAmount, card.FieldLastCleanBalance, card.FieldLastCleanTs, card.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case card.FieldCode, card.FieldCodeBin, card.FieldPic1, card.FieldPic2, card.FieldMemberCode:
+		case card.FieldCode, card.FieldCardBin, card.FieldPic1, card.FieldPic2, card.FieldMemberCode:
 			values[i] = new(sql.NullString)
 		case card.FieldCreateTime, card.FieldUpdateTime, card.FieldBindTime:
 			values[i] = new(sql.NullTime)
@@ -96,11 +96,11 @@ func (c *Card) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Code = value.String
 			}
-		case card.FieldCodeBin:
+		case card.FieldCardBin:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field code_bin", values[i])
+				return fmt.Errorf("unexpected type %T for field card_bin", values[i])
 			} else if value.Valid {
-				c.CodeBin = value.String
+				c.CardBin = value.String
 			}
 		case card.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -202,8 +202,8 @@ func (c *Card) String() string {
 	builder.WriteString("code=")
 	builder.WriteString(c.Code)
 	builder.WriteString(", ")
-	builder.WriteString("code_bin=")
-	builder.WriteString(c.CodeBin)
+	builder.WriteString("card_bin=")
+	builder.WriteString(c.CardBin)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
 	builder.WriteString(fmt.Sprintf("%v", c.Type))

@@ -15,7 +15,7 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "code_bin", Type: field.TypeString, Unique: true, Size: 16, SchemaType: map[string]string{"mysql": "char(16)", "postgres": "char(16)", "sqlite3": "char(16)"}},
+		{Name: "card_bin", Type: field.TypeString, Unique: true, Size: 16, SchemaType: map[string]string{"mysql": "char(16)", "postgres": "char(16)", "sqlite3": "char(16)"}},
 		{Name: "type", Type: field.TypeInt, Default: 0},
 		{Name: "pic1", Type: field.TypeString, Size: 256, SchemaType: map[string]string{"mysql": "char(256)", "postgres": "char(256)", "sqlite3": "char(256)"}},
 		{Name: "pic2", Type: field.TypeString, Size: 256, SchemaType: map[string]string{"mysql": "char(256)", "postgres": "char(256)", "sqlite3": "char(256)"}},
@@ -38,9 +38,19 @@ var (
 				Columns: []*schema.Column{TCardColumns[3]},
 			},
 			{
+				Name:    "card_card_bin",
+				Unique:  false,
+				Columns: []*schema.Column{TCardColumns[4]},
+			},
+			{
 				Name:    "card_member_code",
 				Unique:  false,
 				Columns: []*schema.Column{TCardColumns[9]},
+			},
+			{
+				Name:    "card_status",
+				Unique:  false,
+				Columns: []*schema.Column{TCardColumns[13]},
 			},
 		},
 	}

@@ -19,8 +19,8 @@ const (
 	FieldUpdateTime = "update_time"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
-	// FieldCodeBin holds the string denoting the code_bin field in the database.
-	FieldCodeBin = "code_bin"
+	// FieldCardBin holds the string denoting the card_bin field in the database.
+	FieldCardBin = "card_bin"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
 	// FieldPic1 holds the string denoting the pic1 field in the database.
@@ -49,7 +49,7 @@ var Columns = []string{
 	FieldCreateTime,
 	FieldUpdateTime,
 	FieldCode,
-	FieldCodeBin,
+	FieldCardBin,
 	FieldType,
 	FieldPic1,
 	FieldPic2,
@@ -82,8 +82,8 @@ var (
 	DefaultCode func() string
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
-	// CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
-	CodeBinValidator func(string) error
+	// CardBinValidator is a validator for the "card_bin" field. It is called by the builders before save.
+	CardBinValidator func(string) error
 	// DefaultType holds the default value on creation for the "type" field.
 	DefaultType int
 	// Pic1Validator is a validator for the "pic1" field. It is called by the builders before save.
@@ -125,9 +125,9 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
-// ByCodeBin orders the results by the code_bin field.
-func ByCodeBin(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCodeBin, opts...).ToFunc()
+// ByCardBin orders the results by the card_bin field.
+func ByCardBin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCardBin, opts...).ToFunc()
 }
 
 // ByType orders the results by the type field.
