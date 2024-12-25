@@ -22,16 +22,18 @@ type RabbitMQ struct {
 	QueueName string
 
 	BindKey string
+
+	ExitChan chan struct{}
 }
 
 // 话题模式接受消息
 // 要注意key,规则
 // 其中“*”用于匹配一个单词，“#”用于匹配多个单词（可以是零个）
 // 匹配 kuteng.* 表示匹配 kuteng.hello, kuteng.hello.one需要用kuteng.#才能匹配到
-func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{}, error) {
+func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) error {
 	var err error
 	if r.channel, err = r.Conn.Channel(); err != nil {
-		return nil, err
+		return err
 	}
 	//1.试探性创建交换机
 	err = r.channel.ExchangeDeclare(
@@ -45,7 +47,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	//2.试探性创建队列，这里注意队列名称不要写
@@ -58,7 +60,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	//绑定队列到 exchange 中
@@ -70,7 +72,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{
 		nil)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	//消费消息
@@ -85,22 +87,23 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) (chan struct{
 	)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	forever := make(chan struct{})
+	r.RecvMessage(ctx, h, messges)
 
+	return nil
+}
+
+func (r *RabbitMQ) RecvMessage(ctx context.Context, h RecieverHandler, message <-chan amqp.Delivery) {
 	go func() {
 		for {
 			select {
-			case delivery := <-messges:
+			case delivery := <-message:
 				h.RecieveDelivery(ctx, delivery)
-			case <-forever:
+			case <-r.ExitChan:
 				return
 			}
 		}
 	}()
-
-	return forever, nil
-
 }

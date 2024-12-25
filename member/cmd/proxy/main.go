@@ -28,18 +28,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	recvExitChan := make(chan struct{})
+
 	q := &mq.RabbitMQ{
 		Conn:      conn,
 		QueueName: "q.member.auth",
 		Exchange:  bc.MQ_BC_EXCHANGE_NAME,
 		BindKey:   bc.MQ_WX_TOC_BC_AUTH,
+		ExitChan:  recvExitChan,
 	}
 
-	ch, err := q.Recieve(context.Background(), &mq.MemberAuthReciverHandle{Client: client})
-	if err != nil {
+	if err := q.Recieve(context.Background(), &mq.MemberAuthReciverHandle{Client: client}); err != nil {
 		log.Fatal(err)
 	}
 
-	<-ch
-
+	select {}
 }
