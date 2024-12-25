@@ -83,6 +83,9 @@ func (Card) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 
+		// 最后一次使用时间戳
+		field.Int64("last_use_ts").Default(0),
+
 		// 清算后的余额，单位分，清算脚本设置
 		field.Int64("last_clean_balance").Immutable().Default(0),
 		// 最后一次清算时间戳,到1/1000秒
