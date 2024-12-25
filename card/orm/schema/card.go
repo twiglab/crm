@@ -47,19 +47,31 @@ func (Card) Fields() []ent.Field {
 		field.Int("type").Default(0),
 
 		// 图片
-		field.String("pic1").MaxLen(255),
-		field.String("pic2").MaxLen(255),
+		field.String("pic1").
+			MaxLen(256).
+			Immutable().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(256)", // Override MySQL.
+				dialect.Postgres: "char(256)", // Override Postgres.
+				dialect.SQLite:   "char(256)", // Override Postgres.
+			}),
 
-		// 余额 ，清算脚本设置
-		field.Int64("balance").Immutable().Default(0),
+		field.String("pic2").
+			MaxLen(256).
+			Immutable().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(256)", // Override MySQL.
+				dialect.Postgres: "char(256)", // Override Postgres.
+				dialect.SQLite:   "char(256)", // Override Postgres.
+			}),
 
-		// 额度
+		// 额度, 单位分
 		field.Int64("amount").Immutable().Default(0),
 
 		// Member code
 		field.String("member_code").
 			MaxLen(36).
-			DefaultFunc(x.Code36).
+			Optional().
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
@@ -71,14 +83,14 @@ func (Card) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 
-		// 激活时间
-		field.Int64("hit_time").
-			Optional().
-			Nillable(),
+		// 清算后的余额，单位分，清算脚本设置
+		field.Int64("last_clean_balance").Immutable().Default(0),
+		// 最后一次清算时间戳,到1/1000秒
+		field.Int16("last_clean_ts").Immutable().Default(0),
 
-		field.Time("last_clean_time").Optional().Nillable(),
-
-		field.Int("status").Default(1),
+		// 开卡完毕（可绑定状态） = 100, 绑定（正常使用状态） = 120, 锁定 = 130
+		// 小于100 内部管理，和用户无关，均为无效状态
+		field.Int("status").Default(0),
 	}
 }
 

@@ -25,20 +25,19 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Card",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			card.FieldCreateTime:    {Type: field.TypeTime, Column: card.FieldCreateTime},
-			card.FieldUpdateTime:    {Type: field.TypeTime, Column: card.FieldUpdateTime},
-			card.FieldCode:          {Type: field.TypeString, Column: card.FieldCode},
-			card.FieldCodeBin:       {Type: field.TypeString, Column: card.FieldCodeBin},
-			card.FieldType:          {Type: field.TypeInt, Column: card.FieldType},
-			card.FieldPic1:          {Type: field.TypeString, Column: card.FieldPic1},
-			card.FieldPic2:          {Type: field.TypeString, Column: card.FieldPic2},
-			card.FieldBalance:       {Type: field.TypeInt64, Column: card.FieldBalance},
-			card.FieldAmount:        {Type: field.TypeInt64, Column: card.FieldAmount},
-			card.FieldMemberCode:    {Type: field.TypeString, Column: card.FieldMemberCode},
-			card.FieldBindTime:      {Type: field.TypeTime, Column: card.FieldBindTime},
-			card.FieldHitTime:       {Type: field.TypeInt64, Column: card.FieldHitTime},
-			card.FieldLastCleanTime: {Type: field.TypeTime, Column: card.FieldLastCleanTime},
-			card.FieldStatus:        {Type: field.TypeInt, Column: card.FieldStatus},
+			card.FieldCreateTime:       {Type: field.TypeTime, Column: card.FieldCreateTime},
+			card.FieldUpdateTime:       {Type: field.TypeTime, Column: card.FieldUpdateTime},
+			card.FieldCode:             {Type: field.TypeString, Column: card.FieldCode},
+			card.FieldCodeBin:          {Type: field.TypeString, Column: card.FieldCodeBin},
+			card.FieldType:             {Type: field.TypeInt, Column: card.FieldType},
+			card.FieldPic1:             {Type: field.TypeString, Column: card.FieldPic1},
+			card.FieldPic2:             {Type: field.TypeString, Column: card.FieldPic2},
+			card.FieldAmount:           {Type: field.TypeInt64, Column: card.FieldAmount},
+			card.FieldMemberCode:       {Type: field.TypeString, Column: card.FieldMemberCode},
+			card.FieldBindTime:         {Type: field.TypeTime, Column: card.FieldBindTime},
+			card.FieldLastCleanBalance: {Type: field.TypeInt64, Column: card.FieldLastCleanBalance},
+			card.FieldLastCleanTs:      {Type: field.TypeInt16, Column: card.FieldLastCleanTs},
+			card.FieldStatus:           {Type: field.TypeInt, Column: card.FieldStatus},
 		},
 	}
 	return graph
@@ -125,11 +124,6 @@ func (f *CardFilter) WherePic2(p entql.StringP) {
 	f.Where(p.Field(card.FieldPic2))
 }
 
-// WhereBalance applies the entql int64 predicate on the balance field.
-func (f *CardFilter) WhereBalance(p entql.Int64P) {
-	f.Where(p.Field(card.FieldBalance))
-}
-
 // WhereAmount applies the entql int64 predicate on the amount field.
 func (f *CardFilter) WhereAmount(p entql.Int64P) {
 	f.Where(p.Field(card.FieldAmount))
@@ -145,14 +139,14 @@ func (f *CardFilter) WhereBindTime(p entql.TimeP) {
 	f.Where(p.Field(card.FieldBindTime))
 }
 
-// WhereHitTime applies the entql int64 predicate on the hit_time field.
-func (f *CardFilter) WhereHitTime(p entql.Int64P) {
-	f.Where(p.Field(card.FieldHitTime))
+// WhereLastCleanBalance applies the entql int64 predicate on the last_clean_balance field.
+func (f *CardFilter) WhereLastCleanBalance(p entql.Int64P) {
+	f.Where(p.Field(card.FieldLastCleanBalance))
 }
 
-// WhereLastCleanTime applies the entql time.Time predicate on the last_clean_time field.
-func (f *CardFilter) WhereLastCleanTime(p entql.TimeP) {
-	f.Where(p.Field(card.FieldLastCleanTime))
+// WhereLastCleanTs applies the entql int16 predicate on the last_clean_ts field.
+func (f *CardFilter) WhereLastCleanTs(p entql.Int16P) {
+	f.Where(p.Field(card.FieldLastCleanTs))
 }
 
 // WhereStatus applies the entql int predicate on the status field.

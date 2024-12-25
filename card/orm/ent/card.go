@@ -31,18 +31,16 @@ type Card struct {
 	Pic1 string `json:"pic1,omitempty"`
 	// Pic2 holds the value of the "pic2" field.
 	Pic2 string `json:"pic2,omitempty"`
-	// Balance holds the value of the "balance" field.
-	Balance int64 `json:"balance,omitempty"`
 	// Amount holds the value of the "amount" field.
 	Amount int64 `json:"amount,omitempty"`
 	// MemberCode holds the value of the "member_code" field.
 	MemberCode string `json:"member_code,omitempty"`
 	// BindTime holds the value of the "bind_time" field.
 	BindTime *time.Time `json:"bind_time,omitempty"`
-	// HitTime holds the value of the "hit_time" field.
-	HitTime int64 `json:"hit_time,omitempty"`
-	// LastCleanTime holds the value of the "last_clean_time" field.
-	LastCleanTime *time.Time `json:"last_clean_time,omitempty"`
+	// LastCleanBalance holds the value of the "last_clean_balance" field.
+	LastCleanBalance int64 `json:"last_clean_balance,omitempty"`
+	// LastCleanTs holds the value of the "last_clean_ts" field.
+	LastCleanTs int16 `json:"last_clean_ts,omitempty"`
 	// Status holds the value of the "status" field.
 	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
@@ -53,11 +51,11 @@ func (*Card) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case card.FieldID, card.FieldType, card.FieldBalance, card.FieldAmount, card.FieldHitTime, card.FieldStatus:
+		case card.FieldID, card.FieldType, card.FieldAmount, card.FieldLastCleanBalance, card.FieldLastCleanTs, card.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case card.FieldCode, card.FieldCodeBin, card.FieldPic1, card.FieldPic2, card.FieldMemberCode:
 			values[i] = new(sql.NullString)
-		case card.FieldCreateTime, card.FieldUpdateTime, card.FieldBindTime, card.FieldLastCleanTime:
+		case card.FieldCreateTime, card.FieldUpdateTime, card.FieldBindTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -122,12 +120,6 @@ func (c *Card) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Pic2 = value.String
 			}
-		case card.FieldBalance:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field balance", values[i])
-			} else if value.Valid {
-				c.Balance = value.Int64
-			}
 		case card.FieldAmount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field amount", values[i])
@@ -147,18 +139,17 @@ func (c *Card) assignValues(columns []string, values []any) error {
 				c.BindTime = new(time.Time)
 				*c.BindTime = value.Time
 			}
-		case card.FieldHitTime:
+		case card.FieldLastCleanBalance:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field hit_time", values[i])
+				return fmt.Errorf("unexpected type %T for field last_clean_balance", values[i])
 			} else if value.Valid {
-				c.HitTime = value.Int64
+				c.LastCleanBalance = value.Int64
 			}
-		case card.FieldLastCleanTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field last_clean_time", values[i])
+		case card.FieldLastCleanTs:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field last_clean_ts", values[i])
 			} else if value.Valid {
-				c.LastCleanTime = new(time.Time)
-				*c.LastCleanTime = value.Time
+				c.LastCleanTs = int16(value.Int64)
 			}
 		case card.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -223,9 +214,6 @@ func (c *Card) String() string {
 	builder.WriteString("pic2=")
 	builder.WriteString(c.Pic2)
 	builder.WriteString(", ")
-	builder.WriteString("balance=")
-	builder.WriteString(fmt.Sprintf("%v", c.Balance))
-	builder.WriteString(", ")
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", c.Amount))
 	builder.WriteString(", ")
@@ -237,13 +225,11 @@ func (c *Card) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("hit_time=")
-	builder.WriteString(fmt.Sprintf("%v", c.HitTime))
+	builder.WriteString("last_clean_balance=")
+	builder.WriteString(fmt.Sprintf("%v", c.LastCleanBalance))
 	builder.WriteString(", ")
-	if v := c.LastCleanTime; v != nil {
-		builder.WriteString("last_clean_time=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
+	builder.WriteString("last_clean_ts=")
+	builder.WriteString(fmt.Sprintf("%v", c.LastCleanTs))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", c.Status))

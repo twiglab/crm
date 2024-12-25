@@ -27,18 +27,16 @@ const (
 	FieldPic1 = "pic1"
 	// FieldPic2 holds the string denoting the pic2 field in the database.
 	FieldPic2 = "pic2"
-	// FieldBalance holds the string denoting the balance field in the database.
-	FieldBalance = "balance"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
 	// FieldMemberCode holds the string denoting the member_code field in the database.
 	FieldMemberCode = "member_code"
 	// FieldBindTime holds the string denoting the bind_time field in the database.
 	FieldBindTime = "bind_time"
-	// FieldHitTime holds the string denoting the hit_time field in the database.
-	FieldHitTime = "hit_time"
-	// FieldLastCleanTime holds the string denoting the last_clean_time field in the database.
-	FieldLastCleanTime = "last_clean_time"
+	// FieldLastCleanBalance holds the string denoting the last_clean_balance field in the database.
+	FieldLastCleanBalance = "last_clean_balance"
+	// FieldLastCleanTs holds the string denoting the last_clean_ts field in the database.
+	FieldLastCleanTs = "last_clean_ts"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the card in the database.
@@ -55,12 +53,11 @@ var Columns = []string{
 	FieldType,
 	FieldPic1,
 	FieldPic2,
-	FieldBalance,
 	FieldAmount,
 	FieldMemberCode,
 	FieldBindTime,
-	FieldHitTime,
-	FieldLastCleanTime,
+	FieldLastCleanBalance,
+	FieldLastCleanTs,
 	FieldStatus,
 }
 
@@ -93,14 +90,14 @@ var (
 	Pic1Validator func(string) error
 	// Pic2Validator is a validator for the "pic2" field. It is called by the builders before save.
 	Pic2Validator func(string) error
-	// DefaultBalance holds the default value on creation for the "balance" field.
-	DefaultBalance int64
 	// DefaultAmount holds the default value on creation for the "amount" field.
 	DefaultAmount int64
-	// DefaultMemberCode holds the default value on creation for the "member_code" field.
-	DefaultMemberCode func() string
 	// MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	MemberCodeValidator func(string) error
+	// DefaultLastCleanBalance holds the default value on creation for the "last_clean_balance" field.
+	DefaultLastCleanBalance int64
+	// DefaultLastCleanTs holds the default value on creation for the "last_clean_ts" field.
+	DefaultLastCleanTs int16
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 )
@@ -148,11 +145,6 @@ func ByPic2(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPic2, opts...).ToFunc()
 }
 
-// ByBalance orders the results by the balance field.
-func ByBalance(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBalance, opts...).ToFunc()
-}
-
 // ByAmount orders the results by the amount field.
 func ByAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAmount, opts...).ToFunc()
@@ -168,14 +160,14 @@ func ByBindTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBindTime, opts...).ToFunc()
 }
 
-// ByHitTime orders the results by the hit_time field.
-func ByHitTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldHitTime, opts...).ToFunc()
+// ByLastCleanBalance orders the results by the last_clean_balance field.
+func ByLastCleanBalance(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastCleanBalance, opts...).ToFunc()
 }
 
-// ByLastCleanTime orders the results by the last_clean_time field.
-func ByLastCleanTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLastCleanTime, opts...).ToFunc()
+// ByLastCleanTs orders the results by the last_clean_ts field.
+func ByLastCleanTs(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastCleanTs, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

@@ -89,11 +89,6 @@ func Pic2(v string) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldPic2, v))
 }
 
-// Balance applies equality check predicate on the "balance" field. It's identical to BalanceEQ.
-func Balance(v int64) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldBalance, v))
-}
-
 // Amount applies equality check predicate on the "amount" field. It's identical to AmountEQ.
 func Amount(v int64) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldAmount, v))
@@ -109,14 +104,14 @@ func BindTime(v time.Time) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldBindTime, v))
 }
 
-// HitTime applies equality check predicate on the "hit_time" field. It's identical to HitTimeEQ.
-func HitTime(v int64) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldHitTime, v))
+// LastCleanBalance applies equality check predicate on the "last_clean_balance" field. It's identical to LastCleanBalanceEQ.
+func LastCleanBalance(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanBalance, v))
 }
 
-// LastCleanTime applies equality check predicate on the "last_clean_time" field. It's identical to LastCleanTimeEQ.
-func LastCleanTime(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldLastCleanTime, v))
+// LastCleanTs applies equality check predicate on the "last_clean_ts" field. It's identical to LastCleanTsEQ.
+func LastCleanTs(v int16) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanTs, v))
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
@@ -504,46 +499,6 @@ func Pic2ContainsFold(v string) predicate.Card {
 	return predicate.Card(sql.FieldContainsFold(FieldPic2, v))
 }
 
-// BalanceEQ applies the EQ predicate on the "balance" field.
-func BalanceEQ(v int64) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldBalance, v))
-}
-
-// BalanceNEQ applies the NEQ predicate on the "balance" field.
-func BalanceNEQ(v int64) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldBalance, v))
-}
-
-// BalanceIn applies the In predicate on the "balance" field.
-func BalanceIn(vs ...int64) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldBalance, vs...))
-}
-
-// BalanceNotIn applies the NotIn predicate on the "balance" field.
-func BalanceNotIn(vs ...int64) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldBalance, vs...))
-}
-
-// BalanceGT applies the GT predicate on the "balance" field.
-func BalanceGT(v int64) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldBalance, v))
-}
-
-// BalanceGTE applies the GTE predicate on the "balance" field.
-func BalanceGTE(v int64) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldBalance, v))
-}
-
-// BalanceLT applies the LT predicate on the "balance" field.
-func BalanceLT(v int64) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldBalance, v))
-}
-
-// BalanceLTE applies the LTE predicate on the "balance" field.
-func BalanceLTE(v int64) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldBalance, v))
-}
-
 // AmountEQ applies the EQ predicate on the "amount" field.
 func AmountEQ(v int64) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldAmount, v))
@@ -639,6 +594,16 @@ func MemberCodeHasSuffix(v string) predicate.Card {
 	return predicate.Card(sql.FieldHasSuffix(FieldMemberCode, v))
 }
 
+// MemberCodeIsNil applies the IsNil predicate on the "member_code" field.
+func MemberCodeIsNil() predicate.Card {
+	return predicate.Card(sql.FieldIsNull(FieldMemberCode))
+}
+
+// MemberCodeNotNil applies the NotNil predicate on the "member_code" field.
+func MemberCodeNotNil() predicate.Card {
+	return predicate.Card(sql.FieldNotNull(FieldMemberCode))
+}
+
 // MemberCodeEqualFold applies the EqualFold predicate on the "member_code" field.
 func MemberCodeEqualFold(v string) predicate.Card {
 	return predicate.Card(sql.FieldEqualFold(FieldMemberCode, v))
@@ -699,94 +664,84 @@ func BindTimeNotNil() predicate.Card {
 	return predicate.Card(sql.FieldNotNull(FieldBindTime))
 }
 
-// HitTimeEQ applies the EQ predicate on the "hit_time" field.
-func HitTimeEQ(v int64) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldHitTime, v))
+// LastCleanBalanceEQ applies the EQ predicate on the "last_clean_balance" field.
+func LastCleanBalanceEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanBalance, v))
 }
 
-// HitTimeNEQ applies the NEQ predicate on the "hit_time" field.
-func HitTimeNEQ(v int64) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldHitTime, v))
+// LastCleanBalanceNEQ applies the NEQ predicate on the "last_clean_balance" field.
+func LastCleanBalanceNEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldLastCleanBalance, v))
 }
 
-// HitTimeIn applies the In predicate on the "hit_time" field.
-func HitTimeIn(vs ...int64) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldHitTime, vs...))
+// LastCleanBalanceIn applies the In predicate on the "last_clean_balance" field.
+func LastCleanBalanceIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldLastCleanBalance, vs...))
 }
 
-// HitTimeNotIn applies the NotIn predicate on the "hit_time" field.
-func HitTimeNotIn(vs ...int64) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldHitTime, vs...))
+// LastCleanBalanceNotIn applies the NotIn predicate on the "last_clean_balance" field.
+func LastCleanBalanceNotIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldLastCleanBalance, vs...))
 }
 
-// HitTimeGT applies the GT predicate on the "hit_time" field.
-func HitTimeGT(v int64) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldHitTime, v))
+// LastCleanBalanceGT applies the GT predicate on the "last_clean_balance" field.
+func LastCleanBalanceGT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldLastCleanBalance, v))
 }
 
-// HitTimeGTE applies the GTE predicate on the "hit_time" field.
-func HitTimeGTE(v int64) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldHitTime, v))
+// LastCleanBalanceGTE applies the GTE predicate on the "last_clean_balance" field.
+func LastCleanBalanceGTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldLastCleanBalance, v))
 }
 
-// HitTimeLT applies the LT predicate on the "hit_time" field.
-func HitTimeLT(v int64) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldHitTime, v))
+// LastCleanBalanceLT applies the LT predicate on the "last_clean_balance" field.
+func LastCleanBalanceLT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldLastCleanBalance, v))
 }
 
-// HitTimeLTE applies the LTE predicate on the "hit_time" field.
-func HitTimeLTE(v int64) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldHitTime, v))
+// LastCleanBalanceLTE applies the LTE predicate on the "last_clean_balance" field.
+func LastCleanBalanceLTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldLastCleanBalance, v))
 }
 
-// LastCleanTimeEQ applies the EQ predicate on the "last_clean_time" field.
-func LastCleanTimeEQ(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldEQ(FieldLastCleanTime, v))
+// LastCleanTsEQ applies the EQ predicate on the "last_clean_ts" field.
+func LastCleanTsEQ(v int16) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastCleanTs, v))
 }
 
-// LastCleanTimeNEQ applies the NEQ predicate on the "last_clean_time" field.
-func LastCleanTimeNEQ(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldNEQ(FieldLastCleanTime, v))
+// LastCleanTsNEQ applies the NEQ predicate on the "last_clean_ts" field.
+func LastCleanTsNEQ(v int16) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldLastCleanTs, v))
 }
 
-// LastCleanTimeIn applies the In predicate on the "last_clean_time" field.
-func LastCleanTimeIn(vs ...time.Time) predicate.Card {
-	return predicate.Card(sql.FieldIn(FieldLastCleanTime, vs...))
+// LastCleanTsIn applies the In predicate on the "last_clean_ts" field.
+func LastCleanTsIn(vs ...int16) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldLastCleanTs, vs...))
 }
 
-// LastCleanTimeNotIn applies the NotIn predicate on the "last_clean_time" field.
-func LastCleanTimeNotIn(vs ...time.Time) predicate.Card {
-	return predicate.Card(sql.FieldNotIn(FieldLastCleanTime, vs...))
+// LastCleanTsNotIn applies the NotIn predicate on the "last_clean_ts" field.
+func LastCleanTsNotIn(vs ...int16) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldLastCleanTs, vs...))
 }
 
-// LastCleanTimeGT applies the GT predicate on the "last_clean_time" field.
-func LastCleanTimeGT(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldGT(FieldLastCleanTime, v))
+// LastCleanTsGT applies the GT predicate on the "last_clean_ts" field.
+func LastCleanTsGT(v int16) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldLastCleanTs, v))
 }
 
-// LastCleanTimeGTE applies the GTE predicate on the "last_clean_time" field.
-func LastCleanTimeGTE(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldGTE(FieldLastCleanTime, v))
+// LastCleanTsGTE applies the GTE predicate on the "last_clean_ts" field.
+func LastCleanTsGTE(v int16) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldLastCleanTs, v))
 }
 
-// LastCleanTimeLT applies the LT predicate on the "last_clean_time" field.
-func LastCleanTimeLT(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldLT(FieldLastCleanTime, v))
+// LastCleanTsLT applies the LT predicate on the "last_clean_ts" field.
+func LastCleanTsLT(v int16) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldLastCleanTs, v))
 }
 
-// LastCleanTimeLTE applies the LTE predicate on the "last_clean_time" field.
-func LastCleanTimeLTE(v time.Time) predicate.Card {
-	return predicate.Card(sql.FieldLTE(FieldLastCleanTime, v))
-}
-
-// LastCleanTimeIsNil applies the IsNil predicate on the "last_clean_time" field.
-func LastCleanTimeIsNil() predicate.Card {
-	return predicate.Card(sql.FieldIsNull(FieldLastCleanTime))
-}
-
-// LastCleanTimeNotNil applies the NotNil predicate on the "last_clean_time" field.
-func LastCleanTimeNotNil() predicate.Card {
-	return predicate.Card(sql.FieldNotNull(FieldLastCleanTime))
+// LastCleanTsLTE applies the LTE predicate on the "last_clean_ts" field.
+func LastCleanTsLTE(v int16) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldLastCleanTs, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

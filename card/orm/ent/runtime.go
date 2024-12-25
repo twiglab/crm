@@ -78,22 +78,24 @@ func init() {
 	cardDescPic2 := cardFields[4].Descriptor()
 	// card.Pic2Validator is a validator for the "pic2" field. It is called by the builders before save.
 	card.Pic2Validator = cardDescPic2.Validators[0].(func(string) error)
-	// cardDescBalance is the schema descriptor for balance field.
-	cardDescBalance := cardFields[5].Descriptor()
-	// card.DefaultBalance holds the default value on creation for the balance field.
-	card.DefaultBalance = cardDescBalance.Default.(int64)
 	// cardDescAmount is the schema descriptor for amount field.
-	cardDescAmount := cardFields[6].Descriptor()
+	cardDescAmount := cardFields[5].Descriptor()
 	// card.DefaultAmount holds the default value on creation for the amount field.
 	card.DefaultAmount = cardDescAmount.Default.(int64)
 	// cardDescMemberCode is the schema descriptor for member_code field.
-	cardDescMemberCode := cardFields[7].Descriptor()
-	// card.DefaultMemberCode holds the default value on creation for the member_code field.
-	card.DefaultMemberCode = cardDescMemberCode.Default.(func() string)
+	cardDescMemberCode := cardFields[6].Descriptor()
 	// card.MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	card.MemberCodeValidator = cardDescMemberCode.Validators[0].(func(string) error)
+	// cardDescLastCleanBalance is the schema descriptor for last_clean_balance field.
+	cardDescLastCleanBalance := cardFields[8].Descriptor()
+	// card.DefaultLastCleanBalance holds the default value on creation for the last_clean_balance field.
+	card.DefaultLastCleanBalance = cardDescLastCleanBalance.Default.(int64)
+	// cardDescLastCleanTs is the schema descriptor for last_clean_ts field.
+	cardDescLastCleanTs := cardFields[9].Descriptor()
+	// card.DefaultLastCleanTs holds the default value on creation for the last_clean_ts field.
+	card.DefaultLastCleanTs = cardDescLastCleanTs.Default.(int16)
 	// cardDescStatus is the schema descriptor for status field.
-	cardDescStatus := cardFields[11].Descriptor()
+	cardDescStatus := cardFields[10].Descriptor()
 	// card.DefaultStatus holds the default value on creation for the status field.
 	card.DefaultStatus = cardDescStatus.Default.(int)
 }
