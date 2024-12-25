@@ -31,7 +31,7 @@ func (Card) Fields() []ent.Field {
 				dialect.SQLite:   "char(36)", // Override Postgres.
 			}),
 
-		// card code
+		// card code 就是一个普通的业务字段，卡上面显示的号码，全局唯一，不重复
 		field.String("code_bin").
 			MaxLen(16).
 			NotEmpty().
@@ -50,11 +50,11 @@ func (Card) Fields() []ent.Field {
 		field.String("pic1").MaxLen(255),
 		field.String("pic2").MaxLen(255),
 
-		// 额度
-		field.Int64("balance").Default(0),
+		// 余额 ，清算脚本设置
+		field.Int64("balance").Immutable().Default(0),
 
-		// 余额
-		field.Int64("amount").Default(0),
+		// 额度
+		field.Int64("amount").Immutable().Default(0),
 
 		// Member code
 		field.String("member_code").
@@ -72,7 +72,9 @@ func (Card) Fields() []ent.Field {
 			Nillable(),
 
 		// 激活时间
-		field.Int64("hit_time"),
+		field.Int64("hit_time").
+			Optional().
+			Nillable(),
 
 		field.Time("last_clean_time").Optional().Nillable(),
 
