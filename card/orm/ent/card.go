@@ -37,6 +37,8 @@ type Card struct {
 	MemberCode string `json:"member_code,omitempty"`
 	// BindTime holds the value of the "bind_time" field.
 	BindTime *time.Time `json:"bind_time,omitempty"`
+	// LastUseTs holds the value of the "last_use_ts" field.
+	LastUseTs int64 `json:"last_use_ts,omitempty"`
 	// LastCleanBalance holds the value of the "last_clean_balance" field.
 	LastCleanBalance int64 `json:"last_clean_balance,omitempty"`
 	// LastCleanTs holds the value of the "last_clean_ts" field.
@@ -51,7 +53,7 @@ func (*Card) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case card.FieldID, card.FieldType, card.FieldAmount, card.FieldLastCleanBalance, card.FieldLastCleanTs, card.FieldStatus:
+		case card.FieldID, card.FieldType, card.FieldAmount, card.FieldLastUseTs, card.FieldLastCleanBalance, card.FieldLastCleanTs, card.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case card.FieldCode, card.FieldCardBin, card.FieldPic1, card.FieldPic2, card.FieldMemberCode:
 			values[i] = new(sql.NullString)
@@ -139,6 +141,12 @@ func (c *Card) assignValues(columns []string, values []any) error {
 				c.BindTime = new(time.Time)
 				*c.BindTime = value.Time
 			}
+		case card.FieldLastUseTs:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field last_use_ts", values[i])
+			} else if value.Valid {
+				c.LastUseTs = value.Int64
+			}
 		case card.FieldLastCleanBalance:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field last_clean_balance", values[i])
@@ -224,6 +232,9 @@ func (c *Card) String() string {
 		builder.WriteString("bind_time=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
+	builder.WriteString(", ")
+	builder.WriteString("last_use_ts=")
+	builder.WriteString(fmt.Sprintf("%v", c.LastUseTs))
 	builder.WriteString(", ")
 	builder.WriteString("last_clean_balance=")
 	builder.WriteString(fmt.Sprintf("%v", c.LastCleanBalance))

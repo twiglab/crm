@@ -35,6 +35,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			card.FieldAmount:           {Type: field.TypeInt64, Column: card.FieldAmount},
 			card.FieldMemberCode:       {Type: field.TypeString, Column: card.FieldMemberCode},
 			card.FieldBindTime:         {Type: field.TypeTime, Column: card.FieldBindTime},
+			card.FieldLastUseTs:        {Type: field.TypeInt64, Column: card.FieldLastUseTs},
 			card.FieldLastCleanBalance: {Type: field.TypeInt64, Column: card.FieldLastCleanBalance},
 			card.FieldLastCleanTs:      {Type: field.TypeInt16, Column: card.FieldLastCleanTs},
 			card.FieldStatus:           {Type: field.TypeInt, Column: card.FieldStatus},
@@ -137,6 +138,11 @@ func (f *CardFilter) WhereMemberCode(p entql.StringP) {
 // WhereBindTime applies the entql time.Time predicate on the bind_time field.
 func (f *CardFilter) WhereBindTime(p entql.TimeP) {
 	f.Where(p.Field(card.FieldBindTime))
+}
+
+// WhereLastUseTs applies the entql int64 predicate on the last_use_ts field.
+func (f *CardFilter) WhereLastUseTs(p entql.Int64P) {
+	f.Where(p.Field(card.FieldLastUseTs))
 }
 
 // WhereLastCleanBalance applies the entql int64 predicate on the last_clean_balance field.

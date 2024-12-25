@@ -104,6 +104,11 @@ func BindTime(v time.Time) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldBindTime, v))
 }
 
+// LastUseTs applies equality check predicate on the "last_use_ts" field. It's identical to LastUseTsEQ.
+func LastUseTs(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastUseTs, v))
+}
+
 // LastCleanBalance applies equality check predicate on the "last_clean_balance" field. It's identical to LastCleanBalanceEQ.
 func LastCleanBalance(v int64) predicate.Card {
 	return predicate.Card(sql.FieldEQ(FieldLastCleanBalance, v))
@@ -662,6 +667,46 @@ func BindTimeIsNil() predicate.Card {
 // BindTimeNotNil applies the NotNil predicate on the "bind_time" field.
 func BindTimeNotNil() predicate.Card {
 	return predicate.Card(sql.FieldNotNull(FieldBindTime))
+}
+
+// LastUseTsEQ applies the EQ predicate on the "last_use_ts" field.
+func LastUseTsEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldEQ(FieldLastUseTs, v))
+}
+
+// LastUseTsNEQ applies the NEQ predicate on the "last_use_ts" field.
+func LastUseTsNEQ(v int64) predicate.Card {
+	return predicate.Card(sql.FieldNEQ(FieldLastUseTs, v))
+}
+
+// LastUseTsIn applies the In predicate on the "last_use_ts" field.
+func LastUseTsIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldIn(FieldLastUseTs, vs...))
+}
+
+// LastUseTsNotIn applies the NotIn predicate on the "last_use_ts" field.
+func LastUseTsNotIn(vs ...int64) predicate.Card {
+	return predicate.Card(sql.FieldNotIn(FieldLastUseTs, vs...))
+}
+
+// LastUseTsGT applies the GT predicate on the "last_use_ts" field.
+func LastUseTsGT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGT(FieldLastUseTs, v))
+}
+
+// LastUseTsGTE applies the GTE predicate on the "last_use_ts" field.
+func LastUseTsGTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldGTE(FieldLastUseTs, v))
+}
+
+// LastUseTsLT applies the LT predicate on the "last_use_ts" field.
+func LastUseTsLT(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLT(FieldLastUseTs, v))
+}
+
+// LastUseTsLTE applies the LTE predicate on the "last_use_ts" field.
+func LastUseTsLTE(v int64) predicate.Card {
+	return predicate.Card(sql.FieldLTE(FieldLastUseTs, v))
 }
 
 // LastCleanBalanceEQ applies the EQ predicate on the "last_clean_balance" field.

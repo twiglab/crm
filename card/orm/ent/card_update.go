@@ -95,6 +95,27 @@ func (cu *CardUpdate) ClearBindTime() *CardUpdate {
 	return cu
 }
 
+// SetLastUseTs sets the "last_use_ts" field.
+func (cu *CardUpdate) SetLastUseTs(i int64) *CardUpdate {
+	cu.mutation.ResetLastUseTs()
+	cu.mutation.SetLastUseTs(i)
+	return cu
+}
+
+// SetNillableLastUseTs sets the "last_use_ts" field if the given value is not nil.
+func (cu *CardUpdate) SetNillableLastUseTs(i *int64) *CardUpdate {
+	if i != nil {
+		cu.SetLastUseTs(*i)
+	}
+	return cu
+}
+
+// AddLastUseTs adds i to the "last_use_ts" field.
+func (cu *CardUpdate) AddLastUseTs(i int64) *CardUpdate {
+	cu.mutation.AddLastUseTs(i)
+	return cu
+}
+
 // SetStatus sets the "status" field.
 func (cu *CardUpdate) SetStatus(i int) *CardUpdate {
 	cu.mutation.ResetStatus()
@@ -200,6 +221,12 @@ func (cu *CardUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.BindTimeCleared() {
 		_spec.ClearField(card.FieldBindTime, field.TypeTime)
 	}
+	if value, ok := cu.mutation.LastUseTs(); ok {
+		_spec.SetField(card.FieldLastUseTs, field.TypeInt64, value)
+	}
+	if value, ok := cu.mutation.AddedLastUseTs(); ok {
+		_spec.AddField(card.FieldLastUseTs, field.TypeInt64, value)
+	}
 	if value, ok := cu.mutation.Status(); ok {
 		_spec.SetField(card.FieldStatus, field.TypeInt, value)
 	}
@@ -290,6 +317,27 @@ func (cuo *CardUpdateOne) SetNillableBindTime(t *time.Time) *CardUpdateOne {
 // ClearBindTime clears the value of the "bind_time" field.
 func (cuo *CardUpdateOne) ClearBindTime() *CardUpdateOne {
 	cuo.mutation.ClearBindTime()
+	return cuo
+}
+
+// SetLastUseTs sets the "last_use_ts" field.
+func (cuo *CardUpdateOne) SetLastUseTs(i int64) *CardUpdateOne {
+	cuo.mutation.ResetLastUseTs()
+	cuo.mutation.SetLastUseTs(i)
+	return cuo
+}
+
+// SetNillableLastUseTs sets the "last_use_ts" field if the given value is not nil.
+func (cuo *CardUpdateOne) SetNillableLastUseTs(i *int64) *CardUpdateOne {
+	if i != nil {
+		cuo.SetLastUseTs(*i)
+	}
+	return cuo
+}
+
+// AddLastUseTs adds i to the "last_use_ts" field.
+func (cuo *CardUpdateOne) AddLastUseTs(i int64) *CardUpdateOne {
+	cuo.mutation.AddLastUseTs(i)
 	return cuo
 }
 
@@ -427,6 +475,12 @@ func (cuo *CardUpdateOne) sqlSave(ctx context.Context) (_node *Card, err error) 
 	}
 	if cuo.mutation.BindTimeCleared() {
 		_spec.ClearField(card.FieldBindTime, field.TypeTime)
+	}
+	if value, ok := cuo.mutation.LastUseTs(); ok {
+		_spec.SetField(card.FieldLastUseTs, field.TypeInt64, value)
+	}
+	if value, ok := cuo.mutation.AddedLastUseTs(); ok {
+		_spec.AddField(card.FieldLastUseTs, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.Status(); ok {
 		_spec.SetField(card.FieldStatus, field.TypeInt, value)

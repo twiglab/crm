@@ -138,6 +138,20 @@ func (cc *CardCreate) SetNillableBindTime(t *time.Time) *CardCreate {
 	return cc
 }
 
+// SetLastUseTs sets the "last_use_ts" field.
+func (cc *CardCreate) SetLastUseTs(i int64) *CardCreate {
+	cc.mutation.SetLastUseTs(i)
+	return cc
+}
+
+// SetNillableLastUseTs sets the "last_use_ts" field if the given value is not nil.
+func (cc *CardCreate) SetNillableLastUseTs(i *int64) *CardCreate {
+	if i != nil {
+		cc.SetLastUseTs(*i)
+	}
+	return cc
+}
+
 // SetLastCleanBalance sets the "last_clean_balance" field.
 func (cc *CardCreate) SetLastCleanBalance(i int64) *CardCreate {
 	cc.mutation.SetLastCleanBalance(i)
@@ -235,6 +249,10 @@ func (cc *CardCreate) defaults() {
 		v := card.DefaultAmount
 		cc.mutation.SetAmount(v)
 	}
+	if _, ok := cc.mutation.LastUseTs(); !ok {
+		v := card.DefaultLastUseTs
+		cc.mutation.SetLastUseTs(v)
+	}
 	if _, ok := cc.mutation.LastCleanBalance(); !ok {
 		v := card.DefaultLastCleanBalance
 		cc.mutation.SetLastCleanBalance(v)
@@ -299,6 +317,9 @@ func (cc *CardCreate) check() error {
 		if err := card.MemberCodeValidator(v); err != nil {
 			return &ValidationError{Name: "member_code", err: fmt.Errorf(`ent: validator failed for field "Card.member_code": %w`, err)}
 		}
+	}
+	if _, ok := cc.mutation.LastUseTs(); !ok {
+		return &ValidationError{Name: "last_use_ts", err: errors.New(`ent: missing required field "Card.last_use_ts"`)}
 	}
 	if _, ok := cc.mutation.LastCleanBalance(); !ok {
 		return &ValidationError{Name: "last_clean_balance", err: errors.New(`ent: missing required field "Card.last_clean_balance"`)}
@@ -375,6 +396,10 @@ func (cc *CardCreate) createSpec() (*Card, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.BindTime(); ok {
 		_spec.SetField(card.FieldBindTime, field.TypeTime, value)
 		_node.BindTime = &value
+	}
+	if value, ok := cc.mutation.LastUseTs(); ok {
+		_spec.SetField(card.FieldLastUseTs, field.TypeInt64, value)
+		_node.LastUseTs = value
 	}
 	if value, ok := cc.mutation.LastCleanBalance(); ok {
 		_spec.SetField(card.FieldLastCleanBalance, field.TypeInt64, value)
@@ -503,6 +528,24 @@ func (u *CardUpsert) UpdateBindTime() *CardUpsert {
 // ClearBindTime clears the value of the "bind_time" field.
 func (u *CardUpsert) ClearBindTime() *CardUpsert {
 	u.SetNull(card.FieldBindTime)
+	return u
+}
+
+// SetLastUseTs sets the "last_use_ts" field.
+func (u *CardUpsert) SetLastUseTs(v int64) *CardUpsert {
+	u.Set(card.FieldLastUseTs, v)
+	return u
+}
+
+// UpdateLastUseTs sets the "last_use_ts" field to the value that was provided on create.
+func (u *CardUpsert) UpdateLastUseTs() *CardUpsert {
+	u.SetExcluded(card.FieldLastUseTs)
+	return u
+}
+
+// AddLastUseTs adds v to the "last_use_ts" field.
+func (u *CardUpsert) AddLastUseTs(v int64) *CardUpsert {
+	u.Add(card.FieldLastUseTs, v)
 	return u
 }
 
@@ -664,6 +707,27 @@ func (u *CardUpsertOne) UpdateBindTime() *CardUpsertOne {
 func (u *CardUpsertOne) ClearBindTime() *CardUpsertOne {
 	return u.Update(func(s *CardUpsert) {
 		s.ClearBindTime()
+	})
+}
+
+// SetLastUseTs sets the "last_use_ts" field.
+func (u *CardUpsertOne) SetLastUseTs(v int64) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.SetLastUseTs(v)
+	})
+}
+
+// AddLastUseTs adds v to the "last_use_ts" field.
+func (u *CardUpsertOne) AddLastUseTs(v int64) *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.AddLastUseTs(v)
+	})
+}
+
+// UpdateLastUseTs sets the "last_use_ts" field to the value that was provided on create.
+func (u *CardUpsertOne) UpdateLastUseTs() *CardUpsertOne {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateLastUseTs()
 	})
 }
 
@@ -994,6 +1058,27 @@ func (u *CardUpsertBulk) UpdateBindTime() *CardUpsertBulk {
 func (u *CardUpsertBulk) ClearBindTime() *CardUpsertBulk {
 	return u.Update(func(s *CardUpsert) {
 		s.ClearBindTime()
+	})
+}
+
+// SetLastUseTs sets the "last_use_ts" field.
+func (u *CardUpsertBulk) SetLastUseTs(v int64) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.SetLastUseTs(v)
+	})
+}
+
+// AddLastUseTs adds v to the "last_use_ts" field.
+func (u *CardUpsertBulk) AddLastUseTs(v int64) *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.AddLastUseTs(v)
+	})
+}
+
+// UpdateLastUseTs sets the "last_use_ts" field to the value that was provided on create.
+func (u *CardUpsertBulk) UpdateLastUseTs() *CardUpsertBulk {
+	return u.Update(func(s *CardUpsert) {
+		s.UpdateLastUseTs()
 	})
 }
 

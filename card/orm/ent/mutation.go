@@ -45,6 +45,8 @@ type CardMutation struct {
 	addamount             *int64
 	member_code           *string
 	bind_time             *time.Time
+	last_use_ts           *int64
+	addlast_use_ts        *int64
 	last_clean_balance    *int64
 	addlast_clean_balance *int64
 	last_clean_ts         *int16
@@ -581,6 +583,62 @@ func (m *CardMutation) ResetBindTime() {
 	delete(m.clearedFields, card.FieldBindTime)
 }
 
+// SetLastUseTs sets the "last_use_ts" field.
+func (m *CardMutation) SetLastUseTs(i int64) {
+	m.last_use_ts = &i
+	m.addlast_use_ts = nil
+}
+
+// LastUseTs returns the value of the "last_use_ts" field in the mutation.
+func (m *CardMutation) LastUseTs() (r int64, exists bool) {
+	v := m.last_use_ts
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastUseTs returns the old "last_use_ts" field's value of the Card entity.
+// If the Card object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CardMutation) OldLastUseTs(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastUseTs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastUseTs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastUseTs: %w", err)
+	}
+	return oldValue.LastUseTs, nil
+}
+
+// AddLastUseTs adds i to the "last_use_ts" field.
+func (m *CardMutation) AddLastUseTs(i int64) {
+	if m.addlast_use_ts != nil {
+		*m.addlast_use_ts += i
+	} else {
+		m.addlast_use_ts = &i
+	}
+}
+
+// AddedLastUseTs returns the value that was added to the "last_use_ts" field in this mutation.
+func (m *CardMutation) AddedLastUseTs() (r int64, exists bool) {
+	v := m.addlast_use_ts
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetLastUseTs resets all changes to the "last_use_ts" field.
+func (m *CardMutation) ResetLastUseTs() {
+	m.last_use_ts = nil
+	m.addlast_use_ts = nil
+}
+
 // SetLastCleanBalance sets the "last_clean_balance" field.
 func (m *CardMutation) SetLastCleanBalance(i int64) {
 	m.last_clean_balance = &i
@@ -783,7 +841,7 @@ func (m *CardMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CardMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.create_time != nil {
 		fields = append(fields, card.FieldCreateTime)
 	}
@@ -813,6 +871,9 @@ func (m *CardMutation) Fields() []string {
 	}
 	if m.bind_time != nil {
 		fields = append(fields, card.FieldBindTime)
+	}
+	if m.last_use_ts != nil {
+		fields = append(fields, card.FieldLastUseTs)
 	}
 	if m.last_clean_balance != nil {
 		fields = append(fields, card.FieldLastCleanBalance)
@@ -851,6 +912,8 @@ func (m *CardMutation) Field(name string) (ent.Value, bool) {
 		return m.MemberCode()
 	case card.FieldBindTime:
 		return m.BindTime()
+	case card.FieldLastUseTs:
+		return m.LastUseTs()
 	case card.FieldLastCleanBalance:
 		return m.LastCleanBalance()
 	case card.FieldLastCleanTs:
@@ -886,6 +949,8 @@ func (m *CardMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldMemberCode(ctx)
 	case card.FieldBindTime:
 		return m.OldBindTime(ctx)
+	case card.FieldLastUseTs:
+		return m.OldLastUseTs(ctx)
 	case card.FieldLastCleanBalance:
 		return m.OldLastCleanBalance(ctx)
 	case card.FieldLastCleanTs:
@@ -971,6 +1036,13 @@ func (m *CardMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBindTime(v)
 		return nil
+	case card.FieldLastUseTs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastUseTs(v)
+		return nil
 	case card.FieldLastCleanBalance:
 		v, ok := value.(int64)
 		if !ok {
@@ -1006,6 +1078,9 @@ func (m *CardMutation) AddedFields() []string {
 	if m.addamount != nil {
 		fields = append(fields, card.FieldAmount)
 	}
+	if m.addlast_use_ts != nil {
+		fields = append(fields, card.FieldLastUseTs)
+	}
 	if m.addlast_clean_balance != nil {
 		fields = append(fields, card.FieldLastCleanBalance)
 	}
@@ -1027,6 +1102,8 @@ func (m *CardMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedType()
 	case card.FieldAmount:
 		return m.AddedAmount()
+	case card.FieldLastUseTs:
+		return m.AddedLastUseTs()
 	case card.FieldLastCleanBalance:
 		return m.AddedLastCleanBalance()
 	case card.FieldLastCleanTs:
@@ -1055,6 +1132,13 @@ func (m *CardMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddAmount(v)
+		return nil
+	case card.FieldLastUseTs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLastUseTs(v)
 		return nil
 	case card.FieldLastCleanBalance:
 		v, ok := value.(int64)
@@ -1148,6 +1232,9 @@ func (m *CardMutation) ResetField(name string) error {
 		return nil
 	case card.FieldBindTime:
 		m.ResetBindTime()
+		return nil
+	case card.FieldLastUseTs:
+		m.ResetLastUseTs()
 		return nil
 	case card.FieldLastCleanBalance:
 		m.ResetLastCleanBalance()

@@ -22,6 +22,7 @@ var (
 		{Name: "amount", Type: field.TypeInt64, Default: 0},
 		{Name: "member_code", Type: field.TypeString, Nullable: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "bind_time", Type: field.TypeTime, Nullable: true},
+		{Name: "last_use_ts", Type: field.TypeInt64, Default: 0},
 		{Name: "last_clean_balance", Type: field.TypeInt64, Default: 0},
 		{Name: "last_clean_ts", Type: field.TypeInt16, Default: 0},
 		{Name: "status", Type: field.TypeInt, Default: 0},
@@ -50,7 +51,7 @@ var (
 			{
 				Name:    "card_status",
 				Unique:  false,
-				Columns: []*schema.Column{TCardColumns[13]},
+				Columns: []*schema.Column{TCardColumns[14]},
 			},
 		},
 	}

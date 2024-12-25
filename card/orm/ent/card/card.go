@@ -33,6 +33,8 @@ const (
 	FieldMemberCode = "member_code"
 	// FieldBindTime holds the string denoting the bind_time field in the database.
 	FieldBindTime = "bind_time"
+	// FieldLastUseTs holds the string denoting the last_use_ts field in the database.
+	FieldLastUseTs = "last_use_ts"
 	// FieldLastCleanBalance holds the string denoting the last_clean_balance field in the database.
 	FieldLastCleanBalance = "last_clean_balance"
 	// FieldLastCleanTs holds the string denoting the last_clean_ts field in the database.
@@ -56,6 +58,7 @@ var Columns = []string{
 	FieldAmount,
 	FieldMemberCode,
 	FieldBindTime,
+	FieldLastUseTs,
 	FieldLastCleanBalance,
 	FieldLastCleanTs,
 	FieldStatus,
@@ -94,6 +97,8 @@ var (
 	DefaultAmount int64
 	// MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	MemberCodeValidator func(string) error
+	// DefaultLastUseTs holds the default value on creation for the "last_use_ts" field.
+	DefaultLastUseTs int64
 	// DefaultLastCleanBalance holds the default value on creation for the "last_clean_balance" field.
 	DefaultLastCleanBalance int64
 	// DefaultLastCleanTs holds the default value on creation for the "last_clean_ts" field.
@@ -158,6 +163,11 @@ func ByMemberCode(opts ...sql.OrderTermOption) OrderOption {
 // ByBindTime orders the results by the bind_time field.
 func ByBindTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBindTime, opts...).ToFunc()
+}
+
+// ByLastUseTs orders the results by the last_use_ts field.
+func ByLastUseTs(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastUseTs, opts...).ToFunc()
 }
 
 // ByLastCleanBalance orders the results by the last_clean_balance field.

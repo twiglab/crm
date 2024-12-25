@@ -86,16 +86,20 @@ func init() {
 	cardDescMemberCode := cardFields[6].Descriptor()
 	// card.MemberCodeValidator is a validator for the "member_code" field. It is called by the builders before save.
 	card.MemberCodeValidator = cardDescMemberCode.Validators[0].(func(string) error)
+	// cardDescLastUseTs is the schema descriptor for last_use_ts field.
+	cardDescLastUseTs := cardFields[8].Descriptor()
+	// card.DefaultLastUseTs holds the default value on creation for the last_use_ts field.
+	card.DefaultLastUseTs = cardDescLastUseTs.Default.(int64)
 	// cardDescLastCleanBalance is the schema descriptor for last_clean_balance field.
-	cardDescLastCleanBalance := cardFields[8].Descriptor()
+	cardDescLastCleanBalance := cardFields[9].Descriptor()
 	// card.DefaultLastCleanBalance holds the default value on creation for the last_clean_balance field.
 	card.DefaultLastCleanBalance = cardDescLastCleanBalance.Default.(int64)
 	// cardDescLastCleanTs is the schema descriptor for last_clean_ts field.
-	cardDescLastCleanTs := cardFields[9].Descriptor()
+	cardDescLastCleanTs := cardFields[10].Descriptor()
 	// card.DefaultLastCleanTs holds the default value on creation for the last_clean_ts field.
 	card.DefaultLastCleanTs = cardDescLastCleanTs.Default.(int16)
 	// cardDescStatus is the schema descriptor for status field.
-	cardDescStatus := cardFields[10].Descriptor()
+	cardDescStatus := cardFields[11].Descriptor()
 	// card.DefaultStatus holds the default value on creation for the status field.
 	card.DefaultStatus = cardDescStatus.Default.(int)
 }
