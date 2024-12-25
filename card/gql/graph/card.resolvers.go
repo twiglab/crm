@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/twiglab/crm/card/gql/graph/model"
+	"github.com/twiglab/crm/card/orm/ent"
 	"github.com/twiglab/crm/card/orm/ent/card"
-	"github.com/twiglab/crm/poly/orm/ent"
 )
 
 // BindCard is the resolver for the bindCard field.
