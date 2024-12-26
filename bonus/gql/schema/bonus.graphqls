@@ -1,0 +1,24 @@
+type BonusDetailResp {
+  memberCode: String!
+  balance: Int!
+}
+
+type BonusListResp {
+  memberCode: String!
+}
+
+input BonusDetailReq {
+  memberCode: String!
+}
+
+input BonusListReq {
+  memberCode: String!
+}
+
+type Query {
+  # 详情
+  queryBonusDetail(input: BonusDetailReq!): BonusDetailResp!
+  # 列表
+  listBonusItems(input: BonusListReq!): BonusListResp!
+}
+
