@@ -5,6 +5,7 @@ import (
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/twiglab/crm/bonus/bc"
 	"github.com/twiglab/crm/bonus/mb"
 	"github.com/twiglab/crm/bonus/orm/ent"
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
@@ -13,6 +14,7 @@ import (
 type BcPaymentReciverHandle struct {
 	Client    *ent.Client
 	MemberCli *mb.MemberCli
+	BcClient  *bc.WxBcCli
 }
 
 func (h *BcPaymentReciverHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
@@ -56,5 +58,17 @@ func (h *BcPaymentReciverHandle) Handle(ctx context.Context, msg *msg.BusinessCi
 	ms := time.Now().UnixMilli()
 	cr.SetCreateTs(ms)
 
-	return cr.Exec(ctx)
+	err = cr.Exec(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	_ = h.BcClient.PointsSync(ctx, bc.PointsSync{
+		TransactionID:   msg.TransactionID,
+		OpenID:          msg.OpenID,
+		IncreasedPoints: msg.Amount,
+	})
+
+	return nil
 }
