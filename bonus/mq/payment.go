@@ -11,13 +11,13 @@ import (
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 )
 
-type BcPaymentReciverHandle struct {
+type BcPaymentHandle struct {
 	Client    *ent.Client
 	MemberCli *mb.MemberCli
 	BcClient  *bc.WxBcCli
 }
 
-func (h *BcPaymentReciverHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
+func (h *BcPaymentHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
 	b := &msg.BusinessCirclePayment{}
 	if _, err := b.UnmarshalMsg(delivery.Body); err != nil {
 		return
@@ -30,7 +30,7 @@ func (h *BcPaymentReciverHandle) RecieveDelivery(ctx context.Context, delivery a
 	_ = delivery.Ack(false)
 }
 
-func (h *BcPaymentReciverHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePayment) error {
+func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePayment) error {
 	member, err := h.MemberCli.GetMemberByWxOpenID(ctx, msg.ShopNumber)
 	if err != nil {
 		return nil
