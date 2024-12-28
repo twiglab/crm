@@ -19,7 +19,7 @@ type WxBcCli struct {
 	Client graphql.Client
 }
 
-func (c *WxBcCli) Sync(ctx context.Context, pointsSync PointsSync) error {
+func (c *WxBcCli) PointsSync(ctx context.Context, pointsSync PointsSync) error {
 	_, err := low.BcPointSync(ctx, c.Client, bc.BusinessCirclePointsSync{
 		TransactionID:    pointsSync.TransactionID,
 		OpenID:           pointsSync.OpenID,
