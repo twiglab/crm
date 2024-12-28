@@ -5,11 +5,13 @@ go 1.23.1
 require (
 	entgo.io/ent v0.14.1
 	github.com/99designs/gqlgen v0.17.61
+	github.com/Khan/genqlient v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/rabbitmq/amqp091-go v1.10.0
-	github.com/vektah/gqlparser/v2 v2.5.20
 	github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1
+	github.com/twiglab/crm/wechat v0.0.0-20241226134019-5b809f561a7d
+	github.com/vektah/gqlparser/v2 v2.5.20
 )
 
 require (
@@ -24,8 +26,9 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
-	github.com/rogpeppe/go-internal v1.13.1 // indirect
+	github.com/philhofer/fwd v1.1.3-0.20240916144458-20a13a1f6b7c // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
+	github.com/tinylib/msgp v1.2.5 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/mod v0.20.0 // indirect
