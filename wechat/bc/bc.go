@@ -11,6 +11,7 @@ import (
 
 type BcClient struct {
 	client *wechat.ClientV3
+	AppID  string
 }
 
 func NewBcClient(client *wechat.ClientV3) *BcClient {
@@ -20,7 +21,9 @@ func NewBcClient(client *wechat.ClientV3) *BcClient {
 func (c *BcClient) BCPointsSync(ctx context.Context, query bc.BusinessCirclePointsSync) error {
 	var bm gopay.BodyMap
 	bm.Set("transaction_id", query.TransactionID)
-	bm.Set("appid", query.AppID)
+
+	bm.Set("appid", c.AppID)
+
 	bm.Set("openid", query.OpenID)
 	bm.Set("earn_points", query.EarnPoints)
 	bm.Set("increased_points", query.IncreasedPoints)

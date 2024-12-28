@@ -9,8 +9,8 @@ type BcVoid struct {
 }
 
 type BusinessCirclePointsSync struct {
-	TransactionID    string    `json:"transactionID"`
-	AppID            string    `json:"appID"`
+	TransactionID string `json:"transactionID"`
+	//AppID            string    `json:"appID"`
 	OpenID           string    `json:"openID"`
 	EarnPoints       bool      `json:"earnPoints"`
 	IncreasedPoints  int       `json:"increasedPoints"`
