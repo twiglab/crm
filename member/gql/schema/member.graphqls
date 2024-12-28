@@ -1,0 +1,16 @@
+type MemberResp {
+  code: String!
+  phone: String!
+  nickname: String!
+  level: Int!
+  status: Int!
+}
+
+input CodeReq {
+  code: String!
+}
+
+
+type Query {
+  queryMemberByCode (input: CodeReq!): MemberResp!
+}
