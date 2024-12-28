@@ -10,6 +10,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1
+	github.com/twiglab/crm/psdk v0.0.0-20241228040240-9fd96c53bdac
 	github.com/twiglab/crm/wechat v0.0.0-20241218094246-ef94d18d94d3
 	github.com/vektah/gqlparser/v2 v2.5.20
 )

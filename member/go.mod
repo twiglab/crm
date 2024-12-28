@@ -8,9 +8,9 @@ require (
 	github.com/Khan/genqlient v0.7.0
 	github.com/go-chi/chi/v5 v5.2.0
 	github.com/google/uuid v1.6.0
-	github.com/it512/box v0.0.4
-	github.com/jackc/pgx/v5 v5.7.1
+	github.com/jackc/pgx/v5 v5.7.2
 	github.com/rabbitmq/amqp091-go v1.10.0
+	github.com/twiglab/crm/psdk v0.0.0-20241228040240-9fd96c53bdac
 	github.com/twiglab/crm/wechat v0.0.0-20241218134333-e40371dbd3b2
 	github.com/vektah/gqlparser/v2 v2.5.20
 )
