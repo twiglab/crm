@@ -11,11 +11,11 @@ import (
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 )
 
-type MemberAuthReciverHandle struct {
+type MemberAuthHandle struct {
 	Client *ent.Client
 }
 
-func (h *MemberAuthReciverHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
+func (h *MemberAuthHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
 	b := &msg.BusinessCircleAuthor{}
 	if _, err := b.UnmarshalMsg(delivery.Body); err != nil {
 		return
@@ -28,7 +28,7 @@ func (h *MemberAuthReciverHandle) RecieveDelivery(ctx context.Context, delivery 
 	_ = delivery.Ack(false)
 }
 
-func (h *MemberAuthReciverHandle) Handle(ctx context.Context, msg *msg.BusinessCircleAuthor) error {
+func (h *MemberAuthHandle) Handle(ctx context.Context, msg *msg.BusinessCircleAuthor) error {
 	q := h.Client.Member.Query()
 	mb, err := q.Where(member.WxOpenIDEQ(msg.OpenID)).Only(ctx)
 	if ent.IsNotFound(err) {

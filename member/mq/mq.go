@@ -78,7 +78,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) error {
 	//消费消息
 	messges, err := r.channel.Consume(
 		q.Name,
-		"memberAuth",
+		r.QueueName,
 		false,
 		false,
 		false,

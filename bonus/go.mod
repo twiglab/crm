@@ -9,7 +9,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/rabbitmq/amqp091-go v1.10.0
-	github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1
+	github.com/twiglab/crm/member v0.0.0-20241228012306-b762fa7c25b4
 	github.com/twiglab/crm/wechat v0.0.0-20241226134019-5b809f561a7d
 	github.com/vektah/gqlparser/v2 v2.5.20
 )
@@ -31,7 +31,7 @@ require (
 	github.com/tinylib/msgp v1.2.5 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/mod v0.20.0 // indirect
+	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 )

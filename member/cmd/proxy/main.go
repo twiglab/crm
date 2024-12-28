@@ -38,7 +38,7 @@ func main() {
 		ExitChan:  recvExitChan,
 	}
 
-	if err := q.Recieve(context.Background(), &mq.MemberAuthReciverHandle{Client: client}); err != nil {
+	if err := q.Recieve(context.Background(), &mq.MemberAuthHandle{Client: client}); err != nil {
 		log.Fatal(err)
 	}
 
