@@ -5,9 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-
 	"github.com/Khan/genqlient/graphql"
 
 	"github.com/twiglab/crm/psdk/conf"
@@ -38,9 +35,7 @@ func main() {
 
 	cli := &wxlogin.AuthClient{MemberCli: mb, WxCli: wx, Secret: secret}
 
-	root := chi.NewMux()
-
-	root.Use(middleware.Logger, middleware.Recoverer)
+	root := webx.Root()
 
 	root.Mount("/gql", gql.GQLRouter(cli))
 	root.Mount("/jwt", wxlogin.JWTVerify(secret))
