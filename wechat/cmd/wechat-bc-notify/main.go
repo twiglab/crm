@@ -16,7 +16,7 @@ func main() {
 	config.InitConfig(cfg)
 
 	conn := cfg.MQ.Create()
-	exchange := cfg.BcExchange.Create(conn)
+	exchange := cfg.BcExchange.CreateBcXMQ(conn)
 
 	bcc := bc.BcExchange{BC: exchange, ApiV3Key: cfg.Wechat.APIKey}
 

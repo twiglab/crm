@@ -35,6 +35,14 @@ func (c BcExchange) Create(conn *amqp.Connection) *mq.MQ {
 	return q
 }
 
+func (c BcExchange) CreateBcXMQ(conn *amqp.Connection) *mq.XMQ {
+	q, err := mq.BcMQ(conn, slog.Default())
+	if err != nil {
+		log.Fatal(err)
+	}
+	return q
+}
+
 type MQ struct {
 	Addr string `yaml:"addr" mapstructure:"addr"`
 }

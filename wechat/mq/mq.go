@@ -32,23 +32,16 @@ type MQ struct {
 	exchangeName string
 
 	ch *amqp.Channel
-
-	binit bool
 }
 
 func New(logger *slog.Logger, timeout time.Duration) *MQ {
 	return &MQ{
 		timeout: timeout,
 		logger:  logger,
-		binit:   false,
 	}
 }
 
 func (q *MQ) BuildWith(conn *amqp.Connection, exanme string) error {
-	if q.binit {
-		return nil
-	}
-
 	var err error
 
 	q.conn = conn
@@ -62,14 +55,16 @@ func (q *MQ) BuildWith(conn *amqp.Connection, exanme string) error {
 		q.exchangeName,     // name
 		amqp.ExchangeTopic, // type
 		true,               // durable
-		true,               // auto-deleted
+		false,              // auto-deleted
 		false,              // internal
 		false,              // no-wait
 		nil,                // arguments
 	)
+	if err != nil {
+		return err
+	}
 
-	q.binit = true
-	return err
+	return q.ch.Confirm(true)
 }
 
 func (mq *MQ) Send(ctx context.Context, routingKey string, msg amqp.Publishing) error {
@@ -79,7 +74,7 @@ func (mq *MQ) Send(ctx context.Context, routingKey string, msg amqp.Publishing) 
 	err := mq.ch.PublishWithContext(octx,
 		mq.exchangeName, // exchange
 		routingKey,      // routing key
-		false,           // mandatory
+		true,            // mandatory
 		false,           // immediate
 		msg,
 	)
