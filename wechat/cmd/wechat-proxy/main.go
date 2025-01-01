@@ -23,8 +23,8 @@ func main() {
 	cfg := &config.App{}
 
 	c := conf.WithContext(context.Background())
-	c.ReadInConfig()
-	c.Unmarshal(cfg)
+	_ = c.ReadInConfig()
+	_ = c.Unmarshal(cfg)
 
 	prog := config.CreateMiniProfram(cfg.Wechat)
 
