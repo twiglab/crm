@@ -8,7 +8,7 @@ import (
 )
 
 type ConfigCtx struct {
-	viper *viper.Viper
+	*viper.Viper
 	context.Context
 	fmt.Stringer
 }
@@ -20,29 +20,13 @@ func WithContext(ctx context.Context) *ConfigCtx {
 	v.AddConfigPath(".")
 	v.AutomaticEnv()
 
-	return &ConfigCtx{viper: v, Context: ctx}
+	return &ConfigCtx{Viper: v, Context: ctx}
 }
 
-func (c *ConfigCtx) SetConfigName(name string) {
-	c.viper.SetConfigName(name)
-}
-
-func (c *ConfigCtx) SetConfigType(typ string) {
-	c.viper.SetConfigType(typ)
-}
-
-func (c *ConfigCtx) AddConfigPath(paths ...string) {
+func (c *ConfigCtx) AddConfigPaths(paths ...string) {
 	for _, path := range paths {
-		c.viper.AddConfigPath(path)
+		c.Viper.AddConfigPath(path)
 	}
-}
-
-func (c *ConfigCtx) ReadInConfig() error {
-	return c.viper.ReadInConfig()
-}
-
-func (c *ConfigCtx) Unmarshal(v any) error {
-	return c.viper.Unmarshal(v)
 }
 
 func (c *ConfigCtx) Value(key any) any {
@@ -52,7 +36,7 @@ func (c *ConfigCtx) Value(key any) any {
 		return c.Context.Value(key)
 	}
 
-	if val := c.viper.Get(vk); val != nil {
+	if val := c.Viper.Get(vk); val != nil {
 		return val
 	}
 	return c.Context.Value(key)

@@ -44,5 +44,4 @@ func main() {
 	if err := webx.ListenAndServe(appConf.Web.Addr, root); err != nil {
 		log.Fatal(err)
 	}
-
 }
