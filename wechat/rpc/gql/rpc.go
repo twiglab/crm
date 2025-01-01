@@ -4,6 +4,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi/v5"
 
+	"github.com/twiglab/crm/psdk/gqlx"
 	"github.com/twiglab/crm/wechat/rpc/gql/graph"
 	"github.com/twiglab/crm/wechat/sns"
 )
@@ -15,7 +16,7 @@ func New(a *sns.Auth) chi.Router {
 		},
 	)
 
-	srv := NewSvr(es)
+	srv := gqlx.NewGQLHandler(es)
 
 	r := chi.NewRouter()
 	r.Handle("/", playground.ApolloSandboxHandler("rpc", "/gqlrpc/query"))
