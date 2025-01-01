@@ -16,7 +16,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/99designs/gqlgen/plugin/federation/fedruntime"
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
-	"github.com/twiglab/crm/wechat/testbed/gql/graph/model"
+	"github.com/twiglab/crm/wechat/testbed/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -484,7 +484,7 @@ func (ec *executionContext) _Query_testAuth(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(*model.Result)
 	fc.Result = res
-	return ec.marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgqlᚋgraphᚋmodelᚐResult(ctx, field.Selections, res)
+	return ec.marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgraphᚋmodelᚐResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_testAuth(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -543,7 +543,7 @@ func (ec *executionContext) _Query_testPayment(ctx context.Context, field graphq
 	}
 	res := resTmp.(*model.Result)
 	fc.Result = res
-	return ec.marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgqlᚋgraphᚋmodelᚐResult(ctx, field.Selections, res)
+	return ec.marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgraphᚋmodelᚐResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_testPayment(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3391,11 +3391,11 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) marshalNResult2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgqlᚋgraphᚋmodelᚐResult(ctx context.Context, sel ast.SelectionSet, v model.Result) graphql.Marshaler {
+func (ec *executionContext) marshalNResult2githubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgraphᚋmodelᚐResult(ctx context.Context, sel ast.SelectionSet, v model.Result) graphql.Marshaler {
 	return ec._Result(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgqlᚋgraphᚋmodelᚐResult(ctx context.Context, sel ast.SelectionSet, v *model.Result) graphql.Marshaler {
+func (ec *executionContext) marshalNResult2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋwechatᚋtestbedᚋgraphᚋmodelᚐResult(ctx context.Context, sel ast.SelectionSet, v *model.Result) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")

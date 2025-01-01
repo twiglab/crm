@@ -42,6 +42,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Query() QueryResolver
+	BusinessCirclePointsSync() BusinessCirclePointsSyncResolver
 }
 
 type DirectiveRoot struct {
@@ -71,6 +72,10 @@ type ComplexityRoot struct {
 type QueryResolver interface {
 	AuthUser(ctx context.Context, input sns.JsCodeReq) (*sns.AuthUserResp, error)
 	BcPointSync(ctx context.Context, input bc.BusinessCirclePointsSync) (*bc.BcVoid, error)
+}
+
+type BusinessCirclePointsSyncResolver interface {
+	AppID(ctx context.Context, obj *bc.BusinessCirclePointsSync, data string) error
 }
 
 type executableSchema struct {
@@ -2737,7 +2742,9 @@ func (ec *executionContext) unmarshalInputBusinessCirclePointsSync(ctx context.C
 			if err != nil {
 				return it, err
 			}
-			it.AppID = data
+			if err = ec.resolvers.BusinessCirclePointsSync().AppID(ctx, &it, data); err != nil {
+				return it, err
+			}
 		case "openID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("openID"))
 			data, err := ec.unmarshalNString2string(ctx, v)

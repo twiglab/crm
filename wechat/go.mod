@@ -13,6 +13,7 @@ require (
 	github.com/silenceper/wechat/v2 v2.1.7
 	github.com/spf13/viper v1.19.0
 	github.com/tinylib/msgp v1.2.5
+	github.com/twiglab/crm/psdk v0.0.0-20250101012210-7b859708de6a
 	github.com/vektah/gqlparser/v2 v2.5.21
 )
 
