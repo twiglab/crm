@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -27,7 +29,7 @@ func main() {
 
 	q := config.AuthQueue(conn)
 
-	ctx, cancelFn := context.WithCancel(context.Background())
+	ctx, cancelFn := context.WithCancel(configCtx)
 	defer cancelFn()
 
 	if err := q.Recieve(ctx, &mq.MemberAuthHandle{Client: client}); err != nil {
@@ -37,5 +39,15 @@ func main() {
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(client))
-	log.Fatal(http.ListenAndServe(cfg.Web.Addr, mux))
+
+	svr := &http.Server{
+		Addr:        cfg.Web.Addr,
+		IdleTimeout: 10 * time.Second,
+		Handler:     mux,
+		BaseContext: func(_ net.Listener) context.Context { return configCtx },
+	}
+
+	if err := svr.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }
