@@ -2,12 +2,18 @@ package mq
 
 import (
 	"context"
+	"log"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func Dial(url string) (*amqp.Connection, error) {
-	return amqp.Dial(url)
+func MustDial(url string) *amqp.Connection {
+	conn, err := amqp.Dial(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return conn
 }
 
 type RecieverHandler interface {

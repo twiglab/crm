@@ -2,27 +2,40 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/twiglab/crm/member/orm"
+	"github.com/twiglab/crm/member/cmd/member/config"
+	"github.com/twiglab/crm/member/mq"
 	"github.com/twiglab/crm/member/rpc/gql"
+	"github.com/twiglab/crm/psdk/conf"
 )
 
-const DATABASE_URL = "user=crm password=cRm9ijn)OKM host=pipi.dev port=5432 database=crm sslmode=disable"
-
 func main() {
-	db, err := orm.FromURL(context.Background(), DATABASE_URL)
-	if err != nil {
+	cfg := config.App{}
+	configCtx := conf.WithContext(context.Background())
+	_ = configCtx.ReadInConfig()
+	_ = configCtx.Unmarshal(&cfg)
+
+	fmt.Println(cfg)
+
+	client := config.EntClient(cfg.DB)
+	conn := config.MQConn(cfg.MQ)
+
+	q := config.AuthQueue(conn)
+
+	ctx, cancelFn := context.WithCancel(context.Background())
+	defer cancelFn()
+
+	if err := q.Recieve(ctx, &mq.MemberAuthHandle{Client: client}); err != nil {
 		log.Fatal(err)
 	}
-
-	client := orm.OpenClient(db)
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(client))
-	log.Fatal(http.ListenAndServe(":10008", mux))
+	log.Fatal(http.ListenAndServe(cfg.Web.Addr, mux))
 }
