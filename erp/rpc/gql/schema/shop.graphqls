@@ -1,0 +1,24 @@
+type ShopResp{
+  mallCode: String!
+  mallName: String!
+  contractCode: String!
+  posCode: String!
+  shopCode: String!
+  shopName: String!
+
+  bizClass1: String!
+  bizClassName1: String!
+  bizClass2: String!
+  bizClassName2: String!
+
+  status: Int!
+}
+
+input QryShopReq {
+  shopCode: String!
+}
+
+type Query {
+  qryShopByCode(input: QryShopReq!): ShopResp!
+}
+
