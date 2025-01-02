@@ -4,7 +4,6 @@ package poly
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/google/uuid"
 )
 
 const (
@@ -16,18 +15,12 @@ const (
 	FieldCode = "code"
 	// FieldMallCode holds the string denoting the mall_code field in the database.
 	FieldMallCode = "mall_code"
-	// FieldOperator holds the string denoting the operator field in the database.
-	FieldOperator = "operator"
-	// FieldAddTime holds the string denoting the add_time field in the database.
-	FieldAddTime = "add_time"
 	// FieldRuleCode holds the string denoting the rule_code field in the database.
 	FieldRuleCode = "rule_code"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldDesc holds the string denoting the desc field in the database.
 	FieldDesc = "desc"
-	// FieldBudget holds the string denoting the budget field in the database.
-	FieldBudget = "budget"
 	// FieldStartTime holds the string denoting the start_time field in the database.
 	FieldStartTime = "start_time"
 	// FieldEndTime holds the string denoting the end_time field in the database.
@@ -45,12 +38,9 @@ var Columns = []string{
 	FieldID,
 	FieldCode,
 	FieldMallCode,
-	FieldOperator,
-	FieldAddTime,
 	FieldRuleCode,
 	FieldName,
 	FieldDesc,
-	FieldBudget,
 	FieldStartTime,
 	FieldEndTime,
 	FieldStatus,
@@ -74,8 +64,6 @@ var (
 	CodeValidator func(string) error
 	// MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
 	MallCodeValidator func(string) error
-	// OperatorValidator is a validator for the "operator" field. It is called by the builders before save.
-	OperatorValidator func(string) error
 	// RuleCodeValidator is a validator for the "rule_code" field. It is called by the builders before save.
 	RuleCodeValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
@@ -86,8 +74,6 @@ var (
 	DefaultStatus int
 	// DefaultType holds the default value on creation for the "type" field.
 	DefaultType int
-	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() uuid.UUID
 )
 
 // OrderOption defines the ordering options for the Poly queries.
@@ -108,16 +94,6 @@ func ByMallCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMallCode, opts...).ToFunc()
 }
 
-// ByOperator orders the results by the operator field.
-func ByOperator(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOperator, opts...).ToFunc()
-}
-
-// ByAddTime orders the results by the add_time field.
-func ByAddTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAddTime, opts...).ToFunc()
-}
-
 // ByRuleCode orders the results by the rule_code field.
 func ByRuleCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRuleCode, opts...).ToFunc()
@@ -131,11 +107,6 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByDesc orders the results by the desc field.
 func ByDesc(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDesc, opts...).ToFunc()
-}
-
-// ByBudget orders the results by the budget field.
-func ByBudget(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBudget, opts...).ToFunc()
 }
 
 // ByStartTime orders the results by the start_time field.

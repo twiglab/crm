@@ -19,7 +19,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   poly.Table,
 			Columns: poly.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: poly.FieldID,
 			},
 		},
@@ -27,12 +27,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 		Fields: map[string]*sqlgraph.FieldSpec{
 			poly.FieldCode:      {Type: field.TypeString, Column: poly.FieldCode},
 			poly.FieldMallCode:  {Type: field.TypeString, Column: poly.FieldMallCode},
-			poly.FieldOperator:  {Type: field.TypeString, Column: poly.FieldOperator},
-			poly.FieldAddTime:   {Type: field.TypeTime, Column: poly.FieldAddTime},
 			poly.FieldRuleCode:  {Type: field.TypeString, Column: poly.FieldRuleCode},
 			poly.FieldName:      {Type: field.TypeString, Column: poly.FieldName},
 			poly.FieldDesc:      {Type: field.TypeString, Column: poly.FieldDesc},
-			poly.FieldBudget:    {Type: field.TypeInt64, Column: poly.FieldBudget},
 			poly.FieldStartTime: {Type: field.TypeTime, Column: poly.FieldStartTime},
 			poly.FieldEndTime:   {Type: field.TypeTime, Column: poly.FieldEndTime},
 			poly.FieldStatus:    {Type: field.TypeInt, Column: poly.FieldStatus},
@@ -83,8 +80,8 @@ func (f *PolyFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *PolyFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql int predicate on the id field.
+func (f *PolyFilter) WhereID(p entql.IntP) {
 	f.Where(p.Field(poly.FieldID))
 }
 
@@ -96,16 +93,6 @@ func (f *PolyFilter) WhereCode(p entql.StringP) {
 // WhereMallCode applies the entql string predicate on the mall_code field.
 func (f *PolyFilter) WhereMallCode(p entql.StringP) {
 	f.Where(p.Field(poly.FieldMallCode))
-}
-
-// WhereOperator applies the entql string predicate on the operator field.
-func (f *PolyFilter) WhereOperator(p entql.StringP) {
-	f.Where(p.Field(poly.FieldOperator))
-}
-
-// WhereAddTime applies the entql time.Time predicate on the add_time field.
-func (f *PolyFilter) WhereAddTime(p entql.TimeP) {
-	f.Where(p.Field(poly.FieldAddTime))
 }
 
 // WhereRuleCode applies the entql string predicate on the rule_code field.
@@ -121,11 +108,6 @@ func (f *PolyFilter) WhereName(p entql.StringP) {
 // WhereDesc applies the entql string predicate on the desc field.
 func (f *PolyFilter) WhereDesc(p entql.StringP) {
 	f.Where(p.Field(poly.FieldDesc))
-}
-
-// WhereBudget applies the entql int64 predicate on the budget field.
-func (f *PolyFilter) WhereBudget(p entql.Int64P) {
-	f.Where(p.Field(poly.FieldBudget))
 }
 
 // WhereStartTime applies the entql time.Time predicate on the start_time field.

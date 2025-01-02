@@ -9,7 +9,6 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
@@ -17,23 +16,17 @@ import (
 type Poly struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uuid.UUID `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
 	// MallCode holds the value of the "mall_code" field.
 	MallCode string `json:"mall_code,omitempty"`
-	// Operator holds the value of the "operator" field.
-	Operator string `json:"operator,omitempty"`
-	// AddTime holds the value of the "add_time" field.
-	AddTime time.Time `json:"add_time,omitempty"`
 	// RuleCode holds the value of the "rule_code" field.
 	RuleCode string `json:"rule_code,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Desc holds the value of the "desc" field.
 	Desc string `json:"desc,omitempty"`
-	// Budget holds the value of the "budget" field.
-	Budget int64 `json:"budget,omitempty"`
 	// StartTime holds the value of the "start_time" field.
 	StartTime time.Time `json:"start_time,omitempty"`
 	// EndTime holds the value of the "end_time" field.
@@ -50,14 +43,12 @@ func (*Poly) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case poly.FieldBudget, poly.FieldStatus, poly.FieldType:
+		case poly.FieldID, poly.FieldStatus, poly.FieldType:
 			values[i] = new(sql.NullInt64)
-		case poly.FieldCode, poly.FieldMallCode, poly.FieldOperator, poly.FieldRuleCode, poly.FieldName, poly.FieldDesc:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldRuleCode, poly.FieldName, poly.FieldDesc:
 			values[i] = new(sql.NullString)
-		case poly.FieldAddTime, poly.FieldStartTime, poly.FieldEndTime:
+		case poly.FieldStartTime, poly.FieldEndTime:
 			values[i] = new(sql.NullTime)
-		case poly.FieldID:
-			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -74,11 +65,11 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case poly.FieldID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				po.ID = *value
+			value, ok := values[i].(*sql.NullInt64)
+			if !ok {
+				return fmt.Errorf("unexpected type %T for field id", value)
 			}
+			po.ID = int(value.Int64)
 		case poly.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
@@ -90,18 +81,6 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field mall_code", values[i])
 			} else if value.Valid {
 				po.MallCode = value.String
-			}
-		case poly.FieldOperator:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field operator", values[i])
-			} else if value.Valid {
-				po.Operator = value.String
-			}
-		case poly.FieldAddTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field add_time", values[i])
-			} else if value.Valid {
-				po.AddTime = value.Time
 			}
 		case poly.FieldRuleCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -120,12 +99,6 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
 				po.Desc = value.String
-			}
-		case poly.FieldBudget:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field budget", values[i])
-			} else if value.Valid {
-				po.Budget = value.Int64
 			}
 		case poly.FieldStartTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -193,12 +166,6 @@ func (po *Poly) String() string {
 	builder.WriteString("mall_code=")
 	builder.WriteString(po.MallCode)
 	builder.WriteString(", ")
-	builder.WriteString("operator=")
-	builder.WriteString(po.Operator)
-	builder.WriteString(", ")
-	builder.WriteString("add_time=")
-	builder.WriteString(po.AddTime.Format(time.ANSIC))
-	builder.WriteString(", ")
 	builder.WriteString("rule_code=")
 	builder.WriteString(po.RuleCode)
 	builder.WriteString(", ")
@@ -207,9 +174,6 @@ func (po *Poly) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("desc=")
 	builder.WriteString(po.Desc)
-	builder.WriteString(", ")
-	builder.WriteString("budget=")
-	builder.WriteString(fmt.Sprintf("%v", po.Budget))
 	builder.WriteString(", ")
 	builder.WriteString("start_time=")
 	builder.WriteString(po.StartTime.Format(time.ANSIC))
