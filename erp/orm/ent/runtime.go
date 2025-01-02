@@ -60,44 +60,56 @@ func init() {
 	shopDescContractCode := shopFields[3].Descriptor()
 	// shop.ContractCodeValidator is a validator for the "contract_code" field. It is called by the builders before save.
 	shop.ContractCodeValidator = shopDescContractCode.Validators[0].(func(string) error)
-	// shopDescPosCode is the schema descriptor for pos_code field.
-	shopDescPosCode := shopFields[4].Descriptor()
-	// shop.PosCodeValidator is a validator for the "pos_code" field. It is called by the builders before save.
-	shop.PosCodeValidator = shopDescPosCode.Validators[0].(func(string) error)
+	// shopDescFloor is the schema descriptor for floor field.
+	shopDescFloor := shopFields[4].Descriptor()
+	// shop.FloorValidator is a validator for the "floor" field. It is called by the builders before save.
+	shop.FloorValidator = shopDescFloor.Validators[0].(func(string) error)
+	// shopDescPos is the schema descriptor for pos field.
+	shopDescPos := shopFields[5].Descriptor()
+	// shop.PosValidator is a validator for the "pos" field. It is called by the builders before save.
+	shop.PosValidator = shopDescPos.Validators[0].(func(string) error)
 	// shopDescShopCode is the schema descriptor for shop_code field.
-	shopDescShopCode := shopFields[5].Descriptor()
+	shopDescShopCode := shopFields[6].Descriptor()
 	// shop.ShopCodeValidator is a validator for the "shop_code" field. It is called by the builders before save.
 	shop.ShopCodeValidator = shopDescShopCode.Validators[0].(func(string) error)
 	// shopDescShopName is the schema descriptor for shop_name field.
-	shopDescShopName := shopFields[6].Descriptor()
+	shopDescShopName := shopFields[7].Descriptor()
 	// shop.ShopNameValidator is a validator for the "shop_name" field. It is called by the builders before save.
 	shop.ShopNameValidator = shopDescShopName.Validators[0].(func(string) error)
 	// shopDescBizClass1 is the schema descriptor for biz_class_1 field.
-	shopDescBizClass1 := shopFields[7].Descriptor()
+	shopDescBizClass1 := shopFields[8].Descriptor()
 	// shop.BizClass1Validator is a validator for the "biz_class_1" field. It is called by the builders before save.
 	shop.BizClass1Validator = shopDescBizClass1.Validators[0].(func(string) error)
 	// shopDescBizClassName1 is the schema descriptor for biz_class_name_1 field.
-	shopDescBizClassName1 := shopFields[8].Descriptor()
+	shopDescBizClassName1 := shopFields[9].Descriptor()
 	// shop.BizClassName1Validator is a validator for the "biz_class_name_1" field. It is called by the builders before save.
 	shop.BizClassName1Validator = shopDescBizClassName1.Validators[0].(func(string) error)
 	// shopDescBizClass2 is the schema descriptor for biz_class_2 field.
-	shopDescBizClass2 := shopFields[9].Descriptor()
+	shopDescBizClass2 := shopFields[10].Descriptor()
 	// shop.BizClass2Validator is a validator for the "biz_class_2" field. It is called by the builders before save.
 	shop.BizClass2Validator = shopDescBizClass2.Validators[0].(func(string) error)
 	// shopDescBizClassName2 is the schema descriptor for biz_class_name_2 field.
-	shopDescBizClassName2 := shopFields[10].Descriptor()
+	shopDescBizClassName2 := shopFields[11].Descriptor()
 	// shop.BizClassName2Validator is a validator for the "biz_class_name_2" field. It is called by the builders before save.
 	shop.BizClassName2Validator = shopDescBizClassName2.Validators[0].(func(string) error)
-	// shopDescBizBeginTime is the schema descriptor for biz_begin_time field.
-	shopDescBizBeginTime := shopFields[11].Descriptor()
-	// shop.DefaultBizBeginTime holds the default value on creation for the biz_begin_time field.
-	shop.DefaultBizBeginTime = shopDescBizBeginTime.Default.(func() time.Time)
-	// shopDescBizEndTime is the schema descriptor for biz_end_time field.
-	shopDescBizEndTime := shopFields[12].Descriptor()
-	// shop.DefaultBizEndTime holds the default value on creation for the biz_end_time field.
-	shop.DefaultBizEndTime = shopDescBizEndTime.Default.(func() time.Time)
 	// shopDescStatus is the schema descriptor for status field.
-	shopDescStatus := shopFields[13].Descriptor()
+	shopDescStatus := shopFields[12].Descriptor()
 	// shop.DefaultStatus holds the default value on creation for the status field.
-	shop.DefaultStatus = shopDescStatus.Default.(int)
+	shop.DefaultStatus = shopDescStatus.Default.(string)
+	// shop.StatusValidator is a validator for the "status" field. It is called by the builders before save.
+	shop.StatusValidator = func() func(string) error {
+		validators := shopDescStatus.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(status string) error {
+			for _, fn := range fns {
+				if err := fn(status); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 }

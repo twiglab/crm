@@ -39,17 +39,15 @@ type ShopMutation struct {
 	mall_code        *string
 	mall_name        *string
 	contract_code    *string
-	pos_code         *string
+	floor            *string
+	pos              *string
 	shop_code        *string
 	shop_name        *string
 	biz_class_1      *string
 	biz_class_name_1 *string
 	biz_class_2      *string
 	biz_class_name_2 *string
-	biz_begin_time   *time.Time
-	biz_end_time     *time.Time
-	status           *int
-	addstatus        *int
+	status           *string
 	clearedFields    map[string]struct{}
 	done             bool
 	oldValue         func(context.Context) (*Shop, error)
@@ -370,40 +368,76 @@ func (m *ShopMutation) ResetContractCode() {
 	m.contract_code = nil
 }
 
-// SetPosCode sets the "pos_code" field.
-func (m *ShopMutation) SetPosCode(s string) {
-	m.pos_code = &s
+// SetFloor sets the "floor" field.
+func (m *ShopMutation) SetFloor(s string) {
+	m.floor = &s
 }
 
-// PosCode returns the value of the "pos_code" field in the mutation.
-func (m *ShopMutation) PosCode() (r string, exists bool) {
-	v := m.pos_code
+// Floor returns the value of the "floor" field in the mutation.
+func (m *ShopMutation) Floor() (r string, exists bool) {
+	v := m.floor
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPosCode returns the old "pos_code" field's value of the Shop entity.
+// OldFloor returns the old "floor" field's value of the Shop entity.
 // If the Shop object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ShopMutation) OldPosCode(ctx context.Context) (v string, err error) {
+func (m *ShopMutation) OldFloor(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPosCode is only allowed on UpdateOne operations")
+		return v, errors.New("OldFloor is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPosCode requires an ID field in the mutation")
+		return v, errors.New("OldFloor requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPosCode: %w", err)
+		return v, fmt.Errorf("querying old value for OldFloor: %w", err)
 	}
-	return oldValue.PosCode, nil
+	return oldValue.Floor, nil
 }
 
-// ResetPosCode resets all changes to the "pos_code" field.
-func (m *ShopMutation) ResetPosCode() {
-	m.pos_code = nil
+// ResetFloor resets all changes to the "floor" field.
+func (m *ShopMutation) ResetFloor() {
+	m.floor = nil
+}
+
+// SetPos sets the "pos" field.
+func (m *ShopMutation) SetPos(s string) {
+	m.pos = &s
+}
+
+// Pos returns the value of the "pos" field in the mutation.
+func (m *ShopMutation) Pos() (r string, exists bool) {
+	v := m.pos
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPos returns the old "pos" field's value of the Shop entity.
+// If the Shop object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ShopMutation) OldPos(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPos is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPos requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPos: %w", err)
+	}
+	return oldValue.Pos, nil
+}
+
+// ResetPos resets all changes to the "pos" field.
+func (m *ShopMutation) ResetPos() {
+	m.pos = nil
 }
 
 // SetShopCode sets the "shop_code" field.
@@ -674,86 +708,13 @@ func (m *ShopMutation) ResetBizClassName2() {
 	delete(m.clearedFields, shop.FieldBizClassName2)
 }
 
-// SetBizBeginTime sets the "biz_begin_time" field.
-func (m *ShopMutation) SetBizBeginTime(t time.Time) {
-	m.biz_begin_time = &t
-}
-
-// BizBeginTime returns the value of the "biz_begin_time" field in the mutation.
-func (m *ShopMutation) BizBeginTime() (r time.Time, exists bool) {
-	v := m.biz_begin_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldBizBeginTime returns the old "biz_begin_time" field's value of the Shop entity.
-// If the Shop object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ShopMutation) OldBizBeginTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldBizBeginTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldBizBeginTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldBizBeginTime: %w", err)
-	}
-	return oldValue.BizBeginTime, nil
-}
-
-// ResetBizBeginTime resets all changes to the "biz_begin_time" field.
-func (m *ShopMutation) ResetBizBeginTime() {
-	m.biz_begin_time = nil
-}
-
-// SetBizEndTime sets the "biz_end_time" field.
-func (m *ShopMutation) SetBizEndTime(t time.Time) {
-	m.biz_end_time = &t
-}
-
-// BizEndTime returns the value of the "biz_end_time" field in the mutation.
-func (m *ShopMutation) BizEndTime() (r time.Time, exists bool) {
-	v := m.biz_end_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldBizEndTime returns the old "biz_end_time" field's value of the Shop entity.
-// If the Shop object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ShopMutation) OldBizEndTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldBizEndTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldBizEndTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldBizEndTime: %w", err)
-	}
-	return oldValue.BizEndTime, nil
-}
-
-// ResetBizEndTime resets all changes to the "biz_end_time" field.
-func (m *ShopMutation) ResetBizEndTime() {
-	m.biz_end_time = nil
-}
-
 // SetStatus sets the "status" field.
-func (m *ShopMutation) SetStatus(i int) {
-	m.status = &i
-	m.addstatus = nil
+func (m *ShopMutation) SetStatus(s string) {
+	m.status = &s
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *ShopMutation) Status() (r int, exists bool) {
+func (m *ShopMutation) Status() (r string, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -764,7 +725,7 @@ func (m *ShopMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the Shop entity.
 // If the Shop object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ShopMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *ShopMutation) OldStatus(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -778,28 +739,9 @@ func (m *ShopMutation) OldStatus(ctx context.Context) (v int, err error) {
 	return oldValue.Status, nil
 }
 
-// AddStatus adds i to the "status" field.
-func (m *ShopMutation) AddStatus(i int) {
-	if m.addstatus != nil {
-		*m.addstatus += i
-	} else {
-		m.addstatus = &i
-	}
-}
-
-// AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *ShopMutation) AddedStatus() (r int, exists bool) {
-	v := m.addstatus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *ShopMutation) ResetStatus() {
 	m.status = nil
-	m.addstatus = nil
 }
 
 // Where appends a list predicates to the ShopMutation builder.
@@ -836,7 +778,7 @@ func (m *ShopMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ShopMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 15)
 	if m.create_time != nil {
 		fields = append(fields, shop.FieldCreateTime)
 	}
@@ -855,8 +797,11 @@ func (m *ShopMutation) Fields() []string {
 	if m.contract_code != nil {
 		fields = append(fields, shop.FieldContractCode)
 	}
-	if m.pos_code != nil {
-		fields = append(fields, shop.FieldPosCode)
+	if m.floor != nil {
+		fields = append(fields, shop.FieldFloor)
+	}
+	if m.pos != nil {
+		fields = append(fields, shop.FieldPos)
 	}
 	if m.shop_code != nil {
 		fields = append(fields, shop.FieldShopCode)
@@ -875,12 +820,6 @@ func (m *ShopMutation) Fields() []string {
 	}
 	if m.biz_class_name_2 != nil {
 		fields = append(fields, shop.FieldBizClassName2)
-	}
-	if m.biz_begin_time != nil {
-		fields = append(fields, shop.FieldBizBeginTime)
-	}
-	if m.biz_end_time != nil {
-		fields = append(fields, shop.FieldBizEndTime)
 	}
 	if m.status != nil {
 		fields = append(fields, shop.FieldStatus)
@@ -905,8 +844,10 @@ func (m *ShopMutation) Field(name string) (ent.Value, bool) {
 		return m.MallName()
 	case shop.FieldContractCode:
 		return m.ContractCode()
-	case shop.FieldPosCode:
-		return m.PosCode()
+	case shop.FieldFloor:
+		return m.Floor()
+	case shop.FieldPos:
+		return m.Pos()
 	case shop.FieldShopCode:
 		return m.ShopCode()
 	case shop.FieldShopName:
@@ -919,10 +860,6 @@ func (m *ShopMutation) Field(name string) (ent.Value, bool) {
 		return m.BizClass2()
 	case shop.FieldBizClassName2:
 		return m.BizClassName2()
-	case shop.FieldBizBeginTime:
-		return m.BizBeginTime()
-	case shop.FieldBizEndTime:
-		return m.BizEndTime()
 	case shop.FieldStatus:
 		return m.Status()
 	}
@@ -946,8 +883,10 @@ func (m *ShopMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldMallName(ctx)
 	case shop.FieldContractCode:
 		return m.OldContractCode(ctx)
-	case shop.FieldPosCode:
-		return m.OldPosCode(ctx)
+	case shop.FieldFloor:
+		return m.OldFloor(ctx)
+	case shop.FieldPos:
+		return m.OldPos(ctx)
 	case shop.FieldShopCode:
 		return m.OldShopCode(ctx)
 	case shop.FieldShopName:
@@ -960,10 +899,6 @@ func (m *ShopMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldBizClass2(ctx)
 	case shop.FieldBizClassName2:
 		return m.OldBizClassName2(ctx)
-	case shop.FieldBizBeginTime:
-		return m.OldBizBeginTime(ctx)
-	case shop.FieldBizEndTime:
-		return m.OldBizEndTime(ctx)
 	case shop.FieldStatus:
 		return m.OldStatus(ctx)
 	}
@@ -1017,12 +952,19 @@ func (m *ShopMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetContractCode(v)
 		return nil
-	case shop.FieldPosCode:
+	case shop.FieldFloor:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPosCode(v)
+		m.SetFloor(v)
+		return nil
+	case shop.FieldPos:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPos(v)
 		return nil
 	case shop.FieldShopCode:
 		v, ok := value.(string)
@@ -1066,22 +1008,8 @@ func (m *ShopMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBizClassName2(v)
 		return nil
-	case shop.FieldBizBeginTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetBizBeginTime(v)
-		return nil
-	case shop.FieldBizEndTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetBizEndTime(v)
-		return nil
 	case shop.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1094,21 +1022,13 @@ func (m *ShopMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *ShopMutation) AddedFields() []string {
-	var fields []string
-	if m.addstatus != nil {
-		fields = append(fields, shop.FieldStatus)
-	}
-	return fields
+	return nil
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *ShopMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case shop.FieldStatus:
-		return m.AddedStatus()
-	}
 	return nil, false
 }
 
@@ -1117,13 +1037,6 @@ func (m *ShopMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *ShopMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case shop.FieldStatus:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddStatus(v)
-		return nil
 	}
 	return fmt.Errorf("unknown Shop numeric field %s", name)
 }
@@ -1196,8 +1109,11 @@ func (m *ShopMutation) ResetField(name string) error {
 	case shop.FieldContractCode:
 		m.ResetContractCode()
 		return nil
-	case shop.FieldPosCode:
-		m.ResetPosCode()
+	case shop.FieldFloor:
+		m.ResetFloor()
+		return nil
+	case shop.FieldPos:
+		m.ResetPos()
 		return nil
 	case shop.FieldShopCode:
 		m.ResetShopCode()
@@ -1216,12 +1132,6 @@ func (m *ShopMutation) ResetField(name string) error {
 		return nil
 	case shop.FieldBizClassName2:
 		m.ResetBizClassName2()
-		return nil
-	case shop.FieldBizBeginTime:
-		m.ResetBizBeginTime()
-		return nil
-	case shop.FieldBizEndTime:
-		m.ResetBizEndTime()
 		return nil
 	case shop.FieldStatus:
 		m.ResetStatus()

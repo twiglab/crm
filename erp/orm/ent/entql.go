@@ -31,16 +31,15 @@ var schemaGraph = func() *sqlgraph.Schema {
 			shop.FieldMallCode:      {Type: field.TypeString, Column: shop.FieldMallCode},
 			shop.FieldMallName:      {Type: field.TypeString, Column: shop.FieldMallName},
 			shop.FieldContractCode:  {Type: field.TypeString, Column: shop.FieldContractCode},
-			shop.FieldPosCode:       {Type: field.TypeString, Column: shop.FieldPosCode},
+			shop.FieldFloor:         {Type: field.TypeString, Column: shop.FieldFloor},
+			shop.FieldPos:           {Type: field.TypeString, Column: shop.FieldPos},
 			shop.FieldShopCode:      {Type: field.TypeString, Column: shop.FieldShopCode},
 			shop.FieldShopName:      {Type: field.TypeString, Column: shop.FieldShopName},
 			shop.FieldBizClass1:     {Type: field.TypeString, Column: shop.FieldBizClass1},
 			shop.FieldBizClassName1: {Type: field.TypeString, Column: shop.FieldBizClassName1},
 			shop.FieldBizClass2:     {Type: field.TypeString, Column: shop.FieldBizClass2},
 			shop.FieldBizClassName2: {Type: field.TypeString, Column: shop.FieldBizClassName2},
-			shop.FieldBizBeginTime:  {Type: field.TypeTime, Column: shop.FieldBizBeginTime},
-			shop.FieldBizEndTime:    {Type: field.TypeTime, Column: shop.FieldBizEndTime},
-			shop.FieldStatus:        {Type: field.TypeInt, Column: shop.FieldStatus},
+			shop.FieldStatus:        {Type: field.TypeString, Column: shop.FieldStatus},
 		},
 	}
 	return graph
@@ -122,9 +121,14 @@ func (f *ShopFilter) WhereContractCode(p entql.StringP) {
 	f.Where(p.Field(shop.FieldContractCode))
 }
 
-// WherePosCode applies the entql string predicate on the pos_code field.
-func (f *ShopFilter) WherePosCode(p entql.StringP) {
-	f.Where(p.Field(shop.FieldPosCode))
+// WhereFloor applies the entql string predicate on the floor field.
+func (f *ShopFilter) WhereFloor(p entql.StringP) {
+	f.Where(p.Field(shop.FieldFloor))
+}
+
+// WherePos applies the entql string predicate on the pos field.
+func (f *ShopFilter) WherePos(p entql.StringP) {
+	f.Where(p.Field(shop.FieldPos))
 }
 
 // WhereShopCode applies the entql string predicate on the shop_code field.
@@ -157,17 +161,7 @@ func (f *ShopFilter) WhereBizClassName2(p entql.StringP) {
 	f.Where(p.Field(shop.FieldBizClassName2))
 }
 
-// WhereBizBeginTime applies the entql time.Time predicate on the biz_begin_time field.
-func (f *ShopFilter) WhereBizBeginTime(p entql.TimeP) {
-	f.Where(p.Field(shop.FieldBizBeginTime))
-}
-
-// WhereBizEndTime applies the entql time.Time predicate on the biz_end_time field.
-func (f *ShopFilter) WhereBizEndTime(p entql.TimeP) {
-	f.Where(p.Field(shop.FieldBizEndTime))
-}
-
-// WhereStatus applies the entql int predicate on the status field.
-func (f *ShopFilter) WhereStatus(p entql.IntP) {
+// WhereStatus applies the entql string predicate on the status field.
+func (f *ShopFilter) WhereStatus(p entql.StringP) {
 	f.Where(p.Field(shop.FieldStatus))
 }

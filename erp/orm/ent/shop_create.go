@@ -82,9 +82,15 @@ func (sc *ShopCreate) SetContractCode(s string) *ShopCreate {
 	return sc
 }
 
-// SetPosCode sets the "pos_code" field.
-func (sc *ShopCreate) SetPosCode(s string) *ShopCreate {
-	sc.mutation.SetPosCode(s)
+// SetFloor sets the "floor" field.
+func (sc *ShopCreate) SetFloor(s string) *ShopCreate {
+	sc.mutation.SetFloor(s)
+	return sc
+}
+
+// SetPos sets the "pos" field.
+func (sc *ShopCreate) SetPos(s string) *ShopCreate {
+	sc.mutation.SetPos(s)
 	return sc
 }
 
@@ -156,44 +162,16 @@ func (sc *ShopCreate) SetNillableBizClassName2(s *string) *ShopCreate {
 	return sc
 }
 
-// SetBizBeginTime sets the "biz_begin_time" field.
-func (sc *ShopCreate) SetBizBeginTime(t time.Time) *ShopCreate {
-	sc.mutation.SetBizBeginTime(t)
-	return sc
-}
-
-// SetNillableBizBeginTime sets the "biz_begin_time" field if the given value is not nil.
-func (sc *ShopCreate) SetNillableBizBeginTime(t *time.Time) *ShopCreate {
-	if t != nil {
-		sc.SetBizBeginTime(*t)
-	}
-	return sc
-}
-
-// SetBizEndTime sets the "biz_end_time" field.
-func (sc *ShopCreate) SetBizEndTime(t time.Time) *ShopCreate {
-	sc.mutation.SetBizEndTime(t)
-	return sc
-}
-
-// SetNillableBizEndTime sets the "biz_end_time" field if the given value is not nil.
-func (sc *ShopCreate) SetNillableBizEndTime(t *time.Time) *ShopCreate {
-	if t != nil {
-		sc.SetBizEndTime(*t)
-	}
-	return sc
-}
-
 // SetStatus sets the "status" field.
-func (sc *ShopCreate) SetStatus(i int) *ShopCreate {
-	sc.mutation.SetStatus(i)
+func (sc *ShopCreate) SetStatus(s string) *ShopCreate {
+	sc.mutation.SetStatus(s)
 	return sc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sc *ShopCreate) SetNillableStatus(i *int) *ShopCreate {
-	if i != nil {
-		sc.SetStatus(*i)
+func (sc *ShopCreate) SetNillableStatus(s *string) *ShopCreate {
+	if s != nil {
+		sc.SetStatus(*s)
 	}
 	return sc
 }
@@ -245,14 +223,6 @@ func (sc *ShopCreate) defaults() {
 		v := shop.DefaultCode()
 		sc.mutation.SetCode(v)
 	}
-	if _, ok := sc.mutation.BizBeginTime(); !ok {
-		v := shop.DefaultBizBeginTime()
-		sc.mutation.SetBizBeginTime(v)
-	}
-	if _, ok := sc.mutation.BizEndTime(); !ok {
-		v := shop.DefaultBizEndTime()
-		sc.mutation.SetBizEndTime(v)
-	}
 	if _, ok := sc.mutation.Status(); !ok {
 		v := shop.DefaultStatus
 		sc.mutation.SetStatus(v)
@@ -299,12 +269,20 @@ func (sc *ShopCreate) check() error {
 			return &ValidationError{Name: "contract_code", err: fmt.Errorf(`ent: validator failed for field "Shop.contract_code": %w`, err)}
 		}
 	}
-	if _, ok := sc.mutation.PosCode(); !ok {
-		return &ValidationError{Name: "pos_code", err: errors.New(`ent: missing required field "Shop.pos_code"`)}
+	if _, ok := sc.mutation.Floor(); !ok {
+		return &ValidationError{Name: "floor", err: errors.New(`ent: missing required field "Shop.floor"`)}
 	}
-	if v, ok := sc.mutation.PosCode(); ok {
-		if err := shop.PosCodeValidator(v); err != nil {
-			return &ValidationError{Name: "pos_code", err: fmt.Errorf(`ent: validator failed for field "Shop.pos_code": %w`, err)}
+	if v, ok := sc.mutation.Floor(); ok {
+		if err := shop.FloorValidator(v); err != nil {
+			return &ValidationError{Name: "floor", err: fmt.Errorf(`ent: validator failed for field "Shop.floor": %w`, err)}
+		}
+	}
+	if _, ok := sc.mutation.Pos(); !ok {
+		return &ValidationError{Name: "pos", err: errors.New(`ent: missing required field "Shop.pos"`)}
+	}
+	if v, ok := sc.mutation.Pos(); ok {
+		if err := shop.PosValidator(v); err != nil {
+			return &ValidationError{Name: "pos", err: fmt.Errorf(`ent: validator failed for field "Shop.pos": %w`, err)}
 		}
 	}
 	if _, ok := sc.mutation.ShopCode(); !ok {
@@ -343,14 +321,13 @@ func (sc *ShopCreate) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
-	if _, ok := sc.mutation.BizBeginTime(); !ok {
-		return &ValidationError{Name: "biz_begin_time", err: errors.New(`ent: missing required field "Shop.biz_begin_time"`)}
-	}
-	if _, ok := sc.mutation.BizEndTime(); !ok {
-		return &ValidationError{Name: "biz_end_time", err: errors.New(`ent: missing required field "Shop.biz_end_time"`)}
-	}
 	if _, ok := sc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Shop.status"`)}
+	}
+	if v, ok := sc.mutation.Status(); ok {
+		if err := shop.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
+		}
 	}
 	return nil
 }
@@ -403,9 +380,13 @@ func (sc *ShopCreate) createSpec() (*Shop, *sqlgraph.CreateSpec) {
 		_spec.SetField(shop.FieldContractCode, field.TypeString, value)
 		_node.ContractCode = value
 	}
-	if value, ok := sc.mutation.PosCode(); ok {
-		_spec.SetField(shop.FieldPosCode, field.TypeString, value)
-		_node.PosCode = value
+	if value, ok := sc.mutation.Floor(); ok {
+		_spec.SetField(shop.FieldFloor, field.TypeString, value)
+		_node.Floor = value
+	}
+	if value, ok := sc.mutation.Pos(); ok {
+		_spec.SetField(shop.FieldPos, field.TypeString, value)
+		_node.Pos = value
 	}
 	if value, ok := sc.mutation.ShopCode(); ok {
 		_spec.SetField(shop.FieldShopCode, field.TypeString, value)
@@ -431,16 +412,8 @@ func (sc *ShopCreate) createSpec() (*Shop, *sqlgraph.CreateSpec) {
 		_spec.SetField(shop.FieldBizClassName2, field.TypeString, value)
 		_node.BizClassName2 = value
 	}
-	if value, ok := sc.mutation.BizBeginTime(); ok {
-		_spec.SetField(shop.FieldBizBeginTime, field.TypeTime, value)
-		_node.BizBeginTime = value
-	}
-	if value, ok := sc.mutation.BizEndTime(); ok {
-		_spec.SetField(shop.FieldBizEndTime, field.TypeTime, value)
-		_node.BizEndTime = value
-	}
 	if value, ok := sc.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeInt, value)
+		_spec.SetField(shop.FieldStatus, field.TypeString, value)
 		_node.Status = value
 	}
 	return _node, _spec
@@ -580,7 +553,7 @@ func (u *ShopUpsert) ClearBizClassName2() *ShopUpsert {
 }
 
 // SetStatus sets the "status" field.
-func (u *ShopUpsert) SetStatus(v int) *ShopUpsert {
+func (u *ShopUpsert) SetStatus(v string) *ShopUpsert {
 	u.Set(shop.FieldStatus, v)
 	return u
 }
@@ -588,12 +561,6 @@ func (u *ShopUpsert) SetStatus(v int) *ShopUpsert {
 // UpdateStatus sets the "status" field to the value that was provided on create.
 func (u *ShopUpsert) UpdateStatus() *ShopUpsert {
 	u.SetExcluded(shop.FieldStatus)
-	return u
-}
-
-// AddStatus adds v to the "status" field.
-func (u *ShopUpsert) AddStatus(v int) *ShopUpsert {
-	u.Add(shop.FieldStatus, v)
 	return u
 }
 
@@ -623,20 +590,17 @@ func (u *ShopUpsertOne) UpdateNewValues() *ShopUpsertOne {
 		if _, exists := u.create.mutation.ContractCode(); exists {
 			s.SetIgnore(shop.FieldContractCode)
 		}
-		if _, exists := u.create.mutation.PosCode(); exists {
-			s.SetIgnore(shop.FieldPosCode)
+		if _, exists := u.create.mutation.Floor(); exists {
+			s.SetIgnore(shop.FieldFloor)
+		}
+		if _, exists := u.create.mutation.Pos(); exists {
+			s.SetIgnore(shop.FieldPos)
 		}
 		if _, exists := u.create.mutation.ShopCode(); exists {
 			s.SetIgnore(shop.FieldShopCode)
 		}
 		if _, exists := u.create.mutation.ShopName(); exists {
 			s.SetIgnore(shop.FieldShopName)
-		}
-		if _, exists := u.create.mutation.BizBeginTime(); exists {
-			s.SetIgnore(shop.FieldBizBeginTime)
-		}
-		if _, exists := u.create.mutation.BizEndTime(); exists {
-			s.SetIgnore(shop.FieldBizEndTime)
 		}
 	}))
 	return u
@@ -768,16 +732,9 @@ func (u *ShopUpsertOne) ClearBizClassName2() *ShopUpsertOne {
 }
 
 // SetStatus sets the "status" field.
-func (u *ShopUpsertOne) SetStatus(v int) *ShopUpsertOne {
+func (u *ShopUpsertOne) SetStatus(v string) *ShopUpsertOne {
 	return u.Update(func(s *ShopUpsert) {
 		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *ShopUpsertOne) AddStatus(v int) *ShopUpsertOne {
-	return u.Update(func(s *ShopUpsert) {
-		s.AddStatus(v)
 	})
 }
 
@@ -979,20 +936,17 @@ func (u *ShopUpsertBulk) UpdateNewValues() *ShopUpsertBulk {
 			if _, exists := b.mutation.ContractCode(); exists {
 				s.SetIgnore(shop.FieldContractCode)
 			}
-			if _, exists := b.mutation.PosCode(); exists {
-				s.SetIgnore(shop.FieldPosCode)
+			if _, exists := b.mutation.Floor(); exists {
+				s.SetIgnore(shop.FieldFloor)
+			}
+			if _, exists := b.mutation.Pos(); exists {
+				s.SetIgnore(shop.FieldPos)
 			}
 			if _, exists := b.mutation.ShopCode(); exists {
 				s.SetIgnore(shop.FieldShopCode)
 			}
 			if _, exists := b.mutation.ShopName(); exists {
 				s.SetIgnore(shop.FieldShopName)
-			}
-			if _, exists := b.mutation.BizBeginTime(); exists {
-				s.SetIgnore(shop.FieldBizBeginTime)
-			}
-			if _, exists := b.mutation.BizEndTime(); exists {
-				s.SetIgnore(shop.FieldBizEndTime)
 			}
 		}
 	}))
@@ -1125,16 +1079,9 @@ func (u *ShopUpsertBulk) ClearBizClassName2() *ShopUpsertBulk {
 }
 
 // SetStatus sets the "status" field.
-func (u *ShopUpsertBulk) SetStatus(v int) *ShopUpsertBulk {
+func (u *ShopUpsertBulk) SetStatus(v string) *ShopUpsertBulk {
 	return u.Update(func(s *ShopUpsert) {
 		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *ShopUpsertBulk) AddStatus(v int) *ShopUpsertBulk {
-	return u.Update(func(s *ShopUpsert) {
-		s.AddStatus(v)
 	})
 }
 

@@ -29,8 +29,10 @@ type Shop struct {
 	MallName string `json:"mall_name,omitempty"`
 	// ContractCode holds the value of the "contract_code" field.
 	ContractCode string `json:"contract_code,omitempty"`
-	// PosCode holds the value of the "pos_code" field.
-	PosCode string `json:"pos_code,omitempty"`
+	// Floor holds the value of the "floor" field.
+	Floor string `json:"floor,omitempty"`
+	// Pos holds the value of the "pos" field.
+	Pos string `json:"pos,omitempty"`
 	// ShopCode holds the value of the "shop_code" field.
 	ShopCode string `json:"shop_code,omitempty"`
 	// ShopName holds the value of the "shop_name" field.
@@ -43,12 +45,8 @@ type Shop struct {
 	BizClass2 string `json:"biz_class_2,omitempty"`
 	// BizClassName2 holds the value of the "biz_class_name_2" field.
 	BizClassName2 string `json:"biz_class_name_2,omitempty"`
-	// BizBeginTime holds the value of the "biz_begin_time" field.
-	BizBeginTime time.Time `json:"biz_begin_time,omitempty"`
-	// BizEndTime holds the value of the "biz_end_time" field.
-	BizEndTime time.Time `json:"biz_end_time,omitempty"`
 	// Status holds the value of the "status" field.
-	Status       int `json:"status,omitempty"`
+	Status       string `json:"status,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -57,11 +55,11 @@ func (*Shop) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case shop.FieldID, shop.FieldStatus:
+		case shop.FieldID:
 			values[i] = new(sql.NullInt64)
-		case shop.FieldCode, shop.FieldMallCode, shop.FieldMallName, shop.FieldContractCode, shop.FieldPosCode, shop.FieldShopCode, shop.FieldShopName, shop.FieldBizClass1, shop.FieldBizClassName1, shop.FieldBizClass2, shop.FieldBizClassName2:
+		case shop.FieldCode, shop.FieldMallCode, shop.FieldMallName, shop.FieldContractCode, shop.FieldFloor, shop.FieldPos, shop.FieldShopCode, shop.FieldShopName, shop.FieldBizClass1, shop.FieldBizClassName1, shop.FieldBizClass2, shop.FieldBizClassName2, shop.FieldStatus:
 			values[i] = new(sql.NullString)
-		case shop.FieldCreateTime, shop.FieldUpdateTime, shop.FieldBizBeginTime, shop.FieldBizEndTime:
+		case shop.FieldCreateTime, shop.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -120,11 +118,17 @@ func (s *Shop) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.ContractCode = value.String
 			}
-		case shop.FieldPosCode:
+		case shop.FieldFloor:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pos_code", values[i])
+				return fmt.Errorf("unexpected type %T for field floor", values[i])
 			} else if value.Valid {
-				s.PosCode = value.String
+				s.Floor = value.String
+			}
+		case shop.FieldPos:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pos", values[i])
+			} else if value.Valid {
+				s.Pos = value.String
 			}
 		case shop.FieldShopCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -162,23 +166,11 @@ func (s *Shop) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.BizClassName2 = value.String
 			}
-		case shop.FieldBizBeginTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field biz_begin_time", values[i])
-			} else if value.Valid {
-				s.BizBeginTime = value.Time
-			}
-		case shop.FieldBizEndTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field biz_end_time", values[i])
-			} else if value.Valid {
-				s.BizEndTime = value.Time
-			}
 		case shop.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				s.Status = int(value.Int64)
+				s.Status = value.String
 			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
@@ -234,8 +226,11 @@ func (s *Shop) String() string {
 	builder.WriteString("contract_code=")
 	builder.WriteString(s.ContractCode)
 	builder.WriteString(", ")
-	builder.WriteString("pos_code=")
-	builder.WriteString(s.PosCode)
+	builder.WriteString("floor=")
+	builder.WriteString(s.Floor)
+	builder.WriteString(", ")
+	builder.WriteString("pos=")
+	builder.WriteString(s.Pos)
 	builder.WriteString(", ")
 	builder.WriteString("shop_code=")
 	builder.WriteString(s.ShopCode)
@@ -255,14 +250,8 @@ func (s *Shop) String() string {
 	builder.WriteString("biz_class_name_2=")
 	builder.WriteString(s.BizClassName2)
 	builder.WriteString(", ")
-	builder.WriteString("biz_begin_time=")
-	builder.WriteString(s.BizBeginTime.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("biz_end_time=")
-	builder.WriteString(s.BizEndTime.Format(time.ANSIC))
-	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", s.Status))
+	builder.WriteString(s.Status)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -115,23 +115,16 @@ func (su *ShopUpdate) ClearBizClassName2() *ShopUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (su *ShopUpdate) SetStatus(i int) *ShopUpdate {
-	su.mutation.ResetStatus()
-	su.mutation.SetStatus(i)
+func (su *ShopUpdate) SetStatus(s string) *ShopUpdate {
+	su.mutation.SetStatus(s)
 	return su
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (su *ShopUpdate) SetNillableStatus(i *int) *ShopUpdate {
-	if i != nil {
-		su.SetStatus(*i)
+func (su *ShopUpdate) SetNillableStatus(s *string) *ShopUpdate {
+	if s != nil {
+		su.SetStatus(*s)
 	}
-	return su
-}
-
-// AddStatus adds i to the "status" field.
-func (su *ShopUpdate) AddStatus(i int) *ShopUpdate {
-	su.mutation.AddStatus(i)
 	return su
 }
 
@@ -198,6 +191,11 @@ func (su *ShopUpdate) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
+	if v, ok := su.mutation.Status(); ok {
+		if err := shop.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -241,10 +239,7 @@ func (su *ShopUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(shop.FieldBizClassName2, field.TypeString)
 	}
 	if value, ok := su.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := su.mutation.AddedStatus(); ok {
-		_spec.AddField(shop.FieldStatus, field.TypeInt, value)
+		_spec.SetField(shop.FieldStatus, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -353,23 +348,16 @@ func (suo *ShopUpdateOne) ClearBizClassName2() *ShopUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (suo *ShopUpdateOne) SetStatus(i int) *ShopUpdateOne {
-	suo.mutation.ResetStatus()
-	suo.mutation.SetStatus(i)
+func (suo *ShopUpdateOne) SetStatus(s string) *ShopUpdateOne {
+	suo.mutation.SetStatus(s)
 	return suo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (suo *ShopUpdateOne) SetNillableStatus(i *int) *ShopUpdateOne {
-	if i != nil {
-		suo.SetStatus(*i)
+func (suo *ShopUpdateOne) SetNillableStatus(s *string) *ShopUpdateOne {
+	if s != nil {
+		suo.SetStatus(*s)
 	}
-	return suo
-}
-
-// AddStatus adds i to the "status" field.
-func (suo *ShopUpdateOne) AddStatus(i int) *ShopUpdateOne {
-	suo.mutation.AddStatus(i)
 	return suo
 }
 
@@ -449,6 +437,11 @@ func (suo *ShopUpdateOne) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
+	if v, ok := suo.mutation.Status(); ok {
+		if err := shop.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -509,10 +502,7 @@ func (suo *ShopUpdateOne) sqlSave(ctx context.Context) (_node *Shop, err error) 
 		_spec.ClearField(shop.FieldBizClassName2, field.TypeString)
 	}
 	if value, ok := suo.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := suo.mutation.AddedStatus(); ok {
-		_spec.AddField(shop.FieldStatus, field.TypeInt, value)
+		_spec.SetField(shop.FieldStatus, field.TypeString, value)
 	}
 	_node = &Shop{config: suo.config}
 	_spec.Assign = _node.assignValues

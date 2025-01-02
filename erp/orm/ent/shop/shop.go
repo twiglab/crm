@@ -25,8 +25,10 @@ const (
 	FieldMallName = "mall_name"
 	// FieldContractCode holds the string denoting the contract_code field in the database.
 	FieldContractCode = "contract_code"
-	// FieldPosCode holds the string denoting the pos_code field in the database.
-	FieldPosCode = "pos_code"
+	// FieldFloor holds the string denoting the floor field in the database.
+	FieldFloor = "floor"
+	// FieldPos holds the string denoting the pos field in the database.
+	FieldPos = "pos"
 	// FieldShopCode holds the string denoting the shop_code field in the database.
 	FieldShopCode = "shop_code"
 	// FieldShopName holds the string denoting the shop_name field in the database.
@@ -39,10 +41,6 @@ const (
 	FieldBizClass2 = "biz_class_2"
 	// FieldBizClassName2 holds the string denoting the biz_class_name_2 field in the database.
 	FieldBizClassName2 = "biz_class_name_2"
-	// FieldBizBeginTime holds the string denoting the biz_begin_time field in the database.
-	FieldBizBeginTime = "biz_begin_time"
-	// FieldBizEndTime holds the string denoting the biz_end_time field in the database.
-	FieldBizEndTime = "biz_end_time"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the shop in the database.
@@ -58,15 +56,14 @@ var Columns = []string{
 	FieldMallCode,
 	FieldMallName,
 	FieldContractCode,
-	FieldPosCode,
+	FieldFloor,
+	FieldPos,
 	FieldShopCode,
 	FieldShopName,
 	FieldBizClass1,
 	FieldBizClassName1,
 	FieldBizClass2,
 	FieldBizClassName2,
-	FieldBizBeginTime,
-	FieldBizEndTime,
 	FieldStatus,
 }
 
@@ -97,8 +94,10 @@ var (
 	MallNameValidator func(string) error
 	// ContractCodeValidator is a validator for the "contract_code" field. It is called by the builders before save.
 	ContractCodeValidator func(string) error
-	// PosCodeValidator is a validator for the "pos_code" field. It is called by the builders before save.
-	PosCodeValidator func(string) error
+	// FloorValidator is a validator for the "floor" field. It is called by the builders before save.
+	FloorValidator func(string) error
+	// PosValidator is a validator for the "pos" field. It is called by the builders before save.
+	PosValidator func(string) error
 	// ShopCodeValidator is a validator for the "shop_code" field. It is called by the builders before save.
 	ShopCodeValidator func(string) error
 	// ShopNameValidator is a validator for the "shop_name" field. It is called by the builders before save.
@@ -111,12 +110,10 @@ var (
 	BizClass2Validator func(string) error
 	// BizClassName2Validator is a validator for the "biz_class_name_2" field. It is called by the builders before save.
 	BizClassName2Validator func(string) error
-	// DefaultBizBeginTime holds the default value on creation for the "biz_begin_time" field.
-	DefaultBizBeginTime func() time.Time
-	// DefaultBizEndTime holds the default value on creation for the "biz_end_time" field.
-	DefaultBizEndTime func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
+	DefaultStatus string
+	// StatusValidator is a validator for the "status" field. It is called by the builders before save.
+	StatusValidator func(string) error
 )
 
 // OrderOption defines the ordering options for the Shop queries.
@@ -157,9 +154,14 @@ func ByContractCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldContractCode, opts...).ToFunc()
 }
 
-// ByPosCode orders the results by the pos_code field.
-func ByPosCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPosCode, opts...).ToFunc()
+// ByFloor orders the results by the floor field.
+func ByFloor(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFloor, opts...).ToFunc()
+}
+
+// ByPos orders the results by the pos field.
+func ByPos(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPos, opts...).ToFunc()
 }
 
 // ByShopCode orders the results by the shop_code field.
@@ -190,16 +192,6 @@ func ByBizClass2(opts ...sql.OrderTermOption) OrderOption {
 // ByBizClassName2 orders the results by the biz_class_name_2 field.
 func ByBizClassName2(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBizClassName2, opts...).ToFunc()
-}
-
-// ByBizBeginTime orders the results by the biz_begin_time field.
-func ByBizBeginTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizBeginTime, opts...).ToFunc()
-}
-
-// ByBizEndTime orders the results by the biz_end_time field.
-func ByBizEndTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizEndTime, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

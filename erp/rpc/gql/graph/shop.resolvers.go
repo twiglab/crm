@@ -25,6 +25,11 @@ func (r *queryResolver) QryShopByCode(ctx context.Context, input sp.QryShopReq) 
 		ShopName: s.ShopName,
 		MallCode: s.MallCode,
 		MallName: s.MallName,
+
+		Floor: s.Floor,
+		Pos:   s.Pos,
+
+		Status: s.Status,
 	}, nil
 }
 

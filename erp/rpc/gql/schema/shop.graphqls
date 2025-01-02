@@ -2,7 +2,8 @@ type ShopResp{
   mallCode: String!
   mallName: String!
   contractCode: String!
-  posCode: String!
+  floor: String!
+  pos: String!
   shopCode: String!
   shopName: String!
 
@@ -11,7 +12,7 @@ type ShopResp{
   bizClass2: String!
   bizClassName2: String!
 
-  status: Int!
+  status: String!
 }
 
 input QryShopReq {

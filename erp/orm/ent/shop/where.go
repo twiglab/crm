@@ -84,9 +84,14 @@ func ContractCode(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldEQ(FieldContractCode, v))
 }
 
-// PosCode applies equality check predicate on the "pos_code" field. It's identical to PosCodeEQ.
-func PosCode(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldPosCode, v))
+// Floor applies equality check predicate on the "floor" field. It's identical to FloorEQ.
+func Floor(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEQ(FieldFloor, v))
+}
+
+// Pos applies equality check predicate on the "pos" field. It's identical to PosEQ.
+func Pos(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEQ(FieldPos, v))
 }
 
 // ShopCode applies equality check predicate on the "shop_code" field. It's identical to ShopCodeEQ.
@@ -119,18 +124,8 @@ func BizClassName2(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldEQ(FieldBizClassName2, v))
 }
 
-// BizBeginTime applies equality check predicate on the "biz_begin_time" field. It's identical to BizBeginTimeEQ.
-func BizBeginTime(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldBizBeginTime, v))
-}
-
-// BizEndTime applies equality check predicate on the "biz_end_time" field. It's identical to BizEndTimeEQ.
-func BizEndTime(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldBizEndTime, v))
-}
-
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int) predicate.Shop {
+func Status(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldEQ(FieldStatus, v))
 }
 
@@ -474,69 +469,134 @@ func ContractCodeContainsFold(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldContainsFold(FieldContractCode, v))
 }
 
-// PosCodeEQ applies the EQ predicate on the "pos_code" field.
-func PosCodeEQ(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldPosCode, v))
+// FloorEQ applies the EQ predicate on the "floor" field.
+func FloorEQ(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEQ(FieldFloor, v))
 }
 
-// PosCodeNEQ applies the NEQ predicate on the "pos_code" field.
-func PosCodeNEQ(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldNEQ(FieldPosCode, v))
+// FloorNEQ applies the NEQ predicate on the "floor" field.
+func FloorNEQ(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldNEQ(FieldFloor, v))
 }
 
-// PosCodeIn applies the In predicate on the "pos_code" field.
-func PosCodeIn(vs ...string) predicate.Shop {
-	return predicate.Shop(sql.FieldIn(FieldPosCode, vs...))
+// FloorIn applies the In predicate on the "floor" field.
+func FloorIn(vs ...string) predicate.Shop {
+	return predicate.Shop(sql.FieldIn(FieldFloor, vs...))
 }
 
-// PosCodeNotIn applies the NotIn predicate on the "pos_code" field.
-func PosCodeNotIn(vs ...string) predicate.Shop {
-	return predicate.Shop(sql.FieldNotIn(FieldPosCode, vs...))
+// FloorNotIn applies the NotIn predicate on the "floor" field.
+func FloorNotIn(vs ...string) predicate.Shop {
+	return predicate.Shop(sql.FieldNotIn(FieldFloor, vs...))
 }
 
-// PosCodeGT applies the GT predicate on the "pos_code" field.
-func PosCodeGT(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldGT(FieldPosCode, v))
+// FloorGT applies the GT predicate on the "floor" field.
+func FloorGT(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldGT(FieldFloor, v))
 }
 
-// PosCodeGTE applies the GTE predicate on the "pos_code" field.
-func PosCodeGTE(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldGTE(FieldPosCode, v))
+// FloorGTE applies the GTE predicate on the "floor" field.
+func FloorGTE(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldGTE(FieldFloor, v))
 }
 
-// PosCodeLT applies the LT predicate on the "pos_code" field.
-func PosCodeLT(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldLT(FieldPosCode, v))
+// FloorLT applies the LT predicate on the "floor" field.
+func FloorLT(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldLT(FieldFloor, v))
 }
 
-// PosCodeLTE applies the LTE predicate on the "pos_code" field.
-func PosCodeLTE(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldLTE(FieldPosCode, v))
+// FloorLTE applies the LTE predicate on the "floor" field.
+func FloorLTE(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldLTE(FieldFloor, v))
 }
 
-// PosCodeContains applies the Contains predicate on the "pos_code" field.
-func PosCodeContains(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldContains(FieldPosCode, v))
+// FloorContains applies the Contains predicate on the "floor" field.
+func FloorContains(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContains(FieldFloor, v))
 }
 
-// PosCodeHasPrefix applies the HasPrefix predicate on the "pos_code" field.
-func PosCodeHasPrefix(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldHasPrefix(FieldPosCode, v))
+// FloorHasPrefix applies the HasPrefix predicate on the "floor" field.
+func FloorHasPrefix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasPrefix(FieldFloor, v))
 }
 
-// PosCodeHasSuffix applies the HasSuffix predicate on the "pos_code" field.
-func PosCodeHasSuffix(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldHasSuffix(FieldPosCode, v))
+// FloorHasSuffix applies the HasSuffix predicate on the "floor" field.
+func FloorHasSuffix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasSuffix(FieldFloor, v))
 }
 
-// PosCodeEqualFold applies the EqualFold predicate on the "pos_code" field.
-func PosCodeEqualFold(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldEqualFold(FieldPosCode, v))
+// FloorEqualFold applies the EqualFold predicate on the "floor" field.
+func FloorEqualFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEqualFold(FieldFloor, v))
 }
 
-// PosCodeContainsFold applies the ContainsFold predicate on the "pos_code" field.
-func PosCodeContainsFold(v string) predicate.Shop {
-	return predicate.Shop(sql.FieldContainsFold(FieldPosCode, v))
+// FloorContainsFold applies the ContainsFold predicate on the "floor" field.
+func FloorContainsFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContainsFold(FieldFloor, v))
+}
+
+// PosEQ applies the EQ predicate on the "pos" field.
+func PosEQ(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEQ(FieldPos, v))
+}
+
+// PosNEQ applies the NEQ predicate on the "pos" field.
+func PosNEQ(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldNEQ(FieldPos, v))
+}
+
+// PosIn applies the In predicate on the "pos" field.
+func PosIn(vs ...string) predicate.Shop {
+	return predicate.Shop(sql.FieldIn(FieldPos, vs...))
+}
+
+// PosNotIn applies the NotIn predicate on the "pos" field.
+func PosNotIn(vs ...string) predicate.Shop {
+	return predicate.Shop(sql.FieldNotIn(FieldPos, vs...))
+}
+
+// PosGT applies the GT predicate on the "pos" field.
+func PosGT(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldGT(FieldPos, v))
+}
+
+// PosGTE applies the GTE predicate on the "pos" field.
+func PosGTE(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldGTE(FieldPos, v))
+}
+
+// PosLT applies the LT predicate on the "pos" field.
+func PosLT(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldLT(FieldPos, v))
+}
+
+// PosLTE applies the LTE predicate on the "pos" field.
+func PosLTE(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldLTE(FieldPos, v))
+}
+
+// PosContains applies the Contains predicate on the "pos" field.
+func PosContains(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContains(FieldPos, v))
+}
+
+// PosHasPrefix applies the HasPrefix predicate on the "pos" field.
+func PosHasPrefix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasPrefix(FieldPos, v))
+}
+
+// PosHasSuffix applies the HasSuffix predicate on the "pos" field.
+func PosHasSuffix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasSuffix(FieldPos, v))
+}
+
+// PosEqualFold applies the EqualFold predicate on the "pos" field.
+func PosEqualFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEqualFold(FieldPos, v))
+}
+
+// PosContainsFold applies the ContainsFold predicate on the "pos" field.
+func PosContainsFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContainsFold(FieldPos, v))
 }
 
 // ShopCodeEQ applies the EQ predicate on the "shop_code" field.
@@ -969,124 +1029,69 @@ func BizClassName2ContainsFold(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldContainsFold(FieldBizClassName2, v))
 }
 
-// BizBeginTimeEQ applies the EQ predicate on the "biz_begin_time" field.
-func BizBeginTimeEQ(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldBizBeginTime, v))
-}
-
-// BizBeginTimeNEQ applies the NEQ predicate on the "biz_begin_time" field.
-func BizBeginTimeNEQ(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldNEQ(FieldBizBeginTime, v))
-}
-
-// BizBeginTimeIn applies the In predicate on the "biz_begin_time" field.
-func BizBeginTimeIn(vs ...time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldIn(FieldBizBeginTime, vs...))
-}
-
-// BizBeginTimeNotIn applies the NotIn predicate on the "biz_begin_time" field.
-func BizBeginTimeNotIn(vs ...time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldNotIn(FieldBizBeginTime, vs...))
-}
-
-// BizBeginTimeGT applies the GT predicate on the "biz_begin_time" field.
-func BizBeginTimeGT(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldGT(FieldBizBeginTime, v))
-}
-
-// BizBeginTimeGTE applies the GTE predicate on the "biz_begin_time" field.
-func BizBeginTimeGTE(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldGTE(FieldBizBeginTime, v))
-}
-
-// BizBeginTimeLT applies the LT predicate on the "biz_begin_time" field.
-func BizBeginTimeLT(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldLT(FieldBizBeginTime, v))
-}
-
-// BizBeginTimeLTE applies the LTE predicate on the "biz_begin_time" field.
-func BizBeginTimeLTE(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldLTE(FieldBizBeginTime, v))
-}
-
-// BizEndTimeEQ applies the EQ predicate on the "biz_end_time" field.
-func BizEndTimeEQ(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldEQ(FieldBizEndTime, v))
-}
-
-// BizEndTimeNEQ applies the NEQ predicate on the "biz_end_time" field.
-func BizEndTimeNEQ(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldNEQ(FieldBizEndTime, v))
-}
-
-// BizEndTimeIn applies the In predicate on the "biz_end_time" field.
-func BizEndTimeIn(vs ...time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldIn(FieldBizEndTime, vs...))
-}
-
-// BizEndTimeNotIn applies the NotIn predicate on the "biz_end_time" field.
-func BizEndTimeNotIn(vs ...time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldNotIn(FieldBizEndTime, vs...))
-}
-
-// BizEndTimeGT applies the GT predicate on the "biz_end_time" field.
-func BizEndTimeGT(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldGT(FieldBizEndTime, v))
-}
-
-// BizEndTimeGTE applies the GTE predicate on the "biz_end_time" field.
-func BizEndTimeGTE(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldGTE(FieldBizEndTime, v))
-}
-
-// BizEndTimeLT applies the LT predicate on the "biz_end_time" field.
-func BizEndTimeLT(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldLT(FieldBizEndTime, v))
-}
-
-// BizEndTimeLTE applies the LTE predicate on the "biz_end_time" field.
-func BizEndTimeLTE(v time.Time) predicate.Shop {
-	return predicate.Shop(sql.FieldLTE(FieldBizEndTime, v))
-}
-
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int) predicate.Shop {
+func StatusEQ(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldEQ(FieldStatus, v))
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int) predicate.Shop {
+func StatusNEQ(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldNEQ(FieldStatus, v))
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int) predicate.Shop {
+func StatusIn(vs ...string) predicate.Shop {
 	return predicate.Shop(sql.FieldIn(FieldStatus, vs...))
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int) predicate.Shop {
+func StatusNotIn(vs ...string) predicate.Shop {
 	return predicate.Shop(sql.FieldNotIn(FieldStatus, vs...))
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int) predicate.Shop {
+func StatusGT(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldGT(FieldStatus, v))
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int) predicate.Shop {
+func StatusGTE(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldGTE(FieldStatus, v))
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int) predicate.Shop {
+func StatusLT(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldLT(FieldStatus, v))
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int) predicate.Shop {
+func StatusLTE(v string) predicate.Shop {
 	return predicate.Shop(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusContains applies the Contains predicate on the "status" field.
+func StatusContains(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContains(FieldStatus, v))
+}
+
+// StatusHasPrefix applies the HasPrefix predicate on the "status" field.
+func StatusHasPrefix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasPrefix(FieldStatus, v))
+}
+
+// StatusHasSuffix applies the HasSuffix predicate on the "status" field.
+func StatusHasSuffix(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldHasSuffix(FieldStatus, v))
+}
+
+// StatusEqualFold applies the EqualFold predicate on the "status" field.
+func StatusEqualFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldEqualFold(FieldStatus, v))
+}
+
+// StatusContainsFold applies the ContainsFold predicate on the "status" field.
+func StatusContainsFold(v string) predicate.Shop {
+	return predicate.Shop(sql.FieldContainsFold(FieldStatus, v))
 }
 
 // And groups predicates with the AND operator between them.

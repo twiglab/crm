@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"time"
-
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
@@ -59,7 +57,16 @@ func (Shop) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
-		field.String("pos_code").
+		field.String("floor").
+			MaxLen(36).
+			Immutable().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(36)", // Override MySQL.
+				dialect.Postgres: "varchar(36)", // Override Postgres.
+				dialect.SQLite:   "varchar(36)", // Override Postgres.
+			}),
+
+		field.String("pos").
 			MaxLen(36).
 			Immutable().
 			SchemaType(map[string]string{
@@ -123,10 +130,15 @@ func (Shop) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
-		field.Time("biz_begin_time").Immutable().Default(time.Now),
-		field.Time("biz_end_time").Immutable().Default(time.Now),
-
-		field.Int("status").Default(1),
+		field.String("status").
+			MaxLen(3).
+			NotEmpty().
+			Default("A00").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(3)", // Override MySQL.
+				dialect.Postgres: "char(3)", // Override Postgres.
+				dialect.SQLite:   "char(3)", // Override Postgres.
+			}),
 	}
 }
 
@@ -139,6 +151,7 @@ func (Shop) Mixin() []ent.Mixin {
 func (Shop) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("code"),
+		index.Fields("status"),
 	}
 }
 

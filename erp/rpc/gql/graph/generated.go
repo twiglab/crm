@@ -57,9 +57,10 @@ type ComplexityRoot struct {
 		BizClassName1 func(childComplexity int) int
 		BizClassName2 func(childComplexity int) int
 		ContractCode  func(childComplexity int) int
+		Floor         func(childComplexity int) int
 		MallCode      func(childComplexity int) int
 		MallName      func(childComplexity int) int
-		PosCode       func(childComplexity int) int
+		Pos           func(childComplexity int) int
 		ShopCode      func(childComplexity int) int
 		ShopName      func(childComplexity int) int
 		Status        func(childComplexity int) int
@@ -147,6 +148,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ShopResp.ContractCode(childComplexity), true
 
+	case "ShopResp.floor":
+		if e.complexity.ShopResp.Floor == nil {
+			break
+		}
+
+		return e.complexity.ShopResp.Floor(childComplexity), true
+
 	case "ShopResp.mallCode":
 		if e.complexity.ShopResp.MallCode == nil {
 			break
@@ -161,12 +169,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ShopResp.MallName(childComplexity), true
 
-	case "ShopResp.posCode":
-		if e.complexity.ShopResp.PosCode == nil {
+	case "ShopResp.pos":
+		if e.complexity.ShopResp.Pos == nil {
 			break
 		}
 
-		return e.complexity.ShopResp.PosCode(childComplexity), true
+		return e.complexity.ShopResp.Pos(childComplexity), true
 
 	case "ShopResp.shopCode":
 		if e.complexity.ShopResp.ShopCode == nil {
@@ -291,7 +299,8 @@ var sources = []*ast.Source{
   mallCode: String!
   mallName: String!
   contractCode: String!
-  posCode: String!
+  floor: String!
+  pos: String!
   shopCode: String!
   shopName: String!
 
@@ -300,7 +309,7 @@ var sources = []*ast.Source{
   bizClass2: String!
   bizClassName2: String!
 
-  status: Int!
+  status: String!
 }
 
 input QryShopReq {
@@ -524,8 +533,10 @@ func (ec *executionContext) fieldContext_Query_qryShopByCode(ctx context.Context
 				return ec.fieldContext_ShopResp_mallName(ctx, field)
 			case "contractCode":
 				return ec.fieldContext_ShopResp_contractCode(ctx, field)
-			case "posCode":
-				return ec.fieldContext_ShopResp_posCode(ctx, field)
+			case "floor":
+				return ec.fieldContext_ShopResp_floor(ctx, field)
+			case "pos":
+				return ec.fieldContext_ShopResp_pos(ctx, field)
 			case "shopCode":
 				return ec.fieldContext_ShopResp_shopCode(ctx, field)
 			case "shopName":
@@ -867,8 +878,8 @@ func (ec *executionContext) fieldContext_ShopResp_contractCode(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _ShopResp_posCode(ctx context.Context, field graphql.CollectedField, obj *shop.ShopResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ShopResp_posCode(ctx, field)
+func (ec *executionContext) _ShopResp_floor(ctx context.Context, field graphql.CollectedField, obj *shop.ShopResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ShopResp_floor(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -881,7 +892,7 @@ func (ec *executionContext) _ShopResp_posCode(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.PosCode, nil
+		return obj.Floor, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -898,7 +909,51 @@ func (ec *executionContext) _ShopResp_posCode(ctx context.Context, field graphql
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ShopResp_posCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ShopResp_floor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ShopResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ShopResp_pos(ctx context.Context, field graphql.CollectedField, obj *shop.ShopResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ShopResp_pos(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Pos, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ShopResp_pos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ShopResp",
 		Field:      field,
@@ -1201,9 +1256,9 @@ func (ec *executionContext) _ShopResp_status(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int32)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNInt2int32(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ShopResp_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1213,7 +1268,7 @@ func (ec *executionContext) fieldContext_ShopResp_status(_ context.Context, fiel
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3188,8 +3243,13 @@ func (ec *executionContext) _ShopResp(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "posCode":
-			out.Values[i] = ec._ShopResp_posCode(ctx, field, obj)
+		case "floor":
+			out.Values[i] = ec._ShopResp_floor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "pos":
+			out.Values[i] = ec._ShopResp_pos(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3635,21 +3695,6 @@ func (ec *executionContext) unmarshalNFieldSet2string(ctx context.Context, v any
 
 func (ec *executionContext) marshalNFieldSet2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	res := graphql.MarshalString(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
-}
-
-func (ec *executionContext) unmarshalNInt2int32(ctx context.Context, v any) (int32, error) {
-	res, err := graphql.UnmarshalInt32(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.SelectionSet, v int32) graphql.Marshaler {
-	res := graphql.MarshalInt32(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
