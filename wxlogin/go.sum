@@ -1,5 +1,6 @@
 github.com/99designs/gqlgen v0.17.61 h1:vE7xLRC066n9wehgjeplILOWtwz75zbzcV2/Iv9i3pw=
 github.com/99designs/gqlgen v0.17.61/go.mod h1:rFU1T3lhv/tPeAlww/DJ4ol2YxT/pPpue+xxPbkd3r4=
+github.com/99designs/gqlgen v0.17.62/go.mod h1:sVCM2iwIZisJjTI/DEC3fpH+HFgxY1496ZJ+jbT9IjA=
 github.com/Khan/genqlient v0.7.0 h1:GZ1meyRnzcDTK48EjqB8t3bcfYvHArCUUvgOwpz1D4w=
 github.com/Khan/genqlient v0.7.0/go.mod h1:HNyy3wZvuYwmW3Y7mkoQLZsa/R5n5yIRajS1kPBvSFM=
 github.com/PuerkitoBio/goquery v1.9.3 h1:mpJr/ikUA9/GNJB/DBZcGeFDXUtosHRyRrwh7KGdTG0=
@@ -42,12 +43,18 @@ github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOf
 github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1 h1:JnPUqp1Jgrxr2IpHV4QJ/6tHbCEdSSt2p4pm12nGqRE=
 github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1/go.mod h1:dV6ntWKUnXXLbCzYkNU2d1jjD9FKUOcZon1SJ+X20xo=
+github.com/twiglab/crm/member v0.0.0-20250101135151-b403e3391118 h1:LTiCLuD5B8IDaYqjiOWjL8+dwcuxfALME+XMaO/kymY=
+github.com/twiglab/crm/member v0.0.0-20250101135151-b403e3391118/go.mod h1:UTvWAdwmtJYr3iCAN+X7148tm/7tlO/njY3znjbJNb4=
 github.com/twiglab/crm/psdk v0.0.0-20241228040240-9fd96c53bdac h1:tXqGKxS15wZ+gu9FUBjyWmtifWl5ekGksvLlCi9lB9c=
 github.com/twiglab/crm/psdk v0.0.0-20241228040240-9fd96c53bdac/go.mod h1:hemo60jF/jNSKCsCAsYh2y+74IkfOMXOzKh/yx2hajg=
+github.com/twiglab/crm/psdk v0.0.0-20250101012210-7b859708de6a/go.mod h1:LKLAWVBG58UNKcjOW5KUtFUDR4yiczAobGqo+zVjfRU=
 github.com/twiglab/crm/wechat v0.0.0-20241218094246-ef94d18d94d3 h1:ZQPb5vv7wC1zp3r6o7tkGOr+l+RapGE1nuiXUDuXth8=
 github.com/twiglab/crm/wechat v0.0.0-20241218094246-ef94d18d94d3/go.mod h1:mr/Nl87xQH/K7HKfLgd3SpPtrkAeatTBDHjUWdDODGQ=
+github.com/twiglab/crm/wechat v0.0.0-20250102092740-9fd423336a7a h1:Xdf1szdIGG6XflD/+XwYesVWYdsgaXPIkQz+2XKkuE4=
+github.com/twiglab/crm/wechat v0.0.0-20250102092740-9fd423336a7a/go.mod h1:jBBkWEpAtQRXH+NKe9zATwIVXlpyuuhPQ4w+UcBBKjc=
 github.com/vektah/gqlparser/v2 v2.5.20 h1:kPaWbhBntxoZPaNdBaIPT1Kh0i1b/onb5kXgEdP5JCo=
 github.com/vektah/gqlparser/v2 v2.5.20/go.mod h1:xMl+ta8a5M1Yo1A1Iwt/k7gSpscwSnHZdw7tfhEGfTM=
+github.com/vektah/gqlparser/v2 v2.5.21/go.mod h1:xMl+ta8a5M1Yo1A1Iwt/k7gSpscwSnHZdw7tfhEGfTM=
 golang.org/x/crypto v0.31.0 h1:ihbySMvVjLAeSH1IbfcRTkD/iNscyz8rGzjF/E5hV6U=
 golang.org/x/crypto v0.31.0/go.mod h1:kDsLvtWBEx7MV9tJOj9bnXsPbxwJQ6csT/x4KIN4Ssk=
 golang.org/x/net v0.33.0 h1:74SYHlV8BIgHIFC/LrYkOGIwL19eTYXQ5wc6TBuO36I=

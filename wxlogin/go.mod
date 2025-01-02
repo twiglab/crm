@@ -3,16 +3,16 @@ module github.com/twiglab/crm/wxlogin
 go 1.23.1
 
 require (
-	github.com/99designs/gqlgen v0.17.61
+	github.com/99designs/gqlgen v0.17.62
 	github.com/Khan/genqlient v0.7.0
 	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-jose/go-jose/v4 v4.0.4
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
-	github.com/twiglab/crm/member v0.0.0-20241116061244-2ba4efae26f1
-	github.com/twiglab/crm/psdk v0.0.0-20241228040240-9fd96c53bdac
-	github.com/twiglab/crm/wechat v0.0.0-20241218094246-ef94d18d94d3
-	github.com/vektah/gqlparser/v2 v2.5.20
+	github.com/twiglab/crm/member v0.0.0-20250101135151-b403e3391118
+	github.com/twiglab/crm/psdk v0.0.0-20250101012210-7b859708de6a
+	github.com/twiglab/crm/wechat v0.0.0-20250102092740-9fd423336a7a
+	github.com/vektah/gqlparser/v2 v2.5.21
 )
 
 require (
