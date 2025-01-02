@@ -31,6 +31,7 @@ type App struct {
 	DB        DB     `yaml:"db" mapstructure:"db"`
 	MemberCli GqlRpc `yaml:"member-cli" mapstructure:"member-cli"`
 	BcCli     GqlRpc `yaml:"bc-cli" mapstructure:"bc-cli"`
+	ShopCli   GqlRpc `yaml:"shop-cli" mapstructure:"shop-cli"`
 }
 
 func PaymentQueue(conn *amqp.Connection) *mq.RabbitMQ {
@@ -73,9 +74,3 @@ func EntClient(dbc DB) *ent.Client {
 
 	return orm.OpenClient(db)
 }
-
-/*
-func WxBcLie(rpc GqlRpc) *bc.WxBcCli {
-	retur nil
-}
-*/

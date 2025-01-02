@@ -33,13 +33,18 @@ func main() {
 
 	mbCli := config.MbCli(cfg.MemberCli)
 	bcCli := config.BcCli(cfg.BcCli)
+	shopCli := config.ShopCli(cfg.ShopCli)
 
 	b := &balance.Balance{Client: client}
 
 	ctx, cancelFn := context.WithCancel(configCtx)
 	defer cancelFn()
 
-	if err := paymentQ.Recieve(ctx, &mq.BcPaymentHandle{Client: client, MemberCli: mbCli, BcClient: bcCli}); err != nil {
+	if err := paymentQ.Recieve(ctx,
+		&mq.BcPaymentHandle{
+			Client: client, MemberCli: mbCli,
+			BcClient: bcCli, ShopCli: shopCli,
+		}); err != nil {
 		log.Fatal(err)
 	}
 
