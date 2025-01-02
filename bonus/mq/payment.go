@@ -8,6 +8,7 @@ import (
 	"github.com/twiglab/crm/bonus/bc"
 	"github.com/twiglab/crm/bonus/mb"
 	"github.com/twiglab/crm/bonus/orm/ent"
+	"github.com/twiglab/crm/bonus/shop"
 	"github.com/twiglab/crm/wechat/pkg/bc/msg"
 )
 
@@ -15,6 +16,7 @@ type BcPaymentHandle struct {
 	Client    *ent.Client
 	MemberCli *mb.MemberCli
 	BcClient  *bc.WxBcCli
+	ShopCli   *shop.ShopCli
 }
 
 func (h *BcPaymentHandle) RecieveDelivery(ctx context.Context, delivery amqp.Delivery) {
@@ -36,6 +38,11 @@ func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePay
 		return nil
 	}
 
+	shop, err := h.ShopCli.Qry(ctx, msg.ShopNumber)
+	if err != nil {
+		return nil
+	}
+
 	cr := h.Client.BonusItem.Create()
 
 	cr.SetBcmbNotifyID(msg.MsgID)
@@ -46,7 +53,11 @@ func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePay
 	cr.SetBcmbTransType(0)
 
 	cr.SetMchID(msg.MchID)
-	cr.SetShopCode(msg.ShopNumber)
+
+	cr.SetShopName(shop.ShopName)
+	cr.SetShopCode(shop.ShopCode)
+	cr.SetMallCode(shop.MallCode)
+	cr.SetMallName(shop.MallName)
 
 	cr.SetMemberCode(member.Code)
 	cr.SetWxOpenID(member.WxOpenID)
