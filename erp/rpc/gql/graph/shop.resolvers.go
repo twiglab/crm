@@ -29,6 +29,13 @@ func (r *queryResolver) QryShopByCode(ctx context.Context, input sp.QryShopReq) 
 		Floor: s.Floor,
 		Pos:   s.Pos,
 
+		ContractCode: s.ContractCode,
+
+		BizClass1:     s.BizClass1,
+		BizClassName1: s.BizClassName1,
+		BizClass2:     s.BizClass2,
+		BizClassName2: s.BizClassName2,
+
 		Status: s.Status,
 	}, nil
 }

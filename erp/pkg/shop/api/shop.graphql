@@ -1,0 +1,16 @@
+query QryShopByCode($input: QryShopReq!) {
+  qryShopByCode(input: $input) {
+    mallCode
+    mallName
+    pos
+    floor
+    shopCode
+    shopName
+    contractCode
+    bizClass1
+    bizClass2
+    bizClassName1
+    bizClassName2
+    status
+  }
+}
