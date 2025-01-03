@@ -64,6 +64,20 @@ func (mc *MemberCreate) SetNillableCode(s *string) *MemberCreate {
 	return mc
 }
 
+// SetCodeBin sets the "code_bin" field.
+func (mc *MemberCreate) SetCodeBin(s string) *MemberCreate {
+	mc.mutation.SetCodeBin(s)
+	return mc
+}
+
+// SetNillableCodeBin sets the "code_bin" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableCodeBin(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetCodeBin(*s)
+	}
+	return mc
+}
+
 // SetPhone sets the "phone" field.
 func (mc *MemberCreate) SetPhone(s string) *MemberCreate {
 	mc.mutation.SetPhone(s)
@@ -295,6 +309,11 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Member.code": %w`, err)}
 		}
 	}
+	if v, ok := mc.mutation.CodeBin(); ok {
+		if err := member.CodeBinValidator(v); err != nil {
+			return &ValidationError{Name: "code_bin", err: fmt.Errorf(`ent: validator failed for field "Member.code_bin": %w`, err)}
+		}
+	}
 	if v, ok := mc.mutation.Phone(); ok {
 		if err := member.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Member.phone": %w`, err)}
@@ -376,6 +395,10 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.Code(); ok {
 		_spec.SetField(member.FieldCode, field.TypeString, value)
 		_node.Code = value
+	}
+	if value, ok := mc.mutation.CodeBin(); ok {
+		_spec.SetField(member.FieldCodeBin, field.TypeString, value)
+		_node.CodeBin = value
 	}
 	if value, ok := mc.mutation.Phone(); ok {
 		_spec.SetField(member.FieldPhone, field.TypeString, value)
@@ -482,6 +505,24 @@ func (u *MemberUpsert) SetUpdateTime(v time.Time) *MemberUpsert {
 // UpdateUpdateTime sets the "update_time" field to the value that was provided on create.
 func (u *MemberUpsert) UpdateUpdateTime() *MemberUpsert {
 	u.SetExcluded(member.FieldUpdateTime)
+	return u
+}
+
+// SetCodeBin sets the "code_bin" field.
+func (u *MemberUpsert) SetCodeBin(v string) *MemberUpsert {
+	u.Set(member.FieldCodeBin, v)
+	return u
+}
+
+// UpdateCodeBin sets the "code_bin" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateCodeBin() *MemberUpsert {
+	u.SetExcluded(member.FieldCodeBin)
+	return u
+}
+
+// ClearCodeBin clears the value of the "code_bin" field.
+func (u *MemberUpsert) ClearCodeBin() *MemberUpsert {
+	u.SetNull(member.FieldCodeBin)
 	return u
 }
 
@@ -730,6 +771,27 @@ func (u *MemberUpsertOne) SetUpdateTime(v time.Time) *MemberUpsertOne {
 func (u *MemberUpsertOne) UpdateUpdateTime() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateUpdateTime()
+	})
+}
+
+// SetCodeBin sets the "code_bin" field.
+func (u *MemberUpsertOne) SetCodeBin(v string) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetCodeBin(v)
+	})
+}
+
+// UpdateCodeBin sets the "code_bin" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateCodeBin() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateCodeBin()
+	})
+}
+
+// ClearCodeBin clears the value of the "code_bin" field.
+func (u *MemberUpsertOne) ClearCodeBin() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearCodeBin()
 	})
 }
 
@@ -1175,6 +1237,27 @@ func (u *MemberUpsertBulk) SetUpdateTime(v time.Time) *MemberUpsertBulk {
 func (u *MemberUpsertBulk) UpdateUpdateTime() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateUpdateTime()
+	})
+}
+
+// SetCodeBin sets the "code_bin" field.
+func (u *MemberUpsertBulk) SetCodeBin(v string) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetCodeBin(v)
+	})
+}
+
+// UpdateCodeBin sets the "code_bin" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateCodeBin() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateCodeBin()
+	})
+}
+
+// ClearCodeBin clears the value of the "code_bin" field.
+func (u *MemberUpsertBulk) ClearCodeBin() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearCodeBin()
 	})
 }
 

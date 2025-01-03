@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
 	"github.com/twiglab/crm/member/orm/schema/internal/x"
+	"github.com/twiglab/crm/psdk/code"
 )
 
 type Member struct {
@@ -25,11 +26,21 @@ func (Member) Fields() []ent.Field {
 			NotEmpty().
 			Unique().
 			Immutable().
-			DefaultFunc(x.Code36).
+			DefaultFunc(code.Code36).
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
 				dialect.SQLite:   "char(36)", // Override Postgres.
+			}),
+
+		field.String("code_bin").
+			MaxLen(16).
+			Optional().
+			Unique().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(16)", // Override MySQL.
+				dialect.Postgres: "char(16)", // Override Postgres.
+				dialect.SQLite:   "char(16)", // Override Postgres.
 			}),
 
 		field.String("phone").
