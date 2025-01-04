@@ -2,7 +2,11 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"net"
+	"net/http"
+	"time"
 
 	"github.com/it512/box"
 
@@ -12,7 +16,6 @@ import (
 	"github.com/twiglab/crm/wechat/cmd/wechat-proxy/config"
 	"github.com/twiglab/crm/wechat/sns"
 	"github.com/twiglab/crm/wechat/testbed"
-	"github.com/twiglab/crm/wechat/web"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -26,6 +29,8 @@ func main() {
 	_ = c.ReadInConfig()
 	_ = c.Unmarshal(cfg)
 
+	fmt.Println(cfg)
+
 	prog := config.CreateMiniProfram(cfg.Wechat)
 
 	auth := sns.NewAuth(prog.GetAuth())
@@ -35,6 +40,7 @@ func main() {
 
 	conn := config.CreateMQConn(cfg.MQ)
 	xmq := config.CreateBcXMQ(conn)
+	fmt.Println("ok -----")
 
 	bcc := bc.BcExchange{BC: xmq, ApiV3Key: cfg.Wechat.APIKey}
 
@@ -45,6 +51,22 @@ func main() {
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
 	mux.Mount("/testbed", testbed.TestBed(xmq))
 
-	svr := config.Create(ctx, cfg.Web)
-	log.Fatal(web.RunServer2(ctx, svr, mux))
+	/*
+		svr := config.Create(ctx, cfg.Web)
+		log.Fatal(web.RunServer2(ctx, svr, mux))
+		if err := svr.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	*/
+
+
+	svr := &http.Server{
+		Addr:        cfg.Web.Addr,
+		IdleTimeout: 10 * time.Second,
+		Handler:     mux,
+		BaseContext: func(_ net.Listener) context.Context { return ctx },
+	}
+	if err := svr.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }

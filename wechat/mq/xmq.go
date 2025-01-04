@@ -53,9 +53,11 @@ func BcMQ(conn *amqp.Connection, Logger *slog.Logger) (*XMQ, error) {
 		return nil, err
 	}
 
-	if err := ch.Confirm(true); err != nil {
-		return nil, err
-	}
+	/*
+		if err := ch.Confirm(true); err != nil {
+			return nil, err
+		}
+	*/
 	return &XMQ{
 		Timeout:  10 * time.Second,
 		Logger:   Logger,
