@@ -47,5 +47,7 @@ func (h *MemberAuthHandle) Handle(ctx context.Context, msg *msg.BusinessCircleAu
 	u.SetBcmbCode(msg.Code)
 	u.SetBcmbRegMsgID(msg.MsgID)
 	u.SetBcmbRegTime(time.Now())
+	u.SetLevel(10)
+	u.SetSource(1)
 	return u.Exec(ctx)
 }

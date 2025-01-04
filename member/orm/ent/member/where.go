@@ -90,6 +90,11 @@ func WxOpenID(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldWxOpenID, v))
 }
 
+// WxUnionID applies equality check predicate on the "wx_union_id" field. It's identical to WxUnionIDEQ.
+func WxUnionID(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxUnionID, v))
+}
+
 // BcmbCode applies equality check predicate on the "bcmb_code" field. It's identical to BcmbCodeEQ.
 func BcmbCode(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldBcmbCode, v))
@@ -106,18 +111,13 @@ func BcmbRegMsgID(v string) predicate.Member {
 }
 
 // BcmbType applies equality check predicate on the "bcmb_type" field. It's identical to BcmbTypeEQ.
-func BcmbType(v int) predicate.Member {
+func BcmbType(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldBcmbType, v))
 }
 
 // Level applies equality check predicate on the "level" field. It's identical to LevelEQ.
-func Level(v int) predicate.Member {
+func Level(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldLevel, v))
-}
-
-// Source applies equality check predicate on the "source" field. It's identical to SourceEQ.
-func Source(v int) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldSource, v))
 }
 
 // LastTime applies equality check predicate on the "last_time" field. It's identical to LastTimeEQ.
@@ -125,8 +125,13 @@ func LastTime(v time.Time) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldLastTime, v))
 }
 
+// Source applies equality check predicate on the "source" field. It's identical to SourceEQ.
+func Source(v int32) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldSource, v))
+}
+
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int) predicate.Member {
+func Status(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldStatus, v))
 }
 
@@ -565,6 +570,81 @@ func WxOpenIDContainsFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldContainsFold(FieldWxOpenID, v))
 }
 
+// WxUnionIDEQ applies the EQ predicate on the "wx_union_id" field.
+func WxUnionIDEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldWxUnionID, v))
+}
+
+// WxUnionIDNEQ applies the NEQ predicate on the "wx_union_id" field.
+func WxUnionIDNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldWxUnionID, v))
+}
+
+// WxUnionIDIn applies the In predicate on the "wx_union_id" field.
+func WxUnionIDIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldWxUnionID, vs...))
+}
+
+// WxUnionIDNotIn applies the NotIn predicate on the "wx_union_id" field.
+func WxUnionIDNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldWxUnionID, vs...))
+}
+
+// WxUnionIDGT applies the GT predicate on the "wx_union_id" field.
+func WxUnionIDGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldWxUnionID, v))
+}
+
+// WxUnionIDGTE applies the GTE predicate on the "wx_union_id" field.
+func WxUnionIDGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldWxUnionID, v))
+}
+
+// WxUnionIDLT applies the LT predicate on the "wx_union_id" field.
+func WxUnionIDLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldWxUnionID, v))
+}
+
+// WxUnionIDLTE applies the LTE predicate on the "wx_union_id" field.
+func WxUnionIDLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldWxUnionID, v))
+}
+
+// WxUnionIDContains applies the Contains predicate on the "wx_union_id" field.
+func WxUnionIDContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldWxUnionID, v))
+}
+
+// WxUnionIDHasPrefix applies the HasPrefix predicate on the "wx_union_id" field.
+func WxUnionIDHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldWxUnionID, v))
+}
+
+// WxUnionIDHasSuffix applies the HasSuffix predicate on the "wx_union_id" field.
+func WxUnionIDHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldWxUnionID, v))
+}
+
+// WxUnionIDIsNil applies the IsNil predicate on the "wx_union_id" field.
+func WxUnionIDIsNil() predicate.Member {
+	return predicate.Member(sql.FieldIsNull(FieldWxUnionID))
+}
+
+// WxUnionIDNotNil applies the NotNil predicate on the "wx_union_id" field.
+func WxUnionIDNotNil() predicate.Member {
+	return predicate.Member(sql.FieldNotNull(FieldWxUnionID))
+}
+
+// WxUnionIDEqualFold applies the EqualFold predicate on the "wx_union_id" field.
+func WxUnionIDEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldWxUnionID, v))
+}
+
+// WxUnionIDContainsFold applies the ContainsFold predicate on the "wx_union_id" field.
+func WxUnionIDContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldWxUnionID, v))
+}
+
 // BcmbCodeEQ applies the EQ predicate on the "bcmb_code" field.
 func BcmbCodeEQ(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldBcmbCode, v))
@@ -766,123 +846,83 @@ func BcmbRegMsgIDContainsFold(v string) predicate.Member {
 }
 
 // BcmbTypeEQ applies the EQ predicate on the "bcmb_type" field.
-func BcmbTypeEQ(v int) predicate.Member {
+func BcmbTypeEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldBcmbType, v))
 }
 
 // BcmbTypeNEQ applies the NEQ predicate on the "bcmb_type" field.
-func BcmbTypeNEQ(v int) predicate.Member {
+func BcmbTypeNEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldNEQ(FieldBcmbType, v))
 }
 
 // BcmbTypeIn applies the In predicate on the "bcmb_type" field.
-func BcmbTypeIn(vs ...int) predicate.Member {
+func BcmbTypeIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldIn(FieldBcmbType, vs...))
 }
 
 // BcmbTypeNotIn applies the NotIn predicate on the "bcmb_type" field.
-func BcmbTypeNotIn(vs ...int) predicate.Member {
+func BcmbTypeNotIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldNotIn(FieldBcmbType, vs...))
 }
 
 // BcmbTypeGT applies the GT predicate on the "bcmb_type" field.
-func BcmbTypeGT(v int) predicate.Member {
+func BcmbTypeGT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGT(FieldBcmbType, v))
 }
 
 // BcmbTypeGTE applies the GTE predicate on the "bcmb_type" field.
-func BcmbTypeGTE(v int) predicate.Member {
+func BcmbTypeGTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGTE(FieldBcmbType, v))
 }
 
 // BcmbTypeLT applies the LT predicate on the "bcmb_type" field.
-func BcmbTypeLT(v int) predicate.Member {
+func BcmbTypeLT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLT(FieldBcmbType, v))
 }
 
 // BcmbTypeLTE applies the LTE predicate on the "bcmb_type" field.
-func BcmbTypeLTE(v int) predicate.Member {
+func BcmbTypeLTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLTE(FieldBcmbType, v))
 }
 
 // LevelEQ applies the EQ predicate on the "level" field.
-func LevelEQ(v int) predicate.Member {
+func LevelEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldLevel, v))
 }
 
 // LevelNEQ applies the NEQ predicate on the "level" field.
-func LevelNEQ(v int) predicate.Member {
+func LevelNEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldNEQ(FieldLevel, v))
 }
 
 // LevelIn applies the In predicate on the "level" field.
-func LevelIn(vs ...int) predicate.Member {
+func LevelIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldIn(FieldLevel, vs...))
 }
 
 // LevelNotIn applies the NotIn predicate on the "level" field.
-func LevelNotIn(vs ...int) predicate.Member {
+func LevelNotIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldNotIn(FieldLevel, vs...))
 }
 
 // LevelGT applies the GT predicate on the "level" field.
-func LevelGT(v int) predicate.Member {
+func LevelGT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGT(FieldLevel, v))
 }
 
 // LevelGTE applies the GTE predicate on the "level" field.
-func LevelGTE(v int) predicate.Member {
+func LevelGTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGTE(FieldLevel, v))
 }
 
 // LevelLT applies the LT predicate on the "level" field.
-func LevelLT(v int) predicate.Member {
+func LevelLT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLT(FieldLevel, v))
 }
 
 // LevelLTE applies the LTE predicate on the "level" field.
-func LevelLTE(v int) predicate.Member {
+func LevelLTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLTE(FieldLevel, v))
-}
-
-// SourceEQ applies the EQ predicate on the "source" field.
-func SourceEQ(v int) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldSource, v))
-}
-
-// SourceNEQ applies the NEQ predicate on the "source" field.
-func SourceNEQ(v int) predicate.Member {
-	return predicate.Member(sql.FieldNEQ(FieldSource, v))
-}
-
-// SourceIn applies the In predicate on the "source" field.
-func SourceIn(vs ...int) predicate.Member {
-	return predicate.Member(sql.FieldIn(FieldSource, vs...))
-}
-
-// SourceNotIn applies the NotIn predicate on the "source" field.
-func SourceNotIn(vs ...int) predicate.Member {
-	return predicate.Member(sql.FieldNotIn(FieldSource, vs...))
-}
-
-// SourceGT applies the GT predicate on the "source" field.
-func SourceGT(v int) predicate.Member {
-	return predicate.Member(sql.FieldGT(FieldSource, v))
-}
-
-// SourceGTE applies the GTE predicate on the "source" field.
-func SourceGTE(v int) predicate.Member {
-	return predicate.Member(sql.FieldGTE(FieldSource, v))
-}
-
-// SourceLT applies the LT predicate on the "source" field.
-func SourceLT(v int) predicate.Member {
-	return predicate.Member(sql.FieldLT(FieldSource, v))
-}
-
-// SourceLTE applies the LTE predicate on the "source" field.
-func SourceLTE(v int) predicate.Member {
-	return predicate.Member(sql.FieldLTE(FieldSource, v))
 }
 
 // LastTimeEQ applies the EQ predicate on the "last_time" field.
@@ -925,43 +965,83 @@ func LastTimeLTE(v time.Time) predicate.Member {
 	return predicate.Member(sql.FieldLTE(FieldLastTime, v))
 }
 
+// SourceEQ applies the EQ predicate on the "source" field.
+func SourceEQ(v int32) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldSource, v))
+}
+
+// SourceNEQ applies the NEQ predicate on the "source" field.
+func SourceNEQ(v int32) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldSource, v))
+}
+
+// SourceIn applies the In predicate on the "source" field.
+func SourceIn(vs ...int32) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldSource, vs...))
+}
+
+// SourceNotIn applies the NotIn predicate on the "source" field.
+func SourceNotIn(vs ...int32) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldSource, vs...))
+}
+
+// SourceGT applies the GT predicate on the "source" field.
+func SourceGT(v int32) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldSource, v))
+}
+
+// SourceGTE applies the GTE predicate on the "source" field.
+func SourceGTE(v int32) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldSource, v))
+}
+
+// SourceLT applies the LT predicate on the "source" field.
+func SourceLT(v int32) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldSource, v))
+}
+
+// SourceLTE applies the LTE predicate on the "source" field.
+func SourceLTE(v int32) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldSource, v))
+}
+
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int) predicate.Member {
+func StatusEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldStatus, v))
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int) predicate.Member {
+func StatusNEQ(v int32) predicate.Member {
 	return predicate.Member(sql.FieldNEQ(FieldStatus, v))
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int) predicate.Member {
+func StatusIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldIn(FieldStatus, vs...))
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int) predicate.Member {
+func StatusNotIn(vs ...int32) predicate.Member {
 	return predicate.Member(sql.FieldNotIn(FieldStatus, vs...))
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int) predicate.Member {
+func StatusGT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGT(FieldStatus, v))
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int) predicate.Member {
+func StatusGTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldGTE(FieldStatus, v))
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int) predicate.Member {
+func StatusLT(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLT(FieldStatus, v))
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int) predicate.Member {
+func StatusLTE(v int32) predicate.Member {
 	return predicate.Member(sql.FieldLTE(FieldStatus, v))
 }
 

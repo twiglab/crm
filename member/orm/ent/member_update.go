@@ -108,6 +108,26 @@ func (mu *MemberUpdate) SetNillableWxOpenID(s *string) *MemberUpdate {
 	return mu
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (mu *MemberUpdate) SetWxUnionID(s string) *MemberUpdate {
+	mu.mutation.SetWxUnionID(s)
+	return mu
+}
+
+// SetNillableWxUnionID sets the "wx_union_id" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableWxUnionID(s *string) *MemberUpdate {
+	if s != nil {
+		mu.SetWxUnionID(*s)
+	}
+	return mu
+}
+
+// ClearWxUnionID clears the value of the "wx_union_id" field.
+func (mu *MemberUpdate) ClearWxUnionID() *MemberUpdate {
+	mu.mutation.ClearWxUnionID()
+	return mu
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (mu *MemberUpdate) SetBcmbCode(s string) *MemberUpdate {
 	mu.mutation.SetBcmbCode(s)
@@ -169,14 +189,14 @@ func (mu *MemberUpdate) ClearBcmbRegMsgID() *MemberUpdate {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (mu *MemberUpdate) SetBcmbType(i int) *MemberUpdate {
+func (mu *MemberUpdate) SetBcmbType(i int32) *MemberUpdate {
 	mu.mutation.ResetBcmbType()
 	mu.mutation.SetBcmbType(i)
 	return mu
 }
 
 // SetNillableBcmbType sets the "bcmb_type" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableBcmbType(i *int) *MemberUpdate {
+func (mu *MemberUpdate) SetNillableBcmbType(i *int32) *MemberUpdate {
 	if i != nil {
 		mu.SetBcmbType(*i)
 	}
@@ -184,20 +204,20 @@ func (mu *MemberUpdate) SetNillableBcmbType(i *int) *MemberUpdate {
 }
 
 // AddBcmbType adds i to the "bcmb_type" field.
-func (mu *MemberUpdate) AddBcmbType(i int) *MemberUpdate {
+func (mu *MemberUpdate) AddBcmbType(i int32) *MemberUpdate {
 	mu.mutation.AddBcmbType(i)
 	return mu
 }
 
 // SetLevel sets the "level" field.
-func (mu *MemberUpdate) SetLevel(i int) *MemberUpdate {
+func (mu *MemberUpdate) SetLevel(i int32) *MemberUpdate {
 	mu.mutation.ResetLevel()
 	mu.mutation.SetLevel(i)
 	return mu
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableLevel(i *int) *MemberUpdate {
+func (mu *MemberUpdate) SetNillableLevel(i *int32) *MemberUpdate {
 	if i != nil {
 		mu.SetLevel(*i)
 	}
@@ -205,29 +225,8 @@ func (mu *MemberUpdate) SetNillableLevel(i *int) *MemberUpdate {
 }
 
 // AddLevel adds i to the "level" field.
-func (mu *MemberUpdate) AddLevel(i int) *MemberUpdate {
+func (mu *MemberUpdate) AddLevel(i int32) *MemberUpdate {
 	mu.mutation.AddLevel(i)
-	return mu
-}
-
-// SetSource sets the "source" field.
-func (mu *MemberUpdate) SetSource(i int) *MemberUpdate {
-	mu.mutation.ResetSource()
-	mu.mutation.SetSource(i)
-	return mu
-}
-
-// SetNillableSource sets the "source" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableSource(i *int) *MemberUpdate {
-	if i != nil {
-		mu.SetSource(*i)
-	}
-	return mu
-}
-
-// AddSource adds i to the "source" field.
-func (mu *MemberUpdate) AddSource(i int) *MemberUpdate {
-	mu.mutation.AddSource(i)
 	return mu
 }
 
@@ -245,15 +244,36 @@ func (mu *MemberUpdate) SetNillableLastTime(t *time.Time) *MemberUpdate {
 	return mu
 }
 
+// SetSource sets the "source" field.
+func (mu *MemberUpdate) SetSource(i int32) *MemberUpdate {
+	mu.mutation.ResetSource()
+	mu.mutation.SetSource(i)
+	return mu
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (mu *MemberUpdate) SetNillableSource(i *int32) *MemberUpdate {
+	if i != nil {
+		mu.SetSource(*i)
+	}
+	return mu
+}
+
+// AddSource adds i to the "source" field.
+func (mu *MemberUpdate) AddSource(i int32) *MemberUpdate {
+	mu.mutation.AddSource(i)
+	return mu
+}
+
 // SetStatus sets the "status" field.
-func (mu *MemberUpdate) SetStatus(i int) *MemberUpdate {
+func (mu *MemberUpdate) SetStatus(i int32) *MemberUpdate {
 	mu.mutation.ResetStatus()
 	mu.mutation.SetStatus(i)
 	return mu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableStatus(i *int) *MemberUpdate {
+func (mu *MemberUpdate) SetNillableStatus(i *int32) *MemberUpdate {
 	if i != nil {
 		mu.SetStatus(*i)
 	}
@@ -261,7 +281,7 @@ func (mu *MemberUpdate) SetNillableStatus(i *int) *MemberUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (mu *MemberUpdate) AddStatus(i int) *MemberUpdate {
+func (mu *MemberUpdate) AddStatus(i int32) *MemberUpdate {
 	mu.mutation.AddStatus(i)
 	return mu
 }
@@ -329,6 +349,11 @@ func (mu *MemberUpdate) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
+	if v, ok := mu.mutation.WxUnionID(); ok {
+		if err := member.WxUnionIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_union_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_union_id": %w`, err)}
+		}
+	}
 	if v, ok := mu.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -378,6 +403,12 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
 	}
+	if value, ok := mu.mutation.WxUnionID(); ok {
+		_spec.SetField(member.FieldWxUnionID, field.TypeString, value)
+	}
+	if mu.mutation.WxUnionIDCleared() {
+		_spec.ClearField(member.FieldWxUnionID, field.TypeString)
+	}
 	if value, ok := mu.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
 	}
@@ -397,31 +428,31 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(member.FieldBcmbRegMsgID, field.TypeString)
 	}
 	if value, ok := mu.mutation.BcmbType(); ok {
-		_spec.SetField(member.FieldBcmbType, field.TypeInt, value)
+		_spec.SetField(member.FieldBcmbType, field.TypeInt32, value)
 	}
 	if value, ok := mu.mutation.AddedBcmbType(); ok {
-		_spec.AddField(member.FieldBcmbType, field.TypeInt, value)
+		_spec.AddField(member.FieldBcmbType, field.TypeInt32, value)
 	}
 	if value, ok := mu.mutation.Level(); ok {
-		_spec.SetField(member.FieldLevel, field.TypeInt, value)
+		_spec.SetField(member.FieldLevel, field.TypeInt32, value)
 	}
 	if value, ok := mu.mutation.AddedLevel(); ok {
-		_spec.AddField(member.FieldLevel, field.TypeInt, value)
-	}
-	if value, ok := mu.mutation.Source(); ok {
-		_spec.SetField(member.FieldSource, field.TypeInt, value)
-	}
-	if value, ok := mu.mutation.AddedSource(); ok {
-		_spec.AddField(member.FieldSource, field.TypeInt, value)
+		_spec.AddField(member.FieldLevel, field.TypeInt32, value)
 	}
 	if value, ok := mu.mutation.LastTime(); ok {
 		_spec.SetField(member.FieldLastTime, field.TypeTime, value)
 	}
+	if value, ok := mu.mutation.Source(); ok {
+		_spec.SetField(member.FieldSource, field.TypeInt32, value)
+	}
+	if value, ok := mu.mutation.AddedSource(); ok {
+		_spec.AddField(member.FieldSource, field.TypeInt32, value)
+	}
 	if value, ok := mu.mutation.Status(); ok {
-		_spec.SetField(member.FieldStatus, field.TypeInt, value)
+		_spec.SetField(member.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := mu.mutation.AddedStatus(); ok {
-		_spec.AddField(member.FieldStatus, field.TypeInt, value)
+		_spec.AddField(member.FieldStatus, field.TypeInt32, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -523,6 +554,26 @@ func (muo *MemberUpdateOne) SetNillableWxOpenID(s *string) *MemberUpdateOne {
 	return muo
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (muo *MemberUpdateOne) SetWxUnionID(s string) *MemberUpdateOne {
+	muo.mutation.SetWxUnionID(s)
+	return muo
+}
+
+// SetNillableWxUnionID sets the "wx_union_id" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableWxUnionID(s *string) *MemberUpdateOne {
+	if s != nil {
+		muo.SetWxUnionID(*s)
+	}
+	return muo
+}
+
+// ClearWxUnionID clears the value of the "wx_union_id" field.
+func (muo *MemberUpdateOne) ClearWxUnionID() *MemberUpdateOne {
+	muo.mutation.ClearWxUnionID()
+	return muo
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (muo *MemberUpdateOne) SetBcmbCode(s string) *MemberUpdateOne {
 	muo.mutation.SetBcmbCode(s)
@@ -584,14 +635,14 @@ func (muo *MemberUpdateOne) ClearBcmbRegMsgID() *MemberUpdateOne {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (muo *MemberUpdateOne) SetBcmbType(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetBcmbType(i int32) *MemberUpdateOne {
 	muo.mutation.ResetBcmbType()
 	muo.mutation.SetBcmbType(i)
 	return muo
 }
 
 // SetNillableBcmbType sets the "bcmb_type" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableBcmbType(i *int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetNillableBcmbType(i *int32) *MemberUpdateOne {
 	if i != nil {
 		muo.SetBcmbType(*i)
 	}
@@ -599,20 +650,20 @@ func (muo *MemberUpdateOne) SetNillableBcmbType(i *int) *MemberUpdateOne {
 }
 
 // AddBcmbType adds i to the "bcmb_type" field.
-func (muo *MemberUpdateOne) AddBcmbType(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) AddBcmbType(i int32) *MemberUpdateOne {
 	muo.mutation.AddBcmbType(i)
 	return muo
 }
 
 // SetLevel sets the "level" field.
-func (muo *MemberUpdateOne) SetLevel(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetLevel(i int32) *MemberUpdateOne {
 	muo.mutation.ResetLevel()
 	muo.mutation.SetLevel(i)
 	return muo
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableLevel(i *int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetNillableLevel(i *int32) *MemberUpdateOne {
 	if i != nil {
 		muo.SetLevel(*i)
 	}
@@ -620,29 +671,8 @@ func (muo *MemberUpdateOne) SetNillableLevel(i *int) *MemberUpdateOne {
 }
 
 // AddLevel adds i to the "level" field.
-func (muo *MemberUpdateOne) AddLevel(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) AddLevel(i int32) *MemberUpdateOne {
 	muo.mutation.AddLevel(i)
-	return muo
-}
-
-// SetSource sets the "source" field.
-func (muo *MemberUpdateOne) SetSource(i int) *MemberUpdateOne {
-	muo.mutation.ResetSource()
-	muo.mutation.SetSource(i)
-	return muo
-}
-
-// SetNillableSource sets the "source" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableSource(i *int) *MemberUpdateOne {
-	if i != nil {
-		muo.SetSource(*i)
-	}
-	return muo
-}
-
-// AddSource adds i to the "source" field.
-func (muo *MemberUpdateOne) AddSource(i int) *MemberUpdateOne {
-	muo.mutation.AddSource(i)
 	return muo
 }
 
@@ -660,15 +690,36 @@ func (muo *MemberUpdateOne) SetNillableLastTime(t *time.Time) *MemberUpdateOne {
 	return muo
 }
 
+// SetSource sets the "source" field.
+func (muo *MemberUpdateOne) SetSource(i int32) *MemberUpdateOne {
+	muo.mutation.ResetSource()
+	muo.mutation.SetSource(i)
+	return muo
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableSource(i *int32) *MemberUpdateOne {
+	if i != nil {
+		muo.SetSource(*i)
+	}
+	return muo
+}
+
+// AddSource adds i to the "source" field.
+func (muo *MemberUpdateOne) AddSource(i int32) *MemberUpdateOne {
+	muo.mutation.AddSource(i)
+	return muo
+}
+
 // SetStatus sets the "status" field.
-func (muo *MemberUpdateOne) SetStatus(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetStatus(i int32) *MemberUpdateOne {
 	muo.mutation.ResetStatus()
 	muo.mutation.SetStatus(i)
 	return muo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableStatus(i *int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) SetNillableStatus(i *int32) *MemberUpdateOne {
 	if i != nil {
 		muo.SetStatus(*i)
 	}
@@ -676,7 +727,7 @@ func (muo *MemberUpdateOne) SetNillableStatus(i *int) *MemberUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (muo *MemberUpdateOne) AddStatus(i int) *MemberUpdateOne {
+func (muo *MemberUpdateOne) AddStatus(i int32) *MemberUpdateOne {
 	muo.mutation.AddStatus(i)
 	return muo
 }
@@ -757,6 +808,11 @@ func (muo *MemberUpdateOne) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
+	if v, ok := muo.mutation.WxUnionID(); ok {
+		if err := member.WxUnionIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_union_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_union_id": %w`, err)}
+		}
+	}
 	if v, ok := muo.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -823,6 +879,12 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	if value, ok := muo.mutation.WxOpenID(); ok {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
 	}
+	if value, ok := muo.mutation.WxUnionID(); ok {
+		_spec.SetField(member.FieldWxUnionID, field.TypeString, value)
+	}
+	if muo.mutation.WxUnionIDCleared() {
+		_spec.ClearField(member.FieldWxUnionID, field.TypeString)
+	}
 	if value, ok := muo.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
 	}
@@ -842,31 +904,31 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 		_spec.ClearField(member.FieldBcmbRegMsgID, field.TypeString)
 	}
 	if value, ok := muo.mutation.BcmbType(); ok {
-		_spec.SetField(member.FieldBcmbType, field.TypeInt, value)
+		_spec.SetField(member.FieldBcmbType, field.TypeInt32, value)
 	}
 	if value, ok := muo.mutation.AddedBcmbType(); ok {
-		_spec.AddField(member.FieldBcmbType, field.TypeInt, value)
+		_spec.AddField(member.FieldBcmbType, field.TypeInt32, value)
 	}
 	if value, ok := muo.mutation.Level(); ok {
-		_spec.SetField(member.FieldLevel, field.TypeInt, value)
+		_spec.SetField(member.FieldLevel, field.TypeInt32, value)
 	}
 	if value, ok := muo.mutation.AddedLevel(); ok {
-		_spec.AddField(member.FieldLevel, field.TypeInt, value)
-	}
-	if value, ok := muo.mutation.Source(); ok {
-		_spec.SetField(member.FieldSource, field.TypeInt, value)
-	}
-	if value, ok := muo.mutation.AddedSource(); ok {
-		_spec.AddField(member.FieldSource, field.TypeInt, value)
+		_spec.AddField(member.FieldLevel, field.TypeInt32, value)
 	}
 	if value, ok := muo.mutation.LastTime(); ok {
 		_spec.SetField(member.FieldLastTime, field.TypeTime, value)
 	}
+	if value, ok := muo.mutation.Source(); ok {
+		_spec.SetField(member.FieldSource, field.TypeInt32, value)
+	}
+	if value, ok := muo.mutation.AddedSource(); ok {
+		_spec.AddField(member.FieldSource, field.TypeInt32, value)
+	}
 	if value, ok := muo.mutation.Status(); ok {
-		_spec.SetField(member.FieldStatus, field.TypeInt, value)
+		_spec.SetField(member.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := muo.mutation.AddedStatus(); ok {
-		_spec.AddField(member.FieldStatus, field.TypeInt, value)
+		_spec.AddField(member.FieldStatus, field.TypeInt32, value)
 	}
 	_node = &Member{config: muo.config}
 	_spec.Assign = _node.assignValues

@@ -28,6 +28,8 @@ const (
 	FieldNickname = "nickname"
 	// FieldWxOpenID holds the string denoting the wx_open_id field in the database.
 	FieldWxOpenID = "wx_open_id"
+	// FieldWxUnionID holds the string denoting the wx_union_id field in the database.
+	FieldWxUnionID = "wx_union_id"
 	// FieldBcmbCode holds the string denoting the bcmb_code field in the database.
 	FieldBcmbCode = "bcmb_code"
 	// FieldBcmbRegTime holds the string denoting the bcmb_reg_time field in the database.
@@ -38,10 +40,10 @@ const (
 	FieldBcmbType = "bcmb_type"
 	// FieldLevel holds the string denoting the level field in the database.
 	FieldLevel = "level"
-	// FieldSource holds the string denoting the source field in the database.
-	FieldSource = "source"
 	// FieldLastTime holds the string denoting the last_time field in the database.
 	FieldLastTime = "last_time"
+	// FieldSource holds the string denoting the source field in the database.
+	FieldSource = "source"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the member in the database.
@@ -58,13 +60,14 @@ var Columns = []string{
 	FieldPhone,
 	FieldNickname,
 	FieldWxOpenID,
+	FieldWxUnionID,
 	FieldBcmbCode,
 	FieldBcmbRegTime,
 	FieldBcmbRegMsgID,
 	FieldBcmbType,
 	FieldLevel,
-	FieldSource,
 	FieldLastTime,
+	FieldSource,
 	FieldStatus,
 }
 
@@ -97,20 +100,22 @@ var (
 	NicknameValidator func(string) error
 	// WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	WxOpenIDValidator func(string) error
+	// WxUnionIDValidator is a validator for the "wx_union_id" field. It is called by the builders before save.
+	WxUnionIDValidator func(string) error
 	// BcmbCodeValidator is a validator for the "bcmb_code" field. It is called by the builders before save.
 	BcmbCodeValidator func(string) error
 	// BcmbRegMsgIDValidator is a validator for the "bcmb_reg_msg_id" field. It is called by the builders before save.
 	BcmbRegMsgIDValidator func(string) error
 	// DefaultBcmbType holds the default value on creation for the "bcmb_type" field.
-	DefaultBcmbType int
+	DefaultBcmbType int32
 	// DefaultLevel holds the default value on creation for the "level" field.
-	DefaultLevel int
-	// DefaultSource holds the default value on creation for the "source" field.
-	DefaultSource int
+	DefaultLevel int32
 	// DefaultLastTime holds the default value on creation for the "last_time" field.
 	DefaultLastTime func() time.Time
+	// DefaultSource holds the default value on creation for the "source" field.
+	DefaultSource int32
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
+	DefaultStatus int32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
@@ -158,6 +163,11 @@ func ByWxOpenID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWxOpenID, opts...).ToFunc()
 }
 
+// ByWxUnionID orders the results by the wx_union_id field.
+func ByWxUnionID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWxUnionID, opts...).ToFunc()
+}
+
 // ByBcmbCode orders the results by the bcmb_code field.
 func ByBcmbCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBcmbCode, opts...).ToFunc()
@@ -183,14 +193,14 @@ func ByLevel(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLevel, opts...).ToFunc()
 }
 
-// BySource orders the results by the source field.
-func BySource(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSource, opts...).ToFunc()
-}
-
 // ByLastTime orders the results by the last_time field.
 func ByLastTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastTime, opts...).ToFunc()
+}
+
+// BySource orders the results by the source field.
+func BySource(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSource, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

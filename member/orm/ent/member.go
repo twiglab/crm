@@ -32,6 +32,8 @@ type Member struct {
 	Nickname string `json:"nickname,omitempty"`
 	// WxOpenID holds the value of the "wx_open_id" field.
 	WxOpenID string `json:"wx_open_id,omitempty"`
+	// WxUnionID holds the value of the "wx_union_id" field.
+	WxUnionID string `json:"wx_union_id,omitempty"`
 	// BcmbCode holds the value of the "bcmb_code" field.
 	BcmbCode string `json:"bcmb_code,omitempty"`
 	// BcmbRegTime holds the value of the "bcmb_reg_time" field.
@@ -39,15 +41,15 @@ type Member struct {
 	// BcmbRegMsgID holds the value of the "bcmb_reg_msg_id" field.
 	BcmbRegMsgID string `json:"bcmb_reg_msg_id,omitempty"`
 	// BcmbType holds the value of the "bcmb_type" field.
-	BcmbType int `json:"bcmb_type,omitempty"`
+	BcmbType int32 `json:"bcmb_type,omitempty"`
 	// Level holds the value of the "level" field.
-	Level int `json:"level,omitempty"`
-	// Source holds the value of the "source" field.
-	Source int `json:"source,omitempty"`
+	Level int32 `json:"level,omitempty"`
 	// LastTime holds the value of the "last_time" field.
 	LastTime time.Time `json:"last_time,omitempty"`
+	// Source holds the value of the "source" field.
+	Source int32 `json:"source,omitempty"`
 	// Status holds the value of the "status" field.
-	Status       int `json:"status,omitempty"`
+	Status       int32 `json:"status,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -58,7 +60,7 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldCodeBin, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
+		case member.FieldCode, member.FieldCodeBin, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUnionID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime, member.FieldLastTime:
 			values[i] = new(sql.NullTime)
@@ -127,6 +129,12 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.WxOpenID = value.String
 			}
+		case member.FieldWxUnionID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field wx_union_id", values[i])
+			} else if value.Valid {
+				m.WxUnionID = value.String
+			}
 		case member.FieldBcmbCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field bcmb_code", values[i])
@@ -150,19 +158,13 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field bcmb_type", values[i])
 			} else if value.Valid {
-				m.BcmbType = int(value.Int64)
+				m.BcmbType = int32(value.Int64)
 			}
 		case member.FieldLevel:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field level", values[i])
 			} else if value.Valid {
-				m.Level = int(value.Int64)
-			}
-		case member.FieldSource:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field source", values[i])
-			} else if value.Valid {
-				m.Source = int(value.Int64)
+				m.Level = int32(value.Int64)
 			}
 		case member.FieldLastTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -170,11 +172,17 @@ func (m *Member) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.LastTime = value.Time
 			}
+		case member.FieldSource:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field source", values[i])
+			} else if value.Valid {
+				m.Source = int32(value.Int64)
+			}
 		case member.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				m.Status = int(value.Int64)
+				m.Status = int32(value.Int64)
 			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
@@ -233,6 +241,9 @@ func (m *Member) String() string {
 	builder.WriteString("wx_open_id=")
 	builder.WriteString(m.WxOpenID)
 	builder.WriteString(", ")
+	builder.WriteString("wx_union_id=")
+	builder.WriteString(m.WxUnionID)
+	builder.WriteString(", ")
 	builder.WriteString("bcmb_code=")
 	builder.WriteString(m.BcmbCode)
 	builder.WriteString(", ")
@@ -250,11 +261,11 @@ func (m *Member) String() string {
 	builder.WriteString("level=")
 	builder.WriteString(fmt.Sprintf("%v", m.Level))
 	builder.WriteString(", ")
-	builder.WriteString("source=")
-	builder.WriteString(fmt.Sprintf("%v", m.Source))
-	builder.WriteString(", ")
 	builder.WriteString("last_time=")
 	builder.WriteString(m.LastTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("source=")
+	builder.WriteString(fmt.Sprintf("%v", m.Source))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", m.Status))

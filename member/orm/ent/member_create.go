@@ -114,6 +114,20 @@ func (mc *MemberCreate) SetWxOpenID(s string) *MemberCreate {
 	return mc
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (mc *MemberCreate) SetWxUnionID(s string) *MemberCreate {
+	mc.mutation.SetWxUnionID(s)
+	return mc
+}
+
+// SetNillableWxUnionID sets the "wx_union_id" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableWxUnionID(s *string) *MemberCreate {
+	if s != nil {
+		mc.SetWxUnionID(*s)
+	}
+	return mc
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (mc *MemberCreate) SetBcmbCode(s string) *MemberCreate {
 	mc.mutation.SetBcmbCode(s)
@@ -157,13 +171,13 @@ func (mc *MemberCreate) SetNillableBcmbRegMsgID(s *string) *MemberCreate {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (mc *MemberCreate) SetBcmbType(i int) *MemberCreate {
+func (mc *MemberCreate) SetBcmbType(i int32) *MemberCreate {
 	mc.mutation.SetBcmbType(i)
 	return mc
 }
 
 // SetNillableBcmbType sets the "bcmb_type" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableBcmbType(i *int) *MemberCreate {
+func (mc *MemberCreate) SetNillableBcmbType(i *int32) *MemberCreate {
 	if i != nil {
 		mc.SetBcmbType(*i)
 	}
@@ -171,29 +185,15 @@ func (mc *MemberCreate) SetNillableBcmbType(i *int) *MemberCreate {
 }
 
 // SetLevel sets the "level" field.
-func (mc *MemberCreate) SetLevel(i int) *MemberCreate {
+func (mc *MemberCreate) SetLevel(i int32) *MemberCreate {
 	mc.mutation.SetLevel(i)
 	return mc
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableLevel(i *int) *MemberCreate {
+func (mc *MemberCreate) SetNillableLevel(i *int32) *MemberCreate {
 	if i != nil {
 		mc.SetLevel(*i)
-	}
-	return mc
-}
-
-// SetSource sets the "source" field.
-func (mc *MemberCreate) SetSource(i int) *MemberCreate {
-	mc.mutation.SetSource(i)
-	return mc
-}
-
-// SetNillableSource sets the "source" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableSource(i *int) *MemberCreate {
-	if i != nil {
-		mc.SetSource(*i)
 	}
 	return mc
 }
@@ -212,14 +212,28 @@ func (mc *MemberCreate) SetNillableLastTime(t *time.Time) *MemberCreate {
 	return mc
 }
 
+// SetSource sets the "source" field.
+func (mc *MemberCreate) SetSource(i int32) *MemberCreate {
+	mc.mutation.SetSource(i)
+	return mc
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableSource(i *int32) *MemberCreate {
+	if i != nil {
+		mc.SetSource(*i)
+	}
+	return mc
+}
+
 // SetStatus sets the "status" field.
-func (mc *MemberCreate) SetStatus(i int) *MemberCreate {
+func (mc *MemberCreate) SetStatus(i int32) *MemberCreate {
 	mc.mutation.SetStatus(i)
 	return mc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (mc *MemberCreate) SetNillableStatus(i *int) *MemberCreate {
+func (mc *MemberCreate) SetNillableStatus(i *int32) *MemberCreate {
 	if i != nil {
 		mc.SetStatus(*i)
 	}
@@ -295,13 +309,13 @@ func (mc *MemberCreate) defaults() {
 		v := member.DefaultLevel
 		mc.mutation.SetLevel(v)
 	}
-	if _, ok := mc.mutation.Source(); !ok {
-		v := member.DefaultSource
-		mc.mutation.SetSource(v)
-	}
 	if _, ok := mc.mutation.LastTime(); !ok {
 		v := member.DefaultLastTime()
 		mc.mutation.SetLastTime(v)
+	}
+	if _, ok := mc.mutation.Source(); !ok {
+		v := member.DefaultSource
+		mc.mutation.SetSource(v)
 	}
 	if _, ok := mc.mutation.Status(); !ok {
 		v := member.DefaultStatus
@@ -352,6 +366,11 @@ func (mc *MemberCreate) check() error {
 			return &ValidationError{Name: "wx_open_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_open_id": %w`, err)}
 		}
 	}
+	if v, ok := mc.mutation.WxUnionID(); ok {
+		if err := member.WxUnionIDValidator(v); err != nil {
+			return &ValidationError{Name: "wx_union_id", err: fmt.Errorf(`ent: validator failed for field "Member.wx_union_id": %w`, err)}
+		}
+	}
 	if v, ok := mc.mutation.BcmbCode(); ok {
 		if err := member.BcmbCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bcmb_code", err: fmt.Errorf(`ent: validator failed for field "Member.bcmb_code": %w`, err)}
@@ -368,11 +387,11 @@ func (mc *MemberCreate) check() error {
 	if _, ok := mc.mutation.Level(); !ok {
 		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Member.level"`)}
 	}
-	if _, ok := mc.mutation.Source(); !ok {
-		return &ValidationError{Name: "source", err: errors.New(`ent: missing required field "Member.source"`)}
-	}
 	if _, ok := mc.mutation.LastTime(); !ok {
 		return &ValidationError{Name: "last_time", err: errors.New(`ent: missing required field "Member.last_time"`)}
+	}
+	if _, ok := mc.mutation.Source(); !ok {
+		return &ValidationError{Name: "source", err: errors.New(`ent: missing required field "Member.source"`)}
 	}
 	if _, ok := mc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Member.status"`)}
@@ -441,6 +460,10 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 		_spec.SetField(member.FieldWxOpenID, field.TypeString, value)
 		_node.WxOpenID = value
 	}
+	if value, ok := mc.mutation.WxUnionID(); ok {
+		_spec.SetField(member.FieldWxUnionID, field.TypeString, value)
+		_node.WxUnionID = value
+	}
 	if value, ok := mc.mutation.BcmbCode(); ok {
 		_spec.SetField(member.FieldBcmbCode, field.TypeString, value)
 		_node.BcmbCode = value
@@ -454,23 +477,23 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 		_node.BcmbRegMsgID = value
 	}
 	if value, ok := mc.mutation.BcmbType(); ok {
-		_spec.SetField(member.FieldBcmbType, field.TypeInt, value)
+		_spec.SetField(member.FieldBcmbType, field.TypeInt32, value)
 		_node.BcmbType = value
 	}
 	if value, ok := mc.mutation.Level(); ok {
-		_spec.SetField(member.FieldLevel, field.TypeInt, value)
+		_spec.SetField(member.FieldLevel, field.TypeInt32, value)
 		_node.Level = value
-	}
-	if value, ok := mc.mutation.Source(); ok {
-		_spec.SetField(member.FieldSource, field.TypeInt, value)
-		_node.Source = value
 	}
 	if value, ok := mc.mutation.LastTime(); ok {
 		_spec.SetField(member.FieldLastTime, field.TypeTime, value)
 		_node.LastTime = value
 	}
+	if value, ok := mc.mutation.Source(); ok {
+		_spec.SetField(member.FieldSource, field.TypeInt32, value)
+		_node.Source = value
+	}
 	if value, ok := mc.mutation.Status(); ok {
-		_spec.SetField(member.FieldStatus, field.TypeInt, value)
+		_spec.SetField(member.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
 	}
 	return _node, _spec
@@ -603,6 +626,24 @@ func (u *MemberUpsert) UpdateWxOpenID() *MemberUpsert {
 	return u
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (u *MemberUpsert) SetWxUnionID(v string) *MemberUpsert {
+	u.Set(member.FieldWxUnionID, v)
+	return u
+}
+
+// UpdateWxUnionID sets the "wx_union_id" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateWxUnionID() *MemberUpsert {
+	u.SetExcluded(member.FieldWxUnionID)
+	return u
+}
+
+// ClearWxUnionID clears the value of the "wx_union_id" field.
+func (u *MemberUpsert) ClearWxUnionID() *MemberUpsert {
+	u.SetNull(member.FieldWxUnionID)
+	return u
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (u *MemberUpsert) SetBcmbCode(v string) *MemberUpsert {
 	u.Set(member.FieldBcmbCode, v)
@@ -658,7 +699,7 @@ func (u *MemberUpsert) ClearBcmbRegMsgID() *MemberUpsert {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (u *MemberUpsert) SetBcmbType(v int) *MemberUpsert {
+func (u *MemberUpsert) SetBcmbType(v int32) *MemberUpsert {
 	u.Set(member.FieldBcmbType, v)
 	return u
 }
@@ -670,13 +711,13 @@ func (u *MemberUpsert) UpdateBcmbType() *MemberUpsert {
 }
 
 // AddBcmbType adds v to the "bcmb_type" field.
-func (u *MemberUpsert) AddBcmbType(v int) *MemberUpsert {
+func (u *MemberUpsert) AddBcmbType(v int32) *MemberUpsert {
 	u.Add(member.FieldBcmbType, v)
 	return u
 }
 
 // SetLevel sets the "level" field.
-func (u *MemberUpsert) SetLevel(v int) *MemberUpsert {
+func (u *MemberUpsert) SetLevel(v int32) *MemberUpsert {
 	u.Set(member.FieldLevel, v)
 	return u
 }
@@ -688,26 +729,8 @@ func (u *MemberUpsert) UpdateLevel() *MemberUpsert {
 }
 
 // AddLevel adds v to the "level" field.
-func (u *MemberUpsert) AddLevel(v int) *MemberUpsert {
+func (u *MemberUpsert) AddLevel(v int32) *MemberUpsert {
 	u.Add(member.FieldLevel, v)
-	return u
-}
-
-// SetSource sets the "source" field.
-func (u *MemberUpsert) SetSource(v int) *MemberUpsert {
-	u.Set(member.FieldSource, v)
-	return u
-}
-
-// UpdateSource sets the "source" field to the value that was provided on create.
-func (u *MemberUpsert) UpdateSource() *MemberUpsert {
-	u.SetExcluded(member.FieldSource)
-	return u
-}
-
-// AddSource adds v to the "source" field.
-func (u *MemberUpsert) AddSource(v int) *MemberUpsert {
-	u.Add(member.FieldSource, v)
 	return u
 }
 
@@ -723,8 +746,26 @@ func (u *MemberUpsert) UpdateLastTime() *MemberUpsert {
 	return u
 }
 
+// SetSource sets the "source" field.
+func (u *MemberUpsert) SetSource(v int32) *MemberUpsert {
+	u.Set(member.FieldSource, v)
+	return u
+}
+
+// UpdateSource sets the "source" field to the value that was provided on create.
+func (u *MemberUpsert) UpdateSource() *MemberUpsert {
+	u.SetExcluded(member.FieldSource)
+	return u
+}
+
+// AddSource adds v to the "source" field.
+func (u *MemberUpsert) AddSource(v int32) *MemberUpsert {
+	u.Add(member.FieldSource, v)
+	return u
+}
+
 // SetStatus sets the "status" field.
-func (u *MemberUpsert) SetStatus(v int) *MemberUpsert {
+func (u *MemberUpsert) SetStatus(v int32) *MemberUpsert {
 	u.Set(member.FieldStatus, v)
 	return u
 }
@@ -736,7 +777,7 @@ func (u *MemberUpsert) UpdateStatus() *MemberUpsert {
 }
 
 // AddStatus adds v to the "status" field.
-func (u *MemberUpsert) AddStatus(v int) *MemberUpsert {
+func (u *MemberUpsert) AddStatus(v int32) *MemberUpsert {
 	u.Add(member.FieldStatus, v)
 	return u
 }
@@ -886,6 +927,27 @@ func (u *MemberUpsertOne) UpdateWxOpenID() *MemberUpsertOne {
 	})
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (u *MemberUpsertOne) SetWxUnionID(v string) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxUnionID(v)
+	})
+}
+
+// UpdateWxUnionID sets the "wx_union_id" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateWxUnionID() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxUnionID()
+	})
+}
+
+// ClearWxUnionID clears the value of the "wx_union_id" field.
+func (u *MemberUpsertOne) ClearWxUnionID() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearWxUnionID()
+	})
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (u *MemberUpsertOne) SetBcmbCode(v string) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
@@ -950,14 +1012,14 @@ func (u *MemberUpsertOne) ClearBcmbRegMsgID() *MemberUpsertOne {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (u *MemberUpsertOne) SetBcmbType(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) SetBcmbType(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetBcmbType(v)
 	})
 }
 
 // AddBcmbType adds v to the "bcmb_type" field.
-func (u *MemberUpsertOne) AddBcmbType(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) AddBcmbType(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddBcmbType(v)
 	})
@@ -971,14 +1033,14 @@ func (u *MemberUpsertOne) UpdateBcmbType() *MemberUpsertOne {
 }
 
 // SetLevel sets the "level" field.
-func (u *MemberUpsertOne) SetLevel(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) SetLevel(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetLevel(v)
 	})
 }
 
 // AddLevel adds v to the "level" field.
-func (u *MemberUpsertOne) AddLevel(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) AddLevel(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddLevel(v)
 	})
@@ -988,27 +1050,6 @@ func (u *MemberUpsertOne) AddLevel(v int) *MemberUpsertOne {
 func (u *MemberUpsertOne) UpdateLevel() *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateLevel()
-	})
-}
-
-// SetSource sets the "source" field.
-func (u *MemberUpsertOne) SetSource(v int) *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetSource(v)
-	})
-}
-
-// AddSource adds v to the "source" field.
-func (u *MemberUpsertOne) AddSource(v int) *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.AddSource(v)
-	})
-}
-
-// UpdateSource sets the "source" field to the value that was provided on create.
-func (u *MemberUpsertOne) UpdateSource() *MemberUpsertOne {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateSource()
 	})
 }
 
@@ -1026,15 +1067,36 @@ func (u *MemberUpsertOne) UpdateLastTime() *MemberUpsertOne {
 	})
 }
 
+// SetSource sets the "source" field.
+func (u *MemberUpsertOne) SetSource(v int32) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetSource(v)
+	})
+}
+
+// AddSource adds v to the "source" field.
+func (u *MemberUpsertOne) AddSource(v int32) *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddSource(v)
+	})
+}
+
+// UpdateSource sets the "source" field to the value that was provided on create.
+func (u *MemberUpsertOne) UpdateSource() *MemberUpsertOne {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateSource()
+	})
+}
+
 // SetStatus sets the "status" field.
-func (u *MemberUpsertOne) SetStatus(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) SetStatus(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *MemberUpsertOne) AddStatus(v int) *MemberUpsertOne {
+func (u *MemberUpsertOne) AddStatus(v int32) *MemberUpsertOne {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddStatus(v)
 	})
@@ -1359,6 +1421,27 @@ func (u *MemberUpsertBulk) UpdateWxOpenID() *MemberUpsertBulk {
 	})
 }
 
+// SetWxUnionID sets the "wx_union_id" field.
+func (u *MemberUpsertBulk) SetWxUnionID(v string) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetWxUnionID(v)
+	})
+}
+
+// UpdateWxUnionID sets the "wx_union_id" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateWxUnionID() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateWxUnionID()
+	})
+}
+
+// ClearWxUnionID clears the value of the "wx_union_id" field.
+func (u *MemberUpsertBulk) ClearWxUnionID() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.ClearWxUnionID()
+	})
+}
+
 // SetBcmbCode sets the "bcmb_code" field.
 func (u *MemberUpsertBulk) SetBcmbCode(v string) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
@@ -1423,14 +1506,14 @@ func (u *MemberUpsertBulk) ClearBcmbRegMsgID() *MemberUpsertBulk {
 }
 
 // SetBcmbType sets the "bcmb_type" field.
-func (u *MemberUpsertBulk) SetBcmbType(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) SetBcmbType(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetBcmbType(v)
 	})
 }
 
 // AddBcmbType adds v to the "bcmb_type" field.
-func (u *MemberUpsertBulk) AddBcmbType(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) AddBcmbType(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddBcmbType(v)
 	})
@@ -1444,14 +1527,14 @@ func (u *MemberUpsertBulk) UpdateBcmbType() *MemberUpsertBulk {
 }
 
 // SetLevel sets the "level" field.
-func (u *MemberUpsertBulk) SetLevel(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) SetLevel(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetLevel(v)
 	})
 }
 
 // AddLevel adds v to the "level" field.
-func (u *MemberUpsertBulk) AddLevel(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) AddLevel(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddLevel(v)
 	})
@@ -1461,27 +1544,6 @@ func (u *MemberUpsertBulk) AddLevel(v int) *MemberUpsertBulk {
 func (u *MemberUpsertBulk) UpdateLevel() *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.UpdateLevel()
-	})
-}
-
-// SetSource sets the "source" field.
-func (u *MemberUpsertBulk) SetSource(v int) *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.SetSource(v)
-	})
-}
-
-// AddSource adds v to the "source" field.
-func (u *MemberUpsertBulk) AddSource(v int) *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.AddSource(v)
-	})
-}
-
-// UpdateSource sets the "source" field to the value that was provided on create.
-func (u *MemberUpsertBulk) UpdateSource() *MemberUpsertBulk {
-	return u.Update(func(s *MemberUpsert) {
-		s.UpdateSource()
 	})
 }
 
@@ -1499,15 +1561,36 @@ func (u *MemberUpsertBulk) UpdateLastTime() *MemberUpsertBulk {
 	})
 }
 
+// SetSource sets the "source" field.
+func (u *MemberUpsertBulk) SetSource(v int32) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.SetSource(v)
+	})
+}
+
+// AddSource adds v to the "source" field.
+func (u *MemberUpsertBulk) AddSource(v int32) *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.AddSource(v)
+	})
+}
+
+// UpdateSource sets the "source" field to the value that was provided on create.
+func (u *MemberUpsertBulk) UpdateSource() *MemberUpsertBulk {
+	return u.Update(func(s *MemberUpsert) {
+		s.UpdateSource()
+	})
+}
+
 // SetStatus sets the "status" field.
-func (u *MemberUpsertBulk) SetStatus(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) SetStatus(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *MemberUpsertBulk) AddStatus(v int) *MemberUpsertBulk {
+func (u *MemberUpsertBulk) AddStatus(v int32) *MemberUpsertBulk {
 	return u.Update(func(s *MemberUpsert) {
 		s.AddStatus(v)
 	})
