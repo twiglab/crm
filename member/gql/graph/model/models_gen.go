@@ -10,8 +10,8 @@ type MemberResp struct {
 	Code     string `json:"code"`
 	Phone    string `json:"phone"`
 	Nickname string `json:"nickname"`
-	Level    int    `json:"level"`
-	Status   int    `json:"status"`
+	Level    int32  `json:"level"`
+	Status   int32  `json:"status"`
 }
 
 type Query struct {
