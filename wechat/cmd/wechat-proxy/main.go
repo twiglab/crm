@@ -15,7 +15,6 @@ import (
 	"github.com/twiglab/crm/wechat/bc"
 	"github.com/twiglab/crm/wechat/cmd/wechat-proxy/config"
 	"github.com/twiglab/crm/wechat/sns"
-	"github.com/twiglab/crm/wechat/testbed"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -48,16 +47,7 @@ func main() {
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(auth))
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
-	mux.Mount("/testbed", testbed.TestBed(xmq))
-
-	/*
-		svr := config.Create(ctx, cfg.Web)
-		log.Fatal(web.RunServer2(ctx, svr, mux))
-		if err := svr.ListenAndServe(); err != nil {
-			log.Fatal(err)
-		}
-	*/
-
+	//mux.Mount("/testbed", testbed.TestBed(xmq))
 
 	svr := &http.Server{
 		Addr:        cfg.Web.Addr,
