@@ -25,7 +25,7 @@ func (h *MemberAuthHandle) RecieveDelivery(ctx context.Context, delivery amqp.De
 		return
 	}
 
-	_ = delivery.Ack(false)
+	_ = delivery.Ack(true)
 }
 
 func (h *MemberAuthHandle) Handle(ctx context.Context, msg *msg.BusinessCircleAuthor) error {
