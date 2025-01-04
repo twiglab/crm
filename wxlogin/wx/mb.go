@@ -38,7 +38,7 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 	}
 
 	code := code.Code36()
-	if code == "0000000000-0000000000" {
+	if wxOpenID == "0000000000-0000000000" {
 		code = uuid.Nil.String()
 	}
 	// 创建用户
