@@ -4,8 +4,10 @@ import (
 	"context"
 
 	"github.com/Khan/genqlient/graphql"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/pkg/data"
 	"github.com/twiglab/crm/member/pkg/low"
+	"github.com/twiglab/crm/psdk/code"
 )
 
 type Member struct {
@@ -35,8 +37,12 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 	}
 
+	code := code.Code36()
+	if code == "0000000000-0000000000" {
+		code = uuid.Nil.String()
+	}
 	// 创建用户
-	r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: "xx", WxOpenID: wxOpenID})
+	r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: code, WxOpenID: wxOpenID})
 	if err != nil {
 		return nil, err
 	}

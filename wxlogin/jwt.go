@@ -75,7 +75,7 @@ func (x *AuthClient) Login2(ctx context.Context, jsCode string) (*X, error) {
 
 func NewClaims(code string) *jwt.Claims {
 	return &jwt.Claims{
-		Issuer:    "https://xx/authz",
+		Issuer:    "twiglab/crm",
 		ID:        uuid.NewString(),
 		Audience:  []string{"app"},
 		Subject:   code,
