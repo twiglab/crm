@@ -30,7 +30,7 @@ type App struct {
 	MQ        MQ     `yaml:"mq" mapstructure:"mq"`
 	DB        DB     `yaml:"db" mapstructure:"db"`
 	MemberCli GqlRpc `yaml:"member-cli" mapstructure:"member-cli"`
-	BcCli     GqlRpc `yaml:"bc-cli" mapstructure:"bc-cli"`
+	BcCli     GqlRpc `yaml:"bc-cli" mapstructure:"wechat-bc-cli"`
 	ShopCli   GqlRpc `yaml:"shop-cli" mapstructure:"shop-cli"`
 }
 

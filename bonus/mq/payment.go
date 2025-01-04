@@ -29,7 +29,7 @@ func (h *BcPaymentHandle) RecieveDelivery(ctx context.Context, delivery amqp.Del
 		return
 	}
 
-	_ = delivery.Ack(false)
+	_ = delivery.Ack(true)
 }
 
 func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePayment) error {

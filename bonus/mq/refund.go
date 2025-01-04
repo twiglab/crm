@@ -26,7 +26,7 @@ func (h *BcRefundHandle) RecieveDelivery(ctx context.Context, delivery amqp.Deli
 		return
 	}
 
-	_ = delivery.Ack(false)
+	_ = delivery.Ack(true)
 }
 
 func (h *BcRefundHandle) Handle(ctx context.Context, msg *msg.BusinessCircleRefund) error {
