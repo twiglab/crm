@@ -40,7 +40,6 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
-	Query() QueryResolver
 }
 
 type DirectiveRoot struct {
@@ -64,8 +63,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		QueryWxMemberByOpenID func(childComplexity int, input data.OpenIDReq) int
-		__resolve__service    func(childComplexity int) int
+		__resolve__service func(childComplexity int) int
 	}
 
 	_Service struct {
@@ -76,9 +74,6 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateWxMember(ctx context.Context, input data.CreateWxMemberReq) (*data.MemberResp, error)
 	WxLogin(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error)
-}
-type QueryResolver interface {
-	QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error)
 }
 
 type executableSchema struct {
@@ -158,18 +153,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.QryMemberResp.WxOpenID(childComplexity), true
-
-	case "Query.queryWxMemberByOpenID":
-		if e.complexity.Query.QueryWxMemberByOpenID == nil {
-			break
-		}
-
-		args, err := ec.field_Query_queryWxMemberByOpenID_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.QueryWxMemberByOpenID(childComplexity, args["input"].(data.OpenIDReq)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -313,11 +296,6 @@ input CreateWxMemberReq {
   wxOpenID: String!
 }
 
-type Query {
-  queryWxMemberByOpenID (input: OpenIDReq!): QryMemberResp!
-}
-
-
 type Mutation {
   createWxMember(input: CreateWxMemberReq!): MemberResp!
   wxLogin(input: OpenIDReq!): QryMemberResp!
@@ -456,29 +434,6 @@ func (ec *executionContext) field_Query___type_argsName(
 	}
 
 	var zeroVal string
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_queryWxMemberByOpenID_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := ec.field_Query_queryWxMemberByOpenID_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_queryWxMemberByOpenID_argsInput(
-	ctx context.Context,
-	rawArgs map[string]any,
-) (data.OpenIDReq, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNOpenIDReq2githubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐOpenIDReq(ctx, tmp)
-	}
-
-	var zeroVal data.OpenIDReq
 	return zeroVal, nil
 }
 
@@ -876,69 +831,6 @@ func (ec *executionContext) fieldContext_QryMemberResp_found(_ context.Context, 
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
 		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_queryWxMemberByOpenID(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_queryWxMemberByOpenID(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().QueryWxMemberByOpenID(rctx, fc.Args["input"].(data.OpenIDReq))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*data.QryMemberResp)
-	fc.Result = res
-	return ec.marshalNQryMemberResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐQryMemberResp(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_queryWxMemberByOpenID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "code":
-				return ec.fieldContext_QryMemberResp_code(ctx, field)
-			case "wxOpenID":
-				return ec.fieldContext_QryMemberResp_wxOpenID(ctx, field)
-			case "found":
-				return ec.fieldContext_QryMemberResp_found(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type QryMemberResp", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_queryWxMemberByOpenID_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
 	}
 	return fc, nil
 }
@@ -3171,28 +3063,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "queryWxMemberByOpenID":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_queryWxMemberByOpenID(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "_service":
 			field := field
 

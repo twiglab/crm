@@ -36,3 +36,12 @@ func (op *MemberDBOP) WxLogin(ctx context.Context, openID string) (*ent.Member, 
 
 	return mb, true, err
 }
+
+func (r *MemberDBOP) CreateWxMember(ctx context.Context, code, openID string) (*ent.Member, error) {
+	c := r.Client.Member.Create().
+		SetCode(code).
+		SetStatus(1). //设置有效
+		SetLastTime(time.Now()).
+		SetWxOpenID(openID)
+	return c.Save(ctx)
+}
