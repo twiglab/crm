@@ -3,7 +3,6 @@ input JsCodeReq {
 }
 
 type LoginUserResp{
-  openID: String!
   code: String!
   jwt: String!
 }

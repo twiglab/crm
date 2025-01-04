@@ -7,9 +7,8 @@ type JsCodeReq struct {
 }
 
 type LoginUserResp struct {
-	OpenID string `json:"openID"`
-	Code   string `json:"code"`
-	Jwt    string `json:"jwt"`
+	Code string `json:"code"`
+	Jwt  string `json:"jwt"`
 }
 
 type Query struct {
