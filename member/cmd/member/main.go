@@ -10,9 +10,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
 	"github.com/twiglab/crm/member/cmd/member/config"
+	"github.com/twiglab/crm/member/gql"
 	"github.com/twiglab/crm/member/mq"
-	"github.com/twiglab/crm/member/rpc/gql"
+	rpcgql "github.com/twiglab/crm/member/rpc/gql"
+
 	"github.com/twiglab/crm/psdk/conf"
 )
 
@@ -38,7 +41,8 @@ func main() {
 
 	mux := chi.NewMux()
 	mux.Use(middleware.Logger, middleware.Recoverer)
-	mux.Mount("/gqlrpc", gql.New(client))
+	mux.Mount("/gql", gql.New(client))
+	mux.Mount("/gqlrpc", rpcgql.New(client))
 
 	svr := &http.Server{
 		Addr:        cfg.Web.Addr,
