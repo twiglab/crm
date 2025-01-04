@@ -27,6 +27,7 @@ func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.Create
 
 	c := r.Client.Member.Create()
 	c.SetCode(input.Code)
+	c.SetStatus(1) //设置有效
 	c.SetWxOpenID(input.WxOpenID)
 	mb, err := c.Save(ctx)
 	if err != nil {
