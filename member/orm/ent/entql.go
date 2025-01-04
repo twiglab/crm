@@ -19,7 +19,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   member.Table,
 			Columns: member.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: member.FieldID,
 			},
 		},
@@ -86,8 +86,8 @@ func (f *MemberFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql int predicate on the id field.
-func (f *MemberFilter) WhereID(p entql.IntP) {
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *MemberFilter) WhereID(p entql.ValueP) {
 	f.Where(p.Field(member.FieldID))
 }
 

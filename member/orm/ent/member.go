@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/ent/member"
 )
 
@@ -16,7 +17,7 @@ import (
 type Member struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
 	CreateTime time.Time `json:"create_time,omitempty"`
 	// UpdateTime holds the value of the "update_time" field.
@@ -55,12 +56,14 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case member.FieldID, member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
+		case member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case member.FieldCode, member.FieldCodeBin, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime, member.FieldLastTime:
 			values[i] = new(sql.NullTime)
+		case member.FieldID:
+			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -77,11 +80,11 @@ func (m *Member) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case member.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				m.ID = *value
 			}
-			m.ID = int(value.Int64)
 		case member.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field create_time", values[i])

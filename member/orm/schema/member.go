@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/schema/internal/x"
 	"github.com/twiglab/crm/psdk/code"
 )
@@ -20,6 +21,10 @@ type Member struct {
 
 func (Member) Fields() []ent.Field {
 	return []ent.Field{
+		field.UUID("id", uuid.Nil).
+			Default(code.NewV7).
+			Immutable().
+			Unique(),
 
 		field.String("code").
 			MaxLen(36).

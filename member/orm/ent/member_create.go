@@ -8,9 +8,11 @@ import (
 	"fmt"
 	"time"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/ent/member"
 )
 
@@ -224,6 +226,20 @@ func (mc *MemberCreate) SetNillableStatus(i *int) *MemberCreate {
 	return mc
 }
 
+// SetID sets the "id" field.
+func (mc *MemberCreate) SetID(u uuid.UUID) *MemberCreate {
+	mc.mutation.SetID(u)
+	return mc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (mc *MemberCreate) SetNillableID(u *uuid.UUID) *MemberCreate {
+	if u != nil {
+		mc.SetID(*u)
+	}
+	return mc
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (mc *MemberCreate) Mutation() *MemberMutation {
 	return mc.mutation
@@ -290,6 +306,10 @@ func (mc *MemberCreate) defaults() {
 	if _, ok := mc.mutation.Status(); !ok {
 		v := member.DefaultStatus
 		mc.mutation.SetStatus(v)
+	}
+	if _, ok := mc.mutation.ID(); !ok {
+		v := member.DefaultID()
+		mc.mutation.SetID(v)
 	}
 }
 
@@ -371,8 +391,13 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
+	}
 	mc.mutation.id = &_node.ID
 	mc.mutation.done = true
 	return _node, nil
@@ -381,9 +406,13 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Member{config: mc.config}
-		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeUUID))
 	)
 	_spec.OnConflict = mc.conflict
+	if id, ok := mc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = &id
+	}
 	if value, ok := mc.mutation.CreateTime(); ok {
 		_spec.SetField(member.FieldCreateTime, field.TypeTime, value)
 		_node.CreateTime = value
@@ -712,17 +741,23 @@ func (u *MemberUpsert) AddStatus(v int) *MemberUpsert {
 	return u
 }
 
-// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Member.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(member.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 func (u *MemberUpsertOne) UpdateNewValues() *MemberUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(member.FieldID)
+		}
 		if _, exists := u.create.mutation.CreateTime(); exists {
 			s.SetIgnore(member.FieldCreateTime)
 		}
@@ -1028,7 +1063,12 @@ func (u *MemberUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *MemberUpsertOne) ID(ctx context.Context) (id int, err error) {
+func (u *MemberUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: MemberUpsertOne.ID is not supported by MySQL driver. Use MemberUpsertOne.Exec instead")
+	}
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -1037,7 +1077,7 @@ func (u *MemberUpsertOne) ID(ctx context.Context) (id int, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *MemberUpsertOne) IDX(ctx context.Context) int {
+func (u *MemberUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -1092,10 +1132,6 @@ func (mcb *MemberCreateBulk) Save(ctx context.Context) ([]*Member, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -1182,12 +1218,18 @@ type MemberUpsertBulk struct {
 //	client.Member.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(member.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 func (u *MemberUpsertBulk) UpdateNewValues() *MemberUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(member.FieldID)
+			}
 			if _, exists := b.mutation.CreateTime(); exists {
 				s.SetIgnore(member.FieldCreateTime)
 			}
