@@ -26,6 +26,15 @@ type CardResp struct {
 	Status        int     `json:"status"`
 }
 
+type ChargeRecordCodeReq struct {
+	MemberCode string `json:"memberCode"`
+	CardCode   string `json:"cardCode"`
+}
+
+type ChargeRecordCodeResp struct {
+	Code string `json:"code"`
+}
+
 type Mutation struct {
 }
 

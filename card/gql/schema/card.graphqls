@@ -13,6 +13,10 @@ type CardResp {
   status: Int! # 状态
 }
 
+type ChargeRecordCodeResp {
+  code: String!
+}
+
 input PaginationReq {
   cursor: String
   limit: Int
@@ -36,6 +40,15 @@ input BindCardReq {
   memberCode: String!
 }
 
+input ChargeRecordCodeReq {
+  memberCode: String!
+  cardCode: String!
+}
+
+input UseRecordCodeReq {
+  code: String!
+}
+
 type Query {
   # 详情
   queryCardDetail(input: queryCardByCode): CardResp!
@@ -51,4 +64,10 @@ type Mutation {
 
   # 激活卡
   activeCard(input: ActiveCardReq!): CardResp!
+
+  # 获取消费码
+  getChargeRecordCode(input: ChargeRecordCodeReq!): ChargeRecordCodeResp!
+
+  # 使用消费码
+  useChargeRecordCode(input: ChargeRecordCodeReq!): CardResp!
 }

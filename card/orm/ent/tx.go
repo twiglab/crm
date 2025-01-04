@@ -16,6 +16,8 @@ type Tx struct {
 	config
 	// Card is the client for interacting with the Card builders.
 	Card *CardClient
+	// ChargeRecord is the client for interacting with the ChargeRecord builders.
+	ChargeRecord *ChargeRecordClient
 
 	// lazily loaded.
 	client     *Client
@@ -148,6 +150,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Card = NewCardClient(tx.config)
+	tx.ChargeRecord = NewChargeRecordClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

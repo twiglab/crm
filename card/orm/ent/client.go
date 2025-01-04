@@ -15,6 +15,7 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"github.com/twiglab/crm/card/orm/ent/card"
+	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 
 	stdsql "database/sql"
 )
@@ -26,6 +27,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Card is the client for interacting with the Card builders.
 	Card *CardClient
+	// ChargeRecord is the client for interacting with the ChargeRecord builders.
+	ChargeRecord *ChargeRecordClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -38,6 +41,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Card = NewCardClient(c.config)
+	c.ChargeRecord = NewChargeRecordClient(c.config)
 }
 
 type (
@@ -128,9 +132,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Card:   NewCardClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Card:         NewCardClient(cfg),
+		ChargeRecord: NewChargeRecordClient(cfg),
 	}, nil
 }
 
@@ -148,9 +153,10 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Card:   NewCardClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Card:         NewCardClient(cfg),
+		ChargeRecord: NewChargeRecordClient(cfg),
 	}, nil
 }
 
@@ -180,12 +186,14 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Card.Use(hooks...)
+	c.ChargeRecord.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Card.Intercept(interceptors...)
+	c.ChargeRecord.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -193,6 +201,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *CardMutation:
 		return c.Card.mutate(ctx, m)
+	case *ChargeRecordMutation:
+		return c.ChargeRecord.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -331,13 +341,146 @@ func (c *CardClient) mutate(ctx context.Context, m *CardMutation) (Value, error)
 	}
 }
 
+// ChargeRecordClient is a client for the ChargeRecord schema.
+type ChargeRecordClient struct {
+	config
+}
+
+// NewChargeRecordClient returns a client for the ChargeRecord from the given config.
+func NewChargeRecordClient(c config) *ChargeRecordClient {
+	return &ChargeRecordClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `chargerecord.Hooks(f(g(h())))`.
+func (c *ChargeRecordClient) Use(hooks ...Hook) {
+	c.hooks.ChargeRecord = append(c.hooks.ChargeRecord, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `chargerecord.Intercept(f(g(h())))`.
+func (c *ChargeRecordClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ChargeRecord = append(c.inters.ChargeRecord, interceptors...)
+}
+
+// Create returns a builder for creating a ChargeRecord entity.
+func (c *ChargeRecordClient) Create() *ChargeRecordCreate {
+	mutation := newChargeRecordMutation(c.config, OpCreate)
+	return &ChargeRecordCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ChargeRecord entities.
+func (c *ChargeRecordClient) CreateBulk(builders ...*ChargeRecordCreate) *ChargeRecordCreateBulk {
+	return &ChargeRecordCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ChargeRecordClient) MapCreateBulk(slice any, setFunc func(*ChargeRecordCreate, int)) *ChargeRecordCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ChargeRecordCreateBulk{err: fmt.Errorf("calling to ChargeRecordClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ChargeRecordCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ChargeRecordCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ChargeRecord.
+func (c *ChargeRecordClient) Update() *ChargeRecordUpdate {
+	mutation := newChargeRecordMutation(c.config, OpUpdate)
+	return &ChargeRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ChargeRecordClient) UpdateOne(cr *ChargeRecord) *ChargeRecordUpdateOne {
+	mutation := newChargeRecordMutation(c.config, OpUpdateOne, withChargeRecord(cr))
+	return &ChargeRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ChargeRecordClient) UpdateOneID(id int) *ChargeRecordUpdateOne {
+	mutation := newChargeRecordMutation(c.config, OpUpdateOne, withChargeRecordID(id))
+	return &ChargeRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ChargeRecord.
+func (c *ChargeRecordClient) Delete() *ChargeRecordDelete {
+	mutation := newChargeRecordMutation(c.config, OpDelete)
+	return &ChargeRecordDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ChargeRecordClient) DeleteOne(cr *ChargeRecord) *ChargeRecordDeleteOne {
+	return c.DeleteOneID(cr.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ChargeRecordClient) DeleteOneID(id int) *ChargeRecordDeleteOne {
+	builder := c.Delete().Where(chargerecord.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ChargeRecordDeleteOne{builder}
+}
+
+// Query returns a query builder for ChargeRecord.
+func (c *ChargeRecordClient) Query() *ChargeRecordQuery {
+	return &ChargeRecordQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeChargeRecord},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ChargeRecord entity by its id.
+func (c *ChargeRecordClient) Get(ctx context.Context, id int) (*ChargeRecord, error) {
+	return c.Query().Where(chargerecord.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ChargeRecordClient) GetX(ctx context.Context, id int) *ChargeRecord {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ChargeRecordClient) Hooks() []Hook {
+	return c.hooks.ChargeRecord
+}
+
+// Interceptors returns the client interceptors.
+func (c *ChargeRecordClient) Interceptors() []Interceptor {
+	return c.inters.ChargeRecord
+}
+
+func (c *ChargeRecordClient) mutate(ctx context.Context, m *ChargeRecordMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ChargeRecordCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ChargeRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ChargeRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ChargeRecordDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown ChargeRecord mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Card []ent.Hook
+		Card, ChargeRecord []ent.Hook
 	}
 	inters struct {
-		Card []ent.Interceptor
+		Card, ChargeRecord []ent.Interceptor
 	}
 )
 

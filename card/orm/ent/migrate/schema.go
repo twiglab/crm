@@ -55,14 +55,43 @@ var (
 			},
 		},
 	}
+	// TChargeRecordColumns holds the columns for the "t_charge_record" table.
+	TChargeRecordColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
+		{Name: "pay_code", Type: field.TypeString, Size: 128, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
+		{Name: "pay_ts", Type: field.TypeInt64, Default: 0},
+		{Name: "deduct", Type: field.TypeInt64, Default: 0},
+		{Name: "card_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
+		{Name: "status", Type: field.TypeInt, Default: 0},
+	}
+	// TChargeRecordTable holds the schema information for the "t_charge_record" table.
+	TChargeRecordTable = &schema.Table{
+		Name:       "t_charge_record",
+		Columns:    TChargeRecordColumns,
+		PrimaryKey: []*schema.Column{TChargeRecordColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "chargerecord_code",
+				Unique:  false,
+				Columns: []*schema.Column{TChargeRecordColumns[3]},
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		TCardTable,
+		TChargeRecordTable,
 	}
 )
 
 func init() {
 	TCardTable.Annotation = &entsql.Annotation{
 		Table: "t_card",
+	}
+	TChargeRecordTable.Annotation = &entsql.Annotation{
+		Table: "t_charge_record",
 	}
 }

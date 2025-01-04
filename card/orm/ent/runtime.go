@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/twiglab/crm/card/orm/ent/card"
+	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 	"github.com/twiglab/crm/card/orm/schema"
 )
 
@@ -102,4 +103,73 @@ func init() {
 	cardDescStatus := cardFields[11].Descriptor()
 	// card.DefaultStatus holds the default value on creation for the status field.
 	card.DefaultStatus = cardDescStatus.Default.(int)
+	chargerecordMixin := schema.ChargeRecord{}.Mixin()
+	chargerecordMixinFields0 := chargerecordMixin[0].Fields()
+	_ = chargerecordMixinFields0
+	chargerecordFields := schema.ChargeRecord{}.Fields()
+	_ = chargerecordFields
+	// chargerecordDescCreateTime is the schema descriptor for create_time field.
+	chargerecordDescCreateTime := chargerecordMixinFields0[0].Descriptor()
+	// chargerecord.DefaultCreateTime holds the default value on creation for the create_time field.
+	chargerecord.DefaultCreateTime = chargerecordDescCreateTime.Default.(func() time.Time)
+	// chargerecordDescUpdateTime is the schema descriptor for update_time field.
+	chargerecordDescUpdateTime := chargerecordMixinFields0[1].Descriptor()
+	// chargerecord.DefaultUpdateTime holds the default value on creation for the update_time field.
+	chargerecord.DefaultUpdateTime = chargerecordDescUpdateTime.Default.(func() time.Time)
+	// chargerecord.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	chargerecord.UpdateDefaultUpdateTime = chargerecordDescUpdateTime.UpdateDefault.(func() time.Time)
+	// chargerecordDescCode is the schema descriptor for code field.
+	chargerecordDescCode := chargerecordFields[0].Descriptor()
+	// chargerecord.DefaultCode holds the default value on creation for the code field.
+	chargerecord.DefaultCode = chargerecordDescCode.Default.(func() string)
+	// chargerecord.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	chargerecord.CodeValidator = func() func(string) error {
+		validators := chargerecordDescCode.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(code string) error {
+			for _, fn := range fns {
+				if err := fn(code); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// chargerecordDescPayCode is the schema descriptor for pay_code field.
+	chargerecordDescPayCode := chargerecordFields[1].Descriptor()
+	// chargerecord.PayCodeValidator is a validator for the "pay_code" field. It is called by the builders before save.
+	chargerecord.PayCodeValidator = chargerecordDescPayCode.Validators[0].(func(string) error)
+	// chargerecordDescPayTs is the schema descriptor for pay_ts field.
+	chargerecordDescPayTs := chargerecordFields[2].Descriptor()
+	// chargerecord.DefaultPayTs holds the default value on creation for the pay_ts field.
+	chargerecord.DefaultPayTs = chargerecordDescPayTs.Default.(int64)
+	// chargerecordDescDeduct is the schema descriptor for deduct field.
+	chargerecordDescDeduct := chargerecordFields[3].Descriptor()
+	// chargerecord.DefaultDeduct holds the default value on creation for the deduct field.
+	chargerecord.DefaultDeduct = chargerecordDescDeduct.Default.(int64)
+	// chargerecordDescCardCode is the schema descriptor for card_code field.
+	chargerecordDescCardCode := chargerecordFields[4].Descriptor()
+	// chargerecord.CardCodeValidator is a validator for the "card_code" field. It is called by the builders before save.
+	chargerecord.CardCodeValidator = func() func(string) error {
+		validators := chargerecordDescCardCode.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(card_code string) error {
+			for _, fn := range fns {
+				if err := fn(card_code); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// chargerecordDescStatus is the schema descriptor for status field.
+	chargerecordDescStatus := chargerecordFields[5].Descriptor()
+	// chargerecord.DefaultStatus holds the default value on creation for the status field.
+	chargerecord.DefaultStatus = chargerecordDescStatus.Default.(int)
 }

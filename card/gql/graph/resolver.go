@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/twiglab/crm/card/orm/ent"
+import (
+	"github.com/twiglab/crm/card/expend"
+	"github.com/twiglab/crm/card/orm/ent"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,4 +11,5 @@ import "github.com/twiglab/crm/card/orm/ent"
 
 type Resolver struct {
 	Client *ent.Client
+	Cache  expend.IExpend
 }

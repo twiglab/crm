@@ -62,9 +62,14 @@ type ComplexityRoot struct {
 		Type          func(childComplexity int) int
 	}
 
+	ChargeRecordCodeResp struct {
+		Code func(childComplexity int) int
+	}
+
 	Mutation struct {
-		ActiveCard func(childComplexity int, input model.ActiveCardReq) int
-		BindCard   func(childComplexity int, input model.BindCardReq) int
+		ActiveCard          func(childComplexity int, input model.ActiveCardReq) int
+		BindCard            func(childComplexity int, input model.BindCardReq) int
+		GetChargeRecordCode func(childComplexity int, input model.ChargeRecordCodeReq) int
 	}
 
 	Query struct {
@@ -82,6 +87,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	BindCard(ctx context.Context, input model.BindCardReq) (*model.CardResp, error)
 	ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error)
+	GetChargeRecordCode(ctx context.Context, input model.ChargeRecordCodeReq) (*model.ChargeRecordCodeResp, error)
 }
 type QueryResolver interface {
 	QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error)
@@ -192,6 +198,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CardResp.Type(childComplexity), true
 
+	case "ChargeRecordCodeResp.code":
+		if e.complexity.ChargeRecordCodeResp.Code == nil {
+			break
+		}
+
+		return e.complexity.ChargeRecordCodeResp.Code(childComplexity), true
+
 	case "Mutation.activeCard":
 		if e.complexity.Mutation.ActiveCard == nil {
 			break
@@ -215,6 +228,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.BindCard(childComplexity, args["input"].(model.BindCardReq)), true
+
+	case "Mutation.getChargeRecordCode":
+		if e.complexity.Mutation.GetChargeRecordCode == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_getChargeRecordCode_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.GetChargeRecordCode(childComplexity, args["input"].(model.ChargeRecordCodeReq)), true
 
 	case "Query.queryCardByMemberCode":
 		if e.complexity.Query.QueryCardByMemberCode == nil {
@@ -276,6 +301,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputActiveCardReq,
 		ec.unmarshalInputBindCardReq,
+		ec.unmarshalInputChargeRecordCodeReq,
 		ec.unmarshalInputPaginationReq,
 		ec.unmarshalInputqueryCardByCode,
 		ec.unmarshalInputqueryCardByMemberCode,
@@ -391,6 +417,10 @@ var sources = []*ast.Source{
   status: Int! # 状态
 }
 
+type ChargeRecordCodeResp {
+  code: String!
+}
+
 input PaginationReq {
   cursor: String
   limit: Int
@@ -414,6 +444,11 @@ input BindCardReq {
   memberCode: String!
 }
 
+input ChargeRecordCodeReq {
+  memberCode: String!
+  cardCode: String!
+}
+
 type Query {
   # 详情
   queryCardDetail(input: queryCardByCode): CardResp!
@@ -429,6 +464,9 @@ type Mutation {
 
   # 激活卡
   activeCard(input: ActiveCardReq!): CardResp!
+
+  # 获取消费码
+  getChargeRecordCode(input: ChargeRecordCodeReq!): ChargeRecordCodeResp!
 }
 `, BuiltIn: false},
 	{Name: "../federation/directives.graphql", Input: `
@@ -541,6 +579,29 @@ func (ec *executionContext) field_Mutation_bindCard_argsInput(
 	}
 
 	var zeroVal model.BindCardReq
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_getChargeRecordCode_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_getChargeRecordCode_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_getChargeRecordCode_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.ChargeRecordCodeReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNChargeRecordCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐChargeRecordCodeReq(ctx, tmp)
+	}
+
+	var zeroVal model.ChargeRecordCodeReq
 	return zeroVal, nil
 }
 
@@ -1209,6 +1270,50 @@ func (ec *executionContext) fieldContext_CardResp_status(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _ChargeRecordCodeResp_code(ctx context.Context, field graphql.CollectedField, obj *model.ChargeRecordCodeResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ChargeRecordCodeResp_code(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Code, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ChargeRecordCodeResp_code(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ChargeRecordCodeResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_bindCard(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_bindCard(ctx, field)
 	if err != nil {
@@ -1365,6 +1470,65 @@ func (ec *executionContext) fieldContext_Mutation_activeCard(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_activeCard_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_getChargeRecordCode(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_getChargeRecordCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().GetChargeRecordCode(rctx, fc.Args["input"].(model.ChargeRecordCodeReq))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.ChargeRecordCodeResp)
+	fc.Result = res
+	return ec.marshalNChargeRecordCodeResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐChargeRecordCodeResp(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_getChargeRecordCode(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "code":
+				return ec.fieldContext_ChargeRecordCodeResp_code(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ChargeRecordCodeResp", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_getChargeRecordCode_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -3666,6 +3830,40 @@ func (ec *executionContext) unmarshalInputBindCardReq(ctx context.Context, obj a
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputChargeRecordCodeReq(ctx context.Context, obj any) (model.ChargeRecordCodeReq, error) {
+	var it model.ChargeRecordCodeReq
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"memberCode", "cardCode"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "memberCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memberCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MemberCode = data
+		case "cardCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cardCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CardCode = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputPaginationReq(ctx context.Context, obj any) (model.PaginationReq, error) {
 	var it model.PaginationReq
 	asMap := map[string]any{}
@@ -3854,6 +4052,45 @@ func (ec *executionContext) _CardResp(ctx context.Context, sel ast.SelectionSet,
 	return out
 }
 
+var chargeRecordCodeRespImplementors = []string{"ChargeRecordCodeResp"}
+
+func (ec *executionContext) _ChargeRecordCodeResp(ctx context.Context, sel ast.SelectionSet, obj *model.ChargeRecordCodeResp) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, chargeRecordCodeRespImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ChargeRecordCodeResp")
+		case "code":
+			out.Values[i] = ec._ChargeRecordCodeResp_code(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var mutationImplementors = []string{"Mutation"}
 
 func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -3883,6 +4120,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "activeCard":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_activeCard(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "getChargeRecordCode":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_getChargeRecordCode(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -4485,6 +4729,25 @@ func (ec *executionContext) marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋc
 		return graphql.Null
 	}
 	return ec._CardResp(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNChargeRecordCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐChargeRecordCodeReq(ctx context.Context, v any) (model.ChargeRecordCodeReq, error) {
+	res, err := ec.unmarshalInputChargeRecordCodeReq(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNChargeRecordCodeResp2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐChargeRecordCodeResp(ctx context.Context, sel ast.SelectionSet, v model.ChargeRecordCodeResp) graphql.Marshaler {
+	return ec._ChargeRecordCodeResp(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNChargeRecordCodeResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐChargeRecordCodeResp(ctx context.Context, sel ast.SelectionSet, v *model.ChargeRecordCodeResp) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._ChargeRecordCodeResp(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNFieldSet2string(ctx context.Context, v any) (string, error) {
