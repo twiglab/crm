@@ -8,6 +8,6 @@ mq:
 
 wechat: 
   mch_id: 1
-  serial_no: 456
-  api_key: 789
+  serial_no: aa
+  api_key: bb
   private_key: 000

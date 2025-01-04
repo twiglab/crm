@@ -1,0 +1,13 @@
+id: wxlogin
+
+web: 
+  addr: 0.0.0.0:10007
+
+jwt:
+  secret: jckFzams6Hltm0MFE8vdErRykNcNtVEW
+
+wechat:
+  rpc-url: http://127.0.0.1:10009/gqlrpc/query
+
+member:
+  rpc-url: http://127.0.0.1:10008/gqlrpc/query

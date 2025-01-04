@@ -1,7 +1,7 @@
 id: member
 
 web: 
-  addr: 0.0.0.0:10009
+  addr: 0.0.0.0:10008
 
 mq: 
   addr: amqp://erp:erpPass123@81.71.151.176:5672
