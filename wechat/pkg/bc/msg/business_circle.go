@@ -12,7 +12,7 @@ const (
 type BusinessCircleMsg struct {
 	MsgID      string    `json:"msg_id,omitempty"`
 	CreateTime time.Time `json:"create_time,omitempty"`
-	MsgType    string    `json:"msg_type,omitempty"`
+	EventType  string    `json:"event_type,omitempty"`
 	Summary    string    `json:"summary,omitempty"`
 }
 
