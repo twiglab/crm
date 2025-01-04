@@ -54,6 +54,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CreateWxMember func(childComplexity int, input data.CreateWxMemberReq) int
+		WxLogin        func(childComplexity int, input data.OpenIDReq) int
 	}
 
 	QryMemberResp struct {
@@ -74,6 +75,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateWxMember(ctx context.Context, input data.CreateWxMemberReq) (*data.MemberResp, error)
+	WxLogin(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error)
 }
 type QueryResolver interface {
 	QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error)
@@ -123,6 +125,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateWxMember(childComplexity, args["input"].(data.CreateWxMemberReq)), true
+
+	case "Mutation.wxLogin":
+		if e.complexity.Mutation.WxLogin == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_wxLogin_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.WxLogin(childComplexity, args["input"].(data.OpenIDReq)), true
 
 	case "QryMemberResp.code":
 		if e.complexity.QryMemberResp.Code == nil {
@@ -306,6 +320,7 @@ type Query {
 
 type Mutation {
   createWxMember(input: CreateWxMemberReq!): MemberResp!
+  wxLogin(input: OpenIDReq!): QryMemberResp!
 }
 `, BuiltIn: false},
 	{Name: "../federation/directives.graphql", Input: `
@@ -395,6 +410,29 @@ func (ec *executionContext) field_Mutation_createWxMember_argsInput(
 	}
 
 	var zeroVal data.CreateWxMemberReq
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_wxLogin_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_wxLogin_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_wxLogin_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (data.OpenIDReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNOpenIDReq2githubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐOpenIDReq(ctx, tmp)
+	}
+
+	var zeroVal data.OpenIDReq
 	return zeroVal, nil
 }
 
@@ -641,6 +679,69 @@ func (ec *executionContext) fieldContext_Mutation_createWxMember(ctx context.Con
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createWxMember_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_wxLogin(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_wxLogin(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().WxLogin(rctx, fc.Args["input"].(data.OpenIDReq))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*data.QryMemberResp)
+	fc.Result = res
+	return ec.marshalNQryMemberResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋmemberᚋpkgᚋdataᚐQryMemberResp(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_wxLogin(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "code":
+				return ec.fieldContext_QryMemberResp_code(ctx, field)
+			case "wxOpenID":
+				return ec.fieldContext_QryMemberResp_wxOpenID(ctx, field)
+			case "found":
+				return ec.fieldContext_QryMemberResp_found(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type QryMemberResp", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_wxLogin_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -2968,6 +3069,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "createWxMember":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createWxMember(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "wxLogin":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_wxLogin(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

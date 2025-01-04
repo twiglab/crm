@@ -27,16 +27,17 @@ type MemberCli struct {
 //	@return error
 func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, error) {
 	// 根据微信openid查询用户信息
-	req, err := low.QueryWxMemberByOpenID(ctx, c.Client, data.OpenIDReq{WxOpenID: wxOpenID})
+	req, err := low.WxLogin(ctx, c.Client, data.OpenIDReq{WxOpenID: wxOpenID})
 	if err != nil {
 		return nil, err
 	}
 
-	m := req.GetQueryWxMemberByOpenID()
+	m := req.GetWxLogin()
 	if m.Found {
 		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
 	}
 
+	// 没找到, 直接新建
 	code := code.Code36()
 	if wxOpenID == "0000000000-0000000000" {
 		code = uuid.Nil.String()

@@ -38,6 +38,19 @@ func (r *mutationResolver) CreateWxMember(ctx context.Context, input data.Create
 	return &data.MemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
 }
 
+// WxLogin is the resolver for the wxLogin field.
+func (r *mutationResolver) WxLogin(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error) {
+	mb, found, err := r.OP.WxLogin(ctx, input.WxOpenID)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return &data.QryMemberResp{Found: false}, err
+	}
+
+	return &data.QryMemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID, Found: true}, nil
+}
+
 // QueryWxMemberByOpenID is the resolver for the queryWxMemberByOpenID field.
 func (r *queryResolver) QueryWxMemberByOpenID(ctx context.Context, input data.OpenIDReq) (*data.QryMemberResp, error) {
 	q := r.Client.Member.Query()

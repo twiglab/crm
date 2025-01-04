@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/twiglab/crm/member/orm/ent"
+import (
+	"github.com/twiglab/crm/member/orm"
+	"github.com/twiglab/crm/member/orm/ent"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,4 +11,5 @@ import "github.com/twiglab/crm/member/orm/ent"
 
 type Resolver struct {
 	Client *ent.Client
+	OP     *orm.MemberDBOP
 }
