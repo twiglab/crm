@@ -49,12 +49,8 @@ func init() {
 			return nil
 		}
 	}()
-	// memberDescCodeBin is the schema descriptor for code_bin field.
-	memberDescCodeBin := memberFields[2].Descriptor()
-	// member.CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
-	member.CodeBinValidator = memberDescCodeBin.Validators[0].(func(string) error)
 	// memberDescPhone is the schema descriptor for phone field.
-	memberDescPhone := memberFields[3].Descriptor()
+	memberDescPhone := memberFields[2].Descriptor()
 	// member.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	member.PhoneValidator = func() func(string) error {
 		validators := memberDescPhone.Validators
@@ -72,43 +68,43 @@ func init() {
 		}
 	}()
 	// memberDescNickname is the schema descriptor for nickname field.
-	memberDescNickname := memberFields[4].Descriptor()
+	memberDescNickname := memberFields[3].Descriptor()
 	// member.NicknameValidator is a validator for the "nickname" field. It is called by the builders before save.
 	member.NicknameValidator = memberDescNickname.Validators[0].(func(string) error)
 	// memberDescWxOpenID is the schema descriptor for wx_open_id field.
-	memberDescWxOpenID := memberFields[5].Descriptor()
+	memberDescWxOpenID := memberFields[4].Descriptor()
 	// member.WxOpenIDValidator is a validator for the "wx_open_id" field. It is called by the builders before save.
 	member.WxOpenIDValidator = memberDescWxOpenID.Validators[0].(func(string) error)
 	// memberDescWxUnionID is the schema descriptor for wx_union_id field.
-	memberDescWxUnionID := memberFields[6].Descriptor()
+	memberDescWxUnionID := memberFields[5].Descriptor()
 	// member.WxUnionIDValidator is a validator for the "wx_union_id" field. It is called by the builders before save.
 	member.WxUnionIDValidator = memberDescWxUnionID.Validators[0].(func(string) error)
 	// memberDescBcmbCode is the schema descriptor for bcmb_code field.
-	memberDescBcmbCode := memberFields[7].Descriptor()
+	memberDescBcmbCode := memberFields[6].Descriptor()
 	// member.BcmbCodeValidator is a validator for the "bcmb_code" field. It is called by the builders before save.
 	member.BcmbCodeValidator = memberDescBcmbCode.Validators[0].(func(string) error)
 	// memberDescBcmbRegMsgID is the schema descriptor for bcmb_reg_msg_id field.
-	memberDescBcmbRegMsgID := memberFields[9].Descriptor()
+	memberDescBcmbRegMsgID := memberFields[8].Descriptor()
 	// member.BcmbRegMsgIDValidator is a validator for the "bcmb_reg_msg_id" field. It is called by the builders before save.
 	member.BcmbRegMsgIDValidator = memberDescBcmbRegMsgID.Validators[0].(func(string) error)
 	// memberDescBcmbType is the schema descriptor for bcmb_type field.
-	memberDescBcmbType := memberFields[10].Descriptor()
+	memberDescBcmbType := memberFields[9].Descriptor()
 	// member.DefaultBcmbType holds the default value on creation for the bcmb_type field.
 	member.DefaultBcmbType = memberDescBcmbType.Default.(int32)
 	// memberDescLevel is the schema descriptor for level field.
-	memberDescLevel := memberFields[11].Descriptor()
+	memberDescLevel := memberFields[10].Descriptor()
 	// member.DefaultLevel holds the default value on creation for the level field.
 	member.DefaultLevel = memberDescLevel.Default.(int32)
 	// memberDescLastTime is the schema descriptor for last_time field.
-	memberDescLastTime := memberFields[12].Descriptor()
+	memberDescLastTime := memberFields[11].Descriptor()
 	// member.DefaultLastTime holds the default value on creation for the last_time field.
 	member.DefaultLastTime = memberDescLastTime.Default.(func() time.Time)
 	// memberDescSource is the schema descriptor for source field.
-	memberDescSource := memberFields[13].Descriptor()
+	memberDescSource := memberFields[12].Descriptor()
 	// member.DefaultSource holds the default value on creation for the source field.
 	member.DefaultSource = memberDescSource.Default.(int32)
 	// memberDescStatus is the schema descriptor for status field.
-	memberDescStatus := memberFields[14].Descriptor()
+	memberDescStatus := memberFields[13].Descriptor()
 	// member.DefaultStatus holds the default value on creation for the status field.
 	member.DefaultStatus = memberDescStatus.Default.(int32)
 	// memberDescID is the schema descriptor for id field.

@@ -20,8 +20,6 @@ const (
 	FieldUpdateTime = "update_time"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
-	// FieldCodeBin holds the string denoting the code_bin field in the database.
-	FieldCodeBin = "code_bin"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
 	// FieldNickname holds the string denoting the nickname field in the database.
@@ -56,7 +54,6 @@ var Columns = []string{
 	FieldCreateTime,
 	FieldUpdateTime,
 	FieldCode,
-	FieldCodeBin,
 	FieldPhone,
 	FieldNickname,
 	FieldWxOpenID,
@@ -92,8 +89,6 @@ var (
 	DefaultCode func() string
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
-	// CodeBinValidator is a validator for the "code_bin" field. It is called by the builders before save.
-	CodeBinValidator func(string) error
 	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	PhoneValidator func(string) error
 	// NicknameValidator is a validator for the "nickname" field. It is called by the builders before save.
@@ -141,11 +136,6 @@ func ByUpdateTime(opts ...sql.OrderTermOption) OrderOption {
 // ByCode orders the results by the code field.
 func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
-}
-
-// ByCodeBin orders the results by the code_bin field.
-func ByCodeBin(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCodeBin, opts...).ToFunc()
 }
 
 // ByPhone orders the results by the phone field.

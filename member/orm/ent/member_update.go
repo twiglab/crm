@@ -34,26 +34,6 @@ func (mu *MemberUpdate) SetUpdateTime(t time.Time) *MemberUpdate {
 	return mu
 }
 
-// SetCodeBin sets the "code_bin" field.
-func (mu *MemberUpdate) SetCodeBin(s string) *MemberUpdate {
-	mu.mutation.SetCodeBin(s)
-	return mu
-}
-
-// SetNillableCodeBin sets the "code_bin" field if the given value is not nil.
-func (mu *MemberUpdate) SetNillableCodeBin(s *string) *MemberUpdate {
-	if s != nil {
-		mu.SetCodeBin(*s)
-	}
-	return mu
-}
-
-// ClearCodeBin clears the value of the "code_bin" field.
-func (mu *MemberUpdate) ClearCodeBin() *MemberUpdate {
-	mu.mutation.ClearCodeBin()
-	return mu
-}
-
 // SetPhone sets the "phone" field.
 func (mu *MemberUpdate) SetPhone(s string) *MemberUpdate {
 	mu.mutation.SetPhone(s)
@@ -329,11 +309,6 @@ func (mu *MemberUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (mu *MemberUpdate) check() error {
-	if v, ok := mu.mutation.CodeBin(); ok {
-		if err := member.CodeBinValidator(v); err != nil {
-			return &ValidationError{Name: "code_bin", err: fmt.Errorf(`ent: validator failed for field "Member.code_bin": %w`, err)}
-		}
-	}
 	if v, ok := mu.mutation.Phone(); ok {
 		if err := member.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Member.phone": %w`, err)}
@@ -381,12 +356,6 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := mu.mutation.UpdateTime(); ok {
 		_spec.SetField(member.FieldUpdateTime, field.TypeTime, value)
-	}
-	if value, ok := mu.mutation.CodeBin(); ok {
-		_spec.SetField(member.FieldCodeBin, field.TypeString, value)
-	}
-	if mu.mutation.CodeBinCleared() {
-		_spec.ClearField(member.FieldCodeBin, field.TypeString)
 	}
 	if value, ok := mu.mutation.Phone(); ok {
 		_spec.SetField(member.FieldPhone, field.TypeString, value)
@@ -477,26 +446,6 @@ type MemberUpdateOne struct {
 // SetUpdateTime sets the "update_time" field.
 func (muo *MemberUpdateOne) SetUpdateTime(t time.Time) *MemberUpdateOne {
 	muo.mutation.SetUpdateTime(t)
-	return muo
-}
-
-// SetCodeBin sets the "code_bin" field.
-func (muo *MemberUpdateOne) SetCodeBin(s string) *MemberUpdateOne {
-	muo.mutation.SetCodeBin(s)
-	return muo
-}
-
-// SetNillableCodeBin sets the "code_bin" field if the given value is not nil.
-func (muo *MemberUpdateOne) SetNillableCodeBin(s *string) *MemberUpdateOne {
-	if s != nil {
-		muo.SetCodeBin(*s)
-	}
-	return muo
-}
-
-// ClearCodeBin clears the value of the "code_bin" field.
-func (muo *MemberUpdateOne) ClearCodeBin() *MemberUpdateOne {
-	muo.mutation.ClearCodeBin()
 	return muo
 }
 
@@ -788,11 +737,6 @@ func (muo *MemberUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (muo *MemberUpdateOne) check() error {
-	if v, ok := muo.mutation.CodeBin(); ok {
-		if err := member.CodeBinValidator(v); err != nil {
-			return &ValidationError{Name: "code_bin", err: fmt.Errorf(`ent: validator failed for field "Member.code_bin": %w`, err)}
-		}
-	}
 	if v, ok := muo.mutation.Phone(); ok {
 		if err := member.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Member.phone": %w`, err)}
@@ -857,12 +801,6 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 	}
 	if value, ok := muo.mutation.UpdateTime(); ok {
 		_spec.SetField(member.FieldUpdateTime, field.TypeTime, value)
-	}
-	if value, ok := muo.mutation.CodeBin(); ok {
-		_spec.SetField(member.FieldCodeBin, field.TypeString, value)
-	}
-	if muo.mutation.CodeBinCleared() {
-		_spec.ClearField(member.FieldCodeBin, field.TypeString)
 	}
 	if value, ok := muo.mutation.Phone(); ok {
 		_spec.SetField(member.FieldPhone, field.TypeString, value)

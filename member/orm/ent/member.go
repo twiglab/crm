@@ -24,8 +24,6 @@ type Member struct {
 	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// CodeBin holds the value of the "code_bin" field.
-	CodeBin string `json:"code_bin,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
 	// Nickname holds the value of the "nickname" field.
@@ -60,7 +58,7 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case member.FieldBcmbType, member.FieldLevel, member.FieldSource, member.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case member.FieldCode, member.FieldCodeBin, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUnionID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
+		case member.FieldCode, member.FieldPhone, member.FieldNickname, member.FieldWxOpenID, member.FieldWxUnionID, member.FieldBcmbCode, member.FieldBcmbRegMsgID:
 			values[i] = new(sql.NullString)
 		case member.FieldCreateTime, member.FieldUpdateTime, member.FieldBcmbRegTime, member.FieldLastTime:
 			values[i] = new(sql.NullTime)
@@ -104,12 +102,6 @@ func (m *Member) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
 				m.Code = value.String
-			}
-		case member.FieldCodeBin:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field code_bin", values[i])
-			} else if value.Valid {
-				m.CodeBin = value.String
 			}
 		case member.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -228,9 +220,6 @@ func (m *Member) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(m.Code)
-	builder.WriteString(", ")
-	builder.WriteString("code_bin=")
-	builder.WriteString(m.CodeBin)
 	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(m.Phone)

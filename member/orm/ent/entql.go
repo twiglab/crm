@@ -28,7 +28,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			member.FieldCreateTime:   {Type: field.TypeTime, Column: member.FieldCreateTime},
 			member.FieldUpdateTime:   {Type: field.TypeTime, Column: member.FieldUpdateTime},
 			member.FieldCode:         {Type: field.TypeString, Column: member.FieldCode},
-			member.FieldCodeBin:      {Type: field.TypeString, Column: member.FieldCodeBin},
 			member.FieldPhone:        {Type: field.TypeString, Column: member.FieldPhone},
 			member.FieldNickname:     {Type: field.TypeString, Column: member.FieldNickname},
 			member.FieldWxOpenID:     {Type: field.TypeString, Column: member.FieldWxOpenID},
@@ -105,11 +104,6 @@ func (f *MemberFilter) WhereUpdateTime(p entql.TimeP) {
 // WhereCode applies the entql string predicate on the code field.
 func (f *MemberFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(member.FieldCode))
-}
-
-// WhereCodeBin applies the entql string predicate on the code_bin field.
-func (f *MemberFilter) WhereCodeBin(p entql.StringP) {
-	f.Where(p.Field(member.FieldCodeBin))
 }
 
 // WherePhone applies the entql string predicate on the phone field.

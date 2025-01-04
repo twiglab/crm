@@ -15,7 +15,6 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "code_bin", Type: field.TypeString, Unique: true, Nullable: true, Size: 16, SchemaType: map[string]string{"mysql": "char(16)", "postgres": "char(16)", "sqlite3": "char(16)"}},
 		{Name: "phone", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "nickname", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "wx_open_id", Type: field.TypeString, Unique: true, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
@@ -43,7 +42,7 @@ var (
 			{
 				Name:    "member_wx_open_id",
 				Unique:  false,
-				Columns: []*schema.Column{TMemberColumns[7]},
+				Columns: []*schema.Column{TMemberColumns[6]},
 			},
 		},
 	}

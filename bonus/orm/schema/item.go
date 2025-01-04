@@ -10,7 +10,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
-	"github.com/twiglab/crm/bonus/orm/schema/internal/x"
+	"github.com/twiglab/crm/psdk/code"
 )
 
 type BonusItem struct {
@@ -25,7 +25,7 @@ func (BonusItem) Fields() []ent.Field {
 			NotEmpty().
 			Unique().
 			Immutable().
-			DefaultFunc(x.Code36).
+			DefaultFunc(code.Code36).
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
@@ -81,10 +81,22 @@ func (BonusItem) Fields() []ent.Field {
 			MaxLen(36).
 			Immutable().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(64)", // Override MySQL.
-				dialect.Postgres: "varchar(64)", // Override Postgres.
-				dialect.SQLite:   "varchar(64)", // Override Postgres.
+				dialect.MySQL:    "varchar(36)", // Override MySQL.
+				dialect.Postgres: "varchar(36)", // Override Postgres.
+				dialect.SQLite:   "varchar(36)", // Override Postgres.
 			}),
+
+		/*
+			field.String("member_bin").
+				MaxLen(16).
+				Immutable().
+				Optional().
+				SchemaType(map[string]string{
+					dialect.MySQL:    "varchar(16)", // Override MySQL.
+					dialect.Postgres: "varchar(16)", // Override Postgres.
+					dialect.SQLite:   "varchar(16)", // Override Postgres.
+				}),
+		*/
 
 		field.String("wx_open_id").
 			MaxLen(256).
@@ -137,7 +149,7 @@ func (BonusItem) Fields() []ent.Field {
 
 		field.Int("bonus").Default(0).Immutable(),
 
-		field.Int("bonus_rate").Default(100).Comment("积分比例"),
+		field.Int32("bonus_rate").Default(100).Comment("积分比例"),
 
 		field.Int("status").Default(1),
 	}

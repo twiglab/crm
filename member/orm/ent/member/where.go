@@ -70,11 +70,6 @@ func Code(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldCode, v))
 }
 
-// CodeBin applies equality check predicate on the "code_bin" field. It's identical to CodeBinEQ.
-func CodeBin(v string) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldCodeBin, v))
-}
-
 // Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
 func Phone(v string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldPhone, v))
@@ -278,81 +273,6 @@ func CodeEqualFold(v string) predicate.Member {
 // CodeContainsFold applies the ContainsFold predicate on the "code" field.
 func CodeContainsFold(v string) predicate.Member {
 	return predicate.Member(sql.FieldContainsFold(FieldCode, v))
-}
-
-// CodeBinEQ applies the EQ predicate on the "code_bin" field.
-func CodeBinEQ(v string) predicate.Member {
-	return predicate.Member(sql.FieldEQ(FieldCodeBin, v))
-}
-
-// CodeBinNEQ applies the NEQ predicate on the "code_bin" field.
-func CodeBinNEQ(v string) predicate.Member {
-	return predicate.Member(sql.FieldNEQ(FieldCodeBin, v))
-}
-
-// CodeBinIn applies the In predicate on the "code_bin" field.
-func CodeBinIn(vs ...string) predicate.Member {
-	return predicate.Member(sql.FieldIn(FieldCodeBin, vs...))
-}
-
-// CodeBinNotIn applies the NotIn predicate on the "code_bin" field.
-func CodeBinNotIn(vs ...string) predicate.Member {
-	return predicate.Member(sql.FieldNotIn(FieldCodeBin, vs...))
-}
-
-// CodeBinGT applies the GT predicate on the "code_bin" field.
-func CodeBinGT(v string) predicate.Member {
-	return predicate.Member(sql.FieldGT(FieldCodeBin, v))
-}
-
-// CodeBinGTE applies the GTE predicate on the "code_bin" field.
-func CodeBinGTE(v string) predicate.Member {
-	return predicate.Member(sql.FieldGTE(FieldCodeBin, v))
-}
-
-// CodeBinLT applies the LT predicate on the "code_bin" field.
-func CodeBinLT(v string) predicate.Member {
-	return predicate.Member(sql.FieldLT(FieldCodeBin, v))
-}
-
-// CodeBinLTE applies the LTE predicate on the "code_bin" field.
-func CodeBinLTE(v string) predicate.Member {
-	return predicate.Member(sql.FieldLTE(FieldCodeBin, v))
-}
-
-// CodeBinContains applies the Contains predicate on the "code_bin" field.
-func CodeBinContains(v string) predicate.Member {
-	return predicate.Member(sql.FieldContains(FieldCodeBin, v))
-}
-
-// CodeBinHasPrefix applies the HasPrefix predicate on the "code_bin" field.
-func CodeBinHasPrefix(v string) predicate.Member {
-	return predicate.Member(sql.FieldHasPrefix(FieldCodeBin, v))
-}
-
-// CodeBinHasSuffix applies the HasSuffix predicate on the "code_bin" field.
-func CodeBinHasSuffix(v string) predicate.Member {
-	return predicate.Member(sql.FieldHasSuffix(FieldCodeBin, v))
-}
-
-// CodeBinIsNil applies the IsNil predicate on the "code_bin" field.
-func CodeBinIsNil() predicate.Member {
-	return predicate.Member(sql.FieldIsNull(FieldCodeBin))
-}
-
-// CodeBinNotNil applies the NotNil predicate on the "code_bin" field.
-func CodeBinNotNil() predicate.Member {
-	return predicate.Member(sql.FieldNotNull(FieldCodeBin))
-}
-
-// CodeBinEqualFold applies the EqualFold predicate on the "code_bin" field.
-func CodeBinEqualFold(v string) predicate.Member {
-	return predicate.Member(sql.FieldEqualFold(FieldCodeBin, v))
-}
-
-// CodeBinContainsFold applies the ContainsFold predicate on the "code_bin" field.
-func CodeBinContainsFold(v string) predicate.Member {
-	return predicate.Member(sql.FieldContainsFold(FieldCodeBin, v))
 }
 
 // PhoneEQ applies the EQ predicate on the "phone" field.

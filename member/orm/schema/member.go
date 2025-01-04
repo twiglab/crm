@@ -38,15 +38,17 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "char(36)", // Override Postgres.
 			}),
 
-		field.String("code_bin").
-			MaxLen(16).
-			Optional().
-			Unique().
-			SchemaType(map[string]string{
-				dialect.MySQL:    "char(16)", // Override MySQL.
-				dialect.Postgres: "char(16)", // Override Postgres.
-				dialect.SQLite:   "char(16)", // Override Postgres.
-			}),
+		/*
+			field.String("code_bin").
+				MaxLen(16).
+				Optional().
+				Unique().
+				SchemaType(map[string]string{
+					dialect.MySQL:    "char(16)", // Override MySQL.
+					dialect.Postgres: "char(16)", // Override Postgres.
+					dialect.SQLite:   "char(16)", // Override Postgres.
+				}),
+		*/
 
 		field.String("phone").
 			MaxLen(64).

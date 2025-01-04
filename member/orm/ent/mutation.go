@@ -37,7 +37,6 @@ type MemberMutation struct {
 	create_time     *time.Time
 	update_time     *time.Time
 	code            *string
-	code_bin        *string
 	phone           *string
 	nickname        *string
 	wx_open_id      *string
@@ -270,55 +269,6 @@ func (m *MemberMutation) OldCode(ctx context.Context) (v string, err error) {
 // ResetCode resets all changes to the "code" field.
 func (m *MemberMutation) ResetCode() {
 	m.code = nil
-}
-
-// SetCodeBin sets the "code_bin" field.
-func (m *MemberMutation) SetCodeBin(s string) {
-	m.code_bin = &s
-}
-
-// CodeBin returns the value of the "code_bin" field in the mutation.
-func (m *MemberMutation) CodeBin() (r string, exists bool) {
-	v := m.code_bin
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCodeBin returns the old "code_bin" field's value of the Member entity.
-// If the Member object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MemberMutation) OldCodeBin(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCodeBin is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCodeBin requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCodeBin: %w", err)
-	}
-	return oldValue.CodeBin, nil
-}
-
-// ClearCodeBin clears the value of the "code_bin" field.
-func (m *MemberMutation) ClearCodeBin() {
-	m.code_bin = nil
-	m.clearedFields[member.FieldCodeBin] = struct{}{}
-}
-
-// CodeBinCleared returns if the "code_bin" field was cleared in this mutation.
-func (m *MemberMutation) CodeBinCleared() bool {
-	_, ok := m.clearedFields[member.FieldCodeBin]
-	return ok
-}
-
-// ResetCodeBin resets all changes to the "code_bin" field.
-func (m *MemberMutation) ResetCodeBin() {
-	m.code_bin = nil
-	delete(m.clearedFields, member.FieldCodeBin)
 }
 
 // SetPhone sets the "phone" field.
@@ -945,7 +895,7 @@ func (m *MemberMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MemberMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 15)
 	if m.create_time != nil {
 		fields = append(fields, member.FieldCreateTime)
 	}
@@ -954,9 +904,6 @@ func (m *MemberMutation) Fields() []string {
 	}
 	if m.code != nil {
 		fields = append(fields, member.FieldCode)
-	}
-	if m.code_bin != nil {
-		fields = append(fields, member.FieldCodeBin)
 	}
 	if m.phone != nil {
 		fields = append(fields, member.FieldPhone)
@@ -1008,8 +955,6 @@ func (m *MemberMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdateTime()
 	case member.FieldCode:
 		return m.Code()
-	case member.FieldCodeBin:
-		return m.CodeBin()
 	case member.FieldPhone:
 		return m.Phone()
 	case member.FieldNickname:
@@ -1049,8 +994,6 @@ func (m *MemberMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldUpdateTime(ctx)
 	case member.FieldCode:
 		return m.OldCode(ctx)
-	case member.FieldCodeBin:
-		return m.OldCodeBin(ctx)
 	case member.FieldPhone:
 		return m.OldPhone(ctx)
 	case member.FieldNickname:
@@ -1104,13 +1047,6 @@ func (m *MemberMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCode(v)
-		return nil
-	case member.FieldCodeBin:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCodeBin(v)
 		return nil
 	case member.FieldPhone:
 		v, ok := value.(string)
@@ -1277,9 +1213,6 @@ func (m *MemberMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *MemberMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(member.FieldCodeBin) {
-		fields = append(fields, member.FieldCodeBin)
-	}
 	if m.FieldCleared(member.FieldPhone) {
 		fields = append(fields, member.FieldPhone)
 	}
@@ -1312,9 +1245,6 @@ func (m *MemberMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *MemberMutation) ClearField(name string) error {
 	switch name {
-	case member.FieldCodeBin:
-		m.ClearCodeBin()
-		return nil
 	case member.FieldPhone:
 		m.ClearPhone()
 		return nil
@@ -1349,9 +1279,6 @@ func (m *MemberMutation) ResetField(name string) error {
 		return nil
 	case member.FieldCode:
 		m.ResetCode()
-		return nil
-	case member.FieldCodeBin:
-		m.ResetCodeBin()
 		return nil
 	case member.FieldPhone:
 		m.ResetPhone()
