@@ -40,7 +40,6 @@ func main() {
 
 	conn := config.CreateMQConn(cfg.MQ)
 	xmq := config.CreateBcXMQ(conn)
-	fmt.Println("ok -----")
 
 	bcc := bc.BcExchange{BC: xmq, ApiV3Key: cfg.Wechat.APIKey}
 
