@@ -51,7 +51,7 @@ func BusiCircleAuth(exchange BcExchange) http.HandlerFunc {
 			BusinessCircleMsg: msg.BusinessCircleMsg{
 				MsgID:      req.Id,
 				Summary:    req.Summary,
-				MsgType:    req.EventType,
+				EventType:  req.EventType,
 				CreateTime: parse(req.CreateTime),
 			},
 		}
@@ -94,7 +94,7 @@ func BusiCirclePayment(exchange BcExchange) http.HandlerFunc {
 			BusinessCircleMsg: msg.BusinessCircleMsg{
 				MsgID:      req.Id,
 				Summary:    req.Summary,
-				MsgType:    req.EventType,
+				EventType:  req.EventType,
 				CreateTime: parse(req.CreateTime),
 			},
 		}
@@ -133,7 +133,7 @@ func BusiCircleRefund(exchange BcExchange) http.HandlerFunc {
 			BusinessCircleMsg: msg.BusinessCircleMsg{
 				MsgID:      req.Id,
 				Summary:    req.Summary,
-				MsgType:    req.EventType,
+				EventType:  req.EventType,
 				CreateTime: parse(req.CreateTime),
 			},
 		}
