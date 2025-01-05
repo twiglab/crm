@@ -47,7 +47,6 @@ func main() {
 	mux.Use(middleware.Logger, middleware.Recoverer)
 	mux.Mount("/gqlrpc", gql.New(auth))
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
-	//mux.Mount("/testbed", testbed.TestBed(xmq))
 
 	svr := &http.Server{
 		Addr:        cfg.Web.Addr,
