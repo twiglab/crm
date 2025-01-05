@@ -43,10 +43,10 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 		code = uuid.Nil.String()
 	}
 	// 创建用户
-	r, err := low.CreateWxMember(ctx, c.Client, data.CreateWxMemberReq{Code: code, WxOpenID: wxOpenID})
+	r, err := low.WxCreateMember(ctx, c.Client, data.WxCreateMemberReq{Code: code, WxOpenID: wxOpenID})
 	if err != nil {
 		return nil, err
 	}
-	qm := r.GetCreateWxMember()
+	qm := r.GetWxCreateMember()
 	return &Member{Code: qm.Code, WxOpenID: qm.WxOpenID}, nil
 }

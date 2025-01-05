@@ -9,29 +9,29 @@ import (
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
-// CreateWxMemberResponse is returned by CreateWxMember on success.
-type CreateWxMemberResponse struct {
-	CreateWxMember data.MemberResp `json:"createWxMember"`
+// WxCreateMemberResponse is returned by WxCreateMember on success.
+type WxCreateMemberResponse struct {
+	WxCreateMember data.MemberResp `json:"wxCreateMember"`
 }
 
-// GetCreateWxMember returns CreateWxMemberResponse.CreateWxMember, and is useful for accessing the field via an interface.
-func (v *CreateWxMemberResponse) GetCreateWxMember() data.MemberResp { return v.CreateWxMember }
+// GetWxCreateMember returns WxCreateMemberResponse.WxCreateMember, and is useful for accessing the field via an interface.
+func (v *WxCreateMemberResponse) GetWxCreateMember() data.MemberResp { return v.WxCreateMember }
 
 // WxLoginResponse is returned by WxLogin on success.
 type WxLoginResponse struct {
-	WxLogin data.QryMemberResp `json:"wxLogin"`
+	WxLogin data.WxLoginResp `json:"wxLogin"`
 }
 
 // GetWxLogin returns WxLoginResponse.WxLogin, and is useful for accessing the field via an interface.
-func (v *WxLoginResponse) GetWxLogin() data.QryMemberResp { return v.WxLogin }
+func (v *WxLoginResponse) GetWxLogin() data.WxLoginResp { return v.WxLogin }
 
-// __CreateWxMemberInput is used internally by genqlient
-type __CreateWxMemberInput struct {
-	Input data.CreateWxMemberReq `json:"input"`
+// __WxCreateMemberInput is used internally by genqlient
+type __WxCreateMemberInput struct {
+	Input data.WxCreateMemberReq `json:"input"`
 }
 
-// GetInput returns __CreateWxMemberInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateWxMemberInput) GetInput() data.CreateWxMemberReq { return v.Input }
+// GetInput returns __WxCreateMemberInput.Input, and is useful for accessing the field via an interface.
+func (v *__WxCreateMemberInput) GetInput() data.WxCreateMemberReq { return v.Input }
 
 // __WxLoginInput is used internally by genqlient
 type __WxLoginInput struct {
@@ -41,31 +41,31 @@ type __WxLoginInput struct {
 // GetInput returns __WxLoginInput.Input, and is useful for accessing the field via an interface.
 func (v *__WxLoginInput) GetInput() data.OpenIDReq { return v.Input }
 
-// The query or mutation executed by CreateWxMember.
-const CreateWxMember_Operation = `
-mutation CreateWxMember ($input: CreateWxMemberReq!) {
-	createWxMember(input: $input) {
+// The query or mutation executed by WxCreateMember.
+const WxCreateMember_Operation = `
+mutation WxCreateMember ($input: WxCreateMemberReq!) {
+	wxCreateMember(input: $input) {
 		code
 		wxOpenID
 	}
 }
 `
 
-func CreateWxMember(
+func WxCreateMember(
 	ctx_ context.Context,
 	client_ graphql.Client,
-	input data.CreateWxMemberReq,
-) (*CreateWxMemberResponse, error) {
+	input data.WxCreateMemberReq,
+) (*WxCreateMemberResponse, error) {
 	req_ := &graphql.Request{
-		OpName: "CreateWxMember",
-		Query:  CreateWxMember_Operation,
-		Variables: &__CreateWxMemberInput{
+		OpName: "WxCreateMember",
+		Query:  WxCreateMember_Operation,
+		Variables: &__WxCreateMemberInput{
 			Input: input,
 		},
 	}
 	var err_ error
 
-	var data_ CreateWxMemberResponse
+	var data_ WxCreateMemberResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(

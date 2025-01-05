@@ -13,7 +13,7 @@ func New(client *ent.Client) chi.Router {
 	srv := gqlx.NewGQLHandler(
 		graph.NewExecutableSchema(
 			graph.Config{
-				Resolvers: &graph.Resolver{OP: &orm.MemberDBOP{Client: client}},
+				Resolvers: &graph.Resolver{Op: &orm.MemberDBOP{Client: client}},
 			}))
 	r := chi.NewRouter()
 	r.Handle("/", playground.ApolloSandboxHandler("pg", "/gql/query"))

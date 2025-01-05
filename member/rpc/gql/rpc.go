@@ -12,7 +12,7 @@ import (
 func New(client *ent.Client) chi.Router {
 	srv := gqlx.NewGQLHandler(
 		graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-			OP: &orm.MemberDBOP{Client: client},
+			Op: &orm.MemberDBOP{Client: client},
 		}}),
 	)
 	r := chi.NewRouter()

@@ -8,11 +8,12 @@ import (
 	"context"
 
 	"github.com/twiglab/crm/member/gql/graph/model"
+	"github.com/twiglab/crm/member/orm"
 )
 
 // QueryMemberByCode is the resolver for the queryMemberByCode field.
 func (r *queryResolver) QueryMemberByCode(ctx context.Context, input model.CodeReq) (*model.MemberResp, error) {
-	m, err := r.OP.GetMemberByCode(ctx, input.Code)
+	m, err := r.Op.GetMemberByCode(ctx, orm.Param{Code: input.Code})
 	if err != nil {
 		return nil, err
 	}
