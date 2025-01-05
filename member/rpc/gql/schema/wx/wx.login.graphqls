@@ -1,0 +1,29 @@
+type MemberResp {
+  code: String!
+  wxOpenID: String!
+}
+
+
+input OpenIDReq {
+  wxOpenID: String!
+}
+
+
+input WxCreateMemberReq {
+  code: String!
+  wxOpenID: String!
+  wxUnionID: String!
+}
+
+
+type WxLoginResp {
+  code: String!
+  wxOpenID: String!
+  found:Boolean!
+}
+
+
+extend type Mutation {
+  wxCreateMember(input: WxCreateMemberReq!): MemberResp!
+  wxLogin(input: OpenIDReq!): WxLoginResp!
+}
