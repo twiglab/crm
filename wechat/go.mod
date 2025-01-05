@@ -3,7 +3,7 @@ module github.com/twiglab/crm/wechat
 go 1.23.1
 
 require (
-	github.com/99designs/gqlgen v0.17.61
+	github.com/99designs/gqlgen v0.17.62
 	github.com/Khan/genqlient v0.7.0
 	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-pay/gopay v1.5.107
@@ -11,9 +11,9 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/rabbitmq/amqp091-go v1.10.0
 	github.com/silenceper/wechat/v2 v2.1.7
-	github.com/spf13/viper v1.19.0
 	github.com/tinylib/msgp v1.2.5
-	github.com/vektah/gqlparser/v2 v2.5.20
+	github.com/twiglab/crm/psdk v0.0.0-20250102092740-9fd423336a7a
+	github.com/vektah/gqlparser/v2 v2.5.21
 )
 
 require (
@@ -51,6 +51,7 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tidwall/gjson v1.14.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect

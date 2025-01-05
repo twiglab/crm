@@ -28,20 +28,6 @@ func (pu *PolyUpdate) Where(ps ...predicate.Poly) *PolyUpdate {
 	return pu
 }
 
-// SetOperator sets the "operator" field.
-func (pu *PolyUpdate) SetOperator(s string) *PolyUpdate {
-	pu.mutation.SetOperator(s)
-	return pu
-}
-
-// SetNillableOperator sets the "operator" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableOperator(s *string) *PolyUpdate {
-	if s != nil {
-		pu.SetOperator(*s)
-	}
-	return pu
-}
-
 // SetRuleCode sets the "rule_code" field.
 func (pu *PolyUpdate) SetRuleCode(s string) *PolyUpdate {
 	pu.mutation.SetRuleCode(s)
@@ -81,27 +67,6 @@ func (pu *PolyUpdate) SetNillableDesc(s *string) *PolyUpdate {
 	if s != nil {
 		pu.SetDesc(*s)
 	}
-	return pu
-}
-
-// SetBudget sets the "budget" field.
-func (pu *PolyUpdate) SetBudget(i int64) *PolyUpdate {
-	pu.mutation.ResetBudget()
-	pu.mutation.SetBudget(i)
-	return pu
-}
-
-// SetNillableBudget sets the "budget" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableBudget(i *int64) *PolyUpdate {
-	if i != nil {
-		pu.SetBudget(*i)
-	}
-	return pu
-}
-
-// AddBudget adds i to the "budget" field.
-func (pu *PolyUpdate) AddBudget(i int64) *PolyUpdate {
-	pu.mutation.AddBudget(i)
 	return pu
 }
 
@@ -209,11 +174,6 @@ func (pu *PolyUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *PolyUpdate) check() error {
-	if v, ok := pu.mutation.Operator(); ok {
-		if err := poly.OperatorValidator(v); err != nil {
-			return &ValidationError{Name: "operator", err: fmt.Errorf(`ent: validator failed for field "Poly.operator": %w`, err)}
-		}
-	}
 	if v, ok := pu.mutation.RuleCode(); ok {
 		if err := poly.RuleCodeValidator(v); err != nil {
 			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
@@ -236,16 +196,13 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
+	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
 	if ps := pu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := pu.mutation.Operator(); ok {
-		_spec.SetField(poly.FieldOperator, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
@@ -255,12 +212,6 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := pu.mutation.Desc(); ok {
 		_spec.SetField(poly.FieldDesc, field.TypeString, value)
-	}
-	if value, ok := pu.mutation.Budget(); ok {
-		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
-	}
-	if value, ok := pu.mutation.AddedBudget(); ok {
-		_spec.AddField(poly.FieldBudget, field.TypeInt64, value)
 	}
 	if value, ok := pu.mutation.StartTime(); ok {
 		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
@@ -298,20 +249,6 @@ type PolyUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *PolyMutation
-}
-
-// SetOperator sets the "operator" field.
-func (puo *PolyUpdateOne) SetOperator(s string) *PolyUpdateOne {
-	puo.mutation.SetOperator(s)
-	return puo
-}
-
-// SetNillableOperator sets the "operator" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableOperator(s *string) *PolyUpdateOne {
-	if s != nil {
-		puo.SetOperator(*s)
-	}
-	return puo
 }
 
 // SetRuleCode sets the "rule_code" field.
@@ -353,27 +290,6 @@ func (puo *PolyUpdateOne) SetNillableDesc(s *string) *PolyUpdateOne {
 	if s != nil {
 		puo.SetDesc(*s)
 	}
-	return puo
-}
-
-// SetBudget sets the "budget" field.
-func (puo *PolyUpdateOne) SetBudget(i int64) *PolyUpdateOne {
-	puo.mutation.ResetBudget()
-	puo.mutation.SetBudget(i)
-	return puo
-}
-
-// SetNillableBudget sets the "budget" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableBudget(i *int64) *PolyUpdateOne {
-	if i != nil {
-		puo.SetBudget(*i)
-	}
-	return puo
-}
-
-// AddBudget adds i to the "budget" field.
-func (puo *PolyUpdateOne) AddBudget(i int64) *PolyUpdateOne {
-	puo.mutation.AddBudget(i)
 	return puo
 }
 
@@ -494,11 +410,6 @@ func (puo *PolyUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *PolyUpdateOne) check() error {
-	if v, ok := puo.mutation.Operator(); ok {
-		if err := poly.OperatorValidator(v); err != nil {
-			return &ValidationError{Name: "operator", err: fmt.Errorf(`ent: validator failed for field "Poly.operator": %w`, err)}
-		}
-	}
 	if v, ok := puo.mutation.RuleCode(); ok {
 		if err := poly.RuleCodeValidator(v); err != nil {
 			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
@@ -521,7 +432,7 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	if err := puo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
+	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
 	id, ok := puo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Poly.id" for update`)}
@@ -546,9 +457,6 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 			}
 		}
 	}
-	if value, ok := puo.mutation.Operator(); ok {
-		_spec.SetField(poly.FieldOperator, field.TypeString, value)
-	}
 	if value, ok := puo.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
 	}
@@ -557,12 +465,6 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	}
 	if value, ok := puo.mutation.Desc(); ok {
 		_spec.SetField(poly.FieldDesc, field.TypeString, value)
-	}
-	if value, ok := puo.mutation.Budget(); ok {
-		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
-	}
-	if value, ok := puo.mutation.AddedBudget(); ok {
-		_spec.AddField(poly.FieldBudget, field.TypeInt64, value)
 	}
 	if value, ok := puo.mutation.StartTime(); ok {
 		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)

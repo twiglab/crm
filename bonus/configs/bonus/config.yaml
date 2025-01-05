@@ -1,0 +1,19 @@
+id: bonus
+
+web: 
+  addr: 0.0.0.0:10006
+
+mq: 
+  addr: amqp://erp:erpPass123@81.71.151.176:5672
+
+db:
+  dsn: user=crm password=cRm9ijn)OKM host=pipi.dev port=5432 database=crm sslmode=disable
+
+wechat-bc-cli:
+  rpc-url: http://127.0.0.1:10009/gqlrpc/query
+
+member-cli:
+  rpc-url: http://127.0.0.1:10008/gqlrpc/query
+
+shop-cli:
+  rpc-url: http://127.0.0.1:10007/gqlrpc/query

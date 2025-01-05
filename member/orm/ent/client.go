@@ -9,6 +9,7 @@ import (
 	"log"
 	"reflect"
 
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/ent/migrate"
 
 	"entgo.io/ent"
@@ -259,7 +260,7 @@ func (c *MemberClient) UpdateOne(m *Member) *MemberUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *MemberClient) UpdateOneID(id int) *MemberUpdateOne {
+func (c *MemberClient) UpdateOneID(id uuid.UUID) *MemberUpdateOne {
 	mutation := newMemberMutation(c.config, OpUpdateOne, withMemberID(id))
 	return &MemberUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -276,7 +277,7 @@ func (c *MemberClient) DeleteOne(m *Member) *MemberDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *MemberClient) DeleteOneID(id int) *MemberDeleteOne {
+func (c *MemberClient) DeleteOneID(id uuid.UUID) *MemberDeleteOne {
 	builder := c.Delete().Where(member.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -293,12 +294,12 @@ func (c *MemberClient) Query() *MemberQuery {
 }
 
 // Get returns a Member entity by its id.
-func (c *MemberClient) Get(ctx context.Context, id int) (*Member, error) {
+func (c *MemberClient) Get(ctx context.Context, id uuid.UUID) (*Member, error) {
 	return c.Query().Where(member.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *MemberClient) GetX(ctx context.Context, id int) *Member {
+func (c *MemberClient) GetX(ctx context.Context, id uuid.UUID) *Member {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

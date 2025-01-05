@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/twiglab/crm/card/orm/ent/card"
+	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -73,7 +74,8 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			card.Table: card.ValidColumn,
+			card.Table:         card.ValidColumn,
+			chargerecord.Table: chargerecord.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

@@ -6,52 +6,51 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id uuid.UUID) predicate.Poly {
+func ID(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id uuid.UUID) predicate.Poly {
+func IDEQ(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id uuid.UUID) predicate.Poly {
+func IDNEQ(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...uuid.UUID) predicate.Poly {
+func IDIn(ids ...int) predicate.Poly {
 	return predicate.Poly(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...uuid.UUID) predicate.Poly {
+func IDNotIn(ids ...int) predicate.Poly {
 	return predicate.Poly(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id uuid.UUID) predicate.Poly {
+func IDGT(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id uuid.UUID) predicate.Poly {
+func IDGTE(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id uuid.UUID) predicate.Poly {
+func IDLT(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id uuid.UUID) predicate.Poly {
+func IDLTE(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldID, id))
 }
 
@@ -63,16 +62,6 @@ func Code(v string) predicate.Poly {
 // MallCode applies equality check predicate on the "mall_code" field. It's identical to MallCodeEQ.
 func MallCode(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldMallCode, v))
-}
-
-// Operator applies equality check predicate on the "operator" field. It's identical to OperatorEQ.
-func Operator(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldOperator, v))
-}
-
-// AddTime applies equality check predicate on the "add_time" field. It's identical to AddTimeEQ.
-func AddTime(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldAddTime, v))
 }
 
 // RuleCode applies equality check predicate on the "rule_code" field. It's identical to RuleCodeEQ.
@@ -88,11 +77,6 @@ func Name(v string) predicate.Poly {
 // Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
 func Desc(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldDesc, v))
-}
-
-// Budget applies equality check predicate on the "budget" field. It's identical to BudgetEQ.
-func Budget(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldBudget, v))
 }
 
 // StartTime applies equality check predicate on the "start_time" field. It's identical to StartTimeEQ.
@@ -243,111 +227,6 @@ func MallCodeEqualFold(v string) predicate.Poly {
 // MallCodeContainsFold applies the ContainsFold predicate on the "mall_code" field.
 func MallCodeContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldMallCode, v))
-}
-
-// OperatorEQ applies the EQ predicate on the "operator" field.
-func OperatorEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldOperator, v))
-}
-
-// OperatorNEQ applies the NEQ predicate on the "operator" field.
-func OperatorNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldOperator, v))
-}
-
-// OperatorIn applies the In predicate on the "operator" field.
-func OperatorIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldOperator, vs...))
-}
-
-// OperatorNotIn applies the NotIn predicate on the "operator" field.
-func OperatorNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldOperator, vs...))
-}
-
-// OperatorGT applies the GT predicate on the "operator" field.
-func OperatorGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldOperator, v))
-}
-
-// OperatorGTE applies the GTE predicate on the "operator" field.
-func OperatorGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldOperator, v))
-}
-
-// OperatorLT applies the LT predicate on the "operator" field.
-func OperatorLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldOperator, v))
-}
-
-// OperatorLTE applies the LTE predicate on the "operator" field.
-func OperatorLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldOperator, v))
-}
-
-// OperatorContains applies the Contains predicate on the "operator" field.
-func OperatorContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldOperator, v))
-}
-
-// OperatorHasPrefix applies the HasPrefix predicate on the "operator" field.
-func OperatorHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldOperator, v))
-}
-
-// OperatorHasSuffix applies the HasSuffix predicate on the "operator" field.
-func OperatorHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldOperator, v))
-}
-
-// OperatorEqualFold applies the EqualFold predicate on the "operator" field.
-func OperatorEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldOperator, v))
-}
-
-// OperatorContainsFold applies the ContainsFold predicate on the "operator" field.
-func OperatorContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldOperator, v))
-}
-
-// AddTimeEQ applies the EQ predicate on the "add_time" field.
-func AddTimeEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldAddTime, v))
-}
-
-// AddTimeNEQ applies the NEQ predicate on the "add_time" field.
-func AddTimeNEQ(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldAddTime, v))
-}
-
-// AddTimeIn applies the In predicate on the "add_time" field.
-func AddTimeIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldAddTime, vs...))
-}
-
-// AddTimeNotIn applies the NotIn predicate on the "add_time" field.
-func AddTimeNotIn(vs ...time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldAddTime, vs...))
-}
-
-// AddTimeGT applies the GT predicate on the "add_time" field.
-func AddTimeGT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldAddTime, v))
-}
-
-// AddTimeGTE applies the GTE predicate on the "add_time" field.
-func AddTimeGTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldAddTime, v))
-}
-
-// AddTimeLT applies the LT predicate on the "add_time" field.
-func AddTimeLT(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldAddTime, v))
-}
-
-// AddTimeLTE applies the LTE predicate on the "add_time" field.
-func AddTimeLTE(v time.Time) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldAddTime, v))
 }
 
 // RuleCodeEQ applies the EQ predicate on the "rule_code" field.
@@ -543,46 +422,6 @@ func DescEqualFold(v string) predicate.Poly {
 // DescContainsFold applies the ContainsFold predicate on the "desc" field.
 func DescContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldDesc, v))
-}
-
-// BudgetEQ applies the EQ predicate on the "budget" field.
-func BudgetEQ(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldBudget, v))
-}
-
-// BudgetNEQ applies the NEQ predicate on the "budget" field.
-func BudgetNEQ(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldBudget, v))
-}
-
-// BudgetIn applies the In predicate on the "budget" field.
-func BudgetIn(vs ...int64) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldBudget, vs...))
-}
-
-// BudgetNotIn applies the NotIn predicate on the "budget" field.
-func BudgetNotIn(vs ...int64) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldBudget, vs...))
-}
-
-// BudgetGT applies the GT predicate on the "budget" field.
-func BudgetGT(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldBudget, v))
-}
-
-// BudgetGTE applies the GTE predicate on the "budget" field.
-func BudgetGTE(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldBudget, v))
-}
-
-// BudgetLT applies the LT predicate on the "budget" field.
-func BudgetLT(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldBudget, v))
-}
-
-// BudgetLTE applies the LTE predicate on the "budget" field.
-func BudgetLTE(v int64) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldBudget, v))
 }
 
 // StartTimeEQ applies the EQ predicate on the "start_time" field.

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"github.com/twiglab/crm/card/orm/ent/card"
+	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -13,7 +14,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 1)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 2)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   card.Table,
@@ -39,6 +40,27 @@ var schemaGraph = func() *sqlgraph.Schema {
 			card.FieldLastCleanBalance: {Type: field.TypeInt64, Column: card.FieldLastCleanBalance},
 			card.FieldLastCleanTs:      {Type: field.TypeInt16, Column: card.FieldLastCleanTs},
 			card.FieldStatus:           {Type: field.TypeInt, Column: card.FieldStatus},
+		},
+	}
+	graph.Nodes[1] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   chargerecord.Table,
+			Columns: chargerecord.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeInt,
+				Column: chargerecord.FieldID,
+			},
+		},
+		Type: "ChargeRecord",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			chargerecord.FieldCreateTime: {Type: field.TypeTime, Column: chargerecord.FieldCreateTime},
+			chargerecord.FieldUpdateTime: {Type: field.TypeTime, Column: chargerecord.FieldUpdateTime},
+			chargerecord.FieldCode:       {Type: field.TypeString, Column: chargerecord.FieldCode},
+			chargerecord.FieldPayCode:    {Type: field.TypeString, Column: chargerecord.FieldPayCode},
+			chargerecord.FieldPayTs:      {Type: field.TypeInt64, Column: chargerecord.FieldPayTs},
+			chargerecord.FieldDeduct:     {Type: field.TypeInt64, Column: chargerecord.FieldDeduct},
+			chargerecord.FieldCardCode:   {Type: field.TypeString, Column: chargerecord.FieldCardCode},
+			chargerecord.FieldStatus:     {Type: field.TypeInt, Column: chargerecord.FieldStatus},
 		},
 	}
 	return graph
@@ -158,4 +180,84 @@ func (f *CardFilter) WhereLastCleanTs(p entql.Int16P) {
 // WhereStatus applies the entql int predicate on the status field.
 func (f *CardFilter) WhereStatus(p entql.IntP) {
 	f.Where(p.Field(card.FieldStatus))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (crq *ChargeRecordQuery) addPredicate(pred func(s *sql.Selector)) {
+	crq.predicates = append(crq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the ChargeRecordQuery builder.
+func (crq *ChargeRecordQuery) Filter() *ChargeRecordFilter {
+	return &ChargeRecordFilter{config: crq.config, predicateAdder: crq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *ChargeRecordMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the ChargeRecordMutation builder.
+func (m *ChargeRecordMutation) Filter() *ChargeRecordFilter {
+	return &ChargeRecordFilter{config: m.config, predicateAdder: m}
+}
+
+// ChargeRecordFilter provides a generic filtering capability at runtime for ChargeRecordQuery.
+type ChargeRecordFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *ChargeRecordFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql int predicate on the id field.
+func (f *ChargeRecordFilter) WhereID(p entql.IntP) {
+	f.Where(p.Field(chargerecord.FieldID))
+}
+
+// WhereCreateTime applies the entql time.Time predicate on the create_time field.
+func (f *ChargeRecordFilter) WhereCreateTime(p entql.TimeP) {
+	f.Where(p.Field(chargerecord.FieldCreateTime))
+}
+
+// WhereUpdateTime applies the entql time.Time predicate on the update_time field.
+func (f *ChargeRecordFilter) WhereUpdateTime(p entql.TimeP) {
+	f.Where(p.Field(chargerecord.FieldUpdateTime))
+}
+
+// WhereCode applies the entql string predicate on the code field.
+func (f *ChargeRecordFilter) WhereCode(p entql.StringP) {
+	f.Where(p.Field(chargerecord.FieldCode))
+}
+
+// WherePayCode applies the entql string predicate on the pay_code field.
+func (f *ChargeRecordFilter) WherePayCode(p entql.StringP) {
+	f.Where(p.Field(chargerecord.FieldPayCode))
+}
+
+// WherePayTs applies the entql int64 predicate on the pay_ts field.
+func (f *ChargeRecordFilter) WherePayTs(p entql.Int64P) {
+	f.Where(p.Field(chargerecord.FieldPayTs))
+}
+
+// WhereDeduct applies the entql int64 predicate on the deduct field.
+func (f *ChargeRecordFilter) WhereDeduct(p entql.Int64P) {
+	f.Where(p.Field(chargerecord.FieldDeduct))
+}
+
+// WhereCardCode applies the entql string predicate on the card_code field.
+func (f *ChargeRecordFilter) WhereCardCode(p entql.StringP) {
+	f.Where(p.Field(chargerecord.FieldCardCode))
+}
+
+// WhereStatus applies the entql int predicate on the status field.
+func (f *ChargeRecordFilter) WhereStatus(p entql.IntP) {
+	f.Where(p.Field(chargerecord.FieldStatus))
 }

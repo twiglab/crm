@@ -10,7 +10,7 @@ import (
 )
 
 func GQLRouter(acli *wxlogin.AuthClient) chi.Router {
-	svr := gqlx.NewGQLHandler(graph.NewExecutableSchema(
+	srv := gqlx.NewGQLHandler(graph.NewExecutableSchema(
 		graph.Config{
 			Resolvers: &graph.Resolver{AuthCli: acli},
 		},

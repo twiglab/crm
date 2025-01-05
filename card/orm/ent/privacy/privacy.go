@@ -135,6 +135,30 @@ func (f CardMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) 
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CardMutation", m)
 }
 
+// The ChargeRecordQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type ChargeRecordQueryRuleFunc func(context.Context, *ent.ChargeRecordQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f ChargeRecordQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.ChargeRecordQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ChargeRecordQuery", q)
+}
+
+// The ChargeRecordMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type ChargeRecordMutationRuleFunc func(context.Context, *ent.ChargeRecordMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f ChargeRecordMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.ChargeRecordMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ChargeRecordMutation", m)
+}
+
 type (
 	// Filter is the interface that wraps the Where function
 	// for filtering nodes in queries and mutations.
@@ -172,6 +196,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
 	case *ent.CardQuery:
 		return q.Filter(), nil
+	case *ent.ChargeRecordQuery:
+		return q.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected query type %T for query filter", q)
 	}
@@ -180,6 +206,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
 	case *ent.CardMutation:
+		return m.Filter(), nil
+	case *ent.ChargeRecordMutation:
 		return m.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected mutation type %T for mutation filter", m)

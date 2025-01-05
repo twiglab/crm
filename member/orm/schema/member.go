@@ -10,7 +10,9 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/member/orm/schema/internal/x"
+	"github.com/twiglab/crm/psdk/code"
 )
 
 type Member struct {
@@ -19,18 +21,34 @@ type Member struct {
 
 func (Member) Fields() []ent.Field {
 	return []ent.Field{
+		field.UUID("id", uuid.Nil).
+			Default(code.NewV7).
+			Immutable().
+			Unique(),
 
 		field.String("code").
 			MaxLen(36).
 			NotEmpty().
 			Unique().
 			Immutable().
-			DefaultFunc(x.Code36).
+			DefaultFunc(code.Code36).
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
 				dialect.SQLite:   "char(36)", // Override Postgres.
 			}),
+
+		/*
+			field.String("code_bin").
+				MaxLen(16).
+				Optional().
+				Unique().
+				SchemaType(map[string]string{
+					dialect.MySQL:    "char(16)", // Override MySQL.
+					dialect.Postgres: "char(16)", // Override Postgres.
+					dialect.SQLite:   "char(16)", // Override Postgres.
+				}),
+		*/
 
 		field.String("phone").
 			MaxLen(64).
@@ -61,17 +79,15 @@ func (Member) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
-		/*
-			field.String("wx_unionid").
-				MaxLen(256).
-				Optional().
-				Unique().
-				SchemaType(map[string]string{
-					dialect.MySQL:    "varchar(256)", // Override MySQL.
-					dialect.Postgres: "varchar(256)", // Override Postgres.
-					dialect.SQLite:   "varchar(256)", // Override Postgres.
-				}),
-		*/
+		field.String("wx_union_id").
+			MaxLen(256).
+			Optional().
+			Unique().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
 
 		// 商圈会员卡号
 		// 用户在商圈会员卡card_id下的唯一标志，用户领取会员卡后获得的code
@@ -104,17 +120,16 @@ func (Member) Fields() []ent.Field {
 		// 0 未开通
 		// 1 REGISTERED_MODE ：会员开卡(进卡包) + 未授权会员积分服务
 		// 2 REGISTERED_AND_AUTHORIZATION_MODE：会员开卡(进卡包）+授权会员积分服务
-		field.Int("bcmb_type").Default(0),
+		field.Int32("bcmb_type").Default(0),
 
 		// 会员等级
-		field.Int("level").Default(0),
-
-		field.Int("source").Default(0),
+		field.Int32("level").Default(0),
 
 		// 最后一次登录时间
 		field.Time("last_time").Default(time.Now),
 
-		field.Int("status").Default(1),
+		field.Int32("source").Default(0),
+		field.Int32("status").Default(0),
 	}
 }
 

@@ -1,0 +1,7 @@
+id: erp
+
+web: 
+  addr: 0.0.0.0:10007
+
+db:
+  dsn: user=crm password=cRm9ijn)OKM host=pipi.dev port=5432 database=crm sslmode=disable

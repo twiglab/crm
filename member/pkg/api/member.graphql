@@ -5,8 +5,8 @@ mutation CreateWxMember($input: CreateWxMemberReq!) {
   }
 }
 
-query QueryWxMemberByOpenID($input: OpenIDReq!) {
-  queryWxMemberByOpenID(input: $input) {
+mutation WxLogin($input: OpenIDReq!) {
+  wxLogin(input: $input) {
     code
     wxOpenID
     found

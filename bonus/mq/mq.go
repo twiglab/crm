@@ -22,8 +22,6 @@ type RabbitMQ struct {
 	QueueName string
 
 	BindKey string
-
-	ExitChan chan struct{}
 }
 
 // 话题模式接受消息
@@ -41,7 +39,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) error {
 		//交换机类型
 		amqp.ExchangeTopic,
 		true,
-		true,
+		false,
 		false,
 		false,
 		nil,
@@ -101,7 +99,7 @@ func (r *RabbitMQ) RecvMessage(ctx context.Context, h RecieverHandler, message <
 			select {
 			case delivery := <-message:
 				h.RecieveDelivery(ctx, delivery)
-			case <-r.ExitChan:
+			case <-ctx.Done():
 				return
 			}
 		}

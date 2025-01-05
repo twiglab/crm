@@ -2,14 +2,13 @@ module github.com/twiglab/crm/poly
 
 go 1.23.1
 
-require github.com/google/uuid v1.6.0
+require github.com/google/uuid v1.6.0 // indirect
 
 require (
 	entgo.io/ent v0.14.1
-	github.com/99designs/gqlgen v0.17.60
-	github.com/allegro/bigcache/v3 v3.1.0
-	github.com/jackc/pgx/v5 v5.7.1
-	github.com/tinylib/msgp v1.2.4
+	github.com/99designs/gqlgen v0.17.61
+	github.com/jackc/pgx/v5 v5.7.2
+	github.com/twiglab/crm/psdk v0.0.0-20250101135151-b403e3391118
 	github.com/vektah/gqlparser/v2 v2.5.20
 	github.com/yuin/gopher-lua v1.1.1
 	layeh.com/gopher-luar v1.0.11
@@ -27,7 +26,6 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
-	github.com/philhofer/fwd v1.1.3-0.20240916144458-20a13a1f6b7c // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect

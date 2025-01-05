@@ -40,7 +40,7 @@ func (pd *PolyDelete) ExecX(ctx context.Context) int {
 }
 
 func (pd *PolyDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
+	_spec := sqlgraph.NewDeleteSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
 	if ps := pd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

@@ -19,11 +19,7 @@ input CreateWxMemberReq {
   wxOpenID: String!
 }
 
-type Query {
-  queryWxMemberByOpenID (input: OpenIDReq!): QryMemberResp!
-}
-
-
 type Mutation {
   createWxMember(input: CreateWxMemberReq!): MemberResp!
+  wxLogin(input: OpenIDReq!): QryMemberResp!
 }

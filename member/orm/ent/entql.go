@@ -19,7 +19,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   member.Table,
 			Columns: member.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: member.FieldID,
 			},
 		},
@@ -31,14 +31,15 @@ var schemaGraph = func() *sqlgraph.Schema {
 			member.FieldPhone:        {Type: field.TypeString, Column: member.FieldPhone},
 			member.FieldNickname:     {Type: field.TypeString, Column: member.FieldNickname},
 			member.FieldWxOpenID:     {Type: field.TypeString, Column: member.FieldWxOpenID},
+			member.FieldWxUnionID:    {Type: field.TypeString, Column: member.FieldWxUnionID},
 			member.FieldBcmbCode:     {Type: field.TypeString, Column: member.FieldBcmbCode},
 			member.FieldBcmbRegTime:  {Type: field.TypeTime, Column: member.FieldBcmbRegTime},
 			member.FieldBcmbRegMsgID: {Type: field.TypeString, Column: member.FieldBcmbRegMsgID},
-			member.FieldBcmbType:     {Type: field.TypeInt, Column: member.FieldBcmbType},
-			member.FieldLevel:        {Type: field.TypeInt, Column: member.FieldLevel},
-			member.FieldSource:       {Type: field.TypeInt, Column: member.FieldSource},
+			member.FieldBcmbType:     {Type: field.TypeInt32, Column: member.FieldBcmbType},
+			member.FieldLevel:        {Type: field.TypeInt32, Column: member.FieldLevel},
 			member.FieldLastTime:     {Type: field.TypeTime, Column: member.FieldLastTime},
-			member.FieldStatus:       {Type: field.TypeInt, Column: member.FieldStatus},
+			member.FieldSource:       {Type: field.TypeInt32, Column: member.FieldSource},
+			member.FieldStatus:       {Type: field.TypeInt32, Column: member.FieldStatus},
 		},
 	}
 	return graph
@@ -85,8 +86,8 @@ func (f *MemberFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql int predicate on the id field.
-func (f *MemberFilter) WhereID(p entql.IntP) {
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *MemberFilter) WhereID(p entql.ValueP) {
 	f.Where(p.Field(member.FieldID))
 }
 
@@ -120,6 +121,11 @@ func (f *MemberFilter) WhereWxOpenID(p entql.StringP) {
 	f.Where(p.Field(member.FieldWxOpenID))
 }
 
+// WhereWxUnionID applies the entql string predicate on the wx_union_id field.
+func (f *MemberFilter) WhereWxUnionID(p entql.StringP) {
+	f.Where(p.Field(member.FieldWxUnionID))
+}
+
 // WhereBcmbCode applies the entql string predicate on the bcmb_code field.
 func (f *MemberFilter) WhereBcmbCode(p entql.StringP) {
 	f.Where(p.Field(member.FieldBcmbCode))
@@ -135,19 +141,14 @@ func (f *MemberFilter) WhereBcmbRegMsgID(p entql.StringP) {
 	f.Where(p.Field(member.FieldBcmbRegMsgID))
 }
 
-// WhereBcmbType applies the entql int predicate on the bcmb_type field.
-func (f *MemberFilter) WhereBcmbType(p entql.IntP) {
+// WhereBcmbType applies the entql int32 predicate on the bcmb_type field.
+func (f *MemberFilter) WhereBcmbType(p entql.Int32P) {
 	f.Where(p.Field(member.FieldBcmbType))
 }
 
-// WhereLevel applies the entql int predicate on the level field.
-func (f *MemberFilter) WhereLevel(p entql.IntP) {
+// WhereLevel applies the entql int32 predicate on the level field.
+func (f *MemberFilter) WhereLevel(p entql.Int32P) {
 	f.Where(p.Field(member.FieldLevel))
-}
-
-// WhereSource applies the entql int predicate on the source field.
-func (f *MemberFilter) WhereSource(p entql.IntP) {
-	f.Where(p.Field(member.FieldSource))
 }
 
 // WhereLastTime applies the entql time.Time predicate on the last_time field.
@@ -155,7 +156,12 @@ func (f *MemberFilter) WhereLastTime(p entql.TimeP) {
 	f.Where(p.Field(member.FieldLastTime))
 }
 
-// WhereStatus applies the entql int predicate on the status field.
-func (f *MemberFilter) WhereStatus(p entql.IntP) {
+// WhereSource applies the entql int32 predicate on the source field.
+func (f *MemberFilter) WhereSource(p entql.Int32P) {
+	f.Where(p.Field(member.FieldSource))
+}
+
+// WhereStatus applies the entql int32 predicate on the status field.
+func (f *MemberFilter) WhereStatus(p entql.Int32P) {
 	f.Where(p.Field(member.FieldStatus))
 }

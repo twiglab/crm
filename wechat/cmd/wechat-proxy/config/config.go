@@ -3,13 +3,15 @@ package config
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
 
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	"github.com/silenceper/wechat/v2/miniprogram"
 	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
-	"github.com/spf13/viper"
+	"github.com/twiglab/crm/wechat/mq"
 	"github.com/twiglab/crm/wechat/web"
 )
 
@@ -17,7 +19,7 @@ type Web struct {
 	Addr string `yaml:"addr" mapstructure:"addr"`
 }
 
-func (c Web) Create(ctx context.Context) *http.Server {
+func Create(ctx context.Context, c Web) *http.Server {
 	return web.NewHttpServer(ctx, c.Addr, nil)
 }
 
@@ -31,7 +33,7 @@ type Wechat struct {
 	PrivateKey string `yaml:"private_key" mapstructure:"private_key"`
 }
 
-func (c Wechat) CreateMiniProfram() *miniprogram.MiniProgram {
+func CreateMiniProfram(c Wechat) *miniprogram.MiniProgram {
 	wc := wechat.NewWechat()
 	memory := cache.NewMemory()
 	miniCfg := &miniConfig.Config{
@@ -40,28 +42,31 @@ func (c Wechat) CreateMiniProfram() *miniprogram.MiniProgram {
 		Cache:     memory,
 	}
 	return wc.GetMiniProgram(miniCfg)
-
 }
 
 type App struct {
 	ID     string `yaml:"id" mapstructure:"id"`
 	Wechat Wechat `yaml:"wechat" mapstructure:"wechat"`
 	Web    Web    `yaml:"web" mapstructure:"web"`
+	MQ     MQ     `yaml:"mq" mapstructure:"mq"`
 }
 
-func InitConfig(config any) {
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
-
-	}
-
-	if err := viper.Unmarshal(config); err != nil {
+func CreateBcXMQ(conn *amqp.Connection) *mq.XMQ {
+	q, err := mq.BcMQ(conn, slog.Default())
+	if err != nil {
 		log.Fatal(err)
 	}
+	return q
+}
+
+type MQ struct {
+	Addr string `yaml:"addr" mapstructure:"addr"`
+}
+
+func CreateMQConn(c MQ) *amqp.Connection {
+	conn, err := mq.Dial(c.Addr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return conn
 }

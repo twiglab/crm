@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/twiglab/crm/card/orm/ent/card"
+	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 	"github.com/twiglab/crm/card/orm/ent/predicate"
 )
 
@@ -24,7 +25,8 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeCard = "Card"
+	TypeCard         = "Card"
+	TypeChargeRecord = "ChargeRecord"
 )
 
 // CardMutation represents an operation that mutates the Card nodes in the graph.
@@ -1295,4 +1297,810 @@ func (m *CardMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *CardMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Card edge %s", name)
+}
+
+// ChargeRecordMutation represents an operation that mutates the ChargeRecord nodes in the graph.
+type ChargeRecordMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	create_time   *time.Time
+	update_time   *time.Time
+	code          *string
+	pay_code      *string
+	pay_ts        *int64
+	addpay_ts     *int64
+	deduct        *int64
+	adddeduct     *int64
+	card_code     *string
+	status        *int
+	addstatus     *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*ChargeRecord, error)
+	predicates    []predicate.ChargeRecord
+}
+
+var _ ent.Mutation = (*ChargeRecordMutation)(nil)
+
+// chargerecordOption allows management of the mutation configuration using functional options.
+type chargerecordOption func(*ChargeRecordMutation)
+
+// newChargeRecordMutation creates new mutation for the ChargeRecord entity.
+func newChargeRecordMutation(c config, op Op, opts ...chargerecordOption) *ChargeRecordMutation {
+	m := &ChargeRecordMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeChargeRecord,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withChargeRecordID sets the ID field of the mutation.
+func withChargeRecordID(id int) chargerecordOption {
+	return func(m *ChargeRecordMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ChargeRecord
+		)
+		m.oldValue = func(ctx context.Context) (*ChargeRecord, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ChargeRecord.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withChargeRecord sets the old ChargeRecord of the mutation.
+func withChargeRecord(node *ChargeRecord) chargerecordOption {
+	return func(m *ChargeRecordMutation) {
+		m.oldValue = func(context.Context) (*ChargeRecord, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ChargeRecordMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ChargeRecordMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ChargeRecordMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ChargeRecordMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ChargeRecord.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *ChargeRecordMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *ChargeRecordMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *ChargeRecordMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *ChargeRecordMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *ChargeRecordMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *ChargeRecordMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetCode sets the "code" field.
+func (m *ChargeRecordMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *ChargeRecordMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *ChargeRecordMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetPayCode sets the "pay_code" field.
+func (m *ChargeRecordMutation) SetPayCode(s string) {
+	m.pay_code = &s
+}
+
+// PayCode returns the value of the "pay_code" field in the mutation.
+func (m *ChargeRecordMutation) PayCode() (r string, exists bool) {
+	v := m.pay_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayCode returns the old "pay_code" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldPayCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayCode: %w", err)
+	}
+	return oldValue.PayCode, nil
+}
+
+// ResetPayCode resets all changes to the "pay_code" field.
+func (m *ChargeRecordMutation) ResetPayCode() {
+	m.pay_code = nil
+}
+
+// SetPayTs sets the "pay_ts" field.
+func (m *ChargeRecordMutation) SetPayTs(i int64) {
+	m.pay_ts = &i
+	m.addpay_ts = nil
+}
+
+// PayTs returns the value of the "pay_ts" field in the mutation.
+func (m *ChargeRecordMutation) PayTs() (r int64, exists bool) {
+	v := m.pay_ts
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayTs returns the old "pay_ts" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldPayTs(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayTs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayTs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayTs: %w", err)
+	}
+	return oldValue.PayTs, nil
+}
+
+// AddPayTs adds i to the "pay_ts" field.
+func (m *ChargeRecordMutation) AddPayTs(i int64) {
+	if m.addpay_ts != nil {
+		*m.addpay_ts += i
+	} else {
+		m.addpay_ts = &i
+	}
+}
+
+// AddedPayTs returns the value that was added to the "pay_ts" field in this mutation.
+func (m *ChargeRecordMutation) AddedPayTs() (r int64, exists bool) {
+	v := m.addpay_ts
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPayTs resets all changes to the "pay_ts" field.
+func (m *ChargeRecordMutation) ResetPayTs() {
+	m.pay_ts = nil
+	m.addpay_ts = nil
+}
+
+// SetDeduct sets the "deduct" field.
+func (m *ChargeRecordMutation) SetDeduct(i int64) {
+	m.deduct = &i
+	m.adddeduct = nil
+}
+
+// Deduct returns the value of the "deduct" field in the mutation.
+func (m *ChargeRecordMutation) Deduct() (r int64, exists bool) {
+	v := m.deduct
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeduct returns the old "deduct" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldDeduct(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeduct is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeduct requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeduct: %w", err)
+	}
+	return oldValue.Deduct, nil
+}
+
+// AddDeduct adds i to the "deduct" field.
+func (m *ChargeRecordMutation) AddDeduct(i int64) {
+	if m.adddeduct != nil {
+		*m.adddeduct += i
+	} else {
+		m.adddeduct = &i
+	}
+}
+
+// AddedDeduct returns the value that was added to the "deduct" field in this mutation.
+func (m *ChargeRecordMutation) AddedDeduct() (r int64, exists bool) {
+	v := m.adddeduct
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeduct resets all changes to the "deduct" field.
+func (m *ChargeRecordMutation) ResetDeduct() {
+	m.deduct = nil
+	m.adddeduct = nil
+}
+
+// SetCardCode sets the "card_code" field.
+func (m *ChargeRecordMutation) SetCardCode(s string) {
+	m.card_code = &s
+}
+
+// CardCode returns the value of the "card_code" field in the mutation.
+func (m *ChargeRecordMutation) CardCode() (r string, exists bool) {
+	v := m.card_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCardCode returns the old "card_code" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldCardCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCardCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCardCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCardCode: %w", err)
+	}
+	return oldValue.CardCode, nil
+}
+
+// ResetCardCode resets all changes to the "card_code" field.
+func (m *ChargeRecordMutation) ResetCardCode() {
+	m.card_code = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *ChargeRecordMutation) SetStatus(i int) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *ChargeRecordMutation) Status() (r int, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the ChargeRecord entity.
+// If the ChargeRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChargeRecordMutation) OldStatus(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *ChargeRecordMutation) AddStatus(i int) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *ChargeRecordMutation) AddedStatus() (r int, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *ChargeRecordMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// Where appends a list predicates to the ChargeRecordMutation builder.
+func (m *ChargeRecordMutation) Where(ps ...predicate.ChargeRecord) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ChargeRecordMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ChargeRecordMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ChargeRecord, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ChargeRecordMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ChargeRecordMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ChargeRecord).
+func (m *ChargeRecordMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ChargeRecordMutation) Fields() []string {
+	fields := make([]string, 0, 8)
+	if m.create_time != nil {
+		fields = append(fields, chargerecord.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, chargerecord.FieldUpdateTime)
+	}
+	if m.code != nil {
+		fields = append(fields, chargerecord.FieldCode)
+	}
+	if m.pay_code != nil {
+		fields = append(fields, chargerecord.FieldPayCode)
+	}
+	if m.pay_ts != nil {
+		fields = append(fields, chargerecord.FieldPayTs)
+	}
+	if m.deduct != nil {
+		fields = append(fields, chargerecord.FieldDeduct)
+	}
+	if m.card_code != nil {
+		fields = append(fields, chargerecord.FieldCardCode)
+	}
+	if m.status != nil {
+		fields = append(fields, chargerecord.FieldStatus)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ChargeRecordMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case chargerecord.FieldCreateTime:
+		return m.CreateTime()
+	case chargerecord.FieldUpdateTime:
+		return m.UpdateTime()
+	case chargerecord.FieldCode:
+		return m.Code()
+	case chargerecord.FieldPayCode:
+		return m.PayCode()
+	case chargerecord.FieldPayTs:
+		return m.PayTs()
+	case chargerecord.FieldDeduct:
+		return m.Deduct()
+	case chargerecord.FieldCardCode:
+		return m.CardCode()
+	case chargerecord.FieldStatus:
+		return m.Status()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ChargeRecordMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case chargerecord.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case chargerecord.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case chargerecord.FieldCode:
+		return m.OldCode(ctx)
+	case chargerecord.FieldPayCode:
+		return m.OldPayCode(ctx)
+	case chargerecord.FieldPayTs:
+		return m.OldPayTs(ctx)
+	case chargerecord.FieldDeduct:
+		return m.OldDeduct(ctx)
+	case chargerecord.FieldCardCode:
+		return m.OldCardCode(ctx)
+	case chargerecord.FieldStatus:
+		return m.OldStatus(ctx)
+	}
+	return nil, fmt.Errorf("unknown ChargeRecord field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ChargeRecordMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case chargerecord.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case chargerecord.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case chargerecord.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case chargerecord.FieldPayCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayCode(v)
+		return nil
+	case chargerecord.FieldPayTs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayTs(v)
+		return nil
+	case chargerecord.FieldDeduct:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeduct(v)
+		return nil
+	case chargerecord.FieldCardCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCardCode(v)
+		return nil
+	case chargerecord.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ChargeRecord field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ChargeRecordMutation) AddedFields() []string {
+	var fields []string
+	if m.addpay_ts != nil {
+		fields = append(fields, chargerecord.FieldPayTs)
+	}
+	if m.adddeduct != nil {
+		fields = append(fields, chargerecord.FieldDeduct)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, chargerecord.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ChargeRecordMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case chargerecord.FieldPayTs:
+		return m.AddedPayTs()
+	case chargerecord.FieldDeduct:
+		return m.AddedDeduct()
+	case chargerecord.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ChargeRecordMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case chargerecord.FieldPayTs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPayTs(v)
+		return nil
+	case chargerecord.FieldDeduct:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeduct(v)
+		return nil
+	case chargerecord.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ChargeRecord numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ChargeRecordMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ChargeRecordMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ChargeRecordMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown ChargeRecord nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ChargeRecordMutation) ResetField(name string) error {
+	switch name {
+	case chargerecord.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case chargerecord.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case chargerecord.FieldCode:
+		m.ResetCode()
+		return nil
+	case chargerecord.FieldPayCode:
+		m.ResetPayCode()
+		return nil
+	case chargerecord.FieldPayTs:
+		m.ResetPayTs()
+		return nil
+	case chargerecord.FieldDeduct:
+		m.ResetDeduct()
+		return nil
+	case chargerecord.FieldCardCode:
+		m.ResetCardCode()
+		return nil
+	case chargerecord.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown ChargeRecord field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ChargeRecordMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ChargeRecordMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ChargeRecordMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ChargeRecordMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ChargeRecordMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ChargeRecordMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ChargeRecordMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ChargeRecord unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ChargeRecordMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ChargeRecord edge %s", name)
 }

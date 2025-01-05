@@ -8,3 +8,6 @@ import (
 
 // Card is the predicate function for card builders.
 type Card func(*sql.Selector)
+
+// ChargeRecord is the predicate function for chargerecord builders.
+type ChargeRecord func(*sql.Selector)

@@ -2,12 +2,18 @@ package mq
 
 import (
 	"context"
+	"log"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func Dial(url string) (*amqp.Connection, error) {
-	return amqp.Dial(url)
+func MustDial(url string) *amqp.Connection {
+	conn, err := amqp.Dial(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return conn
 }
 
 type RecieverHandler interface {
@@ -22,8 +28,6 @@ type RabbitMQ struct {
 	QueueName string
 
 	BindKey string
-
-	ExitChan chan struct{}
 }
 
 // 话题模式接受消息
@@ -41,7 +45,7 @@ func (r *RabbitMQ) Recieve(ctx context.Context, h RecieverHandler) error {
 		//交换机类型
 		amqp.ExchangeTopic,
 		true,
-		true,
+		false,
 		false,
 		false,
 		nil,
@@ -101,7 +105,7 @@ func (r *RabbitMQ) RecvMessage(ctx context.Context, h RecieverHandler, message <
 			select {
 			case delivery := <-message:
 				h.RecieveDelivery(ctx, delivery)
-			case <-r.ExitChan:
+			case <-ctx.Done():
 				return
 			}
 		}

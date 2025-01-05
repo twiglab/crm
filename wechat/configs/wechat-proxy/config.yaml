@@ -3,8 +3,11 @@ id: wechat-proxy
 web: 
   addr: 0.0.0.0:10009
 
+mq: 
+  addr: amqp://erp:erpPass123@81.71.151.176:5672
+
 wechat: 
   mch_id: 1
-  serial_no: 456
-  api_key: 789
+  serial_no: aa
+  api_key: bb
   private_key: 000

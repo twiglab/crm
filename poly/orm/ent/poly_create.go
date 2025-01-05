@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
@@ -44,18 +42,6 @@ func (pc *PolyCreate) SetMallCode(s string) *PolyCreate {
 	return pc
 }
 
-// SetOperator sets the "operator" field.
-func (pc *PolyCreate) SetOperator(s string) *PolyCreate {
-	pc.mutation.SetOperator(s)
-	return pc
-}
-
-// SetAddTime sets the "add_time" field.
-func (pc *PolyCreate) SetAddTime(t time.Time) *PolyCreate {
-	pc.mutation.SetAddTime(t)
-	return pc
-}
-
 // SetRuleCode sets the "rule_code" field.
 func (pc *PolyCreate) SetRuleCode(s string) *PolyCreate {
 	pc.mutation.SetRuleCode(s)
@@ -71,12 +57,6 @@ func (pc *PolyCreate) SetName(s string) *PolyCreate {
 // SetDesc sets the "desc" field.
 func (pc *PolyCreate) SetDesc(s string) *PolyCreate {
 	pc.mutation.SetDesc(s)
-	return pc
-}
-
-// SetBudget sets the "budget" field.
-func (pc *PolyCreate) SetBudget(i int64) *PolyCreate {
-	pc.mutation.SetBudget(i)
 	return pc
 }
 
@@ -116,20 +96,6 @@ func (pc *PolyCreate) SetType(i int) *PolyCreate {
 func (pc *PolyCreate) SetNillableType(i *int) *PolyCreate {
 	if i != nil {
 		pc.SetType(*i)
-	}
-	return pc
-}
-
-// SetID sets the "id" field.
-func (pc *PolyCreate) SetID(u uuid.UUID) *PolyCreate {
-	pc.mutation.SetID(u)
-	return pc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (pc *PolyCreate) SetNillableID(u *uuid.UUID) *PolyCreate {
-	if u != nil {
-		pc.SetID(*u)
 	}
 	return pc
 }
@@ -181,10 +147,6 @@ func (pc *PolyCreate) defaults() {
 		v := poly.DefaultType
 		pc.mutation.SetType(v)
 	}
-	if _, ok := pc.mutation.ID(); !ok {
-		v := poly.DefaultID()
-		pc.mutation.SetID(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -204,17 +166,6 @@ func (pc *PolyCreate) check() error {
 		if err := poly.MallCodeValidator(v); err != nil {
 			return &ValidationError{Name: "mall_code", err: fmt.Errorf(`ent: validator failed for field "Poly.mall_code": %w`, err)}
 		}
-	}
-	if _, ok := pc.mutation.Operator(); !ok {
-		return &ValidationError{Name: "operator", err: errors.New(`ent: missing required field "Poly.operator"`)}
-	}
-	if v, ok := pc.mutation.Operator(); ok {
-		if err := poly.OperatorValidator(v); err != nil {
-			return &ValidationError{Name: "operator", err: fmt.Errorf(`ent: validator failed for field "Poly.operator": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.AddTime(); !ok {
-		return &ValidationError{Name: "add_time", err: errors.New(`ent: missing required field "Poly.add_time"`)}
 	}
 	if _, ok := pc.mutation.RuleCode(); !ok {
 		return &ValidationError{Name: "rule_code", err: errors.New(`ent: missing required field "Poly.rule_code"`)}
@@ -239,9 +190,6 @@ func (pc *PolyCreate) check() error {
 		if err := poly.DescValidator(v); err != nil {
 			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
 		}
-	}
-	if _, ok := pc.mutation.Budget(); !ok {
-		return &ValidationError{Name: "budget", err: errors.New(`ent: missing required field "Poly.budget"`)}
 	}
 	if _, ok := pc.mutation.StartTime(); !ok {
 		return &ValidationError{Name: "start_time", err: errors.New(`ent: missing required field "Poly.start_time"`)}
@@ -269,13 +217,8 @@ func (pc *PolyCreate) sqlSave(ctx context.Context) (*Poly, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
-			_node.ID = *id
-		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
-			return nil, err
-		}
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	pc.mutation.id = &_node.ID
 	pc.mutation.done = true
 	return _node, nil
@@ -284,13 +227,9 @@ func (pc *PolyCreate) sqlSave(ctx context.Context) (*Poly, error) {
 func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Poly{config: pc.config}
-		_spec = sqlgraph.NewCreateSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
+		_spec = sqlgraph.NewCreateSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
 	)
 	_spec.OnConflict = pc.conflict
-	if id, ok := pc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = &id
-	}
 	if value, ok := pc.mutation.Code(); ok {
 		_spec.SetField(poly.FieldCode, field.TypeString, value)
 		_node.Code = value
@@ -298,14 +237,6 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.MallCode(); ok {
 		_spec.SetField(poly.FieldMallCode, field.TypeString, value)
 		_node.MallCode = value
-	}
-	if value, ok := pc.mutation.Operator(); ok {
-		_spec.SetField(poly.FieldOperator, field.TypeString, value)
-		_node.Operator = value
-	}
-	if value, ok := pc.mutation.AddTime(); ok {
-		_spec.SetField(poly.FieldAddTime, field.TypeTime, value)
-		_node.AddTime = value
 	}
 	if value, ok := pc.mutation.RuleCode(); ok {
 		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
@@ -318,10 +249,6 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.Desc(); ok {
 		_spec.SetField(poly.FieldDesc, field.TypeString, value)
 		_node.Desc = value
-	}
-	if value, ok := pc.mutation.Budget(); ok {
-		_spec.SetField(poly.FieldBudget, field.TypeInt64, value)
-		_node.Budget = value
 	}
 	if value, ok := pc.mutation.StartTime(); ok {
 		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
@@ -391,18 +318,6 @@ type (
 	}
 )
 
-// SetOperator sets the "operator" field.
-func (u *PolyUpsert) SetOperator(v string) *PolyUpsert {
-	u.Set(poly.FieldOperator, v)
-	return u
-}
-
-// UpdateOperator sets the "operator" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateOperator() *PolyUpsert {
-	u.SetExcluded(poly.FieldOperator)
-	return u
-}
-
 // SetRuleCode sets the "rule_code" field.
 func (u *PolyUpsert) SetRuleCode(v string) *PolyUpsert {
 	u.Set(poly.FieldRuleCode, v)
@@ -436,24 +351,6 @@ func (u *PolyUpsert) SetDesc(v string) *PolyUpsert {
 // UpdateDesc sets the "desc" field to the value that was provided on create.
 func (u *PolyUpsert) UpdateDesc() *PolyUpsert {
 	u.SetExcluded(poly.FieldDesc)
-	return u
-}
-
-// SetBudget sets the "budget" field.
-func (u *PolyUpsert) SetBudget(v int64) *PolyUpsert {
-	u.Set(poly.FieldBudget, v)
-	return u
-}
-
-// UpdateBudget sets the "budget" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateBudget() *PolyUpsert {
-	u.SetExcluded(poly.FieldBudget)
-	return u
-}
-
-// AddBudget adds v to the "budget" field.
-func (u *PolyUpsert) AddBudget(v int64) *PolyUpsert {
-	u.Add(poly.FieldBudget, v)
 	return u
 }
 
@@ -517,31 +414,22 @@ func (u *PolyUpsert) AddType(v int) *PolyUpsert {
 	return u
 }
 
-// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
 //	client.Poly.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
-//			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(poly.FieldID)
-//			}),
 //		).
 //		Exec(ctx)
 func (u *PolyUpsertOne) UpdateNewValues() *PolyUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
-		if _, exists := u.create.mutation.ID(); exists {
-			s.SetIgnore(poly.FieldID)
-		}
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(poly.FieldCode)
 		}
 		if _, exists := u.create.mutation.MallCode(); exists {
 			s.SetIgnore(poly.FieldMallCode)
-		}
-		if _, exists := u.create.mutation.AddTime(); exists {
-			s.SetIgnore(poly.FieldAddTime)
 		}
 	}))
 	return u
@@ -572,20 +460,6 @@ func (u *PolyUpsertOne) Update(set func(*PolyUpsert)) *PolyUpsertOne {
 		set(&PolyUpsert{UpdateSet: update})
 	}))
 	return u
-}
-
-// SetOperator sets the "operator" field.
-func (u *PolyUpsertOne) SetOperator(v string) *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetOperator(v)
-	})
-}
-
-// UpdateOperator sets the "operator" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateOperator() *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateOperator()
-	})
 }
 
 // SetRuleCode sets the "rule_code" field.
@@ -627,27 +501,6 @@ func (u *PolyUpsertOne) SetDesc(v string) *PolyUpsertOne {
 func (u *PolyUpsertOne) UpdateDesc() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.UpdateDesc()
-	})
-}
-
-// SetBudget sets the "budget" field.
-func (u *PolyUpsertOne) SetBudget(v int64) *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetBudget(v)
-	})
-}
-
-// AddBudget adds v to the "budget" field.
-func (u *PolyUpsertOne) AddBudget(v int64) *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.AddBudget(v)
-	})
-}
-
-// UpdateBudget sets the "budget" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateBudget() *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateBudget()
 	})
 }
 
@@ -737,12 +590,7 @@ func (u *PolyUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *PolyUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
-	if u.create.driver.Dialect() == dialect.MySQL {
-		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
-		// fields from the database since MySQL does not support the RETURNING clause.
-		return id, errors.New("ent: PolyUpsertOne.ID is not supported by MySQL driver. Use PolyUpsertOne.Exec instead")
-	}
+func (u *PolyUpsertOne) ID(ctx context.Context) (id int, err error) {
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -751,7 +599,7 @@ func (u *PolyUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *PolyUpsertOne) IDX(ctx context.Context) uuid.UUID {
+func (u *PolyUpsertOne) IDX(ctx context.Context) int {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -806,6 +654,10 @@ func (pcb *PolyCreateBulk) Save(ctx context.Context) ([]*Poly, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = int(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -892,26 +744,17 @@ type PolyUpsertBulk struct {
 //	client.Poly.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
-//			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(poly.FieldID)
-//			}),
 //		).
 //		Exec(ctx)
 func (u *PolyUpsertBulk) UpdateNewValues() *PolyUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
-			if _, exists := b.mutation.ID(); exists {
-				s.SetIgnore(poly.FieldID)
-			}
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(poly.FieldCode)
 			}
 			if _, exists := b.mutation.MallCode(); exists {
 				s.SetIgnore(poly.FieldMallCode)
-			}
-			if _, exists := b.mutation.AddTime(); exists {
-				s.SetIgnore(poly.FieldAddTime)
 			}
 		}
 	}))
@@ -943,20 +786,6 @@ func (u *PolyUpsertBulk) Update(set func(*PolyUpsert)) *PolyUpsertBulk {
 		set(&PolyUpsert{UpdateSet: update})
 	}))
 	return u
-}
-
-// SetOperator sets the "operator" field.
-func (u *PolyUpsertBulk) SetOperator(v string) *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetOperator(v)
-	})
-}
-
-// UpdateOperator sets the "operator" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateOperator() *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateOperator()
-	})
 }
 
 // SetRuleCode sets the "rule_code" field.
@@ -998,27 +827,6 @@ func (u *PolyUpsertBulk) SetDesc(v string) *PolyUpsertBulk {
 func (u *PolyUpsertBulk) UpdateDesc() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.UpdateDesc()
-	})
-}
-
-// SetBudget sets the "budget" field.
-func (u *PolyUpsertBulk) SetBudget(v int64) *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetBudget(v)
-	})
-}
-
-// AddBudget adds v to the "budget" field.
-func (u *PolyUpsertBulk) AddBudget(v int64) *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.AddBudget(v)
-	})
-}
-
-// UpdateBudget sets the "budget" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateBudget() *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateBudget()
 	})
 }
 

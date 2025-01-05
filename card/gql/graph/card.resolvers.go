@@ -78,6 +78,28 @@ func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCar
 	}, nil
 }
 
+// GetChargeRecordCode is the resolver for the getChargeRecordCode field.
+func (r *mutationResolver) GetChargeRecordCode(ctx context.Context, input model.ChargeRecordCodeReq) (*model.ChargeRecordCodeResp, error) {
+	// 验证card 和 用户关系
+	cobj, err := r.Client.Card.Query().Where(card.CodeEQ(input.CardCode)).First(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return nil, fmt.Errorf("card code not found")
+		}
+		return nil, err
+	}
+	if cobj.MemberCode != input.MemberCode {
+		return nil, fmt.Errorf("card not binded to member")
+	}
+
+	pc, err := r.Cache.GetPayCode(ctx, r.Client, input.CardCode)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.ChargeRecordCodeResp{Code: pc}, nil
+}
+
 // QueryCardDetail is the resolver for the queryCardDetail field.
 func (r *queryResolver) QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error) {
 	cobj, err := r.Client.Card.Query().Where(card.CodeEQ(input.Code)).First(ctx)

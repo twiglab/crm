@@ -1,0 +1,10 @@
+schema:
+  - ../../rpc/gql/schema/*.graphqls
+
+operations:
+  - api/shop.graphql
+
+generated: low/generated.go
+
+package_bindings:
+- package: github.com/twiglab/crm/erp/pkg/shop

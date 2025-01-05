@@ -7,3 +7,7 @@ func Code36() string {
 	u := uuid.Must(uuid.NewV7())
 	return u.String()
 }
+
+func NewV7() uuid.UUID {
+	return uuid.Must(uuid.NewV7())
+}

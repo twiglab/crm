@@ -20,5 +20,6 @@ type Query {
   queryBonusDetail(input: BonusDetailReq!): BonusDetailResp!
   # 列表
   listBonusItems(input: BonusListReq!): BonusListResp!
+  listBonusItemsPage(input: BonusListReq!): BonusListResp!
 }
 

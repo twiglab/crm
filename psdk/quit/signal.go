@@ -12,7 +12,8 @@ func WaitSignal(signals ...syscall.Signal) {
 	signal.Notify(shutdownHook,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, os.Interrupt)
 	localPid := os.Getpid()
+	log.Printf("pid:%d\n", localPid)
 	sig := <-shutdownHook
-	log.Printf("\ncaught sig exit sig:%v,localPid:%v\n", sig, localPid)
+	log.Printf("caught sig exit sig:%v\n", sig)
 	close(shutdownHook)
 }
