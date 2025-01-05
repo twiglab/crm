@@ -10,19 +10,19 @@ const (
 )
 
 type BusinessCircleMsg struct {
-	MsgID      string    `json:"msg_id,omitempty"`
-	CreateTime time.Time `json:"create_time,omitempty"`
-	EventType  string    `json:"event_type,omitempty"`
-	Summary    string    `json:"summary,omitempty"`
+	MsgID      string
+	CreateTime time.Time
+	EventType  string
+	Summary    string
 }
 
 // 商圈会员积分服务授权结果通知
 type BusinessCircleAuthor struct {
 	BusinessCircleMsg
-	OpenID   string `json:"open_id,omitempty"`   // 顾客授权时使用的小程序上的OpenID
-	Code     string `json:"code,omitempty"`      // 用户开会员卡时的商圈商户号
-	MchID    string `json:"mch_id,omitempty"`    // 用户开会员卡时的商圈商户号
-	AuthType string `json:"auth_type,omitempty"` // 用户授权类型
+	OpenID   string // 顾客授权时使用的小程序上的OpenID
+	Code     string // 用户开会员卡时的商圈商户号
+	MchID    string // 用户开会员卡时的商圈商户号
+	AuthType string // 用户授权类型
 }
 
 type BusinessCircleShopBase struct {
