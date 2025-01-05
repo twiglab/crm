@@ -243,10 +243,10 @@ func (z *BusinessCircleMsg) DecodeMsg(dc *msgp.Reader) (err error) {
 				err = msgp.WrapError(err, "CreateTime")
 				return
 			}
-		case "MsgType":
-			z.MsgType, err = dc.ReadString()
+		case "EventType":
+			z.EventType, err = dc.ReadString()
 			if err != nil {
-				err = msgp.WrapError(err, "MsgType")
+				err = msgp.WrapError(err, "EventType")
 				return
 			}
 		case "Summary":
@@ -289,14 +289,14 @@ func (z *BusinessCircleMsg) EncodeMsg(en *msgp.Writer) (err error) {
 		err = msgp.WrapError(err, "CreateTime")
 		return
 	}
-	// write "MsgType"
-	err = en.Append(0xa7, 0x4d, 0x73, 0x67, 0x54, 0x79, 0x70, 0x65)
+	// write "EventType"
+	err = en.Append(0xa9, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
 	if err != nil {
 		return
 	}
-	err = en.WriteString(z.MsgType)
+	err = en.WriteString(z.EventType)
 	if err != nil {
-		err = msgp.WrapError(err, "MsgType")
+		err = msgp.WrapError(err, "EventType")
 		return
 	}
 	// write "Summary"
@@ -322,9 +322,9 @@ func (z *BusinessCircleMsg) MarshalMsg(b []byte) (o []byte, err error) {
 	// string "CreateTime"
 	o = append(o, 0xaa, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65)
 	o = msgp.AppendTime(o, z.CreateTime)
-	// string "MsgType"
-	o = append(o, 0xa7, 0x4d, 0x73, 0x67, 0x54, 0x79, 0x70, 0x65)
-	o = msgp.AppendString(o, z.MsgType)
+	// string "EventType"
+	o = append(o, 0xa9, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65)
+	o = msgp.AppendString(o, z.EventType)
 	// string "Summary"
 	o = append(o, 0xa7, 0x53, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79)
 	o = msgp.AppendString(o, z.Summary)
@@ -361,10 +361,10 @@ func (z *BusinessCircleMsg) UnmarshalMsg(bts []byte) (o []byte, err error) {
 				err = msgp.WrapError(err, "CreateTime")
 				return
 			}
-		case "MsgType":
-			z.MsgType, bts, err = msgp.ReadStringBytes(bts)
+		case "EventType":
+			z.EventType, bts, err = msgp.ReadStringBytes(bts)
 			if err != nil {
-				err = msgp.WrapError(err, "MsgType")
+				err = msgp.WrapError(err, "EventType")
 				return
 			}
 		case "Summary":
@@ -387,7 +387,7 @@ func (z *BusinessCircleMsg) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *BusinessCircleMsg) Msgsize() (s int) {
-	s = 1 + 6 + msgp.StringPrefixSize + len(z.MsgID) + 11 + msgp.TimeSize + 8 + msgp.StringPrefixSize + len(z.MsgType) + 8 + msgp.StringPrefixSize + len(z.Summary)
+	s = 1 + 6 + msgp.StringPrefixSize + len(z.MsgID) + 11 + msgp.TimeSize + 10 + msgp.StringPrefixSize + len(z.EventType) + 8 + msgp.StringPrefixSize + len(z.Summary)
 	return
 }
 
