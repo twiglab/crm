@@ -23,7 +23,12 @@ func (r *mutationResolver) WxCreateMember(ctx context.Context, input data.WxCrea
 		return nil, err
 	}
 
-	return &data.MemberResp{Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
+	return &data.MemberResp{
+		Code:     mb.Code,
+		WxOpenID: mb.WxOpenID,
+		Level:    mb.Level,
+		Status:   mb.Status,
+	}, nil
 }
 
 // WxLogin is the resolver for the wxLogin field.
@@ -33,10 +38,16 @@ func (r *mutationResolver) WxLogin(ctx context.Context, input data.OpenIDReq) (*
 		return nil, err
 	}
 
-	if ok {
-		return &data.WxLoginResp{Found: ok, Code: mb.Code, WxOpenID: mb.WxOpenID}, nil
+	if !ok {
+		return &data.WxLoginResp{Found: ok}, nil
 	}
-	return &data.WxLoginResp{Found: ok}, nil
+	return &data.WxLoginResp{
+		Found:    ok,
+		Code:     mb.Code,
+		WxOpenID: mb.WxOpenID,
+		Level:    mb.Level,
+		Status:   mb.Status,
+	}, nil
 }
 
 // Mutation returns MutationResolver implementation.

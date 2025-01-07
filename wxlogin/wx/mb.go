@@ -13,6 +13,8 @@ import (
 type Member struct {
 	Code     string `json:"code"`
 	WxOpenID string `json:"wxOpenID"`
+	Level    int32  `json:"level"`
+	Status   int32  `json:"status"`
 }
 
 type MemberCli struct {
@@ -34,7 +36,9 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 
 	m := req.GetWxLogin()
 	if m.Found {
-		return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+		return &Member{
+			Code: m.Code, WxOpenID: m.WxOpenID,
+			Level: m.Level, Status: m.Status}, nil
 	}
 
 	// 没找到, 直接新建
@@ -48,5 +52,7 @@ func (c *MemberCli) LoginOrCr(ctx context.Context, wxOpenID string) (*Member, er
 		return nil, err
 	}
 	qm := r.GetWxCreateMember()
-	return &Member{Code: qm.Code, WxOpenID: qm.WxOpenID}, nil
+	return &Member{
+		Code: qm.Code, WxOpenID: qm.WxOpenID,
+		Level: qm.Level, Status: qm.Status}, nil
 }

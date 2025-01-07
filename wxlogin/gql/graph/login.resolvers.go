@@ -17,7 +17,10 @@ func (r *queryResolver) Login(ctx context.Context, input model.JsCodeReq) (*mode
 		return nil, err
 	}
 
-	return &model.LoginUserResp{Code: x.Code, Jwt: x.Jwt}, err
+	return &model.LoginUserResp{
+		Code: x.Code, Jwt: x.Jwt,
+		Level: x.Level, Status: x.Status,
+	}, err
 }
 
 // Query returns QueryResolver implementation.

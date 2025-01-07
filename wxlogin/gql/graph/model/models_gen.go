@@ -7,8 +7,10 @@ type JsCodeReq struct {
 }
 
 type LoginUserResp struct {
-	Code string `json:"code"`
-	Jwt  string `json:"jwt"`
+	Code   string `json:"code"`
+	Jwt    string `json:"jwt"`
+	Level  int32  `json:"level"`
+	Status int32  `json:"status"`
 }
 
 type Query struct {

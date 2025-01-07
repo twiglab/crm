@@ -47,8 +47,10 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	LoginUserResp struct {
-		Code func(childComplexity int) int
-		Jwt  func(childComplexity int) int
+		Code   func(childComplexity int) int
+		Jwt    func(childComplexity int) int
+		Level  func(childComplexity int) int
+		Status func(childComplexity int) int
 	}
 
 	Query struct {
@@ -97,6 +99,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.LoginUserResp.Jwt(childComplexity), true
+
+	case "LoginUserResp.level":
+		if e.complexity.LoginUserResp.Level == nil {
+			break
+		}
+
+		return e.complexity.LoginUserResp.Level(childComplexity), true
+
+	case "LoginUserResp.status":
+		if e.complexity.LoginUserResp.Status == nil {
+			break
+		}
+
+		return e.complexity.LoginUserResp.Status(childComplexity), true
 
 	case "Query.Login":
 		if e.complexity.Query.Login == nil {
@@ -222,6 +238,8 @@ var sources = []*ast.Source{
 type LoginUserResp{
   code: String!
   jwt: String!
+  level: Int!
+  status: Int!
 }
 
 type Query {
@@ -484,6 +502,94 @@ func (ec *executionContext) fieldContext_LoginUserResp_jwt(_ context.Context, fi
 	return fc, nil
 }
 
+func (ec *executionContext) _LoginUserResp_level(ctx context.Context, field graphql.CollectedField, obj *model.LoginUserResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoginUserResp_level(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Level, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoginUserResp_level(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoginUserResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoginUserResp_status(ctx context.Context, field graphql.CollectedField, obj *model.LoginUserResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoginUserResp_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoginUserResp_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoginUserResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_Login(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_Login(ctx, field)
 	if err != nil {
@@ -527,6 +633,10 @@ func (ec *executionContext) fieldContext_Query_Login(ctx context.Context, field 
 				return ec.fieldContext_LoginUserResp_code(ctx, field)
 			case "jwt":
 				return ec.fieldContext_LoginUserResp_jwt(ctx, field)
+			case "level":
+				return ec.fieldContext_LoginUserResp_level(ctx, field)
+			case "status":
+				return ec.fieldContext_LoginUserResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type LoginUserResp", field.Name)
 		},
@@ -2592,6 +2702,16 @@ func (ec *executionContext) _LoginUserResp(ctx context.Context, sel ast.Selectio
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "level":
+			out.Values[i] = ec._LoginUserResp_level(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "status":
+			out.Values[i] = ec._LoginUserResp_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3093,6 +3213,21 @@ func (ec *executionContext) unmarshalNFieldSet2string(ctx context.Context, v any
 
 func (ec *executionContext) marshalNFieldSet2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	res := graphql.MarshalString(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt2int32(ctx context.Context, v any) (int32, error) {
+	res, err := graphql.UnmarshalInt32(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.SelectionSet, v int32) graphql.Marshaler {
+	res := graphql.MarshalInt32(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")

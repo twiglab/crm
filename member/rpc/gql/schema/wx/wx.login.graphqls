@@ -1,6 +1,8 @@
 type MemberResp {
   code: String!
   wxOpenID: String!
+  level: Int!
+  status: Int!
 }
 
 
@@ -19,6 +21,8 @@ input WxCreateMemberReq {
 type WxLoginResp {
   code: String!
   wxOpenID: String!
+  level: Int!
+  status: Int!
   found:Boolean!
 }
 

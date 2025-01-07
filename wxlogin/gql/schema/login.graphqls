@@ -5,6 +5,8 @@ input JsCodeReq {
 type LoginUserResp{
   code: String!
   jwt: String!
+  level: Int!
+  status: Int!
 }
 
 type Query {
