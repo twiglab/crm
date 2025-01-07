@@ -11,5 +11,5 @@ import (
 
 type Resolver struct {
 	Client *ent.Client
-	Cache  expend.IExpend
+	Cache  expend.IExpendCache
 }

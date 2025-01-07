@@ -47,6 +47,11 @@ type PaginationReq struct {
 type Query struct {
 }
 
+type UseRecordCodeReq struct {
+	Code    string `json:"code"`
+	Consume int    `json:"consume"`
+}
+
 type QueryCardByCode struct {
 	Code string `json:"code"`
 }
