@@ -8,15 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-
 	"github.com/twiglab/crm/member/cmd/member/config"
 	"github.com/twiglab/crm/member/gql"
 	"github.com/twiglab/crm/member/mq"
 	rpcgql "github.com/twiglab/crm/member/rpc/gql"
 
 	"github.com/twiglab/crm/psdk/conf"
+	"github.com/twiglab/crm/psdk/webx"
 )
 
 func main() {
@@ -39,8 +37,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	mux := chi.NewMux()
-	mux.Use(middleware.Logger, middleware.Recoverer)
+	mux := webx.Root()
 	mux.Mount("/gql", gql.New(client))
 	mux.Mount("/gqlrpc", rpcgql.New(client))
 

@@ -12,12 +12,11 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twiglab/crm/psdk/conf"
+	"github.com/twiglab/crm/psdk/webx"
 	"github.com/twiglab/crm/wechat/bc"
 	"github.com/twiglab/crm/wechat/cmd/wechat-proxy/config"
 	"github.com/twiglab/crm/wechat/sns"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/twiglab/crm/wechat/rpc/gql"
 )
 
@@ -43,8 +42,7 @@ func main() {
 	bcc := bc.BcExchange{BC: xmq, ApiV3Key: cfg.Wechat.APIKey}
 
 	// ------------------
-	mux := chi.NewMux()
-	mux.Use(middleware.Logger, middleware.Recoverer)
+	mux := webx.Root()
 	mux.Mount("/gqlrpc", gql.New(auth))
 	mux.Mount("/notify", bc.WxBCNotify(bcc))
 
