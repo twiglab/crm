@@ -47,6 +47,7 @@ input ChargeRecordCodeReq {
 
 input UseRecordCodeReq {
   code: String!
+  consume: Int!
 }
 
 type Query {
@@ -69,5 +70,5 @@ type Mutation {
   getChargeRecordCode(input: ChargeRecordCodeReq!): ChargeRecordCodeResp!
 
   # 使用消费码
-  useChargeRecordCode(input: ChargeRecordCodeReq!): CardResp!
+  useChargeRecordCode(input: UseRecordCodeReq!): CardResp!
 }

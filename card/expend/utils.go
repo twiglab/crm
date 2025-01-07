@@ -53,3 +53,22 @@ func splitPayCode(payCode string) (string, string, int64, error) {
 	}
 	return version, code, balance, nil
 }
+
+// calcBalance 计算余额
+//
+//	@param now 缓存值
+//	@param old 数据库值
+//	@param changeList 变动列表
+//	@return bool
+func calcBalance(now, old int64, changeList []*ent.ChargeRecord) bool {
+	consume := now - old
+	for _, c := range changeList {
+		consume -= c.Deduct
+	}
+
+	if consume == 0 {
+		return true
+	}
+
+	return false
+}
