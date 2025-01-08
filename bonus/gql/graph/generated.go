@@ -46,6 +46,11 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	BalanceDetailResp struct {
+		Balance    func(childComplexity int) int
+		MemberCode func(childComplexity int) int
+	}
+
 	BonusDetailResp struct {
 		Balance    func(childComplexity int) int
 		MemberCode func(childComplexity int) int
@@ -56,6 +61,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		BalanceDetail      func(childComplexity int, input *model.BalanceReq) int
 		ListBonusItems     func(childComplexity int, input model.BonusListReq) int
 		ListBonusItemsPage func(childComplexity int, input model.BonusListReq) int
 		QueryBonusDetail   func(childComplexity int, input model.BonusDetailReq) int
@@ -71,6 +77,7 @@ type QueryResolver interface {
 	QueryBonusDetail(ctx context.Context, input model.BonusDetailReq) (*model.BonusDetailResp, error)
 	ListBonusItems(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error)
 	ListBonusItemsPage(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error)
+	BalanceDetail(ctx context.Context, input *model.BalanceReq) (*model.BalanceDetailResp, error)
 }
 
 type executableSchema struct {
@@ -92,6 +99,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "BalanceDetailResp.balance":
+		if e.complexity.BalanceDetailResp.Balance == nil {
+			break
+		}
+
+		return e.complexity.BalanceDetailResp.Balance(childComplexity), true
+
+	case "BalanceDetailResp.memberCode":
+		if e.complexity.BalanceDetailResp.MemberCode == nil {
+			break
+		}
+
+		return e.complexity.BalanceDetailResp.MemberCode(childComplexity), true
+
 	case "BonusDetailResp.balance":
 		if e.complexity.BonusDetailResp.Balance == nil {
 			break
@@ -112,6 +133,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.BonusListResp.MemberCode(childComplexity), true
+
+	case "Query.balanceDetail":
+		if e.complexity.Query.BalanceDetail == nil {
+			break
+		}
+
+		args, err := ec.field_Query_balanceDetail_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.BalanceDetail(childComplexity, args["input"].(*model.BalanceReq)), true
 
 	case "Query.listBonusItems":
 		if e.complexity.Query.ListBonusItems == nil {
@@ -171,6 +204,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputBalanceReq,
 		ec.unmarshalInputBonusDetailReq,
 		ec.unmarshalInputBonusListReq,
 	)
@@ -255,6 +289,22 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
+	{Name: "../schema/balance.graphqls", Input: `scalar Int64
+
+type BalanceDetailResp {
+  memberCode: String!
+  balance: Int64!
+}
+
+input BalanceReq {
+  memberCode: String!
+}
+
+extend type Query {
+  balanceDetail(input: BalanceReq): BalanceDetailResp!
+}
+
+`, BuiltIn: false},
 	{Name: "../schema/bonus.graphqls", Input: `type BonusDetailResp {
   memberCode: String!
   balance: Int!
@@ -368,6 +418,29 @@ func (ec *executionContext) field_Query___type_argsName(
 	}
 
 	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_balanceDetail_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_balanceDetail_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_balanceDetail_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*model.BalanceReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalOBalanceReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBalanceReq(ctx, tmp)
+	}
+
+	var zeroVal *model.BalanceReq
 	return zeroVal, nil
 }
 
@@ -494,6 +567,94 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
+func (ec *executionContext) _BalanceDetailResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.BalanceDetailResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BalanceDetailResp_memberCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MemberCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BalanceDetailResp_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BalanceDetailResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BalanceDetailResp_balance(ctx context.Context, field graphql.CollectedField, obj *model.BalanceDetailResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BalanceDetailResp_balance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Balance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt642int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BalanceDetailResp_balance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BalanceDetailResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _BonusDetailResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusDetailResp) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_BonusDetailResp_memberCode(ctx, field)
 	if err != nil {
@@ -564,9 +725,9 @@ func (ec *executionContext) _BonusDetailResp_balance(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(int32)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_BonusDetailResp_balance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -799,6 +960,67 @@ func (ec *executionContext) fieldContext_Query_listBonusItemsPage(ctx context.Co
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_listBonusItemsPage_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_balanceDetail(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_balanceDetail(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().BalanceDetail(rctx, fc.Args["input"].(*model.BalanceReq))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.BalanceDetailResp)
+	fc.Result = res
+	return ec.marshalNBalanceDetailResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBalanceDetailResp(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_balanceDetail(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "memberCode":
+				return ec.fieldContext_BalanceDetailResp_memberCode(ctx, field)
+			case "balance":
+				return ec.fieldContext_BalanceDetailResp_balance(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BalanceDetailResp", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_balanceDetail_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -2796,6 +3018,33 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputBalanceReq(ctx context.Context, obj any) (model.BalanceReq, error) {
+	var it model.BalanceReq
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"memberCode"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "memberCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memberCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MemberCode = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputBonusDetailReq(ctx context.Context, obj any) (model.BonusDetailReq, error) {
 	var it model.BonusDetailReq
 	asMap := map[string]any{}
@@ -2857,6 +3106,50 @@ func (ec *executionContext) unmarshalInputBonusListReq(ctx context.Context, obj 
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
+
+var balanceDetailRespImplementors = []string{"BalanceDetailResp"}
+
+func (ec *executionContext) _BalanceDetailResp(ctx context.Context, sel ast.SelectionSet, obj *model.BalanceDetailResp) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, balanceDetailRespImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BalanceDetailResp")
+		case "memberCode":
+			out.Values[i] = ec._BalanceDetailResp_memberCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "balance":
+			out.Values[i] = ec._BalanceDetailResp_balance(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
 
 var bonusDetailRespImplementors = []string{"BonusDetailResp"}
 
@@ -3014,6 +3307,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_listBonusItemsPage(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "balanceDetail":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_balanceDetail(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -3441,6 +3756,20 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
+func (ec *executionContext) marshalNBalanceDetailResp2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBalanceDetailResp(ctx context.Context, sel ast.SelectionSet, v model.BalanceDetailResp) graphql.Marshaler {
+	return ec._BalanceDetailResp(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBalanceDetailResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBalanceDetailResp(ctx context.Context, sel ast.SelectionSet, v *model.BalanceDetailResp) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BalanceDetailResp(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNBonusDetailReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailReq(ctx context.Context, v any) (model.BonusDetailReq, error) {
 	res, err := ec.unmarshalInputBonusDetailReq(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3509,12 +3838,27 @@ func (ec *executionContext) marshalNFieldSet2string(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v any) (int, error) {
+func (ec *executionContext) unmarshalNInt2int32(ctx context.Context, v any) (int32, error) {
+	res, err := graphql.UnmarshalInt32(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.SelectionSet, v int32) graphql.Marshaler {
+	res := graphql.MarshalInt32(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt642int(ctx context.Context, v any) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+func (ec *executionContext) marshalNInt642int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
 	res := graphql.MarshalInt(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -3952,6 +4296,14 @@ func (ec *executionContext) marshalNfederation__Scope2ᚕᚕstringᚄ(ctx contex
 	}
 
 	return ret
+}
+
+func (ec *executionContext) unmarshalOBalanceReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBalanceReq(ctx context.Context, v any) (*model.BalanceReq, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputBalanceReq(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v any) (bool, error) {

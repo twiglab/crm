@@ -12,7 +12,7 @@ type Balance struct {
 	Client *ent.Client
 }
 
-func (b *Balance) Calc(ctx context.Context, acc string) (int, error) {
+func (b *Balance) CalcBalance(ctx context.Context, acc string) (int, error) {
 	accq := b.Client.BonusAcc.Query()
 	accq.Where(bonusacc.MemberCodeEQ(acc))
 	bacc, err := accq.Only(ctx)

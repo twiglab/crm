@@ -2,13 +2,22 @@
 
 package model
 
+type BalanceDetailResp struct {
+	MemberCode string `json:"memberCode"`
+	Balance    int    `json:"balance"`
+}
+
+type BalanceReq struct {
+	MemberCode string `json:"memberCode"`
+}
+
 type BonusDetailReq struct {
 	MemberCode string `json:"memberCode"`
 }
 
 type BonusDetailResp struct {
 	MemberCode string `json:"memberCode"`
-	Balance    int    `json:"balance"`
+	Balance    int32  `json:"balance"`
 }
 
 type BonusListReq struct {

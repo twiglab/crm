@@ -10,6 +10,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/rabbitmq/amqp091-go v1.10.0
+	github.com/twiglab/crm/erp v0.0.0-20250108011501-895361c9e3ef
 	github.com/twiglab/crm/member v0.0.0-20250107165841-0e3aa1e76441
 	github.com/twiglab/crm/psdk v0.0.0-20250107165841-0e3aa1e76441
 	github.com/twiglab/crm/wechat v0.0.0-20250107165841-0e3aa1e76441

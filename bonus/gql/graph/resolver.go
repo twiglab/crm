@@ -1,8 +1,6 @@
 package graph
 
-import (
-	"github.com/twiglab/crm/bonus/balance"
-)
+import "github.com/twiglab/crm/bonus/balance"
 
 // This file will not be regenerated automatically.
 //

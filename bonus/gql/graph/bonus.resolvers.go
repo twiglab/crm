@@ -13,8 +13,7 @@ import (
 
 // QueryBonusDetail is the resolver for the queryBonusDetail field.
 func (r *queryResolver) QueryBonusDetail(ctx context.Context, input model.BonusDetailReq) (*model.BonusDetailResp, error) {
-	b, err := r.Balance.Calc(ctx, input.MemberCode)
-	return &model.BonusDetailResp{MemberCode: input.MemberCode, Balance: b}, err
+	panic(fmt.Errorf("not implemented: QueryBonusDetail - queryBonusDetail"))
 }
 
 // ListBonusItems is the resolver for the listBonusItems field.
