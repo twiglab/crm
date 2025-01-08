@@ -36,18 +36,18 @@ func (BonusItem) Fields() []ent.Field {
 			MaxLen(36).
 			Immutable().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(64)", // Override MySQL.
-				dialect.Postgres: "varchar(64)", // Override Postgres.
-				dialect.SQLite:   "varchar(64)", // Override Postgres.
+				dialect.MySQL:    "varchar(36)", // Override MySQL.
+				dialect.Postgres: "varchar(36)", // Override Postgres.
+				dialect.SQLite:   "varchar(36)", // Override Postgres.
 			}),
 
 		field.String("mall_code").
 			MaxLen(36).
 			Immutable().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(64)", // Override MySQL.
-				dialect.Postgres: "varchar(64)", // Override Postgres.
-				dialect.SQLite:   "varchar(64)", // Override Postgres.
+				dialect.MySQL:    "varchar(36)", // Override MySQL.
+				dialect.Postgres: "varchar(36)", // Override Postgres.
+				dialect.SQLite:   "varchar(36)", // Override Postgres.
 			}),
 
 		field.String("mall_name").
@@ -63,9 +63,9 @@ func (BonusItem) Fields() []ent.Field {
 			MaxLen(36).
 			Immutable().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(64)", // Override MySQL.
-				dialect.Postgres: "varchar(64)", // Override Postgres.
-				dialect.SQLite:   "varchar(64)", // Override Postgres.
+				dialect.MySQL:    "varchar(36)", // Override MySQL.
+				dialect.Postgres: "varchar(36)", // Override Postgres.
+				dialect.SQLite:   "varchar(36)", // Override Postgres.
 			}),
 
 		field.String("shop_name").
@@ -124,9 +124,9 @@ func (BonusItem) Fields() []ent.Field {
 			MaxLen(64).
 			Unique().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(32)", // Override MySQL.
-				dialect.Postgres: "varchar(32)", // Override Postgres.
-				dialect.SQLite:   "varchar(32)", // Override Postgres.
+				dialect.MySQL:    "varchar(64)", // Override MySQL.
+				dialect.Postgres: "varchar(64)", // Override Postgres.
+				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
 		field.Int("amount").Default(0).Immutable(),
@@ -140,9 +140,9 @@ func (BonusItem) Fields() []ent.Field {
 			MaxLen(64).
 			Optional().
 			SchemaType(map[string]string{
-				dialect.MySQL:    "varchar(32)", // Override MySQL.
-				dialect.Postgres: "varchar(32)", // Override Postgres.
-				dialect.SQLite:   "varchar(32)", // Override Postgres.
+				dialect.MySQL:    "varchar(64)", // Override MySQL.
+				dialect.Postgres: "varchar(64)", // Override Postgres.
+				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 		// 1 = 退款 ， 0 = 支付
 		field.Int("bcmb_trans_type").Immutable().Default(0),
@@ -170,6 +170,6 @@ func (BonusItem) Indexes() []ent.Index {
 
 func (BonusItem) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "t_bonus_list"},
+		entsql.Annotation{Table: "t_bonus_item"},
 	}
 }

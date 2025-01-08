@@ -810,8 +810,8 @@ type BonusItemMutation struct {
 	addbcmb_trans_type  *int
 	bonus               *int
 	addbonus            *int
-	bonus_rate          *int
-	addbonus_rate       *int
+	bonus_rate          *int32
+	addbonus_rate       *int32
 	status              *int
 	addstatus           *int
 	clearedFields       map[string]struct{}
@@ -1709,13 +1709,13 @@ func (m *BonusItemMutation) ResetBonus() {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (m *BonusItemMutation) SetBonusRate(i int) {
+func (m *BonusItemMutation) SetBonusRate(i int32) {
 	m.bonus_rate = &i
 	m.addbonus_rate = nil
 }
 
 // BonusRate returns the value of the "bonus_rate" field in the mutation.
-func (m *BonusItemMutation) BonusRate() (r int, exists bool) {
+func (m *BonusItemMutation) BonusRate() (r int32, exists bool) {
 	v := m.bonus_rate
 	if v == nil {
 		return
@@ -1726,7 +1726,7 @@ func (m *BonusItemMutation) BonusRate() (r int, exists bool) {
 // OldBonusRate returns the old "bonus_rate" field's value of the BonusItem entity.
 // If the BonusItem object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BonusItemMutation) OldBonusRate(ctx context.Context) (v int, err error) {
+func (m *BonusItemMutation) OldBonusRate(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldBonusRate is only allowed on UpdateOne operations")
 	}
@@ -1741,7 +1741,7 @@ func (m *BonusItemMutation) OldBonusRate(ctx context.Context) (v int, err error)
 }
 
 // AddBonusRate adds i to the "bonus_rate" field.
-func (m *BonusItemMutation) AddBonusRate(i int) {
+func (m *BonusItemMutation) AddBonusRate(i int32) {
 	if m.addbonus_rate != nil {
 		*m.addbonus_rate += i
 	} else {
@@ -1750,7 +1750,7 @@ func (m *BonusItemMutation) AddBonusRate(i int) {
 }
 
 // AddedBonusRate returns the value that was added to the "bonus_rate" field in this mutation.
-func (m *BonusItemMutation) AddedBonusRate() (r int, exists bool) {
+func (m *BonusItemMutation) AddedBonusRate() (r int32, exists bool) {
 	v := m.addbonus_rate
 	if v == nil {
 		return
@@ -2162,7 +2162,7 @@ func (m *BonusItemMutation) SetField(name string, value ent.Value) error {
 		m.SetBonus(v)
 		return nil
 	case bonusitem.FieldBonusRate:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2259,7 +2259,7 @@ func (m *BonusItemMutation) AddField(name string, value ent.Value) error {
 		m.AddBonus(v)
 		return nil
 	case bonusitem.FieldBonusRate:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

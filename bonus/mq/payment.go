@@ -33,7 +33,7 @@ func (h *BcPaymentHandle) RecieveDelivery(ctx context.Context, delivery amqp.Del
 }
 
 func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePayment) error {
-	member, err := h.MemberCli.GetMemberByWxOpenID(ctx, msg.ShopNumber)
+	member, err := h.MemberCli.GetMemberByWxOpenID(ctx, msg.OpenID)
 	if err != nil {
 		return nil
 	}

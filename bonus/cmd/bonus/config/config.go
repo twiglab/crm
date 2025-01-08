@@ -37,7 +37,7 @@ type App struct {
 func PaymentQueue(conn *amqp.Connection) *mq.RabbitMQ {
 	q := &mq.RabbitMQ{
 		Conn:      conn,
-		QueueName: "q.member.auth",
+		QueueName: "q.bonus.payment",
 		Exchange:  bc.MQ_BC_EXCHANGE_NAME,
 		BindKey:   bc.MQ_WX_TOC_BC_PAYMENT,
 	}
@@ -47,7 +47,7 @@ func PaymentQueue(conn *amqp.Connection) *mq.RabbitMQ {
 func RefundQueue(conn *amqp.Connection) *mq.RabbitMQ {
 	q := &mq.RabbitMQ{
 		Conn:      conn,
-		QueueName: "q.member.auth",
+		QueueName: "q.bonus.refund",
 		Exchange:  bc.MQ_BC_EXCHANGE_NAME,
 		BindKey:   bc.MQ_WX_TOC_BC_REFUND,
 	}

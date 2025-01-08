@@ -33,53 +33,53 @@ var (
 			},
 		},
 	}
-	// TBonusListColumns holds the columns for the "t_bonus_list" table.
-	TBonusListColumns = []*schema.Column{
+	// TBonusItemColumns holds the columns for the "t_bonus_item" table.
+	TBonusItemColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "mch_id", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "mall_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "mch_id", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(36)", "postgres": "varchar(36)", "sqlite3": "varchar(36)"}},
+		{Name: "mall_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(36)", "postgres": "varchar(36)", "sqlite3": "varchar(36)"}},
 		{Name: "mall_name", Type: field.TypeString, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
-		{Name: "shop_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "shop_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(36)", "postgres": "varchar(36)", "sqlite3": "varchar(36)"}},
 		{Name: "shop_name", Type: field.TypeString, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
-		{Name: "member_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "member_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "varchar(36)", "postgres": "varchar(36)", "sqlite3": "varchar(36)"}},
 		{Name: "wx_open_id", Type: field.TypeString, Size: 256, SchemaType: map[string]string{"mysql": "varchar(256)", "postgres": "varchar(256)", "sqlite3": "varchar(256)"}},
 		{Name: "bcmb_notify_time", Type: field.TypeTime},
 		{Name: "bcmb_notify_id", Type: field.TypeString, Unique: true, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "bcmb_trans_code", Type: field.TypeString, Unique: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(32)", "postgres": "varchar(32)", "sqlite3": "varchar(32)"}},
+		{Name: "bcmb_trans_code", Type: field.TypeString, Unique: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "amount", Type: field.TypeInt, Default: 0},
 		{Name: "bcmb_trans_time", Type: field.TypeTime},
 		{Name: "create_ts", Type: field.TypeInt64, Default: 0},
-		{Name: "bcmb_trans_pay_code", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(32)", "postgres": "varchar(32)", "sqlite3": "varchar(32)"}},
+		{Name: "bcmb_trans_pay_code", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "bcmb_trans_type", Type: field.TypeInt, Default: 0},
 		{Name: "bonus", Type: field.TypeInt, Default: 0},
-		{Name: "bonus_rate", Type: field.TypeInt, Default: 100},
+		{Name: "bonus_rate", Type: field.TypeInt32, Default: 100},
 		{Name: "status", Type: field.TypeInt, Default: 1},
 	}
-	// TBonusListTable holds the schema information for the "t_bonus_list" table.
-	TBonusListTable = &schema.Table{
-		Name:       "t_bonus_list",
-		Columns:    TBonusListColumns,
-		PrimaryKey: []*schema.Column{TBonusListColumns[0]},
+	// TBonusItemTable holds the schema information for the "t_bonus_item" table.
+	TBonusItemTable = &schema.Table{
+		Name:       "t_bonus_item",
+		Columns:    TBonusItemColumns,
+		PrimaryKey: []*schema.Column{TBonusItemColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "bonusitem_code",
 				Unique:  false,
-				Columns: []*schema.Column{TBonusListColumns[3]},
+				Columns: []*schema.Column{TBonusItemColumns[3]},
 			},
 			{
 				Name:    "bonusitem_wx_open_id",
 				Unique:  false,
-				Columns: []*schema.Column{TBonusListColumns[10]},
+				Columns: []*schema.Column{TBonusItemColumns[10]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		TBonusAccTable,
-		TBonusListTable,
+		TBonusItemTable,
 	}
 )
 
@@ -87,7 +87,7 @@ func init() {
 	TBonusAccTable.Annotation = &entsql.Annotation{
 		Table: "t_bonus_acc",
 	}
-	TBonusListTable.Annotation = &entsql.Annotation{
-		Table: "t_bonus_list",
+	TBonusItemTable.Annotation = &entsql.Annotation{
+		Table: "t_bonus_item",
 	}
 }

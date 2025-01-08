@@ -56,7 +56,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the bonusitem in the database.
-	Table = "t_bonus_list"
+	Table = "t_bonus_item"
 )
 
 // Columns holds all SQL columns for bonusitem fields.
@@ -139,7 +139,7 @@ var (
 	// DefaultBonus holds the default value on creation for the "bonus" field.
 	DefaultBonus int
 	// DefaultBonusRate holds the default value on creation for the "bonus_rate" field.
-	DefaultBonusRate int
+	DefaultBonusRate int32
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 )

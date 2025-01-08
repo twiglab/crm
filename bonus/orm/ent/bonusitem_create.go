@@ -225,13 +225,13 @@ func (bic *BonusItemCreate) SetNillableBonus(i *int) *BonusItemCreate {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (bic *BonusItemCreate) SetBonusRate(i int) *BonusItemCreate {
+func (bic *BonusItemCreate) SetBonusRate(i int32) *BonusItemCreate {
 	bic.mutation.SetBonusRate(i)
 	return bic
 }
 
 // SetNillableBonusRate sets the "bonus_rate" field if the given value is not nil.
-func (bic *BonusItemCreate) SetNillableBonusRate(i *int) *BonusItemCreate {
+func (bic *BonusItemCreate) SetNillableBonusRate(i *int32) *BonusItemCreate {
 	if i != nil {
 		bic.SetBonusRate(*i)
 	}
@@ -551,7 +551,7 @@ func (bic *BonusItemCreate) createSpec() (*BonusItem, *sqlgraph.CreateSpec) {
 		_node.Bonus = value
 	}
 	if value, ok := bic.mutation.BonusRate(); ok {
-		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 		_node.BonusRate = value
 	}
 	if value, ok := bic.mutation.Status(); ok {
@@ -671,7 +671,7 @@ func (u *BonusItemUpsert) ClearBcmbTransPayCode() *BonusItemUpsert {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (u *BonusItemUpsert) SetBonusRate(v int) *BonusItemUpsert {
+func (u *BonusItemUpsert) SetBonusRate(v int32) *BonusItemUpsert {
 	u.Set(bonusitem.FieldBonusRate, v)
 	return u
 }
@@ -683,7 +683,7 @@ func (u *BonusItemUpsert) UpdateBonusRate() *BonusItemUpsert {
 }
 
 // AddBonusRate adds v to the "bonus_rate" field.
-func (u *BonusItemUpsert) AddBonusRate(v int) *BonusItemUpsert {
+func (u *BonusItemUpsert) AddBonusRate(v int32) *BonusItemUpsert {
 	u.Add(bonusitem.FieldBonusRate, v)
 	return u
 }
@@ -864,14 +864,14 @@ func (u *BonusItemUpsertOne) ClearBcmbTransPayCode() *BonusItemUpsertOne {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (u *BonusItemUpsertOne) SetBonusRate(v int) *BonusItemUpsertOne {
+func (u *BonusItemUpsertOne) SetBonusRate(v int32) *BonusItemUpsertOne {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.SetBonusRate(v)
 	})
 }
 
 // AddBonusRate adds v to the "bonus_rate" field.
-func (u *BonusItemUpsertOne) AddBonusRate(v int) *BonusItemUpsertOne {
+func (u *BonusItemUpsertOne) AddBonusRate(v int32) *BonusItemUpsertOne {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.AddBonusRate(v)
 	})
@@ -1229,14 +1229,14 @@ func (u *BonusItemUpsertBulk) ClearBcmbTransPayCode() *BonusItemUpsertBulk {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (u *BonusItemUpsertBulk) SetBonusRate(v int) *BonusItemUpsertBulk {
+func (u *BonusItemUpsertBulk) SetBonusRate(v int32) *BonusItemUpsertBulk {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.SetBonusRate(v)
 	})
 }
 
 // AddBonusRate adds v to the "bonus_rate" field.
-func (u *BonusItemUpsertBulk) AddBonusRate(v int) *BonusItemUpsertBulk {
+func (u *BonusItemUpsertBulk) AddBonusRate(v int32) *BonusItemUpsertBulk {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.AddBonusRate(v)
 	})

@@ -56,7 +56,7 @@ type BonusItem struct {
 	// Bonus holds the value of the "bonus" field.
 	Bonus int `json:"bonus,omitempty"`
 	// 积分比例
-	BonusRate int `json:"bonus_rate,omitempty"`
+	BonusRate int32 `json:"bonus_rate,omitempty"`
 	// Status holds the value of the "status" field.
 	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
@@ -212,7 +212,7 @@ func (bi *BonusItem) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field bonus_rate", values[i])
 			} else if value.Valid {
-				bi.BonusRate = int(value.Int64)
+				bi.BonusRate = int32(value.Int64)
 			}
 		case bonusitem.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

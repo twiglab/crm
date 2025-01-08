@@ -20,14 +20,14 @@ type ShopCli struct {
 	Client graphql.Client
 }
 
-func (s *ShopCli) QryShopByCode(ctx context.Context, shopCode string) (ShopDesc, error) {
+func (s *ShopCli) QryShopByCode(ctx context.Context, shopCode string) (*ShopDesc, error) {
 	resp, err := low.QryShopByCode(ctx, s.Client, shop.QryShopReq{ShopCode: shopCode})
 	if err != nil {
-		return ShopDesc{}, err
+		return nil, err
 	}
 
 	desc := resp.GetQryShopByCode()
-	return ShopDesc{
+	return &ShopDesc{
 		MallCode: desc.MallCode,
 		MallName: desc.MallName,
 		ShopCode: desc.ShopCode,

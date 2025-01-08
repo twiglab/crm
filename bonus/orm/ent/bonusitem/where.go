@@ -150,7 +150,7 @@ func Bonus(v int) predicate.BonusItem {
 }
 
 // BonusRate applies equality check predicate on the "bonus_rate" field. It's identical to BonusRateEQ.
-func BonusRate(v int) predicate.BonusItem {
+func BonusRate(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldEQ(FieldBonusRate, v))
 }
 
@@ -1215,42 +1215,42 @@ func BonusLTE(v int) predicate.BonusItem {
 }
 
 // BonusRateEQ applies the EQ predicate on the "bonus_rate" field.
-func BonusRateEQ(v int) predicate.BonusItem {
+func BonusRateEQ(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldEQ(FieldBonusRate, v))
 }
 
 // BonusRateNEQ applies the NEQ predicate on the "bonus_rate" field.
-func BonusRateNEQ(v int) predicate.BonusItem {
+func BonusRateNEQ(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldNEQ(FieldBonusRate, v))
 }
 
 // BonusRateIn applies the In predicate on the "bonus_rate" field.
-func BonusRateIn(vs ...int) predicate.BonusItem {
+func BonusRateIn(vs ...int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldIn(FieldBonusRate, vs...))
 }
 
 // BonusRateNotIn applies the NotIn predicate on the "bonus_rate" field.
-func BonusRateNotIn(vs ...int) predicate.BonusItem {
+func BonusRateNotIn(vs ...int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldNotIn(FieldBonusRate, vs...))
 }
 
 // BonusRateGT applies the GT predicate on the "bonus_rate" field.
-func BonusRateGT(v int) predicate.BonusItem {
+func BonusRateGT(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldGT(FieldBonusRate, v))
 }
 
 // BonusRateGTE applies the GTE predicate on the "bonus_rate" field.
-func BonusRateGTE(v int) predicate.BonusItem {
+func BonusRateGTE(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldGTE(FieldBonusRate, v))
 }
 
 // BonusRateLT applies the LT predicate on the "bonus_rate" field.
-func BonusRateLT(v int) predicate.BonusItem {
+func BonusRateLT(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldLT(FieldBonusRate, v))
 }
 
 // BonusRateLTE applies the LTE predicate on the "bonus_rate" field.
-func BonusRateLTE(v int) predicate.BonusItem {
+func BonusRateLTE(v int32) predicate.BonusItem {
 	return predicate.BonusItem(sql.FieldLTE(FieldBonusRate, v))
 }
 

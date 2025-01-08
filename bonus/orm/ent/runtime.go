@@ -151,7 +151,7 @@ func init() {
 	// bonusitemDescBonusRate is the schema descriptor for bonus_rate field.
 	bonusitemDescBonusRate := bonusitemFields[17].Descriptor()
 	// bonusitem.DefaultBonusRate holds the default value on creation for the bonus_rate field.
-	bonusitem.DefaultBonusRate = bonusitemDescBonusRate.Default.(int)
+	bonusitem.DefaultBonusRate = bonusitemDescBonusRate.Default.(int32)
 	// bonusitemDescStatus is the schema descriptor for status field.
 	bonusitemDescStatus := bonusitemFields[18].Descriptor()
 	// bonusitem.DefaultStatus holds the default value on creation for the status field.

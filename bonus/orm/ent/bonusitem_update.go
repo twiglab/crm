@@ -89,14 +89,14 @@ func (biu *BonusItemUpdate) ClearBcmbTransPayCode() *BonusItemUpdate {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (biu *BonusItemUpdate) SetBonusRate(i int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) SetBonusRate(i int32) *BonusItemUpdate {
 	biu.mutation.ResetBonusRate()
 	biu.mutation.SetBonusRate(i)
 	return biu
 }
 
 // SetNillableBonusRate sets the "bonus_rate" field if the given value is not nil.
-func (biu *BonusItemUpdate) SetNillableBonusRate(i *int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) SetNillableBonusRate(i *int32) *BonusItemUpdate {
 	if i != nil {
 		biu.SetBonusRate(*i)
 	}
@@ -104,7 +104,7 @@ func (biu *BonusItemUpdate) SetNillableBonusRate(i *int) *BonusItemUpdate {
 }
 
 // AddBonusRate adds i to the "bonus_rate" field.
-func (biu *BonusItemUpdate) AddBonusRate(i int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) AddBonusRate(i int32) *BonusItemUpdate {
 	biu.mutation.AddBonusRate(i)
 	return biu
 }
@@ -222,10 +222,10 @@ func (biu *BonusItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(bonusitem.FieldBcmbTransPayCode, field.TypeString)
 	}
 	if value, ok := biu.mutation.BonusRate(); ok {
-		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biu.mutation.AddedBonusRate(); ok {
-		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt, value)
+		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biu.mutation.Status(); ok {
 		_spec.SetField(bonusitem.FieldStatus, field.TypeInt, value)
@@ -314,14 +314,14 @@ func (biuo *BonusItemUpdateOne) ClearBcmbTransPayCode() *BonusItemUpdateOne {
 }
 
 // SetBonusRate sets the "bonus_rate" field.
-func (biuo *BonusItemUpdateOne) SetBonusRate(i int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) SetBonusRate(i int32) *BonusItemUpdateOne {
 	biuo.mutation.ResetBonusRate()
 	biuo.mutation.SetBonusRate(i)
 	return biuo
 }
 
 // SetNillableBonusRate sets the "bonus_rate" field if the given value is not nil.
-func (biuo *BonusItemUpdateOne) SetNillableBonusRate(i *int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) SetNillableBonusRate(i *int32) *BonusItemUpdateOne {
 	if i != nil {
 		biuo.SetBonusRate(*i)
 	}
@@ -329,7 +329,7 @@ func (biuo *BonusItemUpdateOne) SetNillableBonusRate(i *int) *BonusItemUpdateOne
 }
 
 // AddBonusRate adds i to the "bonus_rate" field.
-func (biuo *BonusItemUpdateOne) AddBonusRate(i int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) AddBonusRate(i int32) *BonusItemUpdateOne {
 	biuo.mutation.AddBonusRate(i)
 	return biuo
 }
@@ -477,10 +477,10 @@ func (biuo *BonusItemUpdateOne) sqlSave(ctx context.Context) (_node *BonusItem, 
 		_spec.ClearField(bonusitem.FieldBcmbTransPayCode, field.TypeString)
 	}
 	if value, ok := biuo.mutation.BonusRate(); ok {
-		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biuo.mutation.AddedBonusRate(); ok {
-		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt, value)
+		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biuo.mutation.Status(); ok {
 		_spec.SetField(bonusitem.FieldStatus, field.TypeInt, value)
