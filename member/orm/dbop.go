@@ -26,6 +26,13 @@ func (op *MemberDBOP) GetMemberByCode(ctx context.Context, param Param) (*ent.Me
 	return m, err
 }
 
+func (op *MemberDBOP) GetMemberByWxOpenID(ctx context.Context, param Param) (*ent.Member, error) {
+	q := op.Client.Member.Query()
+	q.Where(member.WxOpenIDEQ(param.OpenID))
+	m, err := q.Only(ctx)
+	return m, err
+}
+
 func (op *MemberDBOP) WxLogin(ctx context.Context, param Param) (*ent.Member, bool, error) {
 	q := op.Client.Member.Query()
 	q.Where(member.WxOpenIDEQ(param.OpenID))

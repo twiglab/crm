@@ -30,8 +30,8 @@ type App struct {
 	MQ        MQ     `yaml:"mq" mapstructure:"mq"`
 	DB        DB     `yaml:"db" mapstructure:"db"`
 	MemberCli GqlRpc `yaml:"member-cli" mapstructure:"member-cli"`
-	BcCli     GqlRpc `yaml:"bc-cli" mapstructure:"wechat-bc-cli"`
-	ShopCli   GqlRpc `yaml:"shop-cli" mapstructure:"shop-cli"`
+	BcCli     GqlRpc `yaml:"wechat-bc-cli" mapstructure:"wechat-bc-cli"`
+	ShopCli   GqlRpc `yaml:"erp-shop-cli" mapstructure:"erp-shop-cli"`
 }
 
 func PaymentQueue(conn *amqp.Connection) *mq.RabbitMQ {

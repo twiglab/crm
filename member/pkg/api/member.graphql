@@ -2,6 +2,8 @@ mutation WxCreateMember($input: WxCreateMemberReq!) {
   wxCreateMember(input: $input) {
     code
     wxOpenID
+    level
+    status
   }
 }
 
@@ -9,6 +11,18 @@ mutation WxLogin($input: OpenIDReq!) {
   wxLogin(input: $input) {
     code
     wxOpenID
+    level
+    status
+
     found
+  }
+}
+
+query QryMemberByWxOpenID($input: OpenIDReq!) {
+  qryMemberByWxOpenID(input: $input) {
+    code
+    wxOpenID
+    level
+    status
   }
 }

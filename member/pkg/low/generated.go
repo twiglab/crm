@@ -9,6 +9,16 @@ import (
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
+// QryMemberByWxOpenIDResponse is returned by QryMemberByWxOpenID on success.
+type QryMemberByWxOpenIDResponse struct {
+	QryMemberByWxOpenID data.MemberResp `json:"qryMemberByWxOpenID"`
+}
+
+// GetQryMemberByWxOpenID returns QryMemberByWxOpenIDResponse.QryMemberByWxOpenID, and is useful for accessing the field via an interface.
+func (v *QryMemberByWxOpenIDResponse) GetQryMemberByWxOpenID() data.MemberResp {
+	return v.QryMemberByWxOpenID
+}
+
 // WxCreateMemberResponse is returned by WxCreateMember on success.
 type WxCreateMemberResponse struct {
 	WxCreateMember data.MemberResp `json:"wxCreateMember"`
@@ -24,6 +34,14 @@ type WxLoginResponse struct {
 
 // GetWxLogin returns WxLoginResponse.WxLogin, and is useful for accessing the field via an interface.
 func (v *WxLoginResponse) GetWxLogin() data.WxLoginResp { return v.WxLogin }
+
+// __QryMemberByWxOpenIDInput is used internally by genqlient
+type __QryMemberByWxOpenIDInput struct {
+	Input data.OpenIDReq `json:"input"`
+}
+
+// GetInput returns __QryMemberByWxOpenIDInput.Input, and is useful for accessing the field via an interface.
+func (v *__QryMemberByWxOpenIDInput) GetInput() data.OpenIDReq { return v.Input }
 
 // __WxCreateMemberInput is used internally by genqlient
 type __WxCreateMemberInput struct {
@@ -41,12 +59,52 @@ type __WxLoginInput struct {
 // GetInput returns __WxLoginInput.Input, and is useful for accessing the field via an interface.
 func (v *__WxLoginInput) GetInput() data.OpenIDReq { return v.Input }
 
+// The query or mutation executed by QryMemberByWxOpenID.
+const QryMemberByWxOpenID_Operation = `
+query QryMemberByWxOpenID ($input: OpenIDReq!) {
+	qryMemberByWxOpenID(input: $input) {
+		code
+		wxOpenID
+		level
+		status
+	}
+}
+`
+
+func QryMemberByWxOpenID(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input data.OpenIDReq,
+) (*QryMemberByWxOpenIDResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "QryMemberByWxOpenID",
+		Query:  QryMemberByWxOpenID_Operation,
+		Variables: &__QryMemberByWxOpenIDInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ QryMemberByWxOpenIDResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
 // The query or mutation executed by WxCreateMember.
 const WxCreateMember_Operation = `
 mutation WxCreateMember ($input: WxCreateMemberReq!) {
 	wxCreateMember(input: $input) {
 		code
 		wxOpenID
+		level
+		status
 	}
 }
 `
@@ -83,6 +141,8 @@ mutation WxLogin ($input: OpenIDReq!) {
 	wxLogin(input: $input) {
 		code
 		wxOpenID
+		level
+		status
 		found
 	}
 }
