@@ -38,7 +38,7 @@ func (h *BcPaymentHandle) Handle(ctx context.Context, msg *msg.BusinessCirclePay
 		return nil
 	}
 
-	shop, err := h.ShopCli.Qry(ctx, msg.ShopNumber)
+	shop, err := h.ShopCli.QryShopByCode(ctx, msg.ShopNumber)
 	if err != nil {
 		return nil
 	}

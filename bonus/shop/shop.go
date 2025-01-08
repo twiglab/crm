@@ -20,7 +20,7 @@ type ShopCli struct {
 	Client graphql.Client
 }
 
-func (s *ShopCli) Qry(ctx context.Context, shopCode string) (ShopDesc, error) {
+func (s *ShopCli) QryShopByCode(ctx context.Context, shopCode string) (ShopDesc, error) {
 	resp, err := low.QryShopByCode(ctx, s.Client, shop.QryShopReq{ShopCode: shopCode})
 	if err != nil {
 		return ShopDesc{}, err

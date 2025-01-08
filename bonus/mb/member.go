@@ -2,7 +2,6 @@ package mb
 
 import (
 	"context"
-	"errors"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/twiglab/crm/member/pkg/data"
@@ -12,6 +11,8 @@ import (
 type Member struct {
 	Code     string
 	WxOpenID string
+	Status   int32
+	Level    int32
 }
 
 type MemberCli struct {
@@ -19,15 +20,10 @@ type MemberCli struct {
 }
 
 func (c *MemberCli) GetMemberByWxOpenID(ctx context.Context, openID string) (*Member, error) {
-	resp, err := low.QueryWxMemberByOpenID(ctx, c.Client, data.OpenIDReq{WxOpenID: openID})
+	resp, err := low.QryMemberByWxOpenID(ctx, c.Client, data.OpenIDReq{WxOpenID: openID})
 	if err != nil {
 		return nil, err
 	}
-
-	m := resp.GetQueryWxMemberByOpenID()
-	if !m.Found {
-		return nil, errors.New("not found")
-	}
-
-	return &Member{Code: m.Code, WxOpenID: m.WxOpenID}, nil
+	m := resp.GetQryMemberByWxOpenID()
+	return &Member{Code: m.Code, WxOpenID: m.WxOpenID, Status: m.Status, Level: m.Level}, nil
 }
