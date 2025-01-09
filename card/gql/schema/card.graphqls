@@ -32,7 +32,7 @@ input queryCardByMemberCode {
 }
 
 input ActiveCardReq {
-  codeBin: String!
+  code: String!
 }
 
 input BindCardReq {
@@ -48,6 +48,10 @@ input ChargeRecordCodeReq {
 input UseRecordCodeReq {
   code: String!
   consume: Int!
+}
+
+type UseRecordCodResp {
+  op: Boolean!
 }
 
 type Query {
@@ -70,5 +74,5 @@ type Mutation {
   getChargeRecordCode(input: ChargeRecordCodeReq!): ChargeRecordCodeResp!
 
   # 使用消费码
-  useChargeRecordCode(input: UseRecordCodeReq!): CardResp!
+  useChargeRecordCode(input: UseRecordCodeReq!): UseRecordCodResp!
 }

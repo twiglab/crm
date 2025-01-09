@@ -1,8 +1,7 @@
 package graph
 
 import (
-	"github.com/twiglab/crm/card/expend"
-	"github.com/twiglab/crm/card/orm/ent"
+	"github.com/twiglab/crm/card/consume"
 )
 
 // This file will not be regenerated automatically.
@@ -10,6 +9,5 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	Client *ent.Client
-	Cache  expend.IExpendCache
+	Client consume.IConsume
 }

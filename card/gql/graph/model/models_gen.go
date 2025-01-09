@@ -3,7 +3,7 @@
 package model
 
 type ActiveCardReq struct {
-	CodeBin string `json:"codeBin"`
+	Code string `json:"code"`
 }
 
 type BindCardReq struct {
@@ -45,6 +45,10 @@ type PaginationReq struct {
 }
 
 type Query struct {
+}
+
+type UseRecordCodResp struct {
+	Op bool `json:"op"`
 }
 
 type UseRecordCodeReq struct {

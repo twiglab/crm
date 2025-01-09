@@ -80,6 +80,10 @@ type ComplexityRoot struct {
 		__resolve__service    func(childComplexity int) int
 	}
 
+	UseRecordCodResp struct {
+		Op func(childComplexity int) int
+	}
+
 	_Service struct {
 		SDL func(childComplexity int) int
 	}
@@ -89,7 +93,7 @@ type MutationResolver interface {
 	BindCard(ctx context.Context, input model.BindCardReq) (*model.CardResp, error)
 	ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error)
 	GetChargeRecordCode(ctx context.Context, input model.ChargeRecordCodeReq) (*model.ChargeRecordCodeResp, error)
-	UseChargeRecordCode(ctx context.Context, input model.UseRecordCodeReq) (*model.CardResp, error)
+	UseChargeRecordCode(ctx context.Context, input model.UseRecordCodeReq) (*model.UseRecordCodResp, error)
 }
 type QueryResolver interface {
 	QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error)
@@ -298,6 +302,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.__resolve__service(childComplexity), true
 
+	case "UseRecordCodResp.op":
+		if e.complexity.UseRecordCodResp.Op == nil {
+			break
+		}
+
+		return e.complexity.UseRecordCodResp.Op(childComplexity), true
+
 	case "_Service.sdl":
 		if e.complexity._Service.SDL == nil {
 			break
@@ -451,7 +462,7 @@ input queryCardByMemberCode {
 }
 
 input ActiveCardReq {
-  codeBin: String!
+  code: String!
 }
 
 input BindCardReq {
@@ -467,6 +478,10 @@ input ChargeRecordCodeReq {
 input UseRecordCodeReq {
   code: String!
   consume: Int!
+}
+
+type UseRecordCodResp {
+  op: Boolean!
 }
 
 type Query {
@@ -489,7 +504,7 @@ type Mutation {
   getChargeRecordCode(input: ChargeRecordCodeReq!): ChargeRecordCodeResp!
 
   # 使用消费码
-  useChargeRecordCode(input: UseRecordCodeReq!): CardResp!
+  useChargeRecordCode(input: UseRecordCodeReq!): UseRecordCodResp!
 }
 `, BuiltIn: false},
 	{Name: "../federation/directives.graphql", Input: `
@@ -1607,9 +1622,9 @@ func (ec *executionContext) _Mutation_useChargeRecordCode(ctx context.Context, f
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.CardResp)
+	res := resTmp.(*model.UseRecordCodResp)
 	fc.Result = res
-	return ec.marshalNCardResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐCardResp(ctx, field.Selections, res)
+	return ec.marshalNUseRecordCodResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐUseRecordCodResp(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_useChargeRecordCode(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1620,32 +1635,10 @@ func (ec *executionContext) fieldContext_Mutation_useChargeRecordCode(ctx contex
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "code":
-				return ec.fieldContext_CardResp_code(ctx, field)
-			case "codeBin":
-				return ec.fieldContext_CardResp_codeBin(ctx, field)
-			case "type":
-				return ec.fieldContext_CardResp_type(ctx, field)
-			case "pic1":
-				return ec.fieldContext_CardResp_pic1(ctx, field)
-			case "pic2":
-				return ec.fieldContext_CardResp_pic2(ctx, field)
-			case "balance":
-				return ec.fieldContext_CardResp_balance(ctx, field)
-			case "amount":
-				return ec.fieldContext_CardResp_amount(ctx, field)
-			case "memberCode":
-				return ec.fieldContext_CardResp_memberCode(ctx, field)
-			case "bindTime":
-				return ec.fieldContext_CardResp_bindTime(ctx, field)
-			case "hitTime":
-				return ec.fieldContext_CardResp_hitTime(ctx, field)
-			case "lastCleanTime":
-				return ec.fieldContext_CardResp_lastCleanTime(ctx, field)
-			case "status":
-				return ec.fieldContext_CardResp_status(ctx, field)
+			case "op":
+				return ec.fieldContext_UseRecordCodResp_op(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type CardResp", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UseRecordCodResp", field.Name)
 		},
 	}
 	defer func() {
@@ -2077,6 +2070,50 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 				return ec.fieldContext___Schema_directives(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Schema", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UseRecordCodResp_op(ctx context.Context, field graphql.CollectedField, obj *model.UseRecordCodResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UseRecordCodResp_op(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Op, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UseRecordCodResp_op(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UseRecordCodResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3903,20 +3940,20 @@ func (ec *executionContext) unmarshalInputActiveCardReq(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"codeBin"}
+	fieldsInOrder := [...]string{"code"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "codeBin":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codeBin"))
+		case "code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("code"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CodeBin = data
+			it.Code = data
 		}
 	}
 
@@ -4460,6 +4497,45 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
+var useRecordCodRespImplementors = []string{"UseRecordCodResp"}
+
+func (ec *executionContext) _UseRecordCodResp(ctx context.Context, sel ast.SelectionSet, obj *model.UseRecordCodResp) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, useRecordCodRespImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UseRecordCodResp")
+		case "op":
+			out.Values[i] = ec._UseRecordCodResp_op(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var _ServiceImplementors = []string{"_Service"}
 
 func (ec *executionContext) __Service(ctx context.Context, sel ast.SelectionSet, obj *fedruntime.Service) graphql.Marshaler {
@@ -4961,6 +5037,20 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNUseRecordCodResp2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐUseRecordCodResp(ctx context.Context, sel ast.SelectionSet, v model.UseRecordCodResp) graphql.Marshaler {
+	return ec._UseRecordCodResp(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUseRecordCodResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐUseRecordCodResp(ctx context.Context, sel ast.SelectionSet, v *model.UseRecordCodResp) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._UseRecordCodResp(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNUseRecordCodeReq2githubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐUseRecordCodeReq(ctx context.Context, v any) (model.UseRecordCodeReq, error) {

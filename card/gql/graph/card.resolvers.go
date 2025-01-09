@@ -7,30 +7,13 @@ package graph
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/twiglab/crm/card/gql/graph/model"
-	"github.com/twiglab/crm/card/orm/ent"
-	"github.com/twiglab/crm/card/orm/ent/card"
 )
 
 // BindCard is the resolver for the bindCard field.
 func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq) (*model.CardResp, error) {
-	q, err := r.Client.Card.Query().Where(card.CodeEQ(input.Code)).First(ctx)
-	if err != nil {
-		if ent.IsNotFound(err) {
-			return nil, fmt.Errorf("card code not found")
-		}
-		return nil, err
-	}
-	if q.MemberCode != "" {
-		return nil, fmt.Errorf("card already binded")
-	}
-
-	c := r.Client.Card.UpdateOne(q)
-	c.SetMemberCode(input.MemberCode)
-	c.SetBindTime(time.Now())
-	cobj, err := c.Save(ctx)
+	cobj, err := r.Client.CardBindMember(ctx, input.Code, input.MemberCode)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +25,7 @@ func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq
 		Pic1:          cobj.Pic1,
 		Pic2:          cobj.Pic2,
 		Amount:        int(cobj.Amount),
-		MemberCode:    &cobj.MemberCode,
+		MemberCode:    &input.MemberCode,
 		LastCleanTime: nil,
 		Status:        cobj.Status,
 	}, nil
@@ -50,17 +33,7 @@ func (r *mutationResolver) BindCard(ctx context.Context, input model.BindCardReq
 
 // ActiveCard is the resolver for the activeCard field.
 func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCardReq) (*model.CardResp, error) {
-	q, err := r.Client.Card.Query().Where(card.CardBinEQ(input.CodeBin)).First(ctx)
-	if err != nil {
-		if ent.IsNotFound(err) {
-			return nil, fmt.Errorf("card code not found")
-		}
-		return nil, err
-	}
-
-	c := r.Client.Card.UpdateOne(q)
-	c.SetStatus(1)
-	cobj, err := c.Save(ctx)
+	cobj, err := r.Client.CardActive(ctx, input.Code)
 	if err != nil {
 		return nil, err
 	}
@@ -80,19 +53,15 @@ func (r *mutationResolver) ActiveCard(ctx context.Context, input model.ActiveCar
 
 // GetChargeRecordCode is the resolver for the getChargeRecordCode field.
 func (r *mutationResolver) GetChargeRecordCode(ctx context.Context, input model.ChargeRecordCodeReq) (*model.ChargeRecordCodeResp, error) {
-	// 验证card 和 用户关系
-	cobj, err := r.Client.Card.Query().Where(card.CodeEQ(input.CardCode)).First(ctx)
+	cobj, err := r.Client.GetCardDetailByCode(ctx, input.CardCode)
 	if err != nil {
-		if ent.IsNotFound(err) {
-			return nil, fmt.Errorf("card code not found")
-		}
 		return nil, err
 	}
 	if cobj.MemberCode != input.MemberCode {
 		return nil, fmt.Errorf("card not binded to member")
 	}
 
-	pc, err := r.Cache.GetPayCode(ctx, input.CardCode)
+	pc, err := r.Client.GetPayCode(ctx, input.CardCode)
 	if err != nil {
 		return nil, err
 	}
@@ -101,18 +70,18 @@ func (r *mutationResolver) GetChargeRecordCode(ctx context.Context, input model.
 }
 
 // UseChargeRecordCode is the resolver for the useChargeRecordCode field.
-func (r *mutationResolver) UseChargeRecordCode(ctx context.Context, input model.UseRecordCodeReq) (*model.CardResp, error) {
-	r.Cache.CardExpend(ctx, input.Code, int64(input.Consume))
-	panic(fmt.Errorf("not implemented: UseChargeRecordCode - useChargeRecordCode"))
+func (r *mutationResolver) UseChargeRecordCode(ctx context.Context, input model.UseRecordCodeReq) (*model.UseRecordCodResp, error) {
+	err := r.Client.CardExpend(ctx, input.Code, int64(input.Consume))
+	if err != nil {
+		return nil, err
+	}
+	return &model.UseRecordCodResp{Op: true}, nil
 }
 
 // QueryCardDetail is the resolver for the queryCardDetail field.
 func (r *queryResolver) QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error) {
-	cobj, err := r.Client.Card.Query().Where(card.CodeEQ(input.Code)).First(ctx)
+	cobj, err := r.Client.GetCardDetailByCode(ctx, input.Code)
 	if err != nil {
-		if ent.IsNotFound(err) {
-			return nil, fmt.Errorf("card code not found")
-		}
 		return nil, err
 	}
 
@@ -131,19 +100,7 @@ func (r *queryResolver) QueryCardDetail(ctx context.Context, input *model.QueryC
 
 // QueryCardList is the resolver for the queryCardList field.
 func (r *queryResolver) QueryCardList(ctx context.Context, input *model.PaginationReq) ([]*model.CardResp, error) {
-	q := r.Client.Card.Query()
-	// q.Where(card.)
-	if input.Order != nil && *input.Order == "desc" {
-		q.Order(ent.Desc(card.FieldCode)).Where(card.CodeGT(*input.Cursor))
-	} else {
-		q.Order(ent.Asc(card.FieldCode)).Where(card.CodeLT(*input.Cursor))
-	}
-	if input.Limit != nil {
-		q.Limit(*input.Limit)
-	} else {
-		q.Limit(10)
-	}
-	cobjs, err := q.All(ctx)
+	cobjs, err := r.Client.GetCardListPagin(ctx, input.Cursor, input.Order, input.Limit)
 	if err != nil {
 		return nil, err
 	}
@@ -169,9 +126,7 @@ func (r *queryResolver) QueryCardList(ctx context.Context, input *model.Paginati
 
 // QueryCardByMemberCode is the resolver for the queryCardByMemberCode field.
 func (r *queryResolver) QueryCardByMemberCode(ctx context.Context, input *model.QueryCardByMemberCode) ([]*model.CardResp, error) {
-	cobjs, err := r.Client.Card.Query().
-		Where(card.MemberCodeEQ(input.MemberCode)).
-		All(ctx)
+	cobjs, err := r.Client.GetAllCardByMember(ctx, input.MemberCode)
 	if err != nil {
 		return nil, err
 	}
