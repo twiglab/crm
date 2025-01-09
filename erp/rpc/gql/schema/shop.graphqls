@@ -11,8 +11,6 @@ type ShopResp{
   bizClassName1: String!
   bizClass2: String!
   bizClassName2: String!
-
-  status: String!
 }
 
 input QryShopReq {

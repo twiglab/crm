@@ -63,7 +63,6 @@ type ComplexityRoot struct {
 		Pos           func(childComplexity int) int
 		ShopCode      func(childComplexity int) int
 		ShopName      func(childComplexity int) int
-		Status        func(childComplexity int) int
 	}
 
 	_Service struct {
@@ -190,13 +189,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ShopResp.ShopName(childComplexity), true
 
-	case "ShopResp.status":
-		if e.complexity.ShopResp.Status == nil {
-			break
-		}
-
-		return e.complexity.ShopResp.Status(childComplexity), true
-
 	case "_Service.sdl":
 		if e.complexity._Service.SDL == nil {
 			break
@@ -308,8 +300,6 @@ var sources = []*ast.Source{
   bizClassName1: String!
   bizClass2: String!
   bizClassName2: String!
-
-  status: String!
 }
 
 input QryShopReq {
@@ -549,8 +539,6 @@ func (ec *executionContext) fieldContext_Query_qryShopByCode(ctx context.Context
 				return ec.fieldContext_ShopResp_bizClass2(ctx, field)
 			case "bizClassName2":
 				return ec.fieldContext_ShopResp_bizClassName2(ctx, field)
-			case "status":
-				return ec.fieldContext_ShopResp_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ShopResp", field.Name)
 		},
@@ -1218,50 +1206,6 @@ func (ec *executionContext) _ShopResp_bizClassName2(ctx context.Context, field g
 }
 
 func (ec *executionContext) fieldContext_ShopResp_bizClassName2(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ShopResp",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ShopResp_status(ctx context.Context, field graphql.CollectedField, obj *shop.ShopResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ShopResp_status(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Status, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ShopResp_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ShopResp",
 		Field:      field,
@@ -3280,11 +3224,6 @@ func (ec *executionContext) _ShopResp(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "bizClassName2":
 			out.Values[i] = ec._ShopResp_bizClassName2(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "status":
-			out.Values[i] = ec._ShopResp_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
