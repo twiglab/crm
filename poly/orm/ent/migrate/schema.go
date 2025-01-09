@@ -3,35 +3,48 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
 
 var (
-	// PoliesColumns holds the columns for the "polies" table.
-	PoliesColumns = []*schema.Column{
+	// TPolyColumns holds the columns for the "t_poly" table.
+	TPolyColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "mall_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "rule_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
+		{Name: "rule", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "name", Type: field.TypeString, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "desc", Type: field.TypeString},
 		{Name: "start_time", Type: field.TypeTime},
 		{Name: "end_time", Type: field.TypeTime},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-		{Name: "type", Type: field.TypeInt, Default: 1},
+		{Name: "status", Type: field.TypeInt32, Default: 1},
+		{Name: "type", Type: field.TypeInt32, Default: 1},
 	}
-	// PoliesTable holds the schema information for the "polies" table.
-	PoliesTable = &schema.Table{
-		Name:       "polies",
-		Columns:    PoliesColumns,
-		PrimaryKey: []*schema.Column{PoliesColumns[0]},
+	// TPolyTable holds the schema information for the "t_poly" table.
+	TPolyTable = &schema.Table{
+		Name:       "t_poly",
+		Columns:    TPolyColumns,
+		PrimaryKey: []*schema.Column{TPolyColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "poly_code",
+				Unique:  false,
+				Columns: []*schema.Column{TPolyColumns[3]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		PoliesTable,
+		TPolyTable,
 	}
 )
 
 func init() {
+	TPolyTable.Annotation = &entsql.Annotation{
+		Table: "t_poly",
+	}
 }

@@ -54,6 +54,16 @@ func IDLTE(id int) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldID, id))
 }
 
+// CreateTime applies equality check predicate on the "create_time" field. It's identical to CreateTimeEQ.
+func CreateTime(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// UpdateTime applies equality check predicate on the "update_time" field. It's identical to UpdateTimeEQ.
+func UpdateTime(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldUpdateTime, v))
+}
+
 // Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
 func Code(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldCode, v))
@@ -64,9 +74,9 @@ func MallCode(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldMallCode, v))
 }
 
-// RuleCode applies equality check predicate on the "rule_code" field. It's identical to RuleCodeEQ.
-func RuleCode(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldRuleCode, v))
+// Rule applies equality check predicate on the "rule" field. It's identical to RuleEQ.
+func Rule(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldRule, v))
 }
 
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
@@ -90,13 +100,93 @@ func EndTime(v time.Time) predicate.Poly {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int) predicate.Poly {
+func Status(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldStatus, v))
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v int) predicate.Poly {
+func Type(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldType, v))
+}
+
+// CreateTimeEQ applies the EQ predicate on the "create_time" field.
+func CreateTimeEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// CreateTimeNEQ applies the NEQ predicate on the "create_time" field.
+func CreateTimeNEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldCreateTime, v))
+}
+
+// CreateTimeIn applies the In predicate on the "create_time" field.
+func CreateTimeIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeNotIn applies the NotIn predicate on the "create_time" field.
+func CreateTimeNotIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeGT applies the GT predicate on the "create_time" field.
+func CreateTimeGT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldCreateTime, v))
+}
+
+// CreateTimeGTE applies the GTE predicate on the "create_time" field.
+func CreateTimeGTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldCreateTime, v))
+}
+
+// CreateTimeLT applies the LT predicate on the "create_time" field.
+func CreateTimeLT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldCreateTime, v))
+}
+
+// CreateTimeLTE applies the LTE predicate on the "create_time" field.
+func CreateTimeLTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldCreateTime, v))
+}
+
+// UpdateTimeEQ applies the EQ predicate on the "update_time" field.
+func UpdateTimeEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeNEQ applies the NEQ predicate on the "update_time" field.
+func UpdateTimeNEQ(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeIn applies the In predicate on the "update_time" field.
+func UpdateTimeIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeNotIn applies the NotIn predicate on the "update_time" field.
+func UpdateTimeNotIn(vs ...time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeGT applies the GT predicate on the "update_time" field.
+func UpdateTimeGT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldUpdateTime, v))
+}
+
+// UpdateTimeGTE applies the GTE predicate on the "update_time" field.
+func UpdateTimeGTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeLT applies the LT predicate on the "update_time" field.
+func UpdateTimeLT(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldUpdateTime, v))
+}
+
+// UpdateTimeLTE applies the LTE predicate on the "update_time" field.
+func UpdateTimeLTE(v time.Time) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldUpdateTime, v))
 }
 
 // CodeEQ applies the EQ predicate on the "code" field.
@@ -229,69 +319,69 @@ func MallCodeContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldMallCode, v))
 }
 
-// RuleCodeEQ applies the EQ predicate on the "rule_code" field.
-func RuleCodeEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldRuleCode, v))
+// RuleEQ applies the EQ predicate on the "rule" field.
+func RuleEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldRule, v))
 }
 
-// RuleCodeNEQ applies the NEQ predicate on the "rule_code" field.
-func RuleCodeNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldRuleCode, v))
+// RuleNEQ applies the NEQ predicate on the "rule" field.
+func RuleNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldRule, v))
 }
 
-// RuleCodeIn applies the In predicate on the "rule_code" field.
-func RuleCodeIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldRuleCode, vs...))
+// RuleIn applies the In predicate on the "rule" field.
+func RuleIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldRule, vs...))
 }
 
-// RuleCodeNotIn applies the NotIn predicate on the "rule_code" field.
-func RuleCodeNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldRuleCode, vs...))
+// RuleNotIn applies the NotIn predicate on the "rule" field.
+func RuleNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldRule, vs...))
 }
 
-// RuleCodeGT applies the GT predicate on the "rule_code" field.
-func RuleCodeGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldRuleCode, v))
+// RuleGT applies the GT predicate on the "rule" field.
+func RuleGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldRule, v))
 }
 
-// RuleCodeGTE applies the GTE predicate on the "rule_code" field.
-func RuleCodeGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldRuleCode, v))
+// RuleGTE applies the GTE predicate on the "rule" field.
+func RuleGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldRule, v))
 }
 
-// RuleCodeLT applies the LT predicate on the "rule_code" field.
-func RuleCodeLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldRuleCode, v))
+// RuleLT applies the LT predicate on the "rule" field.
+func RuleLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldRule, v))
 }
 
-// RuleCodeLTE applies the LTE predicate on the "rule_code" field.
-func RuleCodeLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldRuleCode, v))
+// RuleLTE applies the LTE predicate on the "rule" field.
+func RuleLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldRule, v))
 }
 
-// RuleCodeContains applies the Contains predicate on the "rule_code" field.
-func RuleCodeContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldRuleCode, v))
+// RuleContains applies the Contains predicate on the "rule" field.
+func RuleContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldRule, v))
 }
 
-// RuleCodeHasPrefix applies the HasPrefix predicate on the "rule_code" field.
-func RuleCodeHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldRuleCode, v))
+// RuleHasPrefix applies the HasPrefix predicate on the "rule" field.
+func RuleHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldRule, v))
 }
 
-// RuleCodeHasSuffix applies the HasSuffix predicate on the "rule_code" field.
-func RuleCodeHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldRuleCode, v))
+// RuleHasSuffix applies the HasSuffix predicate on the "rule" field.
+func RuleHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldRule, v))
 }
 
-// RuleCodeEqualFold applies the EqualFold predicate on the "rule_code" field.
-func RuleCodeEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldRuleCode, v))
+// RuleEqualFold applies the EqualFold predicate on the "rule" field.
+func RuleEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldRule, v))
 }
 
-// RuleCodeContainsFold applies the ContainsFold predicate on the "rule_code" field.
-func RuleCodeContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldRuleCode, v))
+// RuleContainsFold applies the ContainsFold predicate on the "rule" field.
+func RuleContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldRule, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -505,82 +595,82 @@ func EndTimeLTE(v time.Time) predicate.Poly {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int) predicate.Poly {
+func StatusEQ(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldStatus, v))
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int) predicate.Poly {
+func StatusNEQ(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldNEQ(FieldStatus, v))
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int) predicate.Poly {
+func StatusIn(vs ...int32) predicate.Poly {
 	return predicate.Poly(sql.FieldIn(FieldStatus, vs...))
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int) predicate.Poly {
+func StatusNotIn(vs ...int32) predicate.Poly {
 	return predicate.Poly(sql.FieldNotIn(FieldStatus, vs...))
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int) predicate.Poly {
+func StatusGT(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldGT(FieldStatus, v))
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int) predicate.Poly {
+func StatusGTE(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldGTE(FieldStatus, v))
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int) predicate.Poly {
+func StatusLT(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldLT(FieldStatus, v))
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int) predicate.Poly {
+func StatusLTE(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldStatus, v))
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v int) predicate.Poly {
+func TypeEQ(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldType, v))
 }
 
 // TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v int) predicate.Poly {
+func TypeNEQ(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldNEQ(FieldType, v))
 }
 
 // TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...int) predicate.Poly {
+func TypeIn(vs ...int32) predicate.Poly {
 	return predicate.Poly(sql.FieldIn(FieldType, vs...))
 }
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...int) predicate.Poly {
+func TypeNotIn(vs ...int32) predicate.Poly {
 	return predicate.Poly(sql.FieldNotIn(FieldType, vs...))
 }
 
 // TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v int) predicate.Poly {
+func TypeGT(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldGT(FieldType, v))
 }
 
 // TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v int) predicate.Poly {
+func TypeGTE(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldGTE(FieldType, v))
 }
 
 // TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v int) predicate.Poly {
+func TypeLT(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldLT(FieldType, v))
 }
 
 // TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v int) predicate.Poly {
+func TypeLTE(v int32) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldType, v))
 }
 

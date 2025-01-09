@@ -28,16 +28,22 @@ func (pu *PolyUpdate) Where(ps ...predicate.Poly) *PolyUpdate {
 	return pu
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (pu *PolyUpdate) SetRuleCode(s string) *PolyUpdate {
-	pu.mutation.SetRuleCode(s)
+// SetUpdateTime sets the "update_time" field.
+func (pu *PolyUpdate) SetUpdateTime(t time.Time) *PolyUpdate {
+	pu.mutation.SetUpdateTime(t)
 	return pu
 }
 
-// SetNillableRuleCode sets the "rule_code" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableRuleCode(s *string) *PolyUpdate {
+// SetRule sets the "rule" field.
+func (pu *PolyUpdate) SetRule(s string) *PolyUpdate {
+	pu.mutation.SetRule(s)
+	return pu
+}
+
+// SetNillableRule sets the "rule" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableRule(s *string) *PolyUpdate {
 	if s != nil {
-		pu.SetRuleCode(*s)
+		pu.SetRule(*s)
 	}
 	return pu
 }
@@ -99,14 +105,14 @@ func (pu *PolyUpdate) SetNillableEndTime(t *time.Time) *PolyUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (pu *PolyUpdate) SetStatus(i int) *PolyUpdate {
+func (pu *PolyUpdate) SetStatus(i int32) *PolyUpdate {
 	pu.mutation.ResetStatus()
 	pu.mutation.SetStatus(i)
 	return pu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableStatus(i *int) *PolyUpdate {
+func (pu *PolyUpdate) SetNillableStatus(i *int32) *PolyUpdate {
 	if i != nil {
 		pu.SetStatus(*i)
 	}
@@ -114,20 +120,20 @@ func (pu *PolyUpdate) SetNillableStatus(i *int) *PolyUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (pu *PolyUpdate) AddStatus(i int) *PolyUpdate {
+func (pu *PolyUpdate) AddStatus(i int32) *PolyUpdate {
 	pu.mutation.AddStatus(i)
 	return pu
 }
 
 // SetType sets the "type" field.
-func (pu *PolyUpdate) SetType(i int) *PolyUpdate {
+func (pu *PolyUpdate) SetType(i int32) *PolyUpdate {
 	pu.mutation.ResetType()
 	pu.mutation.SetType(i)
 	return pu
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableType(i *int) *PolyUpdate {
+func (pu *PolyUpdate) SetNillableType(i *int32) *PolyUpdate {
 	if i != nil {
 		pu.SetType(*i)
 	}
@@ -135,7 +141,7 @@ func (pu *PolyUpdate) SetNillableType(i *int) *PolyUpdate {
 }
 
 // AddType adds i to the "type" field.
-func (pu *PolyUpdate) AddType(i int) *PolyUpdate {
+func (pu *PolyUpdate) AddType(i int32) *PolyUpdate {
 	pu.mutation.AddType(i)
 	return pu
 }
@@ -147,6 +153,7 @@ func (pu *PolyUpdate) Mutation() *PolyMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pu *PolyUpdate) Save(ctx context.Context) (int, error) {
+	pu.defaults()
 	return withHooks(ctx, pu.sqlSave, pu.mutation, pu.hooks)
 }
 
@@ -172,11 +179,19 @@ func (pu *PolyUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (pu *PolyUpdate) defaults() {
+	if _, ok := pu.mutation.UpdateTime(); !ok {
+		v := poly.UpdateDefaultUpdateTime()
+		pu.mutation.SetUpdateTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (pu *PolyUpdate) check() error {
-	if v, ok := pu.mutation.RuleCode(); ok {
-		if err := poly.RuleCodeValidator(v); err != nil {
-			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
+	if v, ok := pu.mutation.Rule(); ok {
+		if err := poly.RuleValidator(v); err != nil {
+			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.Name(); ok {
@@ -204,8 +219,11 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := pu.mutation.RuleCode(); ok {
-		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
+	if value, ok := pu.mutation.UpdateTime(); ok {
+		_spec.SetField(poly.FieldUpdateTime, field.TypeTime, value)
+	}
+	if value, ok := pu.mutation.Rule(); ok {
+		_spec.SetField(poly.FieldRule, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
@@ -220,16 +238,16 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 	}
 	if value, ok := pu.mutation.Status(); ok {
-		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
+		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := pu.mutation.AddedStatus(); ok {
-		_spec.AddField(poly.FieldStatus, field.TypeInt, value)
+		_spec.AddField(poly.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := pu.mutation.GetType(); ok {
-		_spec.SetField(poly.FieldType, field.TypeInt, value)
+		_spec.SetField(poly.FieldType, field.TypeInt32, value)
 	}
 	if value, ok := pu.mutation.AddedType(); ok {
-		_spec.AddField(poly.FieldType, field.TypeInt, value)
+		_spec.AddField(poly.FieldType, field.TypeInt32, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -251,16 +269,22 @@ type PolyUpdateOne struct {
 	mutation *PolyMutation
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (puo *PolyUpdateOne) SetRuleCode(s string) *PolyUpdateOne {
-	puo.mutation.SetRuleCode(s)
+// SetUpdateTime sets the "update_time" field.
+func (puo *PolyUpdateOne) SetUpdateTime(t time.Time) *PolyUpdateOne {
+	puo.mutation.SetUpdateTime(t)
 	return puo
 }
 
-// SetNillableRuleCode sets the "rule_code" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableRuleCode(s *string) *PolyUpdateOne {
+// SetRule sets the "rule" field.
+func (puo *PolyUpdateOne) SetRule(s string) *PolyUpdateOne {
+	puo.mutation.SetRule(s)
+	return puo
+}
+
+// SetNillableRule sets the "rule" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableRule(s *string) *PolyUpdateOne {
 	if s != nil {
-		puo.SetRuleCode(*s)
+		puo.SetRule(*s)
 	}
 	return puo
 }
@@ -322,14 +346,14 @@ func (puo *PolyUpdateOne) SetNillableEndTime(t *time.Time) *PolyUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (puo *PolyUpdateOne) SetStatus(i int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) SetStatus(i int32) *PolyUpdateOne {
 	puo.mutation.ResetStatus()
 	puo.mutation.SetStatus(i)
 	return puo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableStatus(i *int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) SetNillableStatus(i *int32) *PolyUpdateOne {
 	if i != nil {
 		puo.SetStatus(*i)
 	}
@@ -337,20 +361,20 @@ func (puo *PolyUpdateOne) SetNillableStatus(i *int) *PolyUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (puo *PolyUpdateOne) AddStatus(i int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) AddStatus(i int32) *PolyUpdateOne {
 	puo.mutation.AddStatus(i)
 	return puo
 }
 
 // SetType sets the "type" field.
-func (puo *PolyUpdateOne) SetType(i int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) SetType(i int32) *PolyUpdateOne {
 	puo.mutation.ResetType()
 	puo.mutation.SetType(i)
 	return puo
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableType(i *int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) SetNillableType(i *int32) *PolyUpdateOne {
 	if i != nil {
 		puo.SetType(*i)
 	}
@@ -358,7 +382,7 @@ func (puo *PolyUpdateOne) SetNillableType(i *int) *PolyUpdateOne {
 }
 
 // AddType adds i to the "type" field.
-func (puo *PolyUpdateOne) AddType(i int) *PolyUpdateOne {
+func (puo *PolyUpdateOne) AddType(i int32) *PolyUpdateOne {
 	puo.mutation.AddType(i)
 	return puo
 }
@@ -383,6 +407,7 @@ func (puo *PolyUpdateOne) Select(field string, fields ...string) *PolyUpdateOne 
 
 // Save executes the query and returns the updated Poly entity.
 func (puo *PolyUpdateOne) Save(ctx context.Context) (*Poly, error) {
+	puo.defaults()
 	return withHooks(ctx, puo.sqlSave, puo.mutation, puo.hooks)
 }
 
@@ -408,11 +433,19 @@ func (puo *PolyUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (puo *PolyUpdateOne) defaults() {
+	if _, ok := puo.mutation.UpdateTime(); !ok {
+		v := poly.UpdateDefaultUpdateTime()
+		puo.mutation.SetUpdateTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (puo *PolyUpdateOne) check() error {
-	if v, ok := puo.mutation.RuleCode(); ok {
-		if err := poly.RuleCodeValidator(v); err != nil {
-			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
+	if v, ok := puo.mutation.Rule(); ok {
+		if err := poly.RuleValidator(v); err != nil {
+			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.Name(); ok {
@@ -457,8 +490,11 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 			}
 		}
 	}
-	if value, ok := puo.mutation.RuleCode(); ok {
-		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
+	if value, ok := puo.mutation.UpdateTime(); ok {
+		_spec.SetField(poly.FieldUpdateTime, field.TypeTime, value)
+	}
+	if value, ok := puo.mutation.Rule(); ok {
+		_spec.SetField(poly.FieldRule, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
@@ -473,16 +509,16 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 	}
 	if value, ok := puo.mutation.Status(); ok {
-		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
+		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := puo.mutation.AddedStatus(); ok {
-		_spec.AddField(poly.FieldStatus, field.TypeInt, value)
+		_spec.AddField(poly.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := puo.mutation.GetType(); ok {
-		_spec.SetField(poly.FieldType, field.TypeInt, value)
+		_spec.SetField(poly.FieldType, field.TypeInt32, value)
 	}
 	if value, ok := puo.mutation.AddedType(); ok {
-		_spec.AddField(poly.FieldType, field.TypeInt, value)
+		_spec.AddField(poly.FieldType, field.TypeInt32, value)
 	}
 	_node = &Poly{config: puo.config}
 	_spec.Assign = _node.assignValues

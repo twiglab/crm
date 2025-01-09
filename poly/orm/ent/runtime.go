@@ -3,6 +3,8 @@
 package ent
 
 import (
+	"time"
+
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/schema"
 )
@@ -11,8 +13,21 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	polyMixin := schema.Poly{}.Mixin()
+	polyMixinFields0 := polyMixin[0].Fields()
+	_ = polyMixinFields0
 	polyFields := schema.Poly{}.Fields()
 	_ = polyFields
+	// polyDescCreateTime is the schema descriptor for create_time field.
+	polyDescCreateTime := polyMixinFields0[0].Descriptor()
+	// poly.DefaultCreateTime holds the default value on creation for the create_time field.
+	poly.DefaultCreateTime = polyDescCreateTime.Default.(func() time.Time)
+	// polyDescUpdateTime is the schema descriptor for update_time field.
+	polyDescUpdateTime := polyMixinFields0[1].Descriptor()
+	// poly.DefaultUpdateTime holds the default value on creation for the update_time field.
+	poly.DefaultUpdateTime = polyDescUpdateTime.Default.(func() time.Time)
+	// poly.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	poly.UpdateDefaultUpdateTime = polyDescUpdateTime.UpdateDefault.(func() time.Time)
 	// polyDescCode is the schema descriptor for code field.
 	polyDescCode := polyFields[0].Descriptor()
 	// poly.DefaultCode holds the default value on creation for the code field.
@@ -51,18 +66,18 @@ func init() {
 			return nil
 		}
 	}()
-	// polyDescRuleCode is the schema descriptor for rule_code field.
-	polyDescRuleCode := polyFields[2].Descriptor()
-	// poly.RuleCodeValidator is a validator for the "rule_code" field. It is called by the builders before save.
-	poly.RuleCodeValidator = func() func(string) error {
-		validators := polyDescRuleCode.Validators
+	// polyDescRule is the schema descriptor for rule field.
+	polyDescRule := polyFields[2].Descriptor()
+	// poly.RuleValidator is a validator for the "rule" field. It is called by the builders before save.
+	poly.RuleValidator = func() func(string) error {
+		validators := polyDescRule.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(rule_code string) error {
+		return func(rule string) error {
 			for _, fn := range fns {
-				if err := fn(rule_code); err != nil {
+				if err := fn(rule); err != nil {
 					return err
 				}
 			}
@@ -94,9 +109,9 @@ func init() {
 	// polyDescStatus is the schema descriptor for status field.
 	polyDescStatus := polyFields[7].Descriptor()
 	// poly.DefaultStatus holds the default value on creation for the status field.
-	poly.DefaultStatus = polyDescStatus.Default.(int)
+	poly.DefaultStatus = polyDescStatus.Default.(int32)
 	// polyDescType is the schema descriptor for type field.
 	polyDescType := polyFields[8].Descriptor()
 	// poly.DefaultType holds the default value on creation for the type field.
-	poly.DefaultType = polyDescType.Default.(int)
+	poly.DefaultType = polyDescType.Default.(int32)
 }

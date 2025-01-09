@@ -33,17 +33,19 @@ type PolyMutation struct {
 	op            Op
 	typ           string
 	id            *int
+	create_time   *time.Time
+	update_time   *time.Time
 	code          *string
 	mall_code     *string
-	rule_code     *string
+	rule          *string
 	name          *string
 	desc          *string
 	start_time    *time.Time
 	end_time      *time.Time
-	status        *int
-	addstatus     *int
-	_type         *int
-	add_type      *int
+	status        *int32
+	addstatus     *int32
+	_type         *int32
+	add_type      *int32
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Poly, error)
@@ -148,6 +150,78 @@ func (m *PolyMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetCreateTime sets the "create_time" field.
+func (m *PolyMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *PolyMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *PolyMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *PolyMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *PolyMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *PolyMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
 // SetCode sets the "code" field.
 func (m *PolyMutation) SetCode(s string) {
 	m.code = &s
@@ -220,40 +294,40 @@ func (m *PolyMutation) ResetMallCode() {
 	m.mall_code = nil
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (m *PolyMutation) SetRuleCode(s string) {
-	m.rule_code = &s
+// SetRule sets the "rule" field.
+func (m *PolyMutation) SetRule(s string) {
+	m.rule = &s
 }
 
-// RuleCode returns the value of the "rule_code" field in the mutation.
-func (m *PolyMutation) RuleCode() (r string, exists bool) {
-	v := m.rule_code
+// Rule returns the value of the "rule" field in the mutation.
+func (m *PolyMutation) Rule() (r string, exists bool) {
+	v := m.rule
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldRuleCode returns the old "rule_code" field's value of the Poly entity.
+// OldRule returns the old "rule" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldRuleCode(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldRule(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRuleCode is only allowed on UpdateOne operations")
+		return v, errors.New("OldRule is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRuleCode requires an ID field in the mutation")
+		return v, errors.New("OldRule requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRuleCode: %w", err)
+		return v, fmt.Errorf("querying old value for OldRule: %w", err)
 	}
-	return oldValue.RuleCode, nil
+	return oldValue.Rule, nil
 }
 
-// ResetRuleCode resets all changes to the "rule_code" field.
-func (m *PolyMutation) ResetRuleCode() {
-	m.rule_code = nil
+// ResetRule resets all changes to the "rule" field.
+func (m *PolyMutation) ResetRule() {
+	m.rule = nil
 }
 
 // SetName sets the "name" field.
@@ -401,13 +475,13 @@ func (m *PolyMutation) ResetEndTime() {
 }
 
 // SetStatus sets the "status" field.
-func (m *PolyMutation) SetStatus(i int) {
+func (m *PolyMutation) SetStatus(i int32) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *PolyMutation) Status() (r int, exists bool) {
+func (m *PolyMutation) Status() (r int32, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -418,7 +492,7 @@ func (m *PolyMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldStatus(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -433,7 +507,7 @@ func (m *PolyMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *PolyMutation) AddStatus(i int) {
+func (m *PolyMutation) AddStatus(i int32) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -442,7 +516,7 @@ func (m *PolyMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *PolyMutation) AddedStatus() (r int, exists bool) {
+func (m *PolyMutation) AddedStatus() (r int32, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -457,13 +531,13 @@ func (m *PolyMutation) ResetStatus() {
 }
 
 // SetType sets the "type" field.
-func (m *PolyMutation) SetType(i int) {
+func (m *PolyMutation) SetType(i int32) {
 	m._type = &i
 	m.add_type = nil
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *PolyMutation) GetType() (r int, exists bool) {
+func (m *PolyMutation) GetType() (r int32, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -474,7 +548,7 @@ func (m *PolyMutation) GetType() (r int, exists bool) {
 // OldType returns the old "type" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldType(ctx context.Context) (v int, err error) {
+func (m *PolyMutation) OldType(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldType is only allowed on UpdateOne operations")
 	}
@@ -489,7 +563,7 @@ func (m *PolyMutation) OldType(ctx context.Context) (v int, err error) {
 }
 
 // AddType adds i to the "type" field.
-func (m *PolyMutation) AddType(i int) {
+func (m *PolyMutation) AddType(i int32) {
 	if m.add_type != nil {
 		*m.add_type += i
 	} else {
@@ -498,7 +572,7 @@ func (m *PolyMutation) AddType(i int) {
 }
 
 // AddedType returns the value that was added to the "type" field in this mutation.
-func (m *PolyMutation) AddedType() (r int, exists bool) {
+func (m *PolyMutation) AddedType() (r int32, exists bool) {
 	v := m.add_type
 	if v == nil {
 		return
@@ -546,15 +620,21 @@ func (m *PolyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PolyMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 11)
+	if m.create_time != nil {
+		fields = append(fields, poly.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, poly.FieldUpdateTime)
+	}
 	if m.code != nil {
 		fields = append(fields, poly.FieldCode)
 	}
 	if m.mall_code != nil {
 		fields = append(fields, poly.FieldMallCode)
 	}
-	if m.rule_code != nil {
-		fields = append(fields, poly.FieldRuleCode)
+	if m.rule != nil {
+		fields = append(fields, poly.FieldRule)
 	}
 	if m.name != nil {
 		fields = append(fields, poly.FieldName)
@@ -582,12 +662,16 @@ func (m *PolyMutation) Fields() []string {
 // schema.
 func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case poly.FieldCreateTime:
+		return m.CreateTime()
+	case poly.FieldUpdateTime:
+		return m.UpdateTime()
 	case poly.FieldCode:
 		return m.Code()
 	case poly.FieldMallCode:
 		return m.MallCode()
-	case poly.FieldRuleCode:
-		return m.RuleCode()
+	case poly.FieldRule:
+		return m.Rule()
 	case poly.FieldName:
 		return m.Name()
 	case poly.FieldDesc:
@@ -609,12 +693,16 @@ func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case poly.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case poly.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
 	case poly.FieldCode:
 		return m.OldCode(ctx)
 	case poly.FieldMallCode:
 		return m.OldMallCode(ctx)
-	case poly.FieldRuleCode:
-		return m.OldRuleCode(ctx)
+	case poly.FieldRule:
+		return m.OldRule(ctx)
 	case poly.FieldName:
 		return m.OldName(ctx)
 	case poly.FieldDesc:
@@ -636,6 +724,20 @@ func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, er
 // type.
 func (m *PolyMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case poly.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case poly.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
 	case poly.FieldCode:
 		v, ok := value.(string)
 		if !ok {
@@ -650,12 +752,12 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMallCode(v)
 		return nil
-	case poly.FieldRuleCode:
+	case poly.FieldRule:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetRuleCode(v)
+		m.SetRule(v)
 		return nil
 	case poly.FieldName:
 		v, ok := value.(string)
@@ -686,14 +788,14 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		m.SetEndTime(v)
 		return nil
 	case poly.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
 		return nil
 	case poly.FieldType:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -735,14 +837,14 @@ func (m *PolyMutation) AddedField(name string) (ent.Value, bool) {
 func (m *PolyMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case poly.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
 		return nil
 	case poly.FieldType:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -775,14 +877,20 @@ func (m *PolyMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *PolyMutation) ResetField(name string) error {
 	switch name {
+	case poly.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case poly.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
 	case poly.FieldCode:
 		m.ResetCode()
 		return nil
 	case poly.FieldMallCode:
 		m.ResetMallCode()
 		return nil
-	case poly.FieldRuleCode:
-		m.ResetRuleCode()
+	case poly.FieldRule:
+		m.ResetRule()
 		return nil
 	case poly.FieldName:
 		m.ResetName()

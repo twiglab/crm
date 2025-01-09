@@ -22,6 +22,34 @@ type PolyCreate struct {
 	conflict []sql.ConflictOption
 }
 
+// SetCreateTime sets the "create_time" field.
+func (pc *PolyCreate) SetCreateTime(t time.Time) *PolyCreate {
+	pc.mutation.SetCreateTime(t)
+	return pc
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableCreateTime(t *time.Time) *PolyCreate {
+	if t != nil {
+		pc.SetCreateTime(*t)
+	}
+	return pc
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (pc *PolyCreate) SetUpdateTime(t time.Time) *PolyCreate {
+	pc.mutation.SetUpdateTime(t)
+	return pc
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableUpdateTime(t *time.Time) *PolyCreate {
+	if t != nil {
+		pc.SetUpdateTime(*t)
+	}
+	return pc
+}
+
 // SetCode sets the "code" field.
 func (pc *PolyCreate) SetCode(s string) *PolyCreate {
 	pc.mutation.SetCode(s)
@@ -42,9 +70,9 @@ func (pc *PolyCreate) SetMallCode(s string) *PolyCreate {
 	return pc
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (pc *PolyCreate) SetRuleCode(s string) *PolyCreate {
-	pc.mutation.SetRuleCode(s)
+// SetRule sets the "rule" field.
+func (pc *PolyCreate) SetRule(s string) *PolyCreate {
+	pc.mutation.SetRule(s)
 	return pc
 }
 
@@ -73,13 +101,13 @@ func (pc *PolyCreate) SetEndTime(t time.Time) *PolyCreate {
 }
 
 // SetStatus sets the "status" field.
-func (pc *PolyCreate) SetStatus(i int) *PolyCreate {
+func (pc *PolyCreate) SetStatus(i int32) *PolyCreate {
 	pc.mutation.SetStatus(i)
 	return pc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (pc *PolyCreate) SetNillableStatus(i *int) *PolyCreate {
+func (pc *PolyCreate) SetNillableStatus(i *int32) *PolyCreate {
 	if i != nil {
 		pc.SetStatus(*i)
 	}
@@ -87,13 +115,13 @@ func (pc *PolyCreate) SetNillableStatus(i *int) *PolyCreate {
 }
 
 // SetType sets the "type" field.
-func (pc *PolyCreate) SetType(i int) *PolyCreate {
+func (pc *PolyCreate) SetType(i int32) *PolyCreate {
 	pc.mutation.SetType(i)
 	return pc
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (pc *PolyCreate) SetNillableType(i *int) *PolyCreate {
+func (pc *PolyCreate) SetNillableType(i *int32) *PolyCreate {
 	if i != nil {
 		pc.SetType(*i)
 	}
@@ -135,6 +163,14 @@ func (pc *PolyCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (pc *PolyCreate) defaults() {
+	if _, ok := pc.mutation.CreateTime(); !ok {
+		v := poly.DefaultCreateTime()
+		pc.mutation.SetCreateTime(v)
+	}
+	if _, ok := pc.mutation.UpdateTime(); !ok {
+		v := poly.DefaultUpdateTime()
+		pc.mutation.SetUpdateTime(v)
+	}
 	if _, ok := pc.mutation.Code(); !ok {
 		v := poly.DefaultCode()
 		pc.mutation.SetCode(v)
@@ -151,6 +187,12 @@ func (pc *PolyCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PolyCreate) check() error {
+	if _, ok := pc.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "Poly.create_time"`)}
+	}
+	if _, ok := pc.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "Poly.update_time"`)}
+	}
 	if _, ok := pc.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Poly.code"`)}
 	}
@@ -167,12 +209,12 @@ func (pc *PolyCreate) check() error {
 			return &ValidationError{Name: "mall_code", err: fmt.Errorf(`ent: validator failed for field "Poly.mall_code": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.RuleCode(); !ok {
-		return &ValidationError{Name: "rule_code", err: errors.New(`ent: missing required field "Poly.rule_code"`)}
+	if _, ok := pc.mutation.Rule(); !ok {
+		return &ValidationError{Name: "rule", err: errors.New(`ent: missing required field "Poly.rule"`)}
 	}
-	if v, ok := pc.mutation.RuleCode(); ok {
-		if err := poly.RuleCodeValidator(v); err != nil {
-			return &ValidationError{Name: "rule_code", err: fmt.Errorf(`ent: validator failed for field "Poly.rule_code": %w`, err)}
+	if v, ok := pc.mutation.Rule(); ok {
+		if err := poly.RuleValidator(v); err != nil {
+			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.Name(); !ok {
@@ -230,6 +272,14 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 		_spec = sqlgraph.NewCreateSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
 	)
 	_spec.OnConflict = pc.conflict
+	if value, ok := pc.mutation.CreateTime(); ok {
+		_spec.SetField(poly.FieldCreateTime, field.TypeTime, value)
+		_node.CreateTime = value
+	}
+	if value, ok := pc.mutation.UpdateTime(); ok {
+		_spec.SetField(poly.FieldUpdateTime, field.TypeTime, value)
+		_node.UpdateTime = value
+	}
 	if value, ok := pc.mutation.Code(); ok {
 		_spec.SetField(poly.FieldCode, field.TypeString, value)
 		_node.Code = value
@@ -238,9 +288,9 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 		_spec.SetField(poly.FieldMallCode, field.TypeString, value)
 		_node.MallCode = value
 	}
-	if value, ok := pc.mutation.RuleCode(); ok {
-		_spec.SetField(poly.FieldRuleCode, field.TypeString, value)
-		_node.RuleCode = value
+	if value, ok := pc.mutation.Rule(); ok {
+		_spec.SetField(poly.FieldRule, field.TypeString, value)
+		_node.Rule = value
 	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
@@ -259,11 +309,11 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 		_node.EndTime = value
 	}
 	if value, ok := pc.mutation.Status(); ok {
-		_spec.SetField(poly.FieldStatus, field.TypeInt, value)
+		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
 	}
 	if value, ok := pc.mutation.GetType(); ok {
-		_spec.SetField(poly.FieldType, field.TypeInt, value)
+		_spec.SetField(poly.FieldType, field.TypeInt32, value)
 		_node.Type = value
 	}
 	return _node, _spec
@@ -273,7 +323,7 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 // of the `INSERT` statement. For example:
 //
 //	client.Poly.Create().
-//		SetCode(v).
+//		SetCreateTime(v).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -282,7 +332,7 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.PolyUpsert) {
-//			SetCode(v+v).
+//			SetCreateTime(v+v).
 //		}).
 //		Exec(ctx)
 func (pc *PolyCreate) OnConflict(opts ...sql.ConflictOption) *PolyUpsertOne {
@@ -318,15 +368,27 @@ type (
 	}
 )
 
-// SetRuleCode sets the "rule_code" field.
-func (u *PolyUpsert) SetRuleCode(v string) *PolyUpsert {
-	u.Set(poly.FieldRuleCode, v)
+// SetUpdateTime sets the "update_time" field.
+func (u *PolyUpsert) SetUpdateTime(v time.Time) *PolyUpsert {
+	u.Set(poly.FieldUpdateTime, v)
 	return u
 }
 
-// UpdateRuleCode sets the "rule_code" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateRuleCode() *PolyUpsert {
-	u.SetExcluded(poly.FieldRuleCode)
+// UpdateUpdateTime sets the "update_time" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateUpdateTime() *PolyUpsert {
+	u.SetExcluded(poly.FieldUpdateTime)
+	return u
+}
+
+// SetRule sets the "rule" field.
+func (u *PolyUpsert) SetRule(v string) *PolyUpsert {
+	u.Set(poly.FieldRule, v)
+	return u
+}
+
+// UpdateRule sets the "rule" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateRule() *PolyUpsert {
+	u.SetExcluded(poly.FieldRule)
 	return u
 }
 
@@ -379,7 +441,7 @@ func (u *PolyUpsert) UpdateEndTime() *PolyUpsert {
 }
 
 // SetStatus sets the "status" field.
-func (u *PolyUpsert) SetStatus(v int) *PolyUpsert {
+func (u *PolyUpsert) SetStatus(v int32) *PolyUpsert {
 	u.Set(poly.FieldStatus, v)
 	return u
 }
@@ -391,13 +453,13 @@ func (u *PolyUpsert) UpdateStatus() *PolyUpsert {
 }
 
 // AddStatus adds v to the "status" field.
-func (u *PolyUpsert) AddStatus(v int) *PolyUpsert {
+func (u *PolyUpsert) AddStatus(v int32) *PolyUpsert {
 	u.Add(poly.FieldStatus, v)
 	return u
 }
 
 // SetType sets the "type" field.
-func (u *PolyUpsert) SetType(v int) *PolyUpsert {
+func (u *PolyUpsert) SetType(v int32) *PolyUpsert {
 	u.Set(poly.FieldType, v)
 	return u
 }
@@ -409,7 +471,7 @@ func (u *PolyUpsert) UpdateType() *PolyUpsert {
 }
 
 // AddType adds v to the "type" field.
-func (u *PolyUpsert) AddType(v int) *PolyUpsert {
+func (u *PolyUpsert) AddType(v int32) *PolyUpsert {
 	u.Add(poly.FieldType, v)
 	return u
 }
@@ -425,6 +487,9 @@ func (u *PolyUpsert) AddType(v int) *PolyUpsert {
 func (u *PolyUpsertOne) UpdateNewValues() *PolyUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.CreateTime(); exists {
+			s.SetIgnore(poly.FieldCreateTime)
+		}
 		if _, exists := u.create.mutation.Code(); exists {
 			s.SetIgnore(poly.FieldCode)
 		}
@@ -462,17 +527,31 @@ func (u *PolyUpsertOne) Update(set func(*PolyUpsert)) *PolyUpsertOne {
 	return u
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (u *PolyUpsertOne) SetRuleCode(v string) *PolyUpsertOne {
+// SetUpdateTime sets the "update_time" field.
+func (u *PolyUpsertOne) SetUpdateTime(v time.Time) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetRuleCode(v)
+		s.SetUpdateTime(v)
 	})
 }
 
-// UpdateRuleCode sets the "rule_code" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateRuleCode() *PolyUpsertOne {
+// UpdateUpdateTime sets the "update_time" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateUpdateTime() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateRuleCode()
+		s.UpdateUpdateTime()
+	})
+}
+
+// SetRule sets the "rule" field.
+func (u *PolyUpsertOne) SetRule(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetRule(v)
+	})
+}
+
+// UpdateRule sets the "rule" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateRule() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateRule()
 	})
 }
 
@@ -533,14 +612,14 @@ func (u *PolyUpsertOne) UpdateEndTime() *PolyUpsertOne {
 }
 
 // SetStatus sets the "status" field.
-func (u *PolyUpsertOne) SetStatus(v int) *PolyUpsertOne {
+func (u *PolyUpsertOne) SetStatus(v int32) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *PolyUpsertOne) AddStatus(v int) *PolyUpsertOne {
+func (u *PolyUpsertOne) AddStatus(v int32) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.AddStatus(v)
 	})
@@ -554,14 +633,14 @@ func (u *PolyUpsertOne) UpdateStatus() *PolyUpsertOne {
 }
 
 // SetType sets the "type" field.
-func (u *PolyUpsertOne) SetType(v int) *PolyUpsertOne {
+func (u *PolyUpsertOne) SetType(v int32) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.SetType(v)
 	})
 }
 
 // AddType adds v to the "type" field.
-func (u *PolyUpsertOne) AddType(v int) *PolyUpsertOne {
+func (u *PolyUpsertOne) AddType(v int32) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.AddType(v)
 	})
@@ -709,7 +788,7 @@ func (pcb *PolyCreateBulk) ExecX(ctx context.Context) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.PolyUpsert) {
-//			SetCode(v+v).
+//			SetCreateTime(v+v).
 //		}).
 //		Exec(ctx)
 func (pcb *PolyCreateBulk) OnConflict(opts ...sql.ConflictOption) *PolyUpsertBulk {
@@ -750,6 +829,9 @@ func (u *PolyUpsertBulk) UpdateNewValues() *PolyUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
+			if _, exists := b.mutation.CreateTime(); exists {
+				s.SetIgnore(poly.FieldCreateTime)
+			}
 			if _, exists := b.mutation.Code(); exists {
 				s.SetIgnore(poly.FieldCode)
 			}
@@ -788,17 +870,31 @@ func (u *PolyUpsertBulk) Update(set func(*PolyUpsert)) *PolyUpsertBulk {
 	return u
 }
 
-// SetRuleCode sets the "rule_code" field.
-func (u *PolyUpsertBulk) SetRuleCode(v string) *PolyUpsertBulk {
+// SetUpdateTime sets the "update_time" field.
+func (u *PolyUpsertBulk) SetUpdateTime(v time.Time) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetRuleCode(v)
+		s.SetUpdateTime(v)
 	})
 }
 
-// UpdateRuleCode sets the "rule_code" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateRuleCode() *PolyUpsertBulk {
+// UpdateUpdateTime sets the "update_time" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateUpdateTime() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateRuleCode()
+		s.UpdateUpdateTime()
+	})
+}
+
+// SetRule sets the "rule" field.
+func (u *PolyUpsertBulk) SetRule(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetRule(v)
+	})
+}
+
+// UpdateRule sets the "rule" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateRule() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateRule()
 	})
 }
 
@@ -859,14 +955,14 @@ func (u *PolyUpsertBulk) UpdateEndTime() *PolyUpsertBulk {
 }
 
 // SetStatus sets the "status" field.
-func (u *PolyUpsertBulk) SetStatus(v int) *PolyUpsertBulk {
+func (u *PolyUpsertBulk) SetStatus(v int32) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *PolyUpsertBulk) AddStatus(v int) *PolyUpsertBulk {
+func (u *PolyUpsertBulk) AddStatus(v int32) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.AddStatus(v)
 	})
@@ -880,14 +976,14 @@ func (u *PolyUpsertBulk) UpdateStatus() *PolyUpsertBulk {
 }
 
 // SetType sets the "type" field.
-func (u *PolyUpsertBulk) SetType(v int) *PolyUpsertBulk {
+func (u *PolyUpsertBulk) SetType(v int32) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.SetType(v)
 	})
 }
 
 // AddType adds v to the "type" field.
-func (u *PolyUpsertBulk) AddType(v int) *PolyUpsertBulk {
+func (u *PolyUpsertBulk) AddType(v int32) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.AddType(v)
 	})

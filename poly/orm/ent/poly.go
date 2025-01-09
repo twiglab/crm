@@ -17,12 +17,16 @@ type Poly struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
 	// MallCode holds the value of the "mall_code" field.
 	MallCode string `json:"mall_code,omitempty"`
-	// RuleCode holds the value of the "rule_code" field.
-	RuleCode string `json:"rule_code,omitempty"`
+	// Rule holds the value of the "rule" field.
+	Rule string `json:"rule,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Desc holds the value of the "desc" field.
@@ -32,9 +36,9 @@ type Poly struct {
 	// EndTime holds the value of the "end_time" field.
 	EndTime time.Time `json:"end_time,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int `json:"status,omitempty"`
+	Status int32 `json:"status,omitempty"`
 	// Type holds the value of the "type" field.
-	Type         int `json:"type,omitempty"`
+	Type         int32 `json:"type,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -45,9 +49,9 @@ func (*Poly) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case poly.FieldID, poly.FieldStatus, poly.FieldType:
 			values[i] = new(sql.NullInt64)
-		case poly.FieldCode, poly.FieldMallCode, poly.FieldRuleCode, poly.FieldName, poly.FieldDesc:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldRule, poly.FieldName, poly.FieldDesc:
 			values[i] = new(sql.NullString)
-		case poly.FieldStartTime, poly.FieldEndTime:
+		case poly.FieldCreateTime, poly.FieldUpdateTime, poly.FieldStartTime, poly.FieldEndTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -70,6 +74,18 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			po.ID = int(value.Int64)
+		case poly.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+			} else if value.Valid {
+				po.CreateTime = value.Time
+			}
+		case poly.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
+			} else if value.Valid {
+				po.UpdateTime = value.Time
+			}
 		case poly.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
@@ -82,11 +98,11 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				po.MallCode = value.String
 			}
-		case poly.FieldRuleCode:
+		case poly.FieldRule:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field rule_code", values[i])
+				return fmt.Errorf("unexpected type %T for field rule", values[i])
 			} else if value.Valid {
-				po.RuleCode = value.String
+				po.Rule = value.String
 			}
 		case poly.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -116,13 +132,13 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				po.Status = int(value.Int64)
+				po.Status = int32(value.Int64)
 			}
 		case poly.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				po.Type = int(value.Int64)
+				po.Type = int32(value.Int64)
 			}
 		default:
 			po.selectValues.Set(columns[i], values[i])
@@ -160,14 +176,20 @@ func (po *Poly) String() string {
 	var builder strings.Builder
 	builder.WriteString("Poly(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", po.ID))
+	builder.WriteString("create_time=")
+	builder.WriteString(po.CreateTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("update_time=")
+	builder.WriteString(po.UpdateTime.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(po.Code)
 	builder.WriteString(", ")
 	builder.WriteString("mall_code=")
 	builder.WriteString(po.MallCode)
 	builder.WriteString(", ")
-	builder.WriteString("rule_code=")
-	builder.WriteString(po.RuleCode)
+	builder.WriteString("rule=")
+	builder.WriteString(po.Rule)
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(po.Name)

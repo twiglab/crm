@@ -262,12 +262,12 @@ func (pq *PolyQuery) Clone() *PolyQuery {
 // Example:
 //
 //	var v []struct {
-//		Code string `json:"code,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Poly.Query().
-//		GroupBy(poly.FieldCode).
+//		GroupBy(poly.FieldCreateTime).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (pq *PolyQuery) GroupBy(field string, fields ...string) *PolyGroupBy {
@@ -285,11 +285,11 @@ func (pq *PolyQuery) GroupBy(field string, fields ...string) *PolyGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Code string `json:"code,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //	}
 //
 //	client.Poly.Query().
-//		Select(poly.FieldCode).
+//		Select(poly.FieldCreateTime).
 //		Scan(ctx, &v)
 func (pq *PolyQuery) Select(fields ...string) *PolySelect {
 	pq.ctx.Fields = append(pq.ctx.Fields, fields...)

@@ -3,6 +3,8 @@
 package poly
 
 import (
+	"time"
+
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -11,12 +13,16 @@ const (
 	Label = "poly"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreateTime holds the string denoting the create_time field in the database.
+	FieldCreateTime = "create_time"
+	// FieldUpdateTime holds the string denoting the update_time field in the database.
+	FieldUpdateTime = "update_time"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
 	// FieldMallCode holds the string denoting the mall_code field in the database.
 	FieldMallCode = "mall_code"
-	// FieldRuleCode holds the string denoting the rule_code field in the database.
-	FieldRuleCode = "rule_code"
+	// FieldRule holds the string denoting the rule field in the database.
+	FieldRule = "rule"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldDesc holds the string denoting the desc field in the database.
@@ -30,15 +36,17 @@ const (
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
 	// Table holds the table name of the poly in the database.
-	Table = "polies"
+	Table = "t_poly"
 )
 
 // Columns holds all SQL columns for poly fields.
 var Columns = []string{
 	FieldID,
+	FieldCreateTime,
+	FieldUpdateTime,
 	FieldCode,
 	FieldMallCode,
-	FieldRuleCode,
+	FieldRule,
 	FieldName,
 	FieldDesc,
 	FieldStartTime,
@@ -58,22 +66,28 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultCreateTime holds the default value on creation for the "create_time" field.
+	DefaultCreateTime func() time.Time
+	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
+	DefaultUpdateTime func() time.Time
+	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
+	UpdateDefaultUpdateTime func() time.Time
 	// DefaultCode holds the default value on creation for the "code" field.
 	DefaultCode func() string
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
 	// MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
 	MallCodeValidator func(string) error
-	// RuleCodeValidator is a validator for the "rule_code" field. It is called by the builders before save.
-	RuleCodeValidator func(string) error
+	// RuleValidator is a validator for the "rule" field. It is called by the builders before save.
+	RuleValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// DescValidator is a validator for the "desc" field. It is called by the builders before save.
 	DescValidator func(string) error
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
+	DefaultStatus int32
 	// DefaultType holds the default value on creation for the "type" field.
-	DefaultType int
+	DefaultType int32
 )
 
 // OrderOption defines the ordering options for the Poly queries.
@@ -82,6 +96,16 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByCreateTime orders the results by the create_time field.
+func ByCreateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreateTime, opts...).ToFunc()
+}
+
+// ByUpdateTime orders the results by the update_time field.
+func ByUpdateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdateTime, opts...).ToFunc()
 }
 
 // ByCode orders the results by the code field.
@@ -94,9 +118,9 @@ func ByMallCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMallCode, opts...).ToFunc()
 }
 
-// ByRuleCode orders the results by the rule_code field.
-func ByRuleCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRuleCode, opts...).ToFunc()
+// ByRule orders the results by the rule field.
+func ByRule(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRule, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.

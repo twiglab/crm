@@ -3,7 +3,11 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
+	"entgo.io/ent/schema/mixin"
 	"github.com/twiglab/crm/psdk/code"
 )
 
@@ -37,7 +41,7 @@ func (Poly) Fields() []ent.Field {
 			}),
 
 		// 规则code
-		field.String("rule_code").
+		field.String("rule").
 			MaxLen(36).
 			NotEmpty().
 			SchemaType(map[string]string{
@@ -55,6 +59,7 @@ func (Poly) Fields() []ent.Field {
 				dialect.Postgres: "varchar(64)", // Override Postgres.
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
+
 		// 活动描述
 		field.String("desc").NotEmpty(),
 
@@ -65,9 +70,27 @@ func (Poly) Fields() []ent.Field {
 		field.Time("end_time"),
 
 		// 活动状态 （1:等待审批 2：未开启   3：已开启   4：已结束   5：已废弃）
-		field.Int("status").Default(1),
+		field.Int32("status").Default(1),
 
 		// 活动类型 (预设字段，后续结合业务拓展)
-		field.Int("type").Default(1),
+		field.Int32("type").Default(1),
+	}
+}
+
+func (Poly) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		mixin.Time{},
+	}
+}
+
+func (Poly) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("code"),
+	}
+}
+
+func (Poly) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "t_poly"},
 	}
 }
