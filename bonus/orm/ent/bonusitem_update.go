@@ -110,14 +110,14 @@ func (biu *BonusItemUpdate) AddBonusRate(i int32) *BonusItemUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (biu *BonusItemUpdate) SetStatus(i int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) SetStatus(i int32) *BonusItemUpdate {
 	biu.mutation.ResetStatus()
 	biu.mutation.SetStatus(i)
 	return biu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (biu *BonusItemUpdate) SetNillableStatus(i *int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) SetNillableStatus(i *int32) *BonusItemUpdate {
 	if i != nil {
 		biu.SetStatus(*i)
 	}
@@ -125,7 +125,7 @@ func (biu *BonusItemUpdate) SetNillableStatus(i *int) *BonusItemUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (biu *BonusItemUpdate) AddStatus(i int) *BonusItemUpdate {
+func (biu *BonusItemUpdate) AddStatus(i int32) *BonusItemUpdate {
 	biu.mutation.AddStatus(i)
 	return biu
 }
@@ -228,10 +228,10 @@ func (biu *BonusItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biu.mutation.Status(); ok {
-		_spec.SetField(bonusitem.FieldStatus, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := biu.mutation.AddedStatus(); ok {
-		_spec.AddField(bonusitem.FieldStatus, field.TypeInt, value)
+		_spec.AddField(bonusitem.FieldStatus, field.TypeInt32, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, biu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -335,14 +335,14 @@ func (biuo *BonusItemUpdateOne) AddBonusRate(i int32) *BonusItemUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (biuo *BonusItemUpdateOne) SetStatus(i int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) SetStatus(i int32) *BonusItemUpdateOne {
 	biuo.mutation.ResetStatus()
 	biuo.mutation.SetStatus(i)
 	return biuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (biuo *BonusItemUpdateOne) SetNillableStatus(i *int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) SetNillableStatus(i *int32) *BonusItemUpdateOne {
 	if i != nil {
 		biuo.SetStatus(*i)
 	}
@@ -350,7 +350,7 @@ func (biuo *BonusItemUpdateOne) SetNillableStatus(i *int) *BonusItemUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (biuo *BonusItemUpdateOne) AddStatus(i int) *BonusItemUpdateOne {
+func (biuo *BonusItemUpdateOne) AddStatus(i int32) *BonusItemUpdateOne {
 	biuo.mutation.AddStatus(i)
 	return biuo
 }
@@ -483,10 +483,10 @@ func (biuo *BonusItemUpdateOne) sqlSave(ctx context.Context) (_node *BonusItem, 
 		_spec.AddField(bonusitem.FieldBonusRate, field.TypeInt32, value)
 	}
 	if value, ok := biuo.mutation.Status(); ok {
-		_spec.SetField(bonusitem.FieldStatus, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := biuo.mutation.AddedStatus(); ok {
-		_spec.AddField(bonusitem.FieldStatus, field.TypeInt, value)
+		_spec.AddField(bonusitem.FieldStatus, field.TypeInt32, value)
 	}
 	_node = &BonusItem{config: biuo.config}
 	_spec.Assign = _node.assignValues

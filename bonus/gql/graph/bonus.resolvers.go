@@ -6,24 +6,39 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/twiglab/crm/bonus/gql/graph/model"
+	"github.com/twiglab/crm/bonus/orm"
 )
 
-// QueryBonusDetail is the resolver for the queryBonusDetail field.
-func (r *queryResolver) QueryBonusDetail(ctx context.Context, input model.BonusDetailReq) (*model.BonusDetailResp, error) {
-	panic(fmt.Errorf("not implemented: QueryBonusDetail - queryBonusDetail"))
-}
+// BonusPage is the resolver for the bonusPage field.
+func (r *queryResolver) BonusPage(ctx context.Context, input model.BonusPageReq) (*model.BonusPageResp, error) {
+	a, err := r.Items.ItemsPage(ctx, orm.ItemsPageParam{
+		MemberCode: input.MemberCode,
+		Last:       input.Last,
+	})
+	if err != nil {
+		return nil, err
+	}
+	size := len(a)
+	is := make([]*model.BonusItem, size)
+	for i, item := range a {
+		is[i] = &model.BonusItem{
+			Code:   item.Code,
+			Amount: item.Amount,
+		}
+	}
 
-// ListBonusItems is the resolver for the listBonusItems field.
-func (r *queryResolver) ListBonusItems(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error) {
-	panic(fmt.Errorf("not implemented: ListBonusItems - listBonusItems"))
-}
+	last := input.Last
+	if size > 0 {
+		last = is[size-1].Code
+	}
 
-// ListBonusItemsPage is the resolver for the listBonusItemsPage field.
-func (r *queryResolver) ListBonusItemsPage(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error) {
-	panic(fmt.Errorf("not implemented: ListBonusItemsPage - listBonusItemsPage"))
+	return &model.BonusPageResp{
+		BonusItems: is,
+		Limit:      input.Limit,
+		Last:       last,
+	}, nil
 }
 
 // Query returns QueryResolver implementation.

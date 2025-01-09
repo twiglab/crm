@@ -141,7 +141,7 @@ var (
 	// DefaultBonusRate holds the default value on creation for the "bonus_rate" field.
 	DefaultBonusRate int32
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
+	DefaultStatus int32
 )
 
 // OrderOption defines the ordering options for the BonusItem queries.

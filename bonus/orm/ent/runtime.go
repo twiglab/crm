@@ -155,5 +155,5 @@ func init() {
 	// bonusitemDescStatus is the schema descriptor for status field.
 	bonusitemDescStatus := bonusitemFields[18].Descriptor()
 	// bonusitem.DefaultStatus holds the default value on creation for the status field.
-	bonusitem.DefaultStatus = bonusitemDescStatus.Default.(int)
+	bonusitem.DefaultStatus = bonusitemDescStatus.Default.(int32)
 }

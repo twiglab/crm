@@ -66,7 +66,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			bonusitem.FieldBcmbTransType:    {Type: field.TypeInt, Column: bonusitem.FieldBcmbTransType},
 			bonusitem.FieldBonus:            {Type: field.TypeInt, Column: bonusitem.FieldBonus},
 			bonusitem.FieldBonusRate:        {Type: field.TypeInt32, Column: bonusitem.FieldBonusRate},
-			bonusitem.FieldStatus:           {Type: field.TypeInt, Column: bonusitem.FieldStatus},
+			bonusitem.FieldStatus:           {Type: field.TypeInt32, Column: bonusitem.FieldStatus},
 		},
 	}
 	return graph
@@ -293,7 +293,7 @@ func (f *BonusItemFilter) WhereBonusRate(p entql.Int32P) {
 	f.Where(p.Field(bonusitem.FieldBonusRate))
 }
 
-// WhereStatus applies the entql int predicate on the status field.
-func (f *BonusItemFilter) WhereStatus(p entql.IntP) {
+// WhereStatus applies the entql int32 predicate on the status field.
+func (f *BonusItemFilter) WhereStatus(p entql.Int32P) {
 	f.Where(p.Field(bonusitem.FieldStatus))
 }

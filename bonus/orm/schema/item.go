@@ -151,7 +151,7 @@ func (BonusItem) Fields() []ent.Field {
 
 		field.Int32("bonus_rate").Default(100).Comment("积分比例"),
 
-		field.Int("status").Default(1),
+		field.Int32("status").Default(1),
 	}
 }
 

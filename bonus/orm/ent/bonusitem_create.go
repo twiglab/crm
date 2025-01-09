@@ -239,13 +239,13 @@ func (bic *BonusItemCreate) SetNillableBonusRate(i *int32) *BonusItemCreate {
 }
 
 // SetStatus sets the "status" field.
-func (bic *BonusItemCreate) SetStatus(i int) *BonusItemCreate {
+func (bic *BonusItemCreate) SetStatus(i int32) *BonusItemCreate {
 	bic.mutation.SetStatus(i)
 	return bic
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (bic *BonusItemCreate) SetNillableStatus(i *int) *BonusItemCreate {
+func (bic *BonusItemCreate) SetNillableStatus(i *int32) *BonusItemCreate {
 	if i != nil {
 		bic.SetStatus(*i)
 	}
@@ -555,7 +555,7 @@ func (bic *BonusItemCreate) createSpec() (*BonusItem, *sqlgraph.CreateSpec) {
 		_node.BonusRate = value
 	}
 	if value, ok := bic.mutation.Status(); ok {
-		_spec.SetField(bonusitem.FieldStatus, field.TypeInt, value)
+		_spec.SetField(bonusitem.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
 	}
 	return _node, _spec
@@ -689,7 +689,7 @@ func (u *BonusItemUpsert) AddBonusRate(v int32) *BonusItemUpsert {
 }
 
 // SetStatus sets the "status" field.
-func (u *BonusItemUpsert) SetStatus(v int) *BonusItemUpsert {
+func (u *BonusItemUpsert) SetStatus(v int32) *BonusItemUpsert {
 	u.Set(bonusitem.FieldStatus, v)
 	return u
 }
@@ -701,7 +701,7 @@ func (u *BonusItemUpsert) UpdateStatus() *BonusItemUpsert {
 }
 
 // AddStatus adds v to the "status" field.
-func (u *BonusItemUpsert) AddStatus(v int) *BonusItemUpsert {
+func (u *BonusItemUpsert) AddStatus(v int32) *BonusItemUpsert {
 	u.Add(bonusitem.FieldStatus, v)
 	return u
 }
@@ -885,14 +885,14 @@ func (u *BonusItemUpsertOne) UpdateBonusRate() *BonusItemUpsertOne {
 }
 
 // SetStatus sets the "status" field.
-func (u *BonusItemUpsertOne) SetStatus(v int) *BonusItemUpsertOne {
+func (u *BonusItemUpsertOne) SetStatus(v int32) *BonusItemUpsertOne {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *BonusItemUpsertOne) AddStatus(v int) *BonusItemUpsertOne {
+func (u *BonusItemUpsertOne) AddStatus(v int32) *BonusItemUpsertOne {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.AddStatus(v)
 	})
@@ -1250,14 +1250,14 @@ func (u *BonusItemUpsertBulk) UpdateBonusRate() *BonusItemUpsertBulk {
 }
 
 // SetStatus sets the "status" field.
-func (u *BonusItemUpsertBulk) SetStatus(v int) *BonusItemUpsertBulk {
+func (u *BonusItemUpsertBulk) SetStatus(v int32) *BonusItemUpsertBulk {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *BonusItemUpsertBulk) AddStatus(v int) *BonusItemUpsertBulk {
+func (u *BonusItemUpsertBulk) AddStatus(v int32) *BonusItemUpsertBulk {
 	return u.Update(func(s *BonusItemUpsert) {
 		s.AddStatus(v)
 	})

@@ -56,7 +56,7 @@ var (
 		{Name: "bcmb_trans_type", Type: field.TypeInt, Default: 0},
 		{Name: "bonus", Type: field.TypeInt, Default: 0},
 		{Name: "bonus_rate", Type: field.TypeInt32, Default: 100},
-		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "status", Type: field.TypeInt32, Default: 1},
 	}
 	// TBonusItemTable holds the schema information for the "t_bonus_item" table.
 	TBonusItemTable = &schema.Table{

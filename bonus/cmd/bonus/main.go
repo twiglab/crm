@@ -12,6 +12,7 @@ import (
 	"github.com/twiglab/crm/bonus/cmd/bonus/config"
 	"github.com/twiglab/crm/bonus/gql"
 	"github.com/twiglab/crm/bonus/mq"
+	"github.com/twiglab/crm/bonus/orm"
 	"github.com/twiglab/crm/psdk/conf"
 	"github.com/twiglab/crm/psdk/webx"
 )
@@ -35,6 +36,7 @@ func main() {
 	shopCli := config.ShopCli(cfg.ShopCli)
 
 	b := &balance.Balance{Client: client}
+	items := &orm.Items{Client: client}
 
 	ctx, cancelFn := context.WithCancel(configCtx)
 	defer cancelFn()
@@ -52,7 +54,7 @@ func main() {
 	}
 
 	mux := webx.Root()
-	mux.Mount("/gql", gql.GQLRouter(gql.GQLConf{Balance: b}))
+	mux.Mount("/gql", gql.GQLRouter(gql.GQLConf{Balance: b, Items: items}))
 
 	svr := &http.Server{
 		Addr:        cfg.Web.Addr,

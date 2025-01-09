@@ -11,21 +11,27 @@ type BalanceReq struct {
 	MemberCode string `json:"memberCode"`
 }
 
-type BonusDetailReq struct {
+type BonusItem struct {
+	Code       string `json:"code"`
 	MemberCode string `json:"memberCode"`
+	MallCode   string `json:"mallCode"`
+	MallName   string `json:"mallName"`
+	ShopCode   string `json:"shopCode"`
+	ShopName   string `json:"shopName"`
+	Amount     int    `json:"amount"`
+	Bonus      int    `json:"bonus"`
 }
 
-type BonusDetailResp struct {
+type BonusPageReq struct {
 	MemberCode string `json:"memberCode"`
-	Balance    int32  `json:"balance"`
+	Last       string `json:"last"`
+	Limit      int32  `json:"limit"`
 }
 
-type BonusListReq struct {
-	MemberCode string `json:"memberCode"`
-}
-
-type BonusListResp struct {
-	MemberCode string `json:"memberCode"`
+type BonusPageResp struct {
+	BonusItems []*BonusItem `json:"bonusItems"`
+	Last       string       `json:"last"`
+	Limit      int32        `json:"limit"`
 }
 
 type Query struct {

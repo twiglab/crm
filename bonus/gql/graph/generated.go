@@ -51,20 +51,26 @@ type ComplexityRoot struct {
 		MemberCode func(childComplexity int) int
 	}
 
-	BonusDetailResp struct {
-		Balance    func(childComplexity int) int
+	BonusItem struct {
+		Amount     func(childComplexity int) int
+		Bonus      func(childComplexity int) int
+		Code       func(childComplexity int) int
+		MallCode   func(childComplexity int) int
+		MallName   func(childComplexity int) int
 		MemberCode func(childComplexity int) int
+		ShopCode   func(childComplexity int) int
+		ShopName   func(childComplexity int) int
 	}
 
-	BonusListResp struct {
-		MemberCode func(childComplexity int) int
+	BonusPageResp struct {
+		BonusItems func(childComplexity int) int
+		Last       func(childComplexity int) int
+		Limit      func(childComplexity int) int
 	}
 
 	Query struct {
 		BalanceDetail      func(childComplexity int, input *model.BalanceReq) int
-		ListBonusItems     func(childComplexity int, input model.BonusListReq) int
-		ListBonusItemsPage func(childComplexity int, input model.BonusListReq) int
-		QueryBonusDetail   func(childComplexity int, input model.BonusDetailReq) int
+		BonusPage          func(childComplexity int, input model.BonusPageReq) int
 		__resolve__service func(childComplexity int) int
 	}
 
@@ -74,9 +80,7 @@ type ComplexityRoot struct {
 }
 
 type QueryResolver interface {
-	QueryBonusDetail(ctx context.Context, input model.BonusDetailReq) (*model.BonusDetailResp, error)
-	ListBonusItems(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error)
-	ListBonusItemsPage(ctx context.Context, input model.BonusListReq) (*model.BonusListResp, error)
+	BonusPage(ctx context.Context, input model.BonusPageReq) (*model.BonusPageResp, error)
 	BalanceDetail(ctx context.Context, input *model.BalanceReq) (*model.BalanceDetailResp, error)
 }
 
@@ -113,26 +117,82 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.BalanceDetailResp.MemberCode(childComplexity), true
 
-	case "BonusDetailResp.balance":
-		if e.complexity.BonusDetailResp.Balance == nil {
+	case "BonusItem.amount":
+		if e.complexity.BonusItem.Amount == nil {
 			break
 		}
 
-		return e.complexity.BonusDetailResp.Balance(childComplexity), true
+		return e.complexity.BonusItem.Amount(childComplexity), true
 
-	case "BonusDetailResp.memberCode":
-		if e.complexity.BonusDetailResp.MemberCode == nil {
+	case "BonusItem.bonus":
+		if e.complexity.BonusItem.Bonus == nil {
 			break
 		}
 
-		return e.complexity.BonusDetailResp.MemberCode(childComplexity), true
+		return e.complexity.BonusItem.Bonus(childComplexity), true
 
-	case "BonusListResp.memberCode":
-		if e.complexity.BonusListResp.MemberCode == nil {
+	case "BonusItem.code":
+		if e.complexity.BonusItem.Code == nil {
 			break
 		}
 
-		return e.complexity.BonusListResp.MemberCode(childComplexity), true
+		return e.complexity.BonusItem.Code(childComplexity), true
+
+	case "BonusItem.mallCode":
+		if e.complexity.BonusItem.MallCode == nil {
+			break
+		}
+
+		return e.complexity.BonusItem.MallCode(childComplexity), true
+
+	case "BonusItem.mallName":
+		if e.complexity.BonusItem.MallName == nil {
+			break
+		}
+
+		return e.complexity.BonusItem.MallName(childComplexity), true
+
+	case "BonusItem.memberCode":
+		if e.complexity.BonusItem.MemberCode == nil {
+			break
+		}
+
+		return e.complexity.BonusItem.MemberCode(childComplexity), true
+
+	case "BonusItem.shopCode":
+		if e.complexity.BonusItem.ShopCode == nil {
+			break
+		}
+
+		return e.complexity.BonusItem.ShopCode(childComplexity), true
+
+	case "BonusItem.shopName":
+		if e.complexity.BonusItem.ShopName == nil {
+			break
+		}
+
+		return e.complexity.BonusItem.ShopName(childComplexity), true
+
+	case "BonusPageResp.bonusItems":
+		if e.complexity.BonusPageResp.BonusItems == nil {
+			break
+		}
+
+		return e.complexity.BonusPageResp.BonusItems(childComplexity), true
+
+	case "BonusPageResp.last":
+		if e.complexity.BonusPageResp.Last == nil {
+			break
+		}
+
+		return e.complexity.BonusPageResp.Last(childComplexity), true
+
+	case "BonusPageResp.limit":
+		if e.complexity.BonusPageResp.Limit == nil {
+			break
+		}
+
+		return e.complexity.BonusPageResp.Limit(childComplexity), true
 
 	case "Query.balanceDetail":
 		if e.complexity.Query.BalanceDetail == nil {
@@ -146,41 +206,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.BalanceDetail(childComplexity, args["input"].(*model.BalanceReq)), true
 
-	case "Query.listBonusItems":
-		if e.complexity.Query.ListBonusItems == nil {
+	case "Query.bonusPage":
+		if e.complexity.Query.BonusPage == nil {
 			break
 		}
 
-		args, err := ec.field_Query_listBonusItems_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_bonusPage_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.ListBonusItems(childComplexity, args["input"].(model.BonusListReq)), true
-
-	case "Query.listBonusItemsPage":
-		if e.complexity.Query.ListBonusItemsPage == nil {
-			break
-		}
-
-		args, err := ec.field_Query_listBonusItemsPage_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.ListBonusItemsPage(childComplexity, args["input"].(model.BonusListReq)), true
-
-	case "Query.queryBonusDetail":
-		if e.complexity.Query.QueryBonusDetail == nil {
-			break
-		}
-
-		args, err := ec.field_Query_queryBonusDetail_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.QueryBonusDetail(childComplexity, args["input"].(model.BonusDetailReq)), true
+		return e.complexity.Query.BonusPage(childComplexity, args["input"].(model.BonusPageReq)), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -205,8 +241,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputBalanceReq,
-		ec.unmarshalInputBonusDetailReq,
-		ec.unmarshalInputBonusListReq,
+		ec.unmarshalInputBonusPageReq,
 	)
 	first := true
 
@@ -305,29 +340,34 @@ extend type Query {
 }
 
 `, BuiltIn: false},
-	{Name: "../schema/bonus.graphqls", Input: `type BonusDetailResp {
+	{Name: "../schema/bonus.graphqls", Input: `type BonusItem{
+  code: String!
   memberCode: String!
-  balance: Int!
+
+  mallCode: String!
+  mallName: String!
+
+  shopCode: String!
+  shopName: String!
+
+  amount: Int64!
+  bonus: Int64!
 }
 
-type BonusListResp {
-  memberCode: String!
+type BonusPageResp {
+  bonusItems: [BonusItem!]!
+  last: String!
+  limit: Int!
 }
 
-input BonusDetailReq {
+input BonusPageReq {
   memberCode: String!
-}
-
-input BonusListReq {
-  memberCode: String!
+  last: String!
+  limit:Int! 
 }
 
 type Query {
-  # 详情
-  queryBonusDetail(input: BonusDetailReq!): BonusDetailResp!
-  # 列表
-  listBonusItems(input: BonusListReq!): BonusListResp!
-  listBonusItemsPage(input: BonusListReq!): BonusListResp!
+  bonusPage(input: BonusPageReq!): BonusPageResp!
 }
 
 `, BuiltIn: false},
@@ -444,72 +484,26 @@ func (ec *executionContext) field_Query_balanceDetail_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Query_listBonusItemsPage_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+func (ec *executionContext) field_Query_bonusPage_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := ec.field_Query_listBonusItemsPage_argsInput(ctx, rawArgs)
+	arg0, err := ec.field_Query_bonusPage_argsInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["input"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Query_listBonusItemsPage_argsInput(
+func (ec *executionContext) field_Query_bonusPage_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (model.BonusListReq, error) {
+) (model.BonusPageReq, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBonusListReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListReq(ctx, tmp)
+		return ec.unmarshalNBonusPageReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusPageReq(ctx, tmp)
 	}
 
-	var zeroVal model.BonusListReq
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_listBonusItems_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := ec.field_Query_listBonusItems_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_listBonusItems_argsInput(
-	ctx context.Context,
-	rawArgs map[string]any,
-) (model.BonusListReq, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBonusListReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListReq(ctx, tmp)
-	}
-
-	var zeroVal model.BonusListReq
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_queryBonusDetail_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := ec.field_Query_queryBonusDetail_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_queryBonusDetail_argsInput(
-	ctx context.Context,
-	rawArgs map[string]any,
-) (model.BonusDetailReq, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBonusDetailReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailReq(ctx, tmp)
-	}
-
-	var zeroVal model.BonusDetailReq
+	var zeroVal model.BonusPageReq
 	return zeroVal, nil
 }
 
@@ -655,8 +649,52 @@ func (ec *executionContext) fieldContext_BalanceDetailResp_balance(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _BonusDetailResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusDetailResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BonusDetailResp_memberCode(ctx, field)
+func (ec *executionContext) _BonusItem_code(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_code(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Code, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_code(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_memberCode(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -686,9 +724,9 @@ func (ec *executionContext) _BonusDetailResp_memberCode(ctx context.Context, fie
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_BonusDetailResp_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_BonusItem_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "BonusDetailResp",
+		Object:     "BonusItem",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -699,8 +737,8 @@ func (ec *executionContext) fieldContext_BonusDetailResp_memberCode(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _BonusDetailResp_balance(ctx context.Context, field graphql.CollectedField, obj *model.BonusDetailResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BonusDetailResp_balance(ctx, field)
+func (ec *executionContext) _BonusItem_mallCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_mallCode(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -713,7 +751,377 @@ func (ec *executionContext) _BonusDetailResp_balance(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Balance, nil
+		return obj.MallCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_mallCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_mallName(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_mallName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MallName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_mallName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_shopCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_shopCode(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ShopCode, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_shopCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_shopName(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_shopName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ShopName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_shopName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_amount(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_amount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Amount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt642int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_amount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusItem_bonus(ctx context.Context, field graphql.CollectedField, obj *model.BonusItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusItem_bonus(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Bonus, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt642int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusItem_bonus(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusItem",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusPageResp_bonusItems(ctx context.Context, field graphql.CollectedField, obj *model.BonusPageResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusPageResp_bonusItems(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BonusItems, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.BonusItem)
+	fc.Result = res
+	return ec.marshalNBonusItem2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusItemᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusPageResp_bonusItems(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusPageResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "code":
+				return ec.fieldContext_BonusItem_code(ctx, field)
+			case "memberCode":
+				return ec.fieldContext_BonusItem_memberCode(ctx, field)
+			case "mallCode":
+				return ec.fieldContext_BonusItem_mallCode(ctx, field)
+			case "mallName":
+				return ec.fieldContext_BonusItem_mallName(ctx, field)
+			case "shopCode":
+				return ec.fieldContext_BonusItem_shopCode(ctx, field)
+			case "shopName":
+				return ec.fieldContext_BonusItem_shopName(ctx, field)
+			case "amount":
+				return ec.fieldContext_BonusItem_amount(ctx, field)
+			case "bonus":
+				return ec.fieldContext_BonusItem_bonus(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type BonusItem", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusPageResp_last(ctx context.Context, field graphql.CollectedField, obj *model.BonusPageResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusPageResp_last(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Last, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BonusPageResp_last(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BonusPageResp",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BonusPageResp_limit(ctx context.Context, field graphql.CollectedField, obj *model.BonusPageResp) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BonusPageResp_limit(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Limit, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -730,9 +1138,9 @@ func (ec *executionContext) _BonusDetailResp_balance(ctx context.Context, field 
 	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_BonusDetailResp_balance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_BonusPageResp_limit(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "BonusDetailResp",
+		Object:     "BonusPageResp",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -743,8 +1151,8 @@ func (ec *executionContext) fieldContext_BonusDetailResp_balance(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _BonusListResp_memberCode(ctx context.Context, field graphql.CollectedField, obj *model.BonusListResp) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BonusListResp_memberCode(ctx, field)
+func (ec *executionContext) _Query_bonusPage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_bonusPage(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -757,7 +1165,7 @@ func (ec *executionContext) _BonusListResp_memberCode(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MemberCode, nil
+		return ec.resolvers.Query().BonusPage(rctx, fc.Args["input"].(model.BonusPageReq))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -769,56 +1177,12 @@ func (ec *executionContext) _BonusListResp_memberCode(ctx context.Context, field
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.BonusPageResp)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNBonusPageResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusPageResp(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_BonusListResp_memberCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "BonusListResp",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_queryBonusDetail(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_queryBonusDetail(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().QueryBonusDetail(rctx, fc.Args["input"].(model.BonusDetailReq))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.BonusDetailResp)
-	fc.Result = res
-	return ec.marshalNBonusDetailResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailResp(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_queryBonusDetail(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_bonusPage(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -826,12 +1190,14 @@ func (ec *executionContext) fieldContext_Query_queryBonusDetail(ctx context.Cont
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "memberCode":
-				return ec.fieldContext_BonusDetailResp_memberCode(ctx, field)
-			case "balance":
-				return ec.fieldContext_BonusDetailResp_balance(ctx, field)
+			case "bonusItems":
+				return ec.fieldContext_BonusPageResp_bonusItems(ctx, field)
+			case "last":
+				return ec.fieldContext_BonusPageResp_last(ctx, field)
+			case "limit":
+				return ec.fieldContext_BonusPageResp_limit(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type BonusDetailResp", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type BonusPageResp", field.Name)
 		},
 	}
 	defer func() {
@@ -841,125 +1207,7 @@ func (ec *executionContext) fieldContext_Query_queryBonusDetail(ctx context.Cont
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_queryBonusDetail_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_listBonusItems(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_listBonusItems(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ListBonusItems(rctx, fc.Args["input"].(model.BonusListReq))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.BonusListResp)
-	fc.Result = res
-	return ec.marshalNBonusListResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListResp(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_listBonusItems(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "memberCode":
-				return ec.fieldContext_BonusListResp_memberCode(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type BonusListResp", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_listBonusItems_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_listBonusItemsPage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_listBonusItemsPage(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ListBonusItemsPage(rctx, fc.Args["input"].(model.BonusListReq))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.BonusListResp)
-	fc.Result = res
-	return ec.marshalNBonusListResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListResp(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_listBonusItemsPage(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "memberCode":
-				return ec.fieldContext_BonusListResp_memberCode(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type BonusListResp", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_listBonusItemsPage_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Query_bonusPage_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -3045,14 +3293,14 @@ func (ec *executionContext) unmarshalInputBalanceReq(ctx context.Context, obj an
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputBonusDetailReq(ctx context.Context, obj any) (model.BonusDetailReq, error) {
-	var it model.BonusDetailReq
+func (ec *executionContext) unmarshalInputBonusPageReq(ctx context.Context, obj any) (model.BonusPageReq, error) {
+	var it model.BonusPageReq
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"memberCode"}
+	fieldsInOrder := [...]string{"memberCode", "last", "limit"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3066,33 +3314,20 @@ func (ec *executionContext) unmarshalInputBonusDetailReq(ctx context.Context, ob
 				return it, err
 			}
 			it.MemberCode = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputBonusListReq(ctx context.Context, obj any) (model.BonusListReq, error) {
-	var it model.BonusListReq
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"memberCode"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "memberCode":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memberCode"))
+		case "last":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.MemberCode = data
+			it.Last = data
+		case "limit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalNInt2int32(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
 		}
 	}
 
@@ -3151,24 +3386,54 @@ func (ec *executionContext) _BalanceDetailResp(ctx context.Context, sel ast.Sele
 	return out
 }
 
-var bonusDetailRespImplementors = []string{"BonusDetailResp"}
+var bonusItemImplementors = []string{"BonusItem"}
 
-func (ec *executionContext) _BonusDetailResp(ctx context.Context, sel ast.SelectionSet, obj *model.BonusDetailResp) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, bonusDetailRespImplementors)
+func (ec *executionContext) _BonusItem(ctx context.Context, sel ast.SelectionSet, obj *model.BonusItem) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, bonusItemImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("BonusDetailResp")
-		case "memberCode":
-			out.Values[i] = ec._BonusDetailResp_memberCode(ctx, field, obj)
+			out.Values[i] = graphql.MarshalString("BonusItem")
+		case "code":
+			out.Values[i] = ec._BonusItem_code(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "balance":
-			out.Values[i] = ec._BonusDetailResp_balance(ctx, field, obj)
+		case "memberCode":
+			out.Values[i] = ec._BonusItem_memberCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "mallCode":
+			out.Values[i] = ec._BonusItem_mallCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "mallName":
+			out.Values[i] = ec._BonusItem_mallName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "shopCode":
+			out.Values[i] = ec._BonusItem_shopCode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "shopName":
+			out.Values[i] = ec._BonusItem_shopName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "amount":
+			out.Values[i] = ec._BonusItem_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "bonus":
+			out.Values[i] = ec._BonusItem_bonus(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3195,19 +3460,29 @@ func (ec *executionContext) _BonusDetailResp(ctx context.Context, sel ast.Select
 	return out
 }
 
-var bonusListRespImplementors = []string{"BonusListResp"}
+var bonusPageRespImplementors = []string{"BonusPageResp"}
 
-func (ec *executionContext) _BonusListResp(ctx context.Context, sel ast.SelectionSet, obj *model.BonusListResp) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, bonusListRespImplementors)
+func (ec *executionContext) _BonusPageResp(ctx context.Context, sel ast.SelectionSet, obj *model.BonusPageResp) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, bonusPageRespImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("BonusListResp")
-		case "memberCode":
-			out.Values[i] = ec._BonusListResp_memberCode(ctx, field, obj)
+			out.Values[i] = graphql.MarshalString("BonusPageResp")
+		case "bonusItems":
+			out.Values[i] = ec._BonusPageResp_bonusItems(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "last":
+			out.Values[i] = ec._BonusPageResp_last(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "limit":
+			out.Values[i] = ec._BonusPageResp_limit(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3253,7 +3528,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "queryBonusDetail":
+		case "bonusPage":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -3262,51 +3537,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_queryBonusDetail(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "listBonusItems":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_listBonusItems(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "listBonusItemsPage":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_listBonusItemsPage(ctx, field)
+				res = ec._Query_bonusPage(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -3770,42 +4001,77 @@ func (ec *executionContext) marshalNBalanceDetailResp2ᚖgithubᚗcomᚋtwiglab�
 	return ec._BalanceDetailResp(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNBonusDetailReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailReq(ctx context.Context, v any) (model.BonusDetailReq, error) {
-	res, err := ec.unmarshalInputBonusDetailReq(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
+func (ec *executionContext) marshalNBonusItem2ᚕᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.BonusItem) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNBonusItem2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusItem(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
-func (ec *executionContext) marshalNBonusDetailResp2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailResp(ctx context.Context, sel ast.SelectionSet, v model.BonusDetailResp) graphql.Marshaler {
-	return ec._BonusDetailResp(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNBonusDetailResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusDetailResp(ctx context.Context, sel ast.SelectionSet, v *model.BonusDetailResp) graphql.Marshaler {
+func (ec *executionContext) marshalNBonusItem2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusItem(ctx context.Context, sel ast.SelectionSet, v *model.BonusItem) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._BonusDetailResp(ctx, sel, v)
+	return ec._BonusItem(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNBonusListReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListReq(ctx context.Context, v any) (model.BonusListReq, error) {
-	res, err := ec.unmarshalInputBonusListReq(ctx, v)
+func (ec *executionContext) unmarshalNBonusPageReq2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusPageReq(ctx context.Context, v any) (model.BonusPageReq, error) {
+	res, err := ec.unmarshalInputBonusPageReq(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNBonusListResp2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListResp(ctx context.Context, sel ast.SelectionSet, v model.BonusListResp) graphql.Marshaler {
-	return ec._BonusListResp(ctx, sel, &v)
+func (ec *executionContext) marshalNBonusPageResp2githubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusPageResp(ctx context.Context, sel ast.SelectionSet, v model.BonusPageResp) graphql.Marshaler {
+	return ec._BonusPageResp(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNBonusListResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusListResp(ctx context.Context, sel ast.SelectionSet, v *model.BonusListResp) graphql.Marshaler {
+func (ec *executionContext) marshalNBonusPageResp2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋbonusᚋgqlᚋgraphᚋmodelᚐBonusPageResp(ctx context.Context, sel ast.SelectionSet, v *model.BonusPageResp) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._BonusListResp(ctx, sel, v)
+	return ec._BonusPageResp(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v any) (bool, error) {

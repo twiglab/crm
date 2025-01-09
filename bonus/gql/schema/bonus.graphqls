@@ -1,25 +1,30 @@
-type BonusDetailResp {
+type BonusItem{
+  code: String!
   memberCode: String!
-  balance: Int!
+
+  mallCode: String!
+  mallName: String!
+
+  shopCode: String!
+  shopName: String!
+
+  amount: Int64!
+  bonus: Int64!
 }
 
-type BonusListResp {
-  memberCode: String!
+type BonusPageResp {
+  bonusItems: [BonusItem!]!
+  last: String!
+  limit: Int!
 }
 
-input BonusDetailReq {
+input BonusPageReq {
   memberCode: String!
-}
-
-input BonusListReq {
-  memberCode: String!
+  last: String!
+  limit:Int! 
 }
 
 type Query {
-  # 详情
-  queryBonusDetail(input: BonusDetailReq!): BonusDetailResp!
-  # 列表
-  listBonusItems(input: BonusListReq!): BonusListResp!
-  listBonusItemsPage(input: BonusListReq!): BonusListResp!
+  bonusPage(input: BonusPageReq!): BonusPageResp!
 }
 

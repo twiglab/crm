@@ -812,8 +812,8 @@ type BonusItemMutation struct {
 	addbonus            *int
 	bonus_rate          *int32
 	addbonus_rate       *int32
-	status              *int
-	addstatus           *int
+	status              *int32
+	addstatus           *int32
 	clearedFields       map[string]struct{}
 	done                bool
 	oldValue            func(context.Context) (*BonusItem, error)
@@ -1765,13 +1765,13 @@ func (m *BonusItemMutation) ResetBonusRate() {
 }
 
 // SetStatus sets the "status" field.
-func (m *BonusItemMutation) SetStatus(i int) {
+func (m *BonusItemMutation) SetStatus(i int32) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *BonusItemMutation) Status() (r int, exists bool) {
+func (m *BonusItemMutation) Status() (r int32, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -1782,7 +1782,7 @@ func (m *BonusItemMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the BonusItem entity.
 // If the BonusItem object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BonusItemMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *BonusItemMutation) OldStatus(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -1797,7 +1797,7 @@ func (m *BonusItemMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *BonusItemMutation) AddStatus(i int) {
+func (m *BonusItemMutation) AddStatus(i int32) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -1806,7 +1806,7 @@ func (m *BonusItemMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *BonusItemMutation) AddedStatus() (r int, exists bool) {
+func (m *BonusItemMutation) AddedStatus() (r int32, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -2169,7 +2169,7 @@ func (m *BonusItemMutation) SetField(name string, value ent.Value) error {
 		m.SetBonusRate(v)
 		return nil
 	case bonusitem.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2266,7 +2266,7 @@ func (m *BonusItemMutation) AddField(name string, value ent.Value) error {
 		m.AddBonusRate(v)
 		return nil
 	case bonusitem.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
