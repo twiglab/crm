@@ -1,0 +1,15 @@
+scalar Int64
+
+type BalanceDetailResp {
+  memberCode: String!
+  balance: Int64!
+}
+
+input BalanceReq {
+  memberCode: String!
+}
+
+extend type Query {
+  balanceDetail(input: BalanceReq): BalanceDetailResp!
+}
+

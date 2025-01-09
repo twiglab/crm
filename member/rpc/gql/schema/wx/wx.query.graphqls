@@ -1,0 +1,3 @@
+extend type Query {
+  qryMemberByWxOpenID(input: OpenIDReq!): MemberResp!
+}
