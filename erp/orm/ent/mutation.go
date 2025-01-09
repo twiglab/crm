@@ -47,7 +47,6 @@ type ShopMutation struct {
 	biz_class_name_1 *string
 	biz_class_2      *string
 	biz_class_name_2 *string
-	status           *string
 	clearedFields    map[string]struct{}
 	done             bool
 	oldValue         func(context.Context) (*Shop, error)
@@ -708,42 +707,6 @@ func (m *ShopMutation) ResetBizClassName2() {
 	delete(m.clearedFields, shop.FieldBizClassName2)
 }
 
-// SetStatus sets the "status" field.
-func (m *ShopMutation) SetStatus(s string) {
-	m.status = &s
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *ShopMutation) Status() (r string, exists bool) {
-	v := m.status
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStatus returns the old "status" field's value of the Shop entity.
-// If the Shop object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ShopMutation) OldStatus(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *ShopMutation) ResetStatus() {
-	m.status = nil
-}
-
 // Where appends a list predicates to the ShopMutation builder.
 func (m *ShopMutation) Where(ps ...predicate.Shop) {
 	m.predicates = append(m.predicates, ps...)
@@ -778,7 +741,7 @@ func (m *ShopMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ShopMutation) Fields() []string {
-	fields := make([]string, 0, 15)
+	fields := make([]string, 0, 14)
 	if m.create_time != nil {
 		fields = append(fields, shop.FieldCreateTime)
 	}
@@ -821,9 +784,6 @@ func (m *ShopMutation) Fields() []string {
 	if m.biz_class_name_2 != nil {
 		fields = append(fields, shop.FieldBizClassName2)
 	}
-	if m.status != nil {
-		fields = append(fields, shop.FieldStatus)
-	}
 	return fields
 }
 
@@ -860,8 +820,6 @@ func (m *ShopMutation) Field(name string) (ent.Value, bool) {
 		return m.BizClass2()
 	case shop.FieldBizClassName2:
 		return m.BizClassName2()
-	case shop.FieldStatus:
-		return m.Status()
 	}
 	return nil, false
 }
@@ -899,8 +857,6 @@ func (m *ShopMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldBizClass2(ctx)
 	case shop.FieldBizClassName2:
 		return m.OldBizClassName2(ctx)
-	case shop.FieldStatus:
-		return m.OldStatus(ctx)
 	}
 	return nil, fmt.Errorf("unknown Shop field %s", name)
 }
@@ -1007,13 +963,6 @@ func (m *ShopMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBizClassName2(v)
-		return nil
-	case shop.FieldStatus:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Shop field %s", name)
@@ -1132,9 +1081,6 @@ func (m *ShopMutation) ResetField(name string) error {
 		return nil
 	case shop.FieldBizClassName2:
 		m.ResetBizClassName2()
-		return nil
-	case shop.FieldStatus:
-		m.ResetStatus()
 		return nil
 	}
 	return fmt.Errorf("unknown Shop field %s", name)

@@ -47,6 +47,7 @@ func (Shop) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(256)", // Override Postgres.
 			}),
 
+		// 合同号
 		field.String("contract_code").
 			MaxLen(64).
 			Unique().
@@ -130,15 +131,7 @@ func (Shop) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
-		field.String("status").
-			MaxLen(3).
-			NotEmpty().
-			Default("A00").
-			SchemaType(map[string]string{
-				dialect.MySQL:    "char(3)", // Override MySQL.
-				dialect.Postgres: "char(3)", // Override Postgres.
-				dialect.SQLite:   "char(3)", // Override Postgres.
-			}),
+//		field.Int32("status").Default(1),
 	}
 }
 
@@ -151,7 +144,7 @@ func (Shop) Mixin() []ent.Mixin {
 func (Shop) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("code"),
-		index.Fields("status"),
+		index.Fields("shop_code"),
 	}
 }
 

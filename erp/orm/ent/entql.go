@@ -39,7 +39,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			shop.FieldBizClassName1: {Type: field.TypeString, Column: shop.FieldBizClassName1},
 			shop.FieldBizClass2:     {Type: field.TypeString, Column: shop.FieldBizClass2},
 			shop.FieldBizClassName2: {Type: field.TypeString, Column: shop.FieldBizClassName2},
-			shop.FieldStatus:        {Type: field.TypeString, Column: shop.FieldStatus},
 		},
 	}
 	return graph
@@ -159,9 +158,4 @@ func (f *ShopFilter) WhereBizClass2(p entql.StringP) {
 // WhereBizClassName2 applies the entql string predicate on the biz_class_name_2 field.
 func (f *ShopFilter) WhereBizClassName2(p entql.StringP) {
 	f.Where(p.Field(shop.FieldBizClassName2))
-}
-
-// WhereStatus applies the entql string predicate on the status field.
-func (f *ShopFilter) WhereStatus(p entql.StringP) {
-	f.Where(p.Field(shop.FieldStatus))
 }

@@ -92,24 +92,4 @@ func init() {
 	shopDescBizClassName2 := shopFields[11].Descriptor()
 	// shop.BizClassName2Validator is a validator for the "biz_class_name_2" field. It is called by the builders before save.
 	shop.BizClassName2Validator = shopDescBizClassName2.Validators[0].(func(string) error)
-	// shopDescStatus is the schema descriptor for status field.
-	shopDescStatus := shopFields[12].Descriptor()
-	// shop.DefaultStatus holds the default value on creation for the status field.
-	shop.DefaultStatus = shopDescStatus.Default.(string)
-	// shop.StatusValidator is a validator for the "status" field. It is called by the builders before save.
-	shop.StatusValidator = func() func(string) error {
-		validators := shopDescStatus.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(status string) error {
-			for _, fn := range fns {
-				if err := fn(status); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
 }

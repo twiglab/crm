@@ -45,9 +45,7 @@ type Shop struct {
 	BizClass2 string `json:"biz_class_2,omitempty"`
 	// BizClassName2 holds the value of the "biz_class_name_2" field.
 	BizClassName2 string `json:"biz_class_name_2,omitempty"`
-	// Status holds the value of the "status" field.
-	Status       string `json:"status,omitempty"`
-	selectValues sql.SelectValues
+	selectValues  sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -57,7 +55,7 @@ func (*Shop) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case shop.FieldID:
 			values[i] = new(sql.NullInt64)
-		case shop.FieldCode, shop.FieldMallCode, shop.FieldMallName, shop.FieldContractCode, shop.FieldFloor, shop.FieldPos, shop.FieldShopCode, shop.FieldShopName, shop.FieldBizClass1, shop.FieldBizClassName1, shop.FieldBizClass2, shop.FieldBizClassName2, shop.FieldStatus:
+		case shop.FieldCode, shop.FieldMallCode, shop.FieldMallName, shop.FieldContractCode, shop.FieldFloor, shop.FieldPos, shop.FieldShopCode, shop.FieldShopName, shop.FieldBizClass1, shop.FieldBizClassName1, shop.FieldBizClass2, shop.FieldBizClassName2:
 			values[i] = new(sql.NullString)
 		case shop.FieldCreateTime, shop.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -166,12 +164,6 @@ func (s *Shop) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.BizClassName2 = value.String
 			}
-		case shop.FieldStatus:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				s.Status = value.String
-			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
 		}
@@ -249,9 +241,6 @@ func (s *Shop) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("biz_class_name_2=")
 	builder.WriteString(s.BizClassName2)
-	builder.WriteString(", ")
-	builder.WriteString("status=")
-	builder.WriteString(s.Status)
 	builder.WriteByte(')')
 	return builder.String()
 }

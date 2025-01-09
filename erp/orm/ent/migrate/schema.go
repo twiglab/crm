@@ -26,7 +26,6 @@ var (
 		{Name: "biz_class_name_1", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "biz_class_2", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
 		{Name: "biz_class_name_2", Type: field.TypeString, Nullable: true, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "status", Type: field.TypeString, Size: 3, Default: "A00", SchemaType: map[string]string{"mysql": "char(3)", "postgres": "char(3)", "sqlite3": "char(3)"}},
 	}
 	// TShopTable holds the schema information for the "t_shop" table.
 	TShopTable = &schema.Table{
@@ -40,9 +39,9 @@ var (
 				Columns: []*schema.Column{TShopColumns[3]},
 			},
 			{
-				Name:    "shop_status",
+				Name:    "shop_shop_code",
 				Unique:  false,
-				Columns: []*schema.Column{TShopColumns[15]},
+				Columns: []*schema.Column{TShopColumns[9]},
 			},
 		},
 	}

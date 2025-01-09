@@ -162,20 +162,6 @@ func (sc *ShopCreate) SetNillableBizClassName2(s *string) *ShopCreate {
 	return sc
 }
 
-// SetStatus sets the "status" field.
-func (sc *ShopCreate) SetStatus(s string) *ShopCreate {
-	sc.mutation.SetStatus(s)
-	return sc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (sc *ShopCreate) SetNillableStatus(s *string) *ShopCreate {
-	if s != nil {
-		sc.SetStatus(*s)
-	}
-	return sc
-}
-
 // Mutation returns the ShopMutation object of the builder.
 func (sc *ShopCreate) Mutation() *ShopMutation {
 	return sc.mutation
@@ -222,10 +208,6 @@ func (sc *ShopCreate) defaults() {
 	if _, ok := sc.mutation.Code(); !ok {
 		v := shop.DefaultCode()
 		sc.mutation.SetCode(v)
-	}
-	if _, ok := sc.mutation.Status(); !ok {
-		v := shop.DefaultStatus
-		sc.mutation.SetStatus(v)
 	}
 }
 
@@ -321,14 +303,6 @@ func (sc *ShopCreate) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
-	if _, ok := sc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Shop.status"`)}
-	}
-	if v, ok := sc.mutation.Status(); ok {
-		if err := shop.StatusValidator(v); err != nil {
-			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -411,10 +385,6 @@ func (sc *ShopCreate) createSpec() (*Shop, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.BizClassName2(); ok {
 		_spec.SetField(shop.FieldBizClassName2, field.TypeString, value)
 		_node.BizClassName2 = value
-	}
-	if value, ok := sc.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeString, value)
-		_node.Status = value
 	}
 	return _node, _spec
 }
@@ -549,18 +519,6 @@ func (u *ShopUpsert) UpdateBizClassName2() *ShopUpsert {
 // ClearBizClassName2 clears the value of the "biz_class_name_2" field.
 func (u *ShopUpsert) ClearBizClassName2() *ShopUpsert {
 	u.SetNull(shop.FieldBizClassName2)
-	return u
-}
-
-// SetStatus sets the "status" field.
-func (u *ShopUpsert) SetStatus(v string) *ShopUpsert {
-	u.Set(shop.FieldStatus, v)
-	return u
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *ShopUpsert) UpdateStatus() *ShopUpsert {
-	u.SetExcluded(shop.FieldStatus)
 	return u
 }
 
@@ -728,20 +686,6 @@ func (u *ShopUpsertOne) UpdateBizClassName2() *ShopUpsertOne {
 func (u *ShopUpsertOne) ClearBizClassName2() *ShopUpsertOne {
 	return u.Update(func(s *ShopUpsert) {
 		s.ClearBizClassName2()
-	})
-}
-
-// SetStatus sets the "status" field.
-func (u *ShopUpsertOne) SetStatus(v string) *ShopUpsertOne {
-	return u.Update(func(s *ShopUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *ShopUpsertOne) UpdateStatus() *ShopUpsertOne {
-	return u.Update(func(s *ShopUpsert) {
-		s.UpdateStatus()
 	})
 }
 
@@ -1075,20 +1019,6 @@ func (u *ShopUpsertBulk) UpdateBizClassName2() *ShopUpsertBulk {
 func (u *ShopUpsertBulk) ClearBizClassName2() *ShopUpsertBulk {
 	return u.Update(func(s *ShopUpsert) {
 		s.ClearBizClassName2()
-	})
-}
-
-// SetStatus sets the "status" field.
-func (u *ShopUpsertBulk) SetStatus(v string) *ShopUpsertBulk {
-	return u.Update(func(s *ShopUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *ShopUpsertBulk) UpdateStatus() *ShopUpsertBulk {
-	return u.Update(func(s *ShopUpsert) {
-		s.UpdateStatus()
 	})
 }
 

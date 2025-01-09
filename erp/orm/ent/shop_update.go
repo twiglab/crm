@@ -114,20 +114,6 @@ func (su *ShopUpdate) ClearBizClassName2() *ShopUpdate {
 	return su
 }
 
-// SetStatus sets the "status" field.
-func (su *ShopUpdate) SetStatus(s string) *ShopUpdate {
-	su.mutation.SetStatus(s)
-	return su
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (su *ShopUpdate) SetNillableStatus(s *string) *ShopUpdate {
-	if s != nil {
-		su.SetStatus(*s)
-	}
-	return su
-}
-
 // Mutation returns the ShopMutation object of the builder.
 func (su *ShopUpdate) Mutation() *ShopMutation {
 	return su.mutation
@@ -191,11 +177,6 @@ func (su *ShopUpdate) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
-	if v, ok := su.mutation.Status(); ok {
-		if err := shop.StatusValidator(v); err != nil {
-			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -237,9 +218,6 @@ func (su *ShopUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.BizClassName2Cleared() {
 		_spec.ClearField(shop.FieldBizClassName2, field.TypeString)
-	}
-	if value, ok := su.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -347,20 +325,6 @@ func (suo *ShopUpdateOne) ClearBizClassName2() *ShopUpdateOne {
 	return suo
 }
 
-// SetStatus sets the "status" field.
-func (suo *ShopUpdateOne) SetStatus(s string) *ShopUpdateOne {
-	suo.mutation.SetStatus(s)
-	return suo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (suo *ShopUpdateOne) SetNillableStatus(s *string) *ShopUpdateOne {
-	if s != nil {
-		suo.SetStatus(*s)
-	}
-	return suo
-}
-
 // Mutation returns the ShopMutation object of the builder.
 func (suo *ShopUpdateOne) Mutation() *ShopMutation {
 	return suo.mutation
@@ -437,11 +401,6 @@ func (suo *ShopUpdateOne) check() error {
 			return &ValidationError{Name: "biz_class_name_2", err: fmt.Errorf(`ent: validator failed for field "Shop.biz_class_name_2": %w`, err)}
 		}
 	}
-	if v, ok := suo.mutation.Status(); ok {
-		if err := shop.StatusValidator(v); err != nil {
-			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Shop.status": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -500,9 +459,6 @@ func (suo *ShopUpdateOne) sqlSave(ctx context.Context) (_node *Shop, err error) 
 	}
 	if suo.mutation.BizClassName2Cleared() {
 		_spec.ClearField(shop.FieldBizClassName2, field.TypeString)
-	}
-	if value, ok := suo.mutation.Status(); ok {
-		_spec.SetField(shop.FieldStatus, field.TypeString, value)
 	}
 	_node = &Shop{config: suo.config}
 	_spec.Assign = _node.assignValues

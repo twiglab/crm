@@ -41,8 +41,6 @@ const (
 	FieldBizClass2 = "biz_class_2"
 	// FieldBizClassName2 holds the string denoting the biz_class_name_2 field in the database.
 	FieldBizClassName2 = "biz_class_name_2"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
 	// Table holds the table name of the shop in the database.
 	Table = "t_shop"
 )
@@ -64,7 +62,6 @@ var Columns = []string{
 	FieldBizClassName1,
 	FieldBizClass2,
 	FieldBizClassName2,
-	FieldStatus,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -110,10 +107,6 @@ var (
 	BizClass2Validator func(string) error
 	// BizClassName2Validator is a validator for the "biz_class_name_2" field. It is called by the builders before save.
 	BizClassName2Validator func(string) error
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus string
-	// StatusValidator is a validator for the "status" field. It is called by the builders before save.
-	StatusValidator func(string) error
 )
 
 // OrderOption defines the ordering options for the Shop queries.
@@ -192,9 +185,4 @@ func ByBizClass2(opts ...sql.OrderTermOption) OrderOption {
 // ByBizClassName2 orders the results by the biz_class_name_2 field.
 func ByBizClassName2(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBizClassName2, opts...).ToFunc()
-}
-
-// ByStatus orders the results by the status field.
-func ByStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
