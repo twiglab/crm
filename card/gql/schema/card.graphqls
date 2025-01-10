@@ -47,11 +47,17 @@ input ChargeRecordCodeReq {
 
 input UseRecordCodeReq {
   code: String!
+  memberCode: String!
   consume: Int!
 }
 
 type UseRecordCodResp {
   op: Boolean!
+}
+
+input queryCardBalanceReq {
+  cardCode: String!
+  memberCode: String!
 }
 
 type Query {
@@ -61,6 +67,9 @@ type Query {
   queryCardList(input: PaginationReq): [CardResp]!
   # 我的卡
   queryCardByMemberCode(input: queryCardByMemberCode): [CardResp]!
+
+  # 余额查询
+  queryCardBalance(input: queryCardBalanceReq): Int!
 }
 
 type Mutation {

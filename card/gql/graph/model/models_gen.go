@@ -52,8 +52,14 @@ type UseRecordCodResp struct {
 }
 
 type UseRecordCodeReq struct {
-	Code    string `json:"code"`
-	Consume int    `json:"consume"`
+	Code       string `json:"code"`
+	MemberCode string `json:"memberCode"`
+	Consume    int    `json:"consume"`
+}
+
+type QueryCardBalanceReq struct {
+	CardCode   string `json:"cardCode"`
+	MemberCode string `json:"memberCode"`
 }
 
 type QueryCardByCode struct {

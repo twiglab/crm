@@ -13,12 +13,13 @@ type IConsume interface {
 }
 
 type IOPT interface {
-	GetBalance(ctx context.Context, cardCode string) (int64, error)
+	GetBalance(ctx context.Context, cardCode, memberCode string) (int64, error)
 	GetPayCode(ctx context.Context, cardCode string) (string, error)
 	CardExpend(ctx context.Context, payCode string, consume int64) error
 }
 
 type IDBX interface {
+	GetMenberCardDetailByCode(ctx context.Context, cardCode, memberCode string) (*ent.Card, error)
 	GetCardDetailByCode(ctx context.Context, cardCode string) (*ent.Card, error)
 	GetCardListPagin(ctx context.Context, cursor, order *string, limit *int) ([]*ent.Card, error)
 	GetAllCardByMember(ctx context.Context, member string) ([]*ent.Card, error)
@@ -40,10 +41,11 @@ type Consume struct {
 //
 //	@param ctx
 //	@param cardCode
+//	@param memberCode
 //	@return int64
 //	@return error
-func (c *Consume) GetBalance(ctx context.Context, cardCode string) (int64, error) {
-	cobj, err := c.GetCardDetailByCode(ctx, cardCode)
+func (c *Consume) GetBalance(ctx context.Context, cardCode, memberCode string) (int64, error) {
+	cobj, err := c.GetMenberCardDetailByCode(ctx, cardCode, memberCode)
 	if err != nil {
 		return 0, err
 	}
@@ -67,8 +69,8 @@ func (c *Consume) GetBalance(ctx context.Context, cardCode string) (int64, error
 //	@param cardCode
 //	@return string
 //	@return error
-func (c *Consume) GetPayCode(ctx context.Context, cardCode string) (string, error) {
-	balance, err := c.GetBalance(ctx, cardCode)
+func (c *Consume) GetPayCode(ctx context.Context, cardCode, memberCode string) (string, error) {
+	balance, err := c.GetBalance(ctx, cardCode, memberCode)
 	if err != nil {
 		return "", err
 	}
@@ -87,7 +89,7 @@ func (c *Consume) GetPayCode(ctx context.Context, cardCode string) (string, erro
 //	@param payCode
 //	@param consume
 //	@return error
-func (c *Consume) CardExpend(ctx context.Context, payCode string, consume int64) error {
+func (c *Consume) CardExpend(ctx context.Context, payCode, memberCode string, consume int64) error {
 	var balance int64
 	_, code, balance, err := splitPayCode(payCode)
 	if err != nil {
@@ -99,7 +101,7 @@ func (c *Consume) CardExpend(ctx context.Context, payCode string, consume int64)
 		return err
 	}
 
-	nb, err := c.GetBalance(ctx, d.CardCode)
+	nb, err := c.GetBalance(ctx, d.CardCode, memberCode)
 	if err != nil {
 		return err
 	}

@@ -10,6 +10,16 @@ import (
 	"github.com/twiglab/crm/card/orm/ent/chargerecord"
 )
 
+// GetMenberCardDetailByCode 根据卡号获取卡详情
+//
+//	@param ctx
+//	@param cardCode
+//	@return *ent.Card
+//	@return error
+func (c *Consume) GetMenberCardDetailByCode(ctx context.Context, cardCode, memberCode string) (*ent.Card, error) {
+	return c.Client.Card.Query().Where(card.CodeEQ(cardCode), card.MemberCodeEQ(memberCode)).First(ctx)
+}
+
 // GetCardDetailByCode 根据卡号获取卡详情
 //
 //	@param ctx
@@ -133,8 +143,8 @@ func (c *Consume) ChangeCardExpend(ctx context.Context, cardCode, code string, c
 //	@param cardCode
 //	@param member
 //	@return error
-func (c *Consume) CardBindMember(ctx context.Context, cardCode, member string) (*ent.Card, error) {
-	cobj, err := c.GetCardDetailByCode(ctx, cardCode)
+func (c *Consume) CardBindMember(ctx context.Context, cardCode, memberCode string) (*ent.Card, error) {
+	cobj, err := c.GetMenberCardDetailByCode(ctx, cardCode, memberCode)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +152,7 @@ func (c *Consume) CardBindMember(ctx context.Context, cardCode, member string) (
 		return nil, fmt.Errorf("card already binded")
 	}
 
-	_, err = c.Client.Card.UpdateOne(cobj).SetMemberCode(member).SetBindTime(time.Now()).Save(ctx)
+	_, err = c.Client.Card.UpdateOne(cobj).SetMemberCode(memberCode).SetBindTime(time.Now()).Save(ctx)
 	return cobj, err
 }
 

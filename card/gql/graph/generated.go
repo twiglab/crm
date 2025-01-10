@@ -74,6 +74,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		QueryCardBalance      func(childComplexity int, input *model.QueryCardBalanceReq) int
 		QueryCardByMemberCode func(childComplexity int, input *model.QueryCardByMemberCode) int
 		QueryCardDetail       func(childComplexity int, input *model.QueryCardByCode) int
 		QueryCardList         func(childComplexity int, input *model.PaginationReq) int
@@ -99,6 +100,7 @@ type QueryResolver interface {
 	QueryCardDetail(ctx context.Context, input *model.QueryCardByCode) (*model.CardResp, error)
 	QueryCardList(ctx context.Context, input *model.PaginationReq) ([]*model.CardResp, error)
 	QueryCardByMemberCode(ctx context.Context, input *model.QueryCardByMemberCode) ([]*model.CardResp, error)
+	QueryCardBalance(ctx context.Context, input *model.QueryCardBalanceReq) (int, error)
 }
 
 type executableSchema struct {
@@ -259,6 +261,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UseChargeRecordCode(childComplexity, args["input"].(model.UseRecordCodeReq)), true
 
+	case "Query.queryCardBalance":
+		if e.complexity.Query.QueryCardBalance == nil {
+			break
+		}
+
+		args, err := ec.field_Query_queryCardBalance_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.QueryCardBalance(childComplexity, args["input"].(*model.QueryCardBalanceReq)), true
+
 	case "Query.queryCardByMemberCode":
 		if e.complexity.Query.QueryCardByMemberCode == nil {
 			break
@@ -329,6 +343,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputChargeRecordCodeReq,
 		ec.unmarshalInputPaginationReq,
 		ec.unmarshalInputUseRecordCodeReq,
+		ec.unmarshalInputqueryCardBalanceReq,
 		ec.unmarshalInputqueryCardByCode,
 		ec.unmarshalInputqueryCardByMemberCode,
 	)
@@ -477,11 +492,17 @@ input ChargeRecordCodeReq {
 
 input UseRecordCodeReq {
   code: String!
+  memberCode: String!
   consume: Int!
 }
 
 type UseRecordCodResp {
   op: Boolean!
+}
+
+input queryCardBalanceReq {
+  cardCode: String!
+  memberCode: String!
 }
 
 type Query {
@@ -491,6 +512,9 @@ type Query {
   queryCardList(input: PaginationReq): [CardResp]!
   # 我的卡
   queryCardByMemberCode(input: queryCardByMemberCode): [CardResp]!
+
+  # 余额查询
+  queryCardBalance(input: queryCardBalanceReq): Int!
 }
 
 type Mutation {
@@ -686,6 +710,29 @@ func (ec *executionContext) field_Query___type_argsName(
 	}
 
 	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_queryCardBalance_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_queryCardBalance_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_queryCardBalance_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*model.QueryCardBalanceReq, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalOqueryCardBalanceReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐQueryCardBalanceReq(ctx, tmp)
+	}
+
+	var zeroVal *model.QueryCardBalanceReq
 	return zeroVal, nil
 }
 
@@ -1892,6 +1939,61 @@ func (ec *executionContext) fieldContext_Query_queryCardByMemberCode(ctx context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_queryCardByMemberCode_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_queryCardBalance(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_queryCardBalance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().QueryCardBalance(rctx, fc.Args["input"].(*model.QueryCardBalanceReq))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_queryCardBalance(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_queryCardBalance_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -4076,7 +4178,7 @@ func (ec *executionContext) unmarshalInputUseRecordCodeReq(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"code", "consume"}
+	fieldsInOrder := [...]string{"code", "memberCode", "consume"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -4090,6 +4192,13 @@ func (ec *executionContext) unmarshalInputUseRecordCodeReq(ctx context.Context, 
 				return it, err
 			}
 			it.Code = data
+		case "memberCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memberCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MemberCode = data
 		case "consume":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consume"))
 			data, err := ec.unmarshalNInt2int(ctx, v)
@@ -4097,6 +4206,40 @@ func (ec *executionContext) unmarshalInputUseRecordCodeReq(ctx context.Context, 
 				return it, err
 			}
 			it.Consume = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputqueryCardBalanceReq(ctx context.Context, obj any) (model.QueryCardBalanceReq, error) {
+	var it model.QueryCardBalanceReq
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"cardCode", "memberCode"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "cardCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cardCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CardCode = data
+		case "memberCode":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memberCode"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MemberCode = data
 		}
 	}
 
@@ -4432,6 +4575,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_queryCardByMemberCode(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "queryCardBalance":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_queryCardBalance(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -5794,6 +5959,14 @@ func (ec *executionContext) marshalO__Type2ᚖgithubᚗcomᚋ99designsᚋgqlgen�
 		return graphql.Null
 	}
 	return ec.___Type(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOqueryCardBalanceReq2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐQueryCardBalanceReq(ctx context.Context, v any) (*model.QueryCardBalanceReq, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputqueryCardBalanceReq(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOqueryCardByCode2ᚖgithubᚗcomᚋtwiglabᚋcrmᚋcardᚋgqlᚋgraphᚋmodelᚐQueryCardByCode(ctx context.Context, v any) (*model.QueryCardByCode, error) {
