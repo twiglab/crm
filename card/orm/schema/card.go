@@ -8,7 +8,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
-	"github.com/twiglab/crm/card/orm/schema/internal/x"
+	"github.com/twiglab/crm/psdk/code"
 )
 
 type Card struct {
@@ -24,7 +24,7 @@ func (Card) Fields() []ent.Field {
 			NotEmpty().
 			Unique().
 			Immutable().
-			DefaultFunc(x.Code36).
+			DefaultFunc(code.Code36).
 			SchemaType(map[string]string{
 				dialect.MySQL:    "char(36)", // Override MySQL.
 				dialect.Postgres: "char(36)", // Override Postgres.
