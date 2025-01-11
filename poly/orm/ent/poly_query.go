@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/ent/predicate"
 )
@@ -82,8 +83,8 @@ func (pq *PolyQuery) FirstX(ctx context.Context) *Poly {
 
 // FirstID returns the first Poly ID from the query.
 // Returns a *NotFoundError when no Poly ID was found.
-func (pq *PolyQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (pq *PolyQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = pq.Limit(1).IDs(setContextOp(ctx, pq.ctx, ent.OpQueryFirstID)); err != nil {
 		return
 	}
@@ -95,7 +96,7 @@ func (pq *PolyQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (pq *PolyQuery) FirstIDX(ctx context.Context) int {
+func (pq *PolyQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := pq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -133,8 +134,8 @@ func (pq *PolyQuery) OnlyX(ctx context.Context) *Poly {
 // OnlyID is like Only, but returns the only Poly ID in the query.
 // Returns a *NotSingularError when more than one Poly ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (pq *PolyQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (pq *PolyQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = pq.Limit(2).IDs(setContextOp(ctx, pq.ctx, ent.OpQueryOnlyID)); err != nil {
 		return
 	}
@@ -150,7 +151,7 @@ func (pq *PolyQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (pq *PolyQuery) OnlyIDX(ctx context.Context) int {
+func (pq *PolyQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 	id, err := pq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,7 +179,7 @@ func (pq *PolyQuery) AllX(ctx context.Context) []*Poly {
 }
 
 // IDs executes the query and returns a list of Poly IDs.
-func (pq *PolyQuery) IDs(ctx context.Context) (ids []int, err error) {
+func (pq *PolyQuery) IDs(ctx context.Context) (ids []uuid.UUID, err error) {
 	if pq.ctx.Unique == nil && pq.path != nil {
 		pq.Unique(true)
 	}
@@ -190,7 +191,7 @@ func (pq *PolyQuery) IDs(ctx context.Context) (ids []int, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (pq *PolyQuery) IDsX(ctx context.Context) []int {
+func (pq *PolyQuery) IDsX(ctx context.Context) []uuid.UUID {
 	ids, err := pq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -365,7 +366,7 @@ func (pq *PolyQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (pq *PolyQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewQuerySpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
 	_spec.From = pq.sql
 	if unique := pq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

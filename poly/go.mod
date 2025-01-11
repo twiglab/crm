@@ -8,10 +8,8 @@ require (
 	entgo.io/ent v0.14.1
 	github.com/99designs/gqlgen v0.17.63
 	github.com/jackc/pgx/v5 v5.7.2
-	github.com/twiglab/crm/psdk v0.0.0-20250101135151-b403e3391118
+	github.com/twiglab/crm/psdk v0.0.0-20250107165841-0e3aa1e76441
 	github.com/vektah/gqlparser/v2 v2.5.21
-	github.com/yuin/gopher-lua v1.1.1
-	layeh.com/gopher-luar v1.0.11
 )
 
 require (

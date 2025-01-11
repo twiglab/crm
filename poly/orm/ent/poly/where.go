@@ -6,51 +6,52 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.Poly {
+func ID(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.Poly {
+func IDEQ(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.Poly {
+func IDNEQ(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.Poly {
+func IDIn(ids ...uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.Poly {
+func IDNotIn(ids ...uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.Poly {
+func IDGT(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.Poly {
+func IDGTE(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.Poly {
+func IDLT(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.Poly {
+func IDLTE(id uuid.UUID) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldID, id))
 }
 
@@ -74,19 +75,19 @@ func MallCode(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldMallCode, v))
 }
 
-// Rule applies equality check predicate on the "rule" field. It's identical to RuleEQ.
-func Rule(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldRule, v))
-}
-
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldName, v))
 }
 
-// Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
-func Desc(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldDesc, v))
+// Title applies equality check predicate on the "title" field. It's identical to TitleEQ.
+func Title(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldTitle, v))
+}
+
+// Memo applies equality check predicate on the "memo" field. It's identical to MemoEQ.
+func Memo(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldMemo, v))
 }
 
 // StartTime applies equality check predicate on the "start_time" field. It's identical to StartTimeEQ.
@@ -97,6 +98,26 @@ func StartTime(v time.Time) predicate.Poly {
 // EndTime applies equality check predicate on the "end_time" field. It's identical to EndTimeEQ.
 func EndTime(v time.Time) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldEndTime, v))
+}
+
+// Menkan applies equality check predicate on the "menkan" field. It's identical to MenkanEQ.
+func Menkan(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldMenkan, v))
+}
+
+// Fafang applies equality check predicate on the "fafang" field. It's identical to FafangEQ.
+func Fafang(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldFafang, v))
+}
+
+// Xiaoqi applies equality check predicate on the "xiaoqi" field. It's identical to XiaoqiEQ.
+func Xiaoqi(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldXiaoqi, v))
+}
+
+// Shiyong applies equality check predicate on the "shiyong" field. It's identical to ShiyongEQ.
+func Shiyong(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldShiyong, v))
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
@@ -319,71 +340,6 @@ func MallCodeContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldMallCode, v))
 }
 
-// RuleEQ applies the EQ predicate on the "rule" field.
-func RuleEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldRule, v))
-}
-
-// RuleNEQ applies the NEQ predicate on the "rule" field.
-func RuleNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldRule, v))
-}
-
-// RuleIn applies the In predicate on the "rule" field.
-func RuleIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldRule, vs...))
-}
-
-// RuleNotIn applies the NotIn predicate on the "rule" field.
-func RuleNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldRule, vs...))
-}
-
-// RuleGT applies the GT predicate on the "rule" field.
-func RuleGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldRule, v))
-}
-
-// RuleGTE applies the GTE predicate on the "rule" field.
-func RuleGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldRule, v))
-}
-
-// RuleLT applies the LT predicate on the "rule" field.
-func RuleLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldRule, v))
-}
-
-// RuleLTE applies the LTE predicate on the "rule" field.
-func RuleLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldRule, v))
-}
-
-// RuleContains applies the Contains predicate on the "rule" field.
-func RuleContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldRule, v))
-}
-
-// RuleHasPrefix applies the HasPrefix predicate on the "rule" field.
-func RuleHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldRule, v))
-}
-
-// RuleHasSuffix applies the HasSuffix predicate on the "rule" field.
-func RuleHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldRule, v))
-}
-
-// RuleEqualFold applies the EqualFold predicate on the "rule" field.
-func RuleEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldRule, v))
-}
-
-// RuleContainsFold applies the ContainsFold predicate on the "rule" field.
-func RuleContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldRule, v))
-}
-
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldName, v))
@@ -449,69 +405,134 @@ func NameContainsFold(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldContainsFold(FieldName, v))
 }
 
-// DescEQ applies the EQ predicate on the "desc" field.
-func DescEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEQ(FieldDesc, v))
+// TitleEQ applies the EQ predicate on the "title" field.
+func TitleEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldTitle, v))
 }
 
-// DescNEQ applies the NEQ predicate on the "desc" field.
-func DescNEQ(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldNEQ(FieldDesc, v))
+// TitleNEQ applies the NEQ predicate on the "title" field.
+func TitleNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldTitle, v))
 }
 
-// DescIn applies the In predicate on the "desc" field.
-func DescIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldIn(FieldDesc, vs...))
+// TitleIn applies the In predicate on the "title" field.
+func TitleIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldTitle, vs...))
 }
 
-// DescNotIn applies the NotIn predicate on the "desc" field.
-func DescNotIn(vs ...string) predicate.Poly {
-	return predicate.Poly(sql.FieldNotIn(FieldDesc, vs...))
+// TitleNotIn applies the NotIn predicate on the "title" field.
+func TitleNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldTitle, vs...))
 }
 
-// DescGT applies the GT predicate on the "desc" field.
-func DescGT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGT(FieldDesc, v))
+// TitleGT applies the GT predicate on the "title" field.
+func TitleGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldTitle, v))
 }
 
-// DescGTE applies the GTE predicate on the "desc" field.
-func DescGTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldGTE(FieldDesc, v))
+// TitleGTE applies the GTE predicate on the "title" field.
+func TitleGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldTitle, v))
 }
 
-// DescLT applies the LT predicate on the "desc" field.
-func DescLT(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLT(FieldDesc, v))
+// TitleLT applies the LT predicate on the "title" field.
+func TitleLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldTitle, v))
 }
 
-// DescLTE applies the LTE predicate on the "desc" field.
-func DescLTE(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldLTE(FieldDesc, v))
+// TitleLTE applies the LTE predicate on the "title" field.
+func TitleLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldTitle, v))
 }
 
-// DescContains applies the Contains predicate on the "desc" field.
-func DescContains(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContains(FieldDesc, v))
+// TitleContains applies the Contains predicate on the "title" field.
+func TitleContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldTitle, v))
 }
 
-// DescHasPrefix applies the HasPrefix predicate on the "desc" field.
-func DescHasPrefix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasPrefix(FieldDesc, v))
+// TitleHasPrefix applies the HasPrefix predicate on the "title" field.
+func TitleHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldTitle, v))
 }
 
-// DescHasSuffix applies the HasSuffix predicate on the "desc" field.
-func DescHasSuffix(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldHasSuffix(FieldDesc, v))
+// TitleHasSuffix applies the HasSuffix predicate on the "title" field.
+func TitleHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldTitle, v))
 }
 
-// DescEqualFold applies the EqualFold predicate on the "desc" field.
-func DescEqualFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldEqualFold(FieldDesc, v))
+// TitleEqualFold applies the EqualFold predicate on the "title" field.
+func TitleEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldTitle, v))
 }
 
-// DescContainsFold applies the ContainsFold predicate on the "desc" field.
-func DescContainsFold(v string) predicate.Poly {
-	return predicate.Poly(sql.FieldContainsFold(FieldDesc, v))
+// TitleContainsFold applies the ContainsFold predicate on the "title" field.
+func TitleContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldTitle, v))
+}
+
+// MemoEQ applies the EQ predicate on the "memo" field.
+func MemoEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldMemo, v))
+}
+
+// MemoNEQ applies the NEQ predicate on the "memo" field.
+func MemoNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldMemo, v))
+}
+
+// MemoIn applies the In predicate on the "memo" field.
+func MemoIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldMemo, vs...))
+}
+
+// MemoNotIn applies the NotIn predicate on the "memo" field.
+func MemoNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldMemo, vs...))
+}
+
+// MemoGT applies the GT predicate on the "memo" field.
+func MemoGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldMemo, v))
+}
+
+// MemoGTE applies the GTE predicate on the "memo" field.
+func MemoGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldMemo, v))
+}
+
+// MemoLT applies the LT predicate on the "memo" field.
+func MemoLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldMemo, v))
+}
+
+// MemoLTE applies the LTE predicate on the "memo" field.
+func MemoLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldMemo, v))
+}
+
+// MemoContains applies the Contains predicate on the "memo" field.
+func MemoContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldMemo, v))
+}
+
+// MemoHasPrefix applies the HasPrefix predicate on the "memo" field.
+func MemoHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldMemo, v))
+}
+
+// MemoHasSuffix applies the HasSuffix predicate on the "memo" field.
+func MemoHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldMemo, v))
+}
+
+// MemoEqualFold applies the EqualFold predicate on the "memo" field.
+func MemoEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldMemo, v))
+}
+
+// MemoContainsFold applies the ContainsFold predicate on the "memo" field.
+func MemoContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldMemo, v))
 }
 
 // StartTimeEQ applies the EQ predicate on the "start_time" field.
@@ -592,6 +613,266 @@ func EndTimeLT(v time.Time) predicate.Poly {
 // EndTimeLTE applies the LTE predicate on the "end_time" field.
 func EndTimeLTE(v time.Time) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldEndTime, v))
+}
+
+// MenkanEQ applies the EQ predicate on the "menkan" field.
+func MenkanEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldMenkan, v))
+}
+
+// MenkanNEQ applies the NEQ predicate on the "menkan" field.
+func MenkanNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldMenkan, v))
+}
+
+// MenkanIn applies the In predicate on the "menkan" field.
+func MenkanIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldMenkan, vs...))
+}
+
+// MenkanNotIn applies the NotIn predicate on the "menkan" field.
+func MenkanNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldMenkan, vs...))
+}
+
+// MenkanGT applies the GT predicate on the "menkan" field.
+func MenkanGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldMenkan, v))
+}
+
+// MenkanGTE applies the GTE predicate on the "menkan" field.
+func MenkanGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldMenkan, v))
+}
+
+// MenkanLT applies the LT predicate on the "menkan" field.
+func MenkanLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldMenkan, v))
+}
+
+// MenkanLTE applies the LTE predicate on the "menkan" field.
+func MenkanLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldMenkan, v))
+}
+
+// MenkanContains applies the Contains predicate on the "menkan" field.
+func MenkanContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldMenkan, v))
+}
+
+// MenkanHasPrefix applies the HasPrefix predicate on the "menkan" field.
+func MenkanHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldMenkan, v))
+}
+
+// MenkanHasSuffix applies the HasSuffix predicate on the "menkan" field.
+func MenkanHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldMenkan, v))
+}
+
+// MenkanEqualFold applies the EqualFold predicate on the "menkan" field.
+func MenkanEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldMenkan, v))
+}
+
+// MenkanContainsFold applies the ContainsFold predicate on the "menkan" field.
+func MenkanContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldMenkan, v))
+}
+
+// FafangEQ applies the EQ predicate on the "fafang" field.
+func FafangEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldFafang, v))
+}
+
+// FafangNEQ applies the NEQ predicate on the "fafang" field.
+func FafangNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldFafang, v))
+}
+
+// FafangIn applies the In predicate on the "fafang" field.
+func FafangIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldFafang, vs...))
+}
+
+// FafangNotIn applies the NotIn predicate on the "fafang" field.
+func FafangNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldFafang, vs...))
+}
+
+// FafangGT applies the GT predicate on the "fafang" field.
+func FafangGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldFafang, v))
+}
+
+// FafangGTE applies the GTE predicate on the "fafang" field.
+func FafangGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldFafang, v))
+}
+
+// FafangLT applies the LT predicate on the "fafang" field.
+func FafangLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldFafang, v))
+}
+
+// FafangLTE applies the LTE predicate on the "fafang" field.
+func FafangLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldFafang, v))
+}
+
+// FafangContains applies the Contains predicate on the "fafang" field.
+func FafangContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldFafang, v))
+}
+
+// FafangHasPrefix applies the HasPrefix predicate on the "fafang" field.
+func FafangHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldFafang, v))
+}
+
+// FafangHasSuffix applies the HasSuffix predicate on the "fafang" field.
+func FafangHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldFafang, v))
+}
+
+// FafangEqualFold applies the EqualFold predicate on the "fafang" field.
+func FafangEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldFafang, v))
+}
+
+// FafangContainsFold applies the ContainsFold predicate on the "fafang" field.
+func FafangContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldFafang, v))
+}
+
+// XiaoqiEQ applies the EQ predicate on the "xiaoqi" field.
+func XiaoqiEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldXiaoqi, v))
+}
+
+// XiaoqiNEQ applies the NEQ predicate on the "xiaoqi" field.
+func XiaoqiNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldXiaoqi, v))
+}
+
+// XiaoqiIn applies the In predicate on the "xiaoqi" field.
+func XiaoqiIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldXiaoqi, vs...))
+}
+
+// XiaoqiNotIn applies the NotIn predicate on the "xiaoqi" field.
+func XiaoqiNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldXiaoqi, vs...))
+}
+
+// XiaoqiGT applies the GT predicate on the "xiaoqi" field.
+func XiaoqiGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldXiaoqi, v))
+}
+
+// XiaoqiGTE applies the GTE predicate on the "xiaoqi" field.
+func XiaoqiGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldXiaoqi, v))
+}
+
+// XiaoqiLT applies the LT predicate on the "xiaoqi" field.
+func XiaoqiLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldXiaoqi, v))
+}
+
+// XiaoqiLTE applies the LTE predicate on the "xiaoqi" field.
+func XiaoqiLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldXiaoqi, v))
+}
+
+// XiaoqiContains applies the Contains predicate on the "xiaoqi" field.
+func XiaoqiContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldXiaoqi, v))
+}
+
+// XiaoqiHasPrefix applies the HasPrefix predicate on the "xiaoqi" field.
+func XiaoqiHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldXiaoqi, v))
+}
+
+// XiaoqiHasSuffix applies the HasSuffix predicate on the "xiaoqi" field.
+func XiaoqiHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldXiaoqi, v))
+}
+
+// XiaoqiEqualFold applies the EqualFold predicate on the "xiaoqi" field.
+func XiaoqiEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldXiaoqi, v))
+}
+
+// XiaoqiContainsFold applies the ContainsFold predicate on the "xiaoqi" field.
+func XiaoqiContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldXiaoqi, v))
+}
+
+// ShiyongEQ applies the EQ predicate on the "shiyong" field.
+func ShiyongEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldShiyong, v))
+}
+
+// ShiyongNEQ applies the NEQ predicate on the "shiyong" field.
+func ShiyongNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldShiyong, v))
+}
+
+// ShiyongIn applies the In predicate on the "shiyong" field.
+func ShiyongIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldShiyong, vs...))
+}
+
+// ShiyongNotIn applies the NotIn predicate on the "shiyong" field.
+func ShiyongNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldShiyong, vs...))
+}
+
+// ShiyongGT applies the GT predicate on the "shiyong" field.
+func ShiyongGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldShiyong, v))
+}
+
+// ShiyongGTE applies the GTE predicate on the "shiyong" field.
+func ShiyongGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldShiyong, v))
+}
+
+// ShiyongLT applies the LT predicate on the "shiyong" field.
+func ShiyongLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldShiyong, v))
+}
+
+// ShiyongLTE applies the LTE predicate on the "shiyong" field.
+func ShiyongLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldShiyong, v))
+}
+
+// ShiyongContains applies the Contains predicate on the "shiyong" field.
+func ShiyongContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldShiyong, v))
+}
+
+// ShiyongHasPrefix applies the HasPrefix predicate on the "shiyong" field.
+func ShiyongHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldShiyong, v))
+}
+
+// ShiyongHasSuffix applies the HasSuffix predicate on the "shiyong" field.
+func ShiyongHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldShiyong, v))
+}
+
+// ShiyongEqualFold applies the EqualFold predicate on the "shiyong" field.
+func ShiyongEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldShiyong, v))
+}
+
+// ShiyongContainsFold applies the ContainsFold predicate on the "shiyong" field.
+func ShiyongContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldShiyong, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

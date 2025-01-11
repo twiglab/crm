@@ -8,9 +8,11 @@ import (
 	"fmt"
 	"time"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
@@ -70,21 +72,21 @@ func (pc *PolyCreate) SetMallCode(s string) *PolyCreate {
 	return pc
 }
 
-// SetRule sets the "rule" field.
-func (pc *PolyCreate) SetRule(s string) *PolyCreate {
-	pc.mutation.SetRule(s)
-	return pc
-}
-
 // SetName sets the "name" field.
 func (pc *PolyCreate) SetName(s string) *PolyCreate {
 	pc.mutation.SetName(s)
 	return pc
 }
 
-// SetDesc sets the "desc" field.
-func (pc *PolyCreate) SetDesc(s string) *PolyCreate {
-	pc.mutation.SetDesc(s)
+// SetTitle sets the "title" field.
+func (pc *PolyCreate) SetTitle(s string) *PolyCreate {
+	pc.mutation.SetTitle(s)
+	return pc
+}
+
+// SetMemo sets the "memo" field.
+func (pc *PolyCreate) SetMemo(s string) *PolyCreate {
+	pc.mutation.SetMemo(s)
 	return pc
 }
 
@@ -94,9 +96,49 @@ func (pc *PolyCreate) SetStartTime(t time.Time) *PolyCreate {
 	return pc
 }
 
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableStartTime(t *time.Time) *PolyCreate {
+	if t != nil {
+		pc.SetStartTime(*t)
+	}
+	return pc
+}
+
 // SetEndTime sets the "end_time" field.
 func (pc *PolyCreate) SetEndTime(t time.Time) *PolyCreate {
 	pc.mutation.SetEndTime(t)
+	return pc
+}
+
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableEndTime(t *time.Time) *PolyCreate {
+	if t != nil {
+		pc.SetEndTime(*t)
+	}
+	return pc
+}
+
+// SetMenkan sets the "menkan" field.
+func (pc *PolyCreate) SetMenkan(s string) *PolyCreate {
+	pc.mutation.SetMenkan(s)
+	return pc
+}
+
+// SetFafang sets the "fafang" field.
+func (pc *PolyCreate) SetFafang(s string) *PolyCreate {
+	pc.mutation.SetFafang(s)
+	return pc
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (pc *PolyCreate) SetXiaoqi(s string) *PolyCreate {
+	pc.mutation.SetXiaoqi(s)
+	return pc
+}
+
+// SetShiyong sets the "shiyong" field.
+func (pc *PolyCreate) SetShiyong(s string) *PolyCreate {
+	pc.mutation.SetShiyong(s)
 	return pc
 }
 
@@ -124,6 +166,20 @@ func (pc *PolyCreate) SetType(i int32) *PolyCreate {
 func (pc *PolyCreate) SetNillableType(i *int32) *PolyCreate {
 	if i != nil {
 		pc.SetType(*i)
+	}
+	return pc
+}
+
+// SetID sets the "id" field.
+func (pc *PolyCreate) SetID(u uuid.UUID) *PolyCreate {
+	pc.mutation.SetID(u)
+	return pc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (pc *PolyCreate) SetNillableID(u *uuid.UUID) *PolyCreate {
+	if u != nil {
+		pc.SetID(*u)
 	}
 	return pc
 }
@@ -175,6 +231,14 @@ func (pc *PolyCreate) defaults() {
 		v := poly.DefaultCode()
 		pc.mutation.SetCode(v)
 	}
+	if _, ok := pc.mutation.StartTime(); !ok {
+		v := poly.DefaultStartTime()
+		pc.mutation.SetStartTime(v)
+	}
+	if _, ok := pc.mutation.EndTime(); !ok {
+		v := poly.DefaultEndTime()
+		pc.mutation.SetEndTime(v)
+	}
 	if _, ok := pc.mutation.Status(); !ok {
 		v := poly.DefaultStatus
 		pc.mutation.SetStatus(v)
@@ -182,6 +246,10 @@ func (pc *PolyCreate) defaults() {
 	if _, ok := pc.mutation.GetType(); !ok {
 		v := poly.DefaultType
 		pc.mutation.SetType(v)
+	}
+	if _, ok := pc.mutation.ID(); !ok {
+		v := poly.DefaultID()
+		pc.mutation.SetID(v)
 	}
 }
 
@@ -209,14 +277,6 @@ func (pc *PolyCreate) check() error {
 			return &ValidationError{Name: "mall_code", err: fmt.Errorf(`ent: validator failed for field "Poly.mall_code": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.Rule(); !ok {
-		return &ValidationError{Name: "rule", err: errors.New(`ent: missing required field "Poly.rule"`)}
-	}
-	if v, ok := pc.mutation.Rule(); ok {
-		if err := poly.RuleValidator(v); err != nil {
-			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
-		}
-	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Poly.name"`)}
 	}
@@ -225,12 +285,20 @@ func (pc *PolyCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.Desc(); !ok {
-		return &ValidationError{Name: "desc", err: errors.New(`ent: missing required field "Poly.desc"`)}
+	if _, ok := pc.mutation.Title(); !ok {
+		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "Poly.title"`)}
 	}
-	if v, ok := pc.mutation.Desc(); ok {
-		if err := poly.DescValidator(v); err != nil {
-			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
+	if v, ok := pc.mutation.Title(); ok {
+		if err := poly.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Poly.title": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Memo(); !ok {
+		return &ValidationError{Name: "memo", err: errors.New(`ent: missing required field "Poly.memo"`)}
+	}
+	if v, ok := pc.mutation.Memo(); ok {
+		if err := poly.MemoValidator(v); err != nil {
+			return &ValidationError{Name: "memo", err: fmt.Errorf(`ent: validator failed for field "Poly.memo": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.StartTime(); !ok {
@@ -238,6 +306,38 @@ func (pc *PolyCreate) check() error {
 	}
 	if _, ok := pc.mutation.EndTime(); !ok {
 		return &ValidationError{Name: "end_time", err: errors.New(`ent: missing required field "Poly.end_time"`)}
+	}
+	if _, ok := pc.mutation.Menkan(); !ok {
+		return &ValidationError{Name: "menkan", err: errors.New(`ent: missing required field "Poly.menkan"`)}
+	}
+	if v, ok := pc.mutation.Menkan(); ok {
+		if err := poly.MenkanValidator(v); err != nil {
+			return &ValidationError{Name: "menkan", err: fmt.Errorf(`ent: validator failed for field "Poly.menkan": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Fafang(); !ok {
+		return &ValidationError{Name: "fafang", err: errors.New(`ent: missing required field "Poly.fafang"`)}
+	}
+	if v, ok := pc.mutation.Fafang(); ok {
+		if err := poly.FafangValidator(v); err != nil {
+			return &ValidationError{Name: "fafang", err: fmt.Errorf(`ent: validator failed for field "Poly.fafang": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Xiaoqi(); !ok {
+		return &ValidationError{Name: "xiaoqi", err: errors.New(`ent: missing required field "Poly.xiaoqi"`)}
+	}
+	if v, ok := pc.mutation.Xiaoqi(); ok {
+		if err := poly.XiaoqiValidator(v); err != nil {
+			return &ValidationError{Name: "xiaoqi", err: fmt.Errorf(`ent: validator failed for field "Poly.xiaoqi": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Shiyong(); !ok {
+		return &ValidationError{Name: "shiyong", err: errors.New(`ent: missing required field "Poly.shiyong"`)}
+	}
+	if v, ok := pc.mutation.Shiyong(); ok {
+		if err := poly.ShiyongValidator(v); err != nil {
+			return &ValidationError{Name: "shiyong", err: fmt.Errorf(`ent: validator failed for field "Poly.shiyong": %w`, err)}
+		}
 	}
 	if _, ok := pc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Poly.status"`)}
@@ -259,8 +359,13 @@ func (pc *PolyCreate) sqlSave(ctx context.Context) (*Poly, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
+	}
 	pc.mutation.id = &_node.ID
 	pc.mutation.done = true
 	return _node, nil
@@ -269,9 +374,13 @@ func (pc *PolyCreate) sqlSave(ctx context.Context) (*Poly, error) {
 func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Poly{config: pc.config}
-		_spec = sqlgraph.NewCreateSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(poly.Table, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
 	)
 	_spec.OnConflict = pc.conflict
+	if id, ok := pc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = &id
+	}
 	if value, ok := pc.mutation.CreateTime(); ok {
 		_spec.SetField(poly.FieldCreateTime, field.TypeTime, value)
 		_node.CreateTime = value
@@ -288,17 +397,17 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 		_spec.SetField(poly.FieldMallCode, field.TypeString, value)
 		_node.MallCode = value
 	}
-	if value, ok := pc.mutation.Rule(); ok {
-		_spec.SetField(poly.FieldRule, field.TypeString, value)
-		_node.Rule = value
-	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := pc.mutation.Desc(); ok {
-		_spec.SetField(poly.FieldDesc, field.TypeString, value)
-		_node.Desc = value
+	if value, ok := pc.mutation.Title(); ok {
+		_spec.SetField(poly.FieldTitle, field.TypeString, value)
+		_node.Title = value
+	}
+	if value, ok := pc.mutation.Memo(); ok {
+		_spec.SetField(poly.FieldMemo, field.TypeString, value)
+		_node.Memo = value
 	}
 	if value, ok := pc.mutation.StartTime(); ok {
 		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
@@ -307,6 +416,22 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.EndTime(); ok {
 		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 		_node.EndTime = value
+	}
+	if value, ok := pc.mutation.Menkan(); ok {
+		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
+		_node.Menkan = value
+	}
+	if value, ok := pc.mutation.Fafang(); ok {
+		_spec.SetField(poly.FieldFafang, field.TypeString, value)
+		_node.Fafang = value
+	}
+	if value, ok := pc.mutation.Xiaoqi(); ok {
+		_spec.SetField(poly.FieldXiaoqi, field.TypeString, value)
+		_node.Xiaoqi = value
+	}
+	if value, ok := pc.mutation.Shiyong(); ok {
+		_spec.SetField(poly.FieldShiyong, field.TypeString, value)
+		_node.Shiyong = value
 	}
 	if value, ok := pc.mutation.Status(); ok {
 		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)
@@ -380,18 +505,6 @@ func (u *PolyUpsert) UpdateUpdateTime() *PolyUpsert {
 	return u
 }
 
-// SetRule sets the "rule" field.
-func (u *PolyUpsert) SetRule(v string) *PolyUpsert {
-	u.Set(poly.FieldRule, v)
-	return u
-}
-
-// UpdateRule sets the "rule" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateRule() *PolyUpsert {
-	u.SetExcluded(poly.FieldRule)
-	return u
-}
-
 // SetName sets the "name" field.
 func (u *PolyUpsert) SetName(v string) *PolyUpsert {
 	u.Set(poly.FieldName, v)
@@ -404,39 +517,75 @@ func (u *PolyUpsert) UpdateName() *PolyUpsert {
 	return u
 }
 
-// SetDesc sets the "desc" field.
-func (u *PolyUpsert) SetDesc(v string) *PolyUpsert {
-	u.Set(poly.FieldDesc, v)
+// SetTitle sets the "title" field.
+func (u *PolyUpsert) SetTitle(v string) *PolyUpsert {
+	u.Set(poly.FieldTitle, v)
 	return u
 }
 
-// UpdateDesc sets the "desc" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateDesc() *PolyUpsert {
-	u.SetExcluded(poly.FieldDesc)
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateTitle() *PolyUpsert {
+	u.SetExcluded(poly.FieldTitle)
 	return u
 }
 
-// SetStartTime sets the "start_time" field.
-func (u *PolyUpsert) SetStartTime(v time.Time) *PolyUpsert {
-	u.Set(poly.FieldStartTime, v)
+// SetMemo sets the "memo" field.
+func (u *PolyUpsert) SetMemo(v string) *PolyUpsert {
+	u.Set(poly.FieldMemo, v)
 	return u
 }
 
-// UpdateStartTime sets the "start_time" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateStartTime() *PolyUpsert {
-	u.SetExcluded(poly.FieldStartTime)
+// UpdateMemo sets the "memo" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateMemo() *PolyUpsert {
+	u.SetExcluded(poly.FieldMemo)
 	return u
 }
 
-// SetEndTime sets the "end_time" field.
-func (u *PolyUpsert) SetEndTime(v time.Time) *PolyUpsert {
-	u.Set(poly.FieldEndTime, v)
+// SetMenkan sets the "menkan" field.
+func (u *PolyUpsert) SetMenkan(v string) *PolyUpsert {
+	u.Set(poly.FieldMenkan, v)
 	return u
 }
 
-// UpdateEndTime sets the "end_time" field to the value that was provided on create.
-func (u *PolyUpsert) UpdateEndTime() *PolyUpsert {
-	u.SetExcluded(poly.FieldEndTime)
+// UpdateMenkan sets the "menkan" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateMenkan() *PolyUpsert {
+	u.SetExcluded(poly.FieldMenkan)
+	return u
+}
+
+// SetFafang sets the "fafang" field.
+func (u *PolyUpsert) SetFafang(v string) *PolyUpsert {
+	u.Set(poly.FieldFafang, v)
+	return u
+}
+
+// UpdateFafang sets the "fafang" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateFafang() *PolyUpsert {
+	u.SetExcluded(poly.FieldFafang)
+	return u
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (u *PolyUpsert) SetXiaoqi(v string) *PolyUpsert {
+	u.Set(poly.FieldXiaoqi, v)
+	return u
+}
+
+// UpdateXiaoqi sets the "xiaoqi" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateXiaoqi() *PolyUpsert {
+	u.SetExcluded(poly.FieldXiaoqi)
+	return u
+}
+
+// SetShiyong sets the "shiyong" field.
+func (u *PolyUpsert) SetShiyong(v string) *PolyUpsert {
+	u.Set(poly.FieldShiyong, v)
+	return u
+}
+
+// UpdateShiyong sets the "shiyong" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateShiyong() *PolyUpsert {
+	u.SetExcluded(poly.FieldShiyong)
 	return u
 }
 
@@ -476,17 +625,23 @@ func (u *PolyUpsert) AddType(v int32) *PolyUpsert {
 	return u
 }
 
-// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Poly.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(poly.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 func (u *PolyUpsertOne) UpdateNewValues() *PolyUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(poly.FieldID)
+		}
 		if _, exists := u.create.mutation.CreateTime(); exists {
 			s.SetIgnore(poly.FieldCreateTime)
 		}
@@ -495,6 +650,12 @@ func (u *PolyUpsertOne) UpdateNewValues() *PolyUpsertOne {
 		}
 		if _, exists := u.create.mutation.MallCode(); exists {
 			s.SetIgnore(poly.FieldMallCode)
+		}
+		if _, exists := u.create.mutation.StartTime(); exists {
+			s.SetIgnore(poly.FieldStartTime)
+		}
+		if _, exists := u.create.mutation.EndTime(); exists {
+			s.SetIgnore(poly.FieldEndTime)
 		}
 	}))
 	return u
@@ -541,20 +702,6 @@ func (u *PolyUpsertOne) UpdateUpdateTime() *PolyUpsertOne {
 	})
 }
 
-// SetRule sets the "rule" field.
-func (u *PolyUpsertOne) SetRule(v string) *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetRule(v)
-	})
-}
-
-// UpdateRule sets the "rule" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateRule() *PolyUpsertOne {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateRule()
-	})
-}
-
 // SetName sets the "name" field.
 func (u *PolyUpsertOne) SetName(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
@@ -569,45 +716,87 @@ func (u *PolyUpsertOne) UpdateName() *PolyUpsertOne {
 	})
 }
 
-// SetDesc sets the "desc" field.
-func (u *PolyUpsertOne) SetDesc(v string) *PolyUpsertOne {
+// SetTitle sets the "title" field.
+func (u *PolyUpsertOne) SetTitle(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetDesc(v)
+		s.SetTitle(v)
 	})
 }
 
-// UpdateDesc sets the "desc" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateDesc() *PolyUpsertOne {
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateTitle() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateDesc()
+		s.UpdateTitle()
 	})
 }
 
-// SetStartTime sets the "start_time" field.
-func (u *PolyUpsertOne) SetStartTime(v time.Time) *PolyUpsertOne {
+// SetMemo sets the "memo" field.
+func (u *PolyUpsertOne) SetMemo(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetStartTime(v)
+		s.SetMemo(v)
 	})
 }
 
-// UpdateStartTime sets the "start_time" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateStartTime() *PolyUpsertOne {
+// UpdateMemo sets the "memo" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateMemo() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateStartTime()
+		s.UpdateMemo()
 	})
 }
 
-// SetEndTime sets the "end_time" field.
-func (u *PolyUpsertOne) SetEndTime(v time.Time) *PolyUpsertOne {
+// SetMenkan sets the "menkan" field.
+func (u *PolyUpsertOne) SetMenkan(v string) *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetEndTime(v)
+		s.SetMenkan(v)
 	})
 }
 
-// UpdateEndTime sets the "end_time" field to the value that was provided on create.
-func (u *PolyUpsertOne) UpdateEndTime() *PolyUpsertOne {
+// UpdateMenkan sets the "menkan" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateMenkan() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateEndTime()
+		s.UpdateMenkan()
+	})
+}
+
+// SetFafang sets the "fafang" field.
+func (u *PolyUpsertOne) SetFafang(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetFafang(v)
+	})
+}
+
+// UpdateFafang sets the "fafang" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateFafang() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateFafang()
+	})
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (u *PolyUpsertOne) SetXiaoqi(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetXiaoqi(v)
+	})
+}
+
+// UpdateXiaoqi sets the "xiaoqi" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateXiaoqi() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateXiaoqi()
+	})
+}
+
+// SetShiyong sets the "shiyong" field.
+func (u *PolyUpsertOne) SetShiyong(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetShiyong(v)
+	})
+}
+
+// UpdateShiyong sets the "shiyong" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateShiyong() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateShiyong()
 	})
 }
 
@@ -669,7 +858,12 @@ func (u *PolyUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *PolyUpsertOne) ID(ctx context.Context) (id int, err error) {
+func (u *PolyUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: PolyUpsertOne.ID is not supported by MySQL driver. Use PolyUpsertOne.Exec instead")
+	}
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -678,7 +872,7 @@ func (u *PolyUpsertOne) ID(ctx context.Context) (id int, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *PolyUpsertOne) IDX(ctx context.Context) int {
+func (u *PolyUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -733,10 +927,6 @@ func (pcb *PolyCreateBulk) Save(ctx context.Context) ([]*Poly, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -823,12 +1013,18 @@ type PolyUpsertBulk struct {
 //	client.Poly.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(poly.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 func (u *PolyUpsertBulk) UpdateNewValues() *PolyUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(poly.FieldID)
+			}
 			if _, exists := b.mutation.CreateTime(); exists {
 				s.SetIgnore(poly.FieldCreateTime)
 			}
@@ -837,6 +1033,12 @@ func (u *PolyUpsertBulk) UpdateNewValues() *PolyUpsertBulk {
 			}
 			if _, exists := b.mutation.MallCode(); exists {
 				s.SetIgnore(poly.FieldMallCode)
+			}
+			if _, exists := b.mutation.StartTime(); exists {
+				s.SetIgnore(poly.FieldStartTime)
+			}
+			if _, exists := b.mutation.EndTime(); exists {
+				s.SetIgnore(poly.FieldEndTime)
 			}
 		}
 	}))
@@ -884,20 +1086,6 @@ func (u *PolyUpsertBulk) UpdateUpdateTime() *PolyUpsertBulk {
 	})
 }
 
-// SetRule sets the "rule" field.
-func (u *PolyUpsertBulk) SetRule(v string) *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.SetRule(v)
-	})
-}
-
-// UpdateRule sets the "rule" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateRule() *PolyUpsertBulk {
-	return u.Update(func(s *PolyUpsert) {
-		s.UpdateRule()
-	})
-}
-
 // SetName sets the "name" field.
 func (u *PolyUpsertBulk) SetName(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
@@ -912,45 +1100,87 @@ func (u *PolyUpsertBulk) UpdateName() *PolyUpsertBulk {
 	})
 }
 
-// SetDesc sets the "desc" field.
-func (u *PolyUpsertBulk) SetDesc(v string) *PolyUpsertBulk {
+// SetTitle sets the "title" field.
+func (u *PolyUpsertBulk) SetTitle(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetDesc(v)
+		s.SetTitle(v)
 	})
 }
 
-// UpdateDesc sets the "desc" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateDesc() *PolyUpsertBulk {
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateTitle() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateDesc()
+		s.UpdateTitle()
 	})
 }
 
-// SetStartTime sets the "start_time" field.
-func (u *PolyUpsertBulk) SetStartTime(v time.Time) *PolyUpsertBulk {
+// SetMemo sets the "memo" field.
+func (u *PolyUpsertBulk) SetMemo(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetStartTime(v)
+		s.SetMemo(v)
 	})
 }
 
-// UpdateStartTime sets the "start_time" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateStartTime() *PolyUpsertBulk {
+// UpdateMemo sets the "memo" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateMemo() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateStartTime()
+		s.UpdateMemo()
 	})
 }
 
-// SetEndTime sets the "end_time" field.
-func (u *PolyUpsertBulk) SetEndTime(v time.Time) *PolyUpsertBulk {
+// SetMenkan sets the "menkan" field.
+func (u *PolyUpsertBulk) SetMenkan(v string) *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.SetEndTime(v)
+		s.SetMenkan(v)
 	})
 }
 
-// UpdateEndTime sets the "end_time" field to the value that was provided on create.
-func (u *PolyUpsertBulk) UpdateEndTime() *PolyUpsertBulk {
+// UpdateMenkan sets the "menkan" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateMenkan() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
-		s.UpdateEndTime()
+		s.UpdateMenkan()
+	})
+}
+
+// SetFafang sets the "fafang" field.
+func (u *PolyUpsertBulk) SetFafang(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetFafang(v)
+	})
+}
+
+// UpdateFafang sets the "fafang" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateFafang() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateFafang()
+	})
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (u *PolyUpsertBulk) SetXiaoqi(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetXiaoqi(v)
+	})
+}
+
+// UpdateXiaoqi sets the "xiaoqi" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateXiaoqi() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateXiaoqi()
+	})
+}
+
+// SetShiyong sets the "shiyong" field.
+func (u *PolyUpsertBulk) SetShiyong(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetShiyong(v)
+	})
+}
+
+// UpdateShiyong sets the "shiyong" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateShiyong() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateShiyong()
 	})
 }
 

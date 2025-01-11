@@ -34,20 +34,6 @@ func (pu *PolyUpdate) SetUpdateTime(t time.Time) *PolyUpdate {
 	return pu
 }
 
-// SetRule sets the "rule" field.
-func (pu *PolyUpdate) SetRule(s string) *PolyUpdate {
-	pu.mutation.SetRule(s)
-	return pu
-}
-
-// SetNillableRule sets the "rule" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableRule(s *string) *PolyUpdate {
-	if s != nil {
-		pu.SetRule(*s)
-	}
-	return pu
-}
-
 // SetName sets the "name" field.
 func (pu *PolyUpdate) SetName(s string) *PolyUpdate {
 	pu.mutation.SetName(s)
@@ -62,44 +48,86 @@ func (pu *PolyUpdate) SetNillableName(s *string) *PolyUpdate {
 	return pu
 }
 
-// SetDesc sets the "desc" field.
-func (pu *PolyUpdate) SetDesc(s string) *PolyUpdate {
-	pu.mutation.SetDesc(s)
+// SetTitle sets the "title" field.
+func (pu *PolyUpdate) SetTitle(s string) *PolyUpdate {
+	pu.mutation.SetTitle(s)
 	return pu
 }
 
-// SetNillableDesc sets the "desc" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableDesc(s *string) *PolyUpdate {
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableTitle(s *string) *PolyUpdate {
 	if s != nil {
-		pu.SetDesc(*s)
+		pu.SetTitle(*s)
 	}
 	return pu
 }
 
-// SetStartTime sets the "start_time" field.
-func (pu *PolyUpdate) SetStartTime(t time.Time) *PolyUpdate {
-	pu.mutation.SetStartTime(t)
+// SetMemo sets the "memo" field.
+func (pu *PolyUpdate) SetMemo(s string) *PolyUpdate {
+	pu.mutation.SetMemo(s)
 	return pu
 }
 
-// SetNillableStartTime sets the "start_time" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableStartTime(t *time.Time) *PolyUpdate {
-	if t != nil {
-		pu.SetStartTime(*t)
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableMemo(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetMemo(*s)
 	}
 	return pu
 }
 
-// SetEndTime sets the "end_time" field.
-func (pu *PolyUpdate) SetEndTime(t time.Time) *PolyUpdate {
-	pu.mutation.SetEndTime(t)
+// SetMenkan sets the "menkan" field.
+func (pu *PolyUpdate) SetMenkan(s string) *PolyUpdate {
+	pu.mutation.SetMenkan(s)
 	return pu
 }
 
-// SetNillableEndTime sets the "end_time" field if the given value is not nil.
-func (pu *PolyUpdate) SetNillableEndTime(t *time.Time) *PolyUpdate {
-	if t != nil {
-		pu.SetEndTime(*t)
+// SetNillableMenkan sets the "menkan" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableMenkan(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetMenkan(*s)
+	}
+	return pu
+}
+
+// SetFafang sets the "fafang" field.
+func (pu *PolyUpdate) SetFafang(s string) *PolyUpdate {
+	pu.mutation.SetFafang(s)
+	return pu
+}
+
+// SetNillableFafang sets the "fafang" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableFafang(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetFafang(*s)
+	}
+	return pu
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (pu *PolyUpdate) SetXiaoqi(s string) *PolyUpdate {
+	pu.mutation.SetXiaoqi(s)
+	return pu
+}
+
+// SetNillableXiaoqi sets the "xiaoqi" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableXiaoqi(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetXiaoqi(*s)
+	}
+	return pu
+}
+
+// SetShiyong sets the "shiyong" field.
+func (pu *PolyUpdate) SetShiyong(s string) *PolyUpdate {
+	pu.mutation.SetShiyong(s)
+	return pu
+}
+
+// SetNillableShiyong sets the "shiyong" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableShiyong(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetShiyong(*s)
 	}
 	return pu
 }
@@ -189,19 +217,39 @@ func (pu *PolyUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *PolyUpdate) check() error {
-	if v, ok := pu.mutation.Rule(); ok {
-		if err := poly.RuleValidator(v); err != nil {
-			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
-		}
-	}
 	if v, ok := pu.mutation.Name(); ok {
 		if err := poly.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.Desc(); ok {
-		if err := poly.DescValidator(v); err != nil {
-			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
+	if v, ok := pu.mutation.Title(); ok {
+		if err := poly.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Poly.title": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Memo(); ok {
+		if err := poly.MemoValidator(v); err != nil {
+			return &ValidationError{Name: "memo", err: fmt.Errorf(`ent: validator failed for field "Poly.memo": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Menkan(); ok {
+		if err := poly.MenkanValidator(v); err != nil {
+			return &ValidationError{Name: "menkan", err: fmt.Errorf(`ent: validator failed for field "Poly.menkan": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Fafang(); ok {
+		if err := poly.FafangValidator(v); err != nil {
+			return &ValidationError{Name: "fafang", err: fmt.Errorf(`ent: validator failed for field "Poly.fafang": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Xiaoqi(); ok {
+		if err := poly.XiaoqiValidator(v); err != nil {
+			return &ValidationError{Name: "xiaoqi", err: fmt.Errorf(`ent: validator failed for field "Poly.xiaoqi": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Shiyong(); ok {
+		if err := poly.ShiyongValidator(v); err != nil {
+			return &ValidationError{Name: "shiyong", err: fmt.Errorf(`ent: validator failed for field "Poly.shiyong": %w`, err)}
 		}
 	}
 	return nil
@@ -211,7 +259,7 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
 	if ps := pu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -222,20 +270,26 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.UpdateTime(); ok {
 		_spec.SetField(poly.FieldUpdateTime, field.TypeTime, value)
 	}
-	if value, ok := pu.mutation.Rule(); ok {
-		_spec.SetField(poly.FieldRule, field.TypeString, value)
-	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.Desc(); ok {
-		_spec.SetField(poly.FieldDesc, field.TypeString, value)
+	if value, ok := pu.mutation.Title(); ok {
+		_spec.SetField(poly.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.StartTime(); ok {
-		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
+	if value, ok := pu.mutation.Memo(); ok {
+		_spec.SetField(poly.FieldMemo, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.EndTime(); ok {
-		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
+	if value, ok := pu.mutation.Menkan(); ok {
+		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Fafang(); ok {
+		_spec.SetField(poly.FieldFafang, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Xiaoqi(); ok {
+		_spec.SetField(poly.FieldXiaoqi, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Shiyong(); ok {
+		_spec.SetField(poly.FieldShiyong, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.Status(); ok {
 		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)
@@ -275,20 +329,6 @@ func (puo *PolyUpdateOne) SetUpdateTime(t time.Time) *PolyUpdateOne {
 	return puo
 }
 
-// SetRule sets the "rule" field.
-func (puo *PolyUpdateOne) SetRule(s string) *PolyUpdateOne {
-	puo.mutation.SetRule(s)
-	return puo
-}
-
-// SetNillableRule sets the "rule" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableRule(s *string) *PolyUpdateOne {
-	if s != nil {
-		puo.SetRule(*s)
-	}
-	return puo
-}
-
 // SetName sets the "name" field.
 func (puo *PolyUpdateOne) SetName(s string) *PolyUpdateOne {
 	puo.mutation.SetName(s)
@@ -303,44 +343,86 @@ func (puo *PolyUpdateOne) SetNillableName(s *string) *PolyUpdateOne {
 	return puo
 }
 
-// SetDesc sets the "desc" field.
-func (puo *PolyUpdateOne) SetDesc(s string) *PolyUpdateOne {
-	puo.mutation.SetDesc(s)
+// SetTitle sets the "title" field.
+func (puo *PolyUpdateOne) SetTitle(s string) *PolyUpdateOne {
+	puo.mutation.SetTitle(s)
 	return puo
 }
 
-// SetNillableDesc sets the "desc" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableDesc(s *string) *PolyUpdateOne {
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableTitle(s *string) *PolyUpdateOne {
 	if s != nil {
-		puo.SetDesc(*s)
+		puo.SetTitle(*s)
 	}
 	return puo
 }
 
-// SetStartTime sets the "start_time" field.
-func (puo *PolyUpdateOne) SetStartTime(t time.Time) *PolyUpdateOne {
-	puo.mutation.SetStartTime(t)
+// SetMemo sets the "memo" field.
+func (puo *PolyUpdateOne) SetMemo(s string) *PolyUpdateOne {
+	puo.mutation.SetMemo(s)
 	return puo
 }
 
-// SetNillableStartTime sets the "start_time" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableStartTime(t *time.Time) *PolyUpdateOne {
-	if t != nil {
-		puo.SetStartTime(*t)
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableMemo(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetMemo(*s)
 	}
 	return puo
 }
 
-// SetEndTime sets the "end_time" field.
-func (puo *PolyUpdateOne) SetEndTime(t time.Time) *PolyUpdateOne {
-	puo.mutation.SetEndTime(t)
+// SetMenkan sets the "menkan" field.
+func (puo *PolyUpdateOne) SetMenkan(s string) *PolyUpdateOne {
+	puo.mutation.SetMenkan(s)
 	return puo
 }
 
-// SetNillableEndTime sets the "end_time" field if the given value is not nil.
-func (puo *PolyUpdateOne) SetNillableEndTime(t *time.Time) *PolyUpdateOne {
-	if t != nil {
-		puo.SetEndTime(*t)
+// SetNillableMenkan sets the "menkan" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableMenkan(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetMenkan(*s)
+	}
+	return puo
+}
+
+// SetFafang sets the "fafang" field.
+func (puo *PolyUpdateOne) SetFafang(s string) *PolyUpdateOne {
+	puo.mutation.SetFafang(s)
+	return puo
+}
+
+// SetNillableFafang sets the "fafang" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableFafang(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetFafang(*s)
+	}
+	return puo
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (puo *PolyUpdateOne) SetXiaoqi(s string) *PolyUpdateOne {
+	puo.mutation.SetXiaoqi(s)
+	return puo
+}
+
+// SetNillableXiaoqi sets the "xiaoqi" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableXiaoqi(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetXiaoqi(*s)
+	}
+	return puo
+}
+
+// SetShiyong sets the "shiyong" field.
+func (puo *PolyUpdateOne) SetShiyong(s string) *PolyUpdateOne {
+	puo.mutation.SetShiyong(s)
+	return puo
+}
+
+// SetNillableShiyong sets the "shiyong" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableShiyong(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetShiyong(*s)
 	}
 	return puo
 }
@@ -443,19 +525,39 @@ func (puo *PolyUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *PolyUpdateOne) check() error {
-	if v, ok := puo.mutation.Rule(); ok {
-		if err := poly.RuleValidator(v); err != nil {
-			return &ValidationError{Name: "rule", err: fmt.Errorf(`ent: validator failed for field "Poly.rule": %w`, err)}
-		}
-	}
 	if v, ok := puo.mutation.Name(); ok {
 		if err := poly.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Poly.name": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.Desc(); ok {
-		if err := poly.DescValidator(v); err != nil {
-			return &ValidationError{Name: "desc", err: fmt.Errorf(`ent: validator failed for field "Poly.desc": %w`, err)}
+	if v, ok := puo.mutation.Title(); ok {
+		if err := poly.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Poly.title": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Memo(); ok {
+		if err := poly.MemoValidator(v); err != nil {
+			return &ValidationError{Name: "memo", err: fmt.Errorf(`ent: validator failed for field "Poly.memo": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Menkan(); ok {
+		if err := poly.MenkanValidator(v); err != nil {
+			return &ValidationError{Name: "menkan", err: fmt.Errorf(`ent: validator failed for field "Poly.menkan": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Fafang(); ok {
+		if err := poly.FafangValidator(v); err != nil {
+			return &ValidationError{Name: "fafang", err: fmt.Errorf(`ent: validator failed for field "Poly.fafang": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Xiaoqi(); ok {
+		if err := poly.XiaoqiValidator(v); err != nil {
+			return &ValidationError{Name: "xiaoqi", err: fmt.Errorf(`ent: validator failed for field "Poly.xiaoqi": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Shiyong(); ok {
+		if err := poly.ShiyongValidator(v); err != nil {
+			return &ValidationError{Name: "shiyong", err: fmt.Errorf(`ent: validator failed for field "Poly.shiyong": %w`, err)}
 		}
 	}
 	return nil
@@ -465,7 +567,7 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	if err := puo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(poly.Table, poly.Columns, sqlgraph.NewFieldSpec(poly.FieldID, field.TypeUUID))
 	id, ok := puo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Poly.id" for update`)}
@@ -493,20 +595,26 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	if value, ok := puo.mutation.UpdateTime(); ok {
 		_spec.SetField(poly.FieldUpdateTime, field.TypeTime, value)
 	}
-	if value, ok := puo.mutation.Rule(); ok {
-		_spec.SetField(poly.FieldRule, field.TypeString, value)
-	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(poly.FieldName, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.Desc(); ok {
-		_spec.SetField(poly.FieldDesc, field.TypeString, value)
+	if value, ok := puo.mutation.Title(); ok {
+		_spec.SetField(poly.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.StartTime(); ok {
-		_spec.SetField(poly.FieldStartTime, field.TypeTime, value)
+	if value, ok := puo.mutation.Memo(); ok {
+		_spec.SetField(poly.FieldMemo, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.EndTime(); ok {
-		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
+	if value, ok := puo.mutation.Menkan(); ok {
+		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Fafang(); ok {
+		_spec.SetField(poly.FieldFafang, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Xiaoqi(); ok {
+		_spec.SetField(poly.FieldXiaoqi, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Shiyong(); ok {
+		_spec.SetField(poly.FieldShiyong, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.Status(); ok {
 		_spec.SetField(poly.FieldStatus, field.TypeInt32, value)

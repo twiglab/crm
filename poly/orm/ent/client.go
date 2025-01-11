@@ -9,6 +9,7 @@ import (
 	"log"
 	"reflect"
 
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/migrate"
 
 	"entgo.io/ent"
@@ -259,7 +260,7 @@ func (c *PolyClient) UpdateOne(po *Poly) *PolyUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *PolyClient) UpdateOneID(id int) *PolyUpdateOne {
+func (c *PolyClient) UpdateOneID(id uuid.UUID) *PolyUpdateOne {
 	mutation := newPolyMutation(c.config, OpUpdateOne, withPolyID(id))
 	return &PolyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -276,7 +277,7 @@ func (c *PolyClient) DeleteOne(po *Poly) *PolyDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *PolyClient) DeleteOneID(id int) *PolyDeleteOne {
+func (c *PolyClient) DeleteOneID(id uuid.UUID) *PolyDeleteOne {
 	builder := c.Delete().Where(poly.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -293,12 +294,12 @@ func (c *PolyClient) Query() *PolyQuery {
 }
 
 // Get returns a Poly entity by its id.
-func (c *PolyClient) Get(ctx context.Context, id int) (*Poly, error) {
+func (c *PolyClient) Get(ctx context.Context, id uuid.UUID) (*Poly, error) {
 	return c.Query().Where(poly.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *PolyClient) GetX(ctx context.Context, id int) *Poly {
+func (c *PolyClient) GetX(ctx context.Context, id uuid.UUID) *Poly {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

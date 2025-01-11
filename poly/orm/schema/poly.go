@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
@@ -8,6 +10,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/psdk/code"
 )
 
@@ -17,6 +20,10 @@ type Poly struct {
 
 func (Poly) Fields() []ent.Field {
 	return []ent.Field{
+		field.UUID("id", uuid.Nil).
+			Default(uuid.New).
+			Immutable().
+			Unique(),
 
 		field.String("code").
 			MaxLen(36).
@@ -40,16 +47,6 @@ func (Poly) Fields() []ent.Field {
 				dialect.SQLite:   "char(36)", // Override Postgres.
 			}),
 
-		// 规则code
-		field.String("rule").
-			MaxLen(36).
-			NotEmpty().
-			SchemaType(map[string]string{
-				dialect.MySQL:    "char(36)", // Override MySQL.
-				dialect.Postgres: "char(36)", // Override Postgres.
-				dialect.SQLite:   "char(36)", // Override Postgres.
-			}),
-
 		// 活动名称
 		field.String("name").
 			MaxLen(64).
@@ -60,16 +57,73 @@ func (Poly) Fields() []ent.Field {
 				dialect.SQLite:   "varchar(64)", // Override Postgres.
 			}),
 
+		// 用于标签或者列表显示
+		field.String("title").
+			MaxLen(64).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(64)", // Override MySQL.
+				dialect.Postgres: "varchar(64)", // Override Postgres.
+				dialect.SQLite:   "varchar(64)", // Override Postgres.
+			}),
+
 		// 活动描述
-		field.String("desc").NotEmpty(),
+		field.String("memo").
+			MaxLen(512).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(512)", // Override MySQL.
+				dialect.Postgres: "varchar(512)", // Override Postgres.
+				dialect.SQLite:   "varchar(512)", // Override Postgres.
+			}),
 
 		// 活动开始时间
-		field.Time("start_time"),
+		field.Time("start_time").Default(time.Now).Immutable(),
 		// 活动结束时间
 
-		field.Time("end_time"),
+		field.Time("end_time").Default(time.Now).Immutable(),
 
-		// 活动状态 （1:等待审批 2：未开启   3：已开启   4：已结束   5：已废弃）
+		// 门槛规则
+		field.String("menkan").
+			MaxLen(512).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(512)", // Override MySQL.
+				dialect.Postgres: "char(512)", // Override Postgres.
+				dialect.SQLite:   "char(512)", // Override Postgres.
+			}),
+
+		// 发放规则
+		field.String("fafang").
+			MaxLen(512).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(512)", // Override MySQL.
+				dialect.Postgres: "char(512)", // Override Postgres.
+				dialect.SQLite:   "char(512)", // Override Postgres.
+			}),
+
+		// 有效期规则
+		field.String("xiaoqi").
+			MaxLen(512).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(512)", // Override MySQL.
+				dialect.Postgres: "char(512)", // Override Postgres.
+				dialect.SQLite:   "char(512)", // Override Postgres.
+			}),
+
+		// 使用规则
+		field.String("shiyong").
+			MaxLen(512).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "char(512)", // Override MySQL.
+				dialect.Postgres: "char(512)", // Override Postgres.
+				dialect.SQLite:   "char(512)", // Override Postgres.
+			}),
+
+		// 活动状态
 		field.Int32("status").Default(1),
 
 		// 活动类型 (预设字段，后续结合业务拓展)

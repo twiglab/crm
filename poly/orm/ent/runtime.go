@@ -5,6 +5,7 @@ package ent
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/schema"
 )
@@ -29,7 +30,7 @@ func init() {
 	// poly.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	poly.UpdateDefaultUpdateTime = polyDescUpdateTime.UpdateDefault.(func() time.Time)
 	// polyDescCode is the schema descriptor for code field.
-	polyDescCode := polyFields[0].Descriptor()
+	polyDescCode := polyFields[1].Descriptor()
 	// poly.DefaultCode holds the default value on creation for the code field.
 	poly.DefaultCode = polyDescCode.Default.(func() string)
 	// poly.CodeValidator is a validator for the "code" field. It is called by the builders before save.
@@ -49,7 +50,7 @@ func init() {
 		}
 	}()
 	// polyDescMallCode is the schema descriptor for mall_code field.
-	polyDescMallCode := polyFields[1].Descriptor()
+	polyDescMallCode := polyFields[2].Descriptor()
 	// poly.MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
 	poly.MallCodeValidator = func() func(string) error {
 		validators := polyDescMallCode.Validators
@@ -60,24 +61,6 @@ func init() {
 		return func(mall_code string) error {
 			for _, fn := range fns {
 				if err := fn(mall_code); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// polyDescRule is the schema descriptor for rule field.
-	polyDescRule := polyFields[2].Descriptor()
-	// poly.RuleValidator is a validator for the "rule" field. It is called by the builders before save.
-	poly.RuleValidator = func() func(string) error {
-		validators := polyDescRule.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(rule string) error {
-			for _, fn := range fns {
-				if err := fn(rule); err != nil {
 					return err
 				}
 			}
@@ -102,16 +85,132 @@ func init() {
 			return nil
 		}
 	}()
-	// polyDescDesc is the schema descriptor for desc field.
-	polyDescDesc := polyFields[4].Descriptor()
-	// poly.DescValidator is a validator for the "desc" field. It is called by the builders before save.
-	poly.DescValidator = polyDescDesc.Validators[0].(func(string) error)
+	// polyDescTitle is the schema descriptor for title field.
+	polyDescTitle := polyFields[4].Descriptor()
+	// poly.TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	poly.TitleValidator = func() func(string) error {
+		validators := polyDescTitle.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(title string) error {
+			for _, fn := range fns {
+				if err := fn(title); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescMemo is the schema descriptor for memo field.
+	polyDescMemo := polyFields[5].Descriptor()
+	// poly.MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	poly.MemoValidator = func() func(string) error {
+		validators := polyDescMemo.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(memo string) error {
+			for _, fn := range fns {
+				if err := fn(memo); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescStartTime is the schema descriptor for start_time field.
+	polyDescStartTime := polyFields[6].Descriptor()
+	// poly.DefaultStartTime holds the default value on creation for the start_time field.
+	poly.DefaultStartTime = polyDescStartTime.Default.(func() time.Time)
+	// polyDescEndTime is the schema descriptor for end_time field.
+	polyDescEndTime := polyFields[7].Descriptor()
+	// poly.DefaultEndTime holds the default value on creation for the end_time field.
+	poly.DefaultEndTime = polyDescEndTime.Default.(func() time.Time)
+	// polyDescMenkan is the schema descriptor for menkan field.
+	polyDescMenkan := polyFields[8].Descriptor()
+	// poly.MenkanValidator is a validator for the "menkan" field. It is called by the builders before save.
+	poly.MenkanValidator = func() func(string) error {
+		validators := polyDescMenkan.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(menkan string) error {
+			for _, fn := range fns {
+				if err := fn(menkan); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescFafang is the schema descriptor for fafang field.
+	polyDescFafang := polyFields[9].Descriptor()
+	// poly.FafangValidator is a validator for the "fafang" field. It is called by the builders before save.
+	poly.FafangValidator = func() func(string) error {
+		validators := polyDescFafang.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(fafang string) error {
+			for _, fn := range fns {
+				if err := fn(fafang); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescXiaoqi is the schema descriptor for xiaoqi field.
+	polyDescXiaoqi := polyFields[10].Descriptor()
+	// poly.XiaoqiValidator is a validator for the "xiaoqi" field. It is called by the builders before save.
+	poly.XiaoqiValidator = func() func(string) error {
+		validators := polyDescXiaoqi.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(xiaoqi string) error {
+			for _, fn := range fns {
+				if err := fn(xiaoqi); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// polyDescShiyong is the schema descriptor for shiyong field.
+	polyDescShiyong := polyFields[11].Descriptor()
+	// poly.ShiyongValidator is a validator for the "shiyong" field. It is called by the builders before save.
+	poly.ShiyongValidator = func() func(string) error {
+		validators := polyDescShiyong.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(shiyong string) error {
+			for _, fn := range fns {
+				if err := fn(shiyong); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// polyDescStatus is the schema descriptor for status field.
-	polyDescStatus := polyFields[7].Descriptor()
+	polyDescStatus := polyFields[12].Descriptor()
 	// poly.DefaultStatus holds the default value on creation for the status field.
 	poly.DefaultStatus = polyDescStatus.Default.(int32)
 	// polyDescType is the schema descriptor for type field.
-	polyDescType := polyFields[8].Descriptor()
+	polyDescType := polyFields[13].Descriptor()
 	// poly.DefaultType holds the default value on creation for the type field.
 	poly.DefaultType = polyDescType.Default.(int32)
+	// polyDescID is the schema descriptor for id field.
+	polyDescID := polyFields[0].Descriptor()
+	// poly.DefaultID holds the default value on creation for the id field.
+	poly.DefaultID = polyDescID.Default.(func() uuid.UUID)
 }

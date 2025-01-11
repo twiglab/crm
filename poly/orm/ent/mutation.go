@@ -11,6 +11,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 	"github.com/twiglab/crm/poly/orm/ent/predicate"
 )
@@ -32,16 +33,20 @@ type PolyMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *int
+	id            *uuid.UUID
 	create_time   *time.Time
 	update_time   *time.Time
 	code          *string
 	mall_code     *string
-	rule          *string
 	name          *string
-	desc          *string
+	title         *string
+	memo          *string
 	start_time    *time.Time
 	end_time      *time.Time
+	menkan        *string
+	fafang        *string
+	xiaoqi        *string
+	shiyong       *string
 	status        *int32
 	addstatus     *int32
 	_type         *int32
@@ -72,7 +77,7 @@ func newPolyMutation(c config, op Op, opts ...polyOption) *PolyMutation {
 }
 
 // withPolyID sets the ID field of the mutation.
-func withPolyID(id int) polyOption {
+func withPolyID(id uuid.UUID) polyOption {
 	return func(m *PolyMutation) {
 		var (
 			err   error
@@ -122,9 +127,15 @@ func (m PolyMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Poly entities.
+func (m *PolyMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *PolyMutation) ID() (id int, exists bool) {
+func (m *PolyMutation) ID() (id uuid.UUID, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -135,12 +146,12 @@ func (m *PolyMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *PolyMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *PolyMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
 		if exists {
-			return []int{id}, nil
+			return []uuid.UUID{id}, nil
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
@@ -294,42 +305,6 @@ func (m *PolyMutation) ResetMallCode() {
 	m.mall_code = nil
 }
 
-// SetRule sets the "rule" field.
-func (m *PolyMutation) SetRule(s string) {
-	m.rule = &s
-}
-
-// Rule returns the value of the "rule" field in the mutation.
-func (m *PolyMutation) Rule() (r string, exists bool) {
-	v := m.rule
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRule returns the old "rule" field's value of the Poly entity.
-// If the Poly object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldRule(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRule is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRule requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRule: %w", err)
-	}
-	return oldValue.Rule, nil
-}
-
-// ResetRule resets all changes to the "rule" field.
-func (m *PolyMutation) ResetRule() {
-	m.rule = nil
-}
-
 // SetName sets the "name" field.
 func (m *PolyMutation) SetName(s string) {
 	m.name = &s
@@ -366,40 +341,76 @@ func (m *PolyMutation) ResetName() {
 	m.name = nil
 }
 
-// SetDesc sets the "desc" field.
-func (m *PolyMutation) SetDesc(s string) {
-	m.desc = &s
+// SetTitle sets the "title" field.
+func (m *PolyMutation) SetTitle(s string) {
+	m.title = &s
 }
 
-// Desc returns the value of the "desc" field in the mutation.
-func (m *PolyMutation) Desc() (r string, exists bool) {
-	v := m.desc
+// Title returns the value of the "title" field in the mutation.
+func (m *PolyMutation) Title() (r string, exists bool) {
+	v := m.title
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDesc returns the old "desc" field's value of the Poly entity.
+// OldTitle returns the old "title" field's value of the Poly entity.
 // If the Poly object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PolyMutation) OldDesc(ctx context.Context) (v string, err error) {
+func (m *PolyMutation) OldTitle(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDesc is only allowed on UpdateOne operations")
+		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDesc requires an ID field in the mutation")
+		return v, errors.New("OldTitle requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDesc: %w", err)
+		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
 	}
-	return oldValue.Desc, nil
+	return oldValue.Title, nil
 }
 
-// ResetDesc resets all changes to the "desc" field.
-func (m *PolyMutation) ResetDesc() {
-	m.desc = nil
+// ResetTitle resets all changes to the "title" field.
+func (m *PolyMutation) ResetTitle() {
+	m.title = nil
+}
+
+// SetMemo sets the "memo" field.
+func (m *PolyMutation) SetMemo(s string) {
+	m.memo = &s
+}
+
+// Memo returns the value of the "memo" field in the mutation.
+func (m *PolyMutation) Memo() (r string, exists bool) {
+	v := m.memo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemo returns the old "memo" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldMemo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMemo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMemo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemo: %w", err)
+	}
+	return oldValue.Memo, nil
+}
+
+// ResetMemo resets all changes to the "memo" field.
+func (m *PolyMutation) ResetMemo() {
+	m.memo = nil
 }
 
 // SetStartTime sets the "start_time" field.
@@ -472,6 +483,150 @@ func (m *PolyMutation) OldEndTime(ctx context.Context) (v time.Time, err error) 
 // ResetEndTime resets all changes to the "end_time" field.
 func (m *PolyMutation) ResetEndTime() {
 	m.end_time = nil
+}
+
+// SetMenkan sets the "menkan" field.
+func (m *PolyMutation) SetMenkan(s string) {
+	m.menkan = &s
+}
+
+// Menkan returns the value of the "menkan" field in the mutation.
+func (m *PolyMutation) Menkan() (r string, exists bool) {
+	v := m.menkan
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMenkan returns the old "menkan" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldMenkan(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMenkan is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMenkan requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMenkan: %w", err)
+	}
+	return oldValue.Menkan, nil
+}
+
+// ResetMenkan resets all changes to the "menkan" field.
+func (m *PolyMutation) ResetMenkan() {
+	m.menkan = nil
+}
+
+// SetFafang sets the "fafang" field.
+func (m *PolyMutation) SetFafang(s string) {
+	m.fafang = &s
+}
+
+// Fafang returns the value of the "fafang" field in the mutation.
+func (m *PolyMutation) Fafang() (r string, exists bool) {
+	v := m.fafang
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFafang returns the old "fafang" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldFafang(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFafang is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFafang requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFafang: %w", err)
+	}
+	return oldValue.Fafang, nil
+}
+
+// ResetFafang resets all changes to the "fafang" field.
+func (m *PolyMutation) ResetFafang() {
+	m.fafang = nil
+}
+
+// SetXiaoqi sets the "xiaoqi" field.
+func (m *PolyMutation) SetXiaoqi(s string) {
+	m.xiaoqi = &s
+}
+
+// Xiaoqi returns the value of the "xiaoqi" field in the mutation.
+func (m *PolyMutation) Xiaoqi() (r string, exists bool) {
+	v := m.xiaoqi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldXiaoqi returns the old "xiaoqi" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldXiaoqi(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldXiaoqi is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldXiaoqi requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldXiaoqi: %w", err)
+	}
+	return oldValue.Xiaoqi, nil
+}
+
+// ResetXiaoqi resets all changes to the "xiaoqi" field.
+func (m *PolyMutation) ResetXiaoqi() {
+	m.xiaoqi = nil
+}
+
+// SetShiyong sets the "shiyong" field.
+func (m *PolyMutation) SetShiyong(s string) {
+	m.shiyong = &s
+}
+
+// Shiyong returns the value of the "shiyong" field in the mutation.
+func (m *PolyMutation) Shiyong() (r string, exists bool) {
+	v := m.shiyong
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShiyong returns the old "shiyong" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldShiyong(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShiyong is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShiyong requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShiyong: %w", err)
+	}
+	return oldValue.Shiyong, nil
+}
+
+// ResetShiyong resets all changes to the "shiyong" field.
+func (m *PolyMutation) ResetShiyong() {
+	m.shiyong = nil
 }
 
 // SetStatus sets the "status" field.
@@ -620,7 +775,7 @@ func (m *PolyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PolyMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 15)
 	if m.create_time != nil {
 		fields = append(fields, poly.FieldCreateTime)
 	}
@@ -633,20 +788,32 @@ func (m *PolyMutation) Fields() []string {
 	if m.mall_code != nil {
 		fields = append(fields, poly.FieldMallCode)
 	}
-	if m.rule != nil {
-		fields = append(fields, poly.FieldRule)
-	}
 	if m.name != nil {
 		fields = append(fields, poly.FieldName)
 	}
-	if m.desc != nil {
-		fields = append(fields, poly.FieldDesc)
+	if m.title != nil {
+		fields = append(fields, poly.FieldTitle)
+	}
+	if m.memo != nil {
+		fields = append(fields, poly.FieldMemo)
 	}
 	if m.start_time != nil {
 		fields = append(fields, poly.FieldStartTime)
 	}
 	if m.end_time != nil {
 		fields = append(fields, poly.FieldEndTime)
+	}
+	if m.menkan != nil {
+		fields = append(fields, poly.FieldMenkan)
+	}
+	if m.fafang != nil {
+		fields = append(fields, poly.FieldFafang)
+	}
+	if m.xiaoqi != nil {
+		fields = append(fields, poly.FieldXiaoqi)
+	}
+	if m.shiyong != nil {
+		fields = append(fields, poly.FieldShiyong)
 	}
 	if m.status != nil {
 		fields = append(fields, poly.FieldStatus)
@@ -670,16 +837,24 @@ func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case poly.FieldMallCode:
 		return m.MallCode()
-	case poly.FieldRule:
-		return m.Rule()
 	case poly.FieldName:
 		return m.Name()
-	case poly.FieldDesc:
-		return m.Desc()
+	case poly.FieldTitle:
+		return m.Title()
+	case poly.FieldMemo:
+		return m.Memo()
 	case poly.FieldStartTime:
 		return m.StartTime()
 	case poly.FieldEndTime:
 		return m.EndTime()
+	case poly.FieldMenkan:
+		return m.Menkan()
+	case poly.FieldFafang:
+		return m.Fafang()
+	case poly.FieldXiaoqi:
+		return m.Xiaoqi()
+	case poly.FieldShiyong:
+		return m.Shiyong()
 	case poly.FieldStatus:
 		return m.Status()
 	case poly.FieldType:
@@ -701,16 +876,24 @@ func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCode(ctx)
 	case poly.FieldMallCode:
 		return m.OldMallCode(ctx)
-	case poly.FieldRule:
-		return m.OldRule(ctx)
 	case poly.FieldName:
 		return m.OldName(ctx)
-	case poly.FieldDesc:
-		return m.OldDesc(ctx)
+	case poly.FieldTitle:
+		return m.OldTitle(ctx)
+	case poly.FieldMemo:
+		return m.OldMemo(ctx)
 	case poly.FieldStartTime:
 		return m.OldStartTime(ctx)
 	case poly.FieldEndTime:
 		return m.OldEndTime(ctx)
+	case poly.FieldMenkan:
+		return m.OldMenkan(ctx)
+	case poly.FieldFafang:
+		return m.OldFafang(ctx)
+	case poly.FieldXiaoqi:
+		return m.OldXiaoqi(ctx)
+	case poly.FieldShiyong:
+		return m.OldShiyong(ctx)
 	case poly.FieldStatus:
 		return m.OldStatus(ctx)
 	case poly.FieldType:
@@ -752,13 +935,6 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMallCode(v)
 		return nil
-	case poly.FieldRule:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRule(v)
-		return nil
 	case poly.FieldName:
 		v, ok := value.(string)
 		if !ok {
@@ -766,12 +942,19 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case poly.FieldDesc:
+	case poly.FieldTitle:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDesc(v)
+		m.SetTitle(v)
+		return nil
+	case poly.FieldMemo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemo(v)
 		return nil
 	case poly.FieldStartTime:
 		v, ok := value.(time.Time)
@@ -786,6 +969,34 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEndTime(v)
+		return nil
+	case poly.FieldMenkan:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMenkan(v)
+		return nil
+	case poly.FieldFafang:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFafang(v)
+		return nil
+	case poly.FieldXiaoqi:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetXiaoqi(v)
+		return nil
+	case poly.FieldShiyong:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShiyong(v)
 		return nil
 	case poly.FieldStatus:
 		v, ok := value.(int32)
@@ -889,20 +1100,32 @@ func (m *PolyMutation) ResetField(name string) error {
 	case poly.FieldMallCode:
 		m.ResetMallCode()
 		return nil
-	case poly.FieldRule:
-		m.ResetRule()
-		return nil
 	case poly.FieldName:
 		m.ResetName()
 		return nil
-	case poly.FieldDesc:
-		m.ResetDesc()
+	case poly.FieldTitle:
+		m.ResetTitle()
+		return nil
+	case poly.FieldMemo:
+		m.ResetMemo()
 		return nil
 	case poly.FieldStartTime:
 		m.ResetStartTime()
 		return nil
 	case poly.FieldEndTime:
 		m.ResetEndTime()
+		return nil
+	case poly.FieldMenkan:
+		m.ResetMenkan()
+		return nil
+	case poly.FieldFafang:
+		m.ResetFafang()
+		return nil
+	case poly.FieldXiaoqi:
+		m.ResetXiaoqi()
+		return nil
+	case poly.FieldShiyong:
+		m.ResetShiyong()
 		return nil
 	case poly.FieldStatus:
 		m.ResetStatus()

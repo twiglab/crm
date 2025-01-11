@@ -11,16 +11,20 @@ import (
 var (
 	// TPolyColumns holds the columns for the "t_poly" table.
 	TPolyColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "mall_code", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
-		{Name: "rule", Type: field.TypeString, Size: 36, SchemaType: map[string]string{"mysql": "char(36)", "postgres": "char(36)", "sqlite3": "char(36)"}},
 		{Name: "name", Type: field.TypeString, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
-		{Name: "desc", Type: field.TypeString},
+		{Name: "title", Type: field.TypeString, Size: 64, SchemaType: map[string]string{"mysql": "varchar(64)", "postgres": "varchar(64)", "sqlite3": "varchar(64)"}},
+		{Name: "memo", Type: field.TypeString, Size: 512, SchemaType: map[string]string{"mysql": "varchar(512)", "postgres": "varchar(512)", "sqlite3": "varchar(512)"}},
 		{Name: "start_time", Type: field.TypeTime},
 		{Name: "end_time", Type: field.TypeTime},
+		{Name: "menkan", Type: field.TypeString, Size: 512, SchemaType: map[string]string{"mysql": "char(512)", "postgres": "char(512)", "sqlite3": "char(512)"}},
+		{Name: "fafang", Type: field.TypeString, Size: 512, SchemaType: map[string]string{"mysql": "char(512)", "postgres": "char(512)", "sqlite3": "char(512)"}},
+		{Name: "xiaoqi", Type: field.TypeString, Size: 512, SchemaType: map[string]string{"mysql": "char(512)", "postgres": "char(512)", "sqlite3": "char(512)"}},
+		{Name: "shiyong", Type: field.TypeString, Size: 512, SchemaType: map[string]string{"mysql": "char(512)", "postgres": "char(512)", "sqlite3": "char(512)"}},
 		{Name: "status", Type: field.TypeInt32, Default: 1},
 		{Name: "type", Type: field.TypeInt32, Default: 1},
 	}

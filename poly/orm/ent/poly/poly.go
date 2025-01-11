@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 )
 
 const (
@@ -21,16 +22,24 @@ const (
 	FieldCode = "code"
 	// FieldMallCode holds the string denoting the mall_code field in the database.
 	FieldMallCode = "mall_code"
-	// FieldRule holds the string denoting the rule field in the database.
-	FieldRule = "rule"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldDesc holds the string denoting the desc field in the database.
-	FieldDesc = "desc"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
+	// FieldMemo holds the string denoting the memo field in the database.
+	FieldMemo = "memo"
 	// FieldStartTime holds the string denoting the start_time field in the database.
 	FieldStartTime = "start_time"
 	// FieldEndTime holds the string denoting the end_time field in the database.
 	FieldEndTime = "end_time"
+	// FieldMenkan holds the string denoting the menkan field in the database.
+	FieldMenkan = "menkan"
+	// FieldFafang holds the string denoting the fafang field in the database.
+	FieldFafang = "fafang"
+	// FieldXiaoqi holds the string denoting the xiaoqi field in the database.
+	FieldXiaoqi = "xiaoqi"
+	// FieldShiyong holds the string denoting the shiyong field in the database.
+	FieldShiyong = "shiyong"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldType holds the string denoting the type field in the database.
@@ -46,11 +55,15 @@ var Columns = []string{
 	FieldUpdateTime,
 	FieldCode,
 	FieldMallCode,
-	FieldRule,
 	FieldName,
-	FieldDesc,
+	FieldTitle,
+	FieldMemo,
 	FieldStartTime,
 	FieldEndTime,
+	FieldMenkan,
+	FieldFafang,
+	FieldXiaoqi,
+	FieldShiyong,
 	FieldStatus,
 	FieldType,
 }
@@ -78,16 +91,30 @@ var (
 	CodeValidator func(string) error
 	// MallCodeValidator is a validator for the "mall_code" field. It is called by the builders before save.
 	MallCodeValidator func(string) error
-	// RuleValidator is a validator for the "rule" field. It is called by the builders before save.
-	RuleValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// DescValidator is a validator for the "desc" field. It is called by the builders before save.
-	DescValidator func(string) error
+	// TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	TitleValidator func(string) error
+	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	MemoValidator func(string) error
+	// DefaultStartTime holds the default value on creation for the "start_time" field.
+	DefaultStartTime func() time.Time
+	// DefaultEndTime holds the default value on creation for the "end_time" field.
+	DefaultEndTime func() time.Time
+	// MenkanValidator is a validator for the "menkan" field. It is called by the builders before save.
+	MenkanValidator func(string) error
+	// FafangValidator is a validator for the "fafang" field. It is called by the builders before save.
+	FafangValidator func(string) error
+	// XiaoqiValidator is a validator for the "xiaoqi" field. It is called by the builders before save.
+	XiaoqiValidator func(string) error
+	// ShiyongValidator is a validator for the "shiyong" field. It is called by the builders before save.
+	ShiyongValidator func(string) error
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int32
 	// DefaultType holds the default value on creation for the "type" field.
 	DefaultType int32
+	// DefaultID holds the default value on creation for the "id" field.
+	DefaultID func() uuid.UUID
 )
 
 // OrderOption defines the ordering options for the Poly queries.
@@ -118,19 +145,19 @@ func ByMallCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMallCode, opts...).ToFunc()
 }
 
-// ByRule orders the results by the rule field.
-func ByRule(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRule, opts...).ToFunc()
-}
-
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByDesc orders the results by the desc field.
-func ByDesc(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDesc, opts...).ToFunc()
+// ByTitle orders the results by the title field.
+func ByTitle(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTitle, opts...).ToFunc()
+}
+
+// ByMemo orders the results by the memo field.
+func ByMemo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMemo, opts...).ToFunc()
 }
 
 // ByStartTime orders the results by the start_time field.
@@ -141,6 +168,26 @@ func ByStartTime(opts ...sql.OrderTermOption) OrderOption {
 // ByEndTime orders the results by the end_time field.
 func ByEndTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEndTime, opts...).ToFunc()
+}
+
+// ByMenkan orders the results by the menkan field.
+func ByMenkan(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMenkan, opts...).ToFunc()
+}
+
+// ByFafang orders the results by the fafang field.
+func ByFafang(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFafang, opts...).ToFunc()
+}
+
+// ByXiaoqi orders the results by the xiaoqi field.
+func ByXiaoqi(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldXiaoqi, opts...).ToFunc()
+}
+
+// ByShiyong orders the results by the shiyong field.
+func ByShiyong(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldShiyong, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

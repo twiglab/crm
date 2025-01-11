@@ -22,7 +22,7 @@ type Member struct {
 func (Member) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.Nil).
-			Default(code.NewV7).
+			Default(uuid.New).
 			Immutable().
 			Unique(),
 

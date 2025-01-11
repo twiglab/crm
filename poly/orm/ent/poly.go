@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/google/uuid"
 	"github.com/twiglab/crm/poly/orm/ent/poly"
 )
 
@@ -16,7 +17,7 @@ import (
 type Poly struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
 	CreateTime time.Time `json:"create_time,omitempty"`
 	// UpdateTime holds the value of the "update_time" field.
@@ -25,16 +26,24 @@ type Poly struct {
 	Code string `json:"code,omitempty"`
 	// MallCode holds the value of the "mall_code" field.
 	MallCode string `json:"mall_code,omitempty"`
-	// Rule holds the value of the "rule" field.
-	Rule string `json:"rule,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// Desc holds the value of the "desc" field.
-	Desc string `json:"desc,omitempty"`
+	// Title holds the value of the "title" field.
+	Title string `json:"title,omitempty"`
+	// Memo holds the value of the "memo" field.
+	Memo string `json:"memo,omitempty"`
 	// StartTime holds the value of the "start_time" field.
 	StartTime time.Time `json:"start_time,omitempty"`
 	// EndTime holds the value of the "end_time" field.
 	EndTime time.Time `json:"end_time,omitempty"`
+	// Menkan holds the value of the "menkan" field.
+	Menkan string `json:"menkan,omitempty"`
+	// Fafang holds the value of the "fafang" field.
+	Fafang string `json:"fafang,omitempty"`
+	// Xiaoqi holds the value of the "xiaoqi" field.
+	Xiaoqi string `json:"xiaoqi,omitempty"`
+	// Shiyong holds the value of the "shiyong" field.
+	Shiyong string `json:"shiyong,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int32 `json:"status,omitempty"`
 	// Type holds the value of the "type" field.
@@ -47,12 +56,14 @@ func (*Poly) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case poly.FieldID, poly.FieldStatus, poly.FieldType:
+		case poly.FieldStatus, poly.FieldType:
 			values[i] = new(sql.NullInt64)
-		case poly.FieldCode, poly.FieldMallCode, poly.FieldRule, poly.FieldName, poly.FieldDesc:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldName, poly.FieldTitle, poly.FieldMemo, poly.FieldMenkan, poly.FieldFafang, poly.FieldXiaoqi, poly.FieldShiyong:
 			values[i] = new(sql.NullString)
 		case poly.FieldCreateTime, poly.FieldUpdateTime, poly.FieldStartTime, poly.FieldEndTime:
 			values[i] = new(sql.NullTime)
+		case poly.FieldID:
+			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -69,11 +80,11 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case poly.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				po.ID = *value
 			}
-			po.ID = int(value.Int64)
 		case poly.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field create_time", values[i])
@@ -98,23 +109,23 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				po.MallCode = value.String
 			}
-		case poly.FieldRule:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field rule", values[i])
-			} else if value.Valid {
-				po.Rule = value.String
-			}
 		case poly.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				po.Name = value.String
 			}
-		case poly.FieldDesc:
+		case poly.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field desc", values[i])
+				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
-				po.Desc = value.String
+				po.Title = value.String
+			}
+		case poly.FieldMemo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field memo", values[i])
+			} else if value.Valid {
+				po.Memo = value.String
 			}
 		case poly.FieldStartTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -127,6 +138,30 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field end_time", values[i])
 			} else if value.Valid {
 				po.EndTime = value.Time
+			}
+		case poly.FieldMenkan:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field menkan", values[i])
+			} else if value.Valid {
+				po.Menkan = value.String
+			}
+		case poly.FieldFafang:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field fafang", values[i])
+			} else if value.Valid {
+				po.Fafang = value.String
+			}
+		case poly.FieldXiaoqi:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field xiaoqi", values[i])
+			} else if value.Valid {
+				po.Xiaoqi = value.String
+			}
+		case poly.FieldShiyong:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field shiyong", values[i])
+			} else if value.Valid {
+				po.Shiyong = value.String
 			}
 		case poly.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -188,20 +223,32 @@ func (po *Poly) String() string {
 	builder.WriteString("mall_code=")
 	builder.WriteString(po.MallCode)
 	builder.WriteString(", ")
-	builder.WriteString("rule=")
-	builder.WriteString(po.Rule)
-	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(po.Name)
 	builder.WriteString(", ")
-	builder.WriteString("desc=")
-	builder.WriteString(po.Desc)
+	builder.WriteString("title=")
+	builder.WriteString(po.Title)
+	builder.WriteString(", ")
+	builder.WriteString("memo=")
+	builder.WriteString(po.Memo)
 	builder.WriteString(", ")
 	builder.WriteString("start_time=")
 	builder.WriteString(po.StartTime.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("end_time=")
 	builder.WriteString(po.EndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("menkan=")
+	builder.WriteString(po.Menkan)
+	builder.WriteString(", ")
+	builder.WriteString("fafang=")
+	builder.WriteString(po.Fafang)
+	builder.WriteString(", ")
+	builder.WriteString("xiaoqi=")
+	builder.WriteString(po.Xiaoqi)
+	builder.WriteString(", ")
+	builder.WriteString("shiyong=")
+	builder.WriteString(po.Shiyong)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", po.Status))
