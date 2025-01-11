@@ -1,0 +1,57 @@
+scalar Int64
+scalar Time
+
+input PolyDetailReq {
+  polyCode: String!
+}
+
+type PolyDetailResp {
+  polyCode: String!
+  mallCode: String!
+
+  title: String!
+  name: String!
+  memo: String!
+  logoPic: String!
+  pic1: String!
+  pic2: String!
+  pic3: String!
+
+  startTime: Time!
+  endTime: Time!
+
+  type: Int!
+}
+
+
+input PolyPageReq {
+  mailCode: String!
+  memberCode: String!
+  last: String
+  limit: Int!
+}
+
+
+type PolyTitlelResp {
+  polyCode: String!
+
+  title: String!
+  name: String!
+  logoPic: String!
+  pic1: String!
+  pic2: String!
+  pic3: String!
+
+  startTime: Time!
+  endTime: Time!
+
+  type: Int!
+}
+
+extend type Query {
+  # 活动详情
+  polyDetail(input: PolyDetailReq!): PolyDetailResp!
+
+  # 活动列表
+  polyPage(input: PolyPageReq!): [PolyTitlelResp!]!
+}

@@ -34,6 +34,10 @@ var schemaGraph = func() *sqlgraph.Schema {
 			poly.FieldMemo:       {Type: field.TypeString, Column: poly.FieldMemo},
 			poly.FieldStartTime:  {Type: field.TypeTime, Column: poly.FieldStartTime},
 			poly.FieldEndTime:    {Type: field.TypeTime, Column: poly.FieldEndTime},
+			poly.FieldLogoPic:    {Type: field.TypeString, Column: poly.FieldLogoPic},
+			poly.FieldPic1:       {Type: field.TypeString, Column: poly.FieldPic1},
+			poly.FieldPic2:       {Type: field.TypeString, Column: poly.FieldPic2},
+			poly.FieldPic3:       {Type: field.TypeString, Column: poly.FieldPic3},
 			poly.FieldMenkan:     {Type: field.TypeString, Column: poly.FieldMenkan},
 			poly.FieldFafang:     {Type: field.TypeString, Column: poly.FieldFafang},
 			poly.FieldXiaoqi:     {Type: field.TypeString, Column: poly.FieldXiaoqi},
@@ -134,6 +138,26 @@ func (f *PolyFilter) WhereStartTime(p entql.TimeP) {
 // WhereEndTime applies the entql time.Time predicate on the end_time field.
 func (f *PolyFilter) WhereEndTime(p entql.TimeP) {
 	f.Where(p.Field(poly.FieldEndTime))
+}
+
+// WhereLogoPic applies the entql string predicate on the logo_pic field.
+func (f *PolyFilter) WhereLogoPic(p entql.StringP) {
+	f.Where(p.Field(poly.FieldLogoPic))
+}
+
+// WherePic1 applies the entql string predicate on the pic1 field.
+func (f *PolyFilter) WherePic1(p entql.StringP) {
+	f.Where(p.Field(poly.FieldPic1))
+}
+
+// WherePic2 applies the entql string predicate on the pic2 field.
+func (f *PolyFilter) WherePic2(p entql.StringP) {
+	f.Where(p.Field(poly.FieldPic2))
+}
+
+// WherePic3 applies the entql string predicate on the pic3 field.
+func (f *PolyFilter) WherePic3(p entql.StringP) {
+	f.Where(p.Field(poly.FieldPic3))
 }
 
 // WhereMenkan applies the entql string predicate on the menkan field.

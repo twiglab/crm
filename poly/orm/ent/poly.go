@@ -36,6 +36,14 @@ type Poly struct {
 	StartTime time.Time `json:"start_time,omitempty"`
 	// EndTime holds the value of the "end_time" field.
 	EndTime time.Time `json:"end_time,omitempty"`
+	// LogoPic holds the value of the "logo_pic" field.
+	LogoPic string `json:"logo_pic,omitempty"`
+	// Pic1 holds the value of the "pic1" field.
+	Pic1 string `json:"pic1,omitempty"`
+	// Pic2 holds the value of the "pic2" field.
+	Pic2 string `json:"pic2,omitempty"`
+	// Pic3 holds the value of the "pic3" field.
+	Pic3 string `json:"pic3,omitempty"`
 	// Menkan holds the value of the "menkan" field.
 	Menkan string `json:"menkan,omitempty"`
 	// Fafang holds the value of the "fafang" field.
@@ -58,7 +66,7 @@ func (*Poly) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case poly.FieldStatus, poly.FieldType:
 			values[i] = new(sql.NullInt64)
-		case poly.FieldCode, poly.FieldMallCode, poly.FieldName, poly.FieldTitle, poly.FieldMemo, poly.FieldMenkan, poly.FieldFafang, poly.FieldXiaoqi, poly.FieldShiyong:
+		case poly.FieldCode, poly.FieldMallCode, poly.FieldName, poly.FieldTitle, poly.FieldMemo, poly.FieldLogoPic, poly.FieldPic1, poly.FieldPic2, poly.FieldPic3, poly.FieldMenkan, poly.FieldFafang, poly.FieldXiaoqi, poly.FieldShiyong:
 			values[i] = new(sql.NullString)
 		case poly.FieldCreateTime, poly.FieldUpdateTime, poly.FieldStartTime, poly.FieldEndTime:
 			values[i] = new(sql.NullTime)
@@ -138,6 +146,30 @@ func (po *Poly) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field end_time", values[i])
 			} else if value.Valid {
 				po.EndTime = value.Time
+			}
+		case poly.FieldLogoPic:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field logo_pic", values[i])
+			} else if value.Valid {
+				po.LogoPic = value.String
+			}
+		case poly.FieldPic1:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic1", values[i])
+			} else if value.Valid {
+				po.Pic1 = value.String
+			}
+		case poly.FieldPic2:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic2", values[i])
+			} else if value.Valid {
+				po.Pic2 = value.String
+			}
+		case poly.FieldPic3:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic3", values[i])
+			} else if value.Valid {
+				po.Pic3 = value.String
 			}
 		case poly.FieldMenkan:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -237,6 +269,18 @@ func (po *Poly) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("end_time=")
 	builder.WriteString(po.EndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("logo_pic=")
+	builder.WriteString(po.LogoPic)
+	builder.WriteString(", ")
+	builder.WriteString("pic1=")
+	builder.WriteString(po.Pic1)
+	builder.WriteString(", ")
+	builder.WriteString("pic2=")
+	builder.WriteString(po.Pic2)
+	builder.WriteString(", ")
+	builder.WriteString("pic3=")
+	builder.WriteString(po.Pic3)
 	builder.WriteString(", ")
 	builder.WriteString("menkan=")
 	builder.WriteString(po.Menkan)

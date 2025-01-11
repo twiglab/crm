@@ -43,6 +43,10 @@ type PolyMutation struct {
 	memo          *string
 	start_time    *time.Time
 	end_time      *time.Time
+	logo_pic      *string
+	pic1          *string
+	pic2          *string
+	pic3          *string
 	menkan        *string
 	fafang        *string
 	xiaoqi        *string
@@ -485,6 +489,150 @@ func (m *PolyMutation) ResetEndTime() {
 	m.end_time = nil
 }
 
+// SetLogoPic sets the "logo_pic" field.
+func (m *PolyMutation) SetLogoPic(s string) {
+	m.logo_pic = &s
+}
+
+// LogoPic returns the value of the "logo_pic" field in the mutation.
+func (m *PolyMutation) LogoPic() (r string, exists bool) {
+	v := m.logo_pic
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLogoPic returns the old "logo_pic" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldLogoPic(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLogoPic is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLogoPic requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLogoPic: %w", err)
+	}
+	return oldValue.LogoPic, nil
+}
+
+// ResetLogoPic resets all changes to the "logo_pic" field.
+func (m *PolyMutation) ResetLogoPic() {
+	m.logo_pic = nil
+}
+
+// SetPic1 sets the "pic1" field.
+func (m *PolyMutation) SetPic1(s string) {
+	m.pic1 = &s
+}
+
+// Pic1 returns the value of the "pic1" field in the mutation.
+func (m *PolyMutation) Pic1() (r string, exists bool) {
+	v := m.pic1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPic1 returns the old "pic1" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldPic1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPic1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPic1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPic1: %w", err)
+	}
+	return oldValue.Pic1, nil
+}
+
+// ResetPic1 resets all changes to the "pic1" field.
+func (m *PolyMutation) ResetPic1() {
+	m.pic1 = nil
+}
+
+// SetPic2 sets the "pic2" field.
+func (m *PolyMutation) SetPic2(s string) {
+	m.pic2 = &s
+}
+
+// Pic2 returns the value of the "pic2" field in the mutation.
+func (m *PolyMutation) Pic2() (r string, exists bool) {
+	v := m.pic2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPic2 returns the old "pic2" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldPic2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPic2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPic2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPic2: %w", err)
+	}
+	return oldValue.Pic2, nil
+}
+
+// ResetPic2 resets all changes to the "pic2" field.
+func (m *PolyMutation) ResetPic2() {
+	m.pic2 = nil
+}
+
+// SetPic3 sets the "pic3" field.
+func (m *PolyMutation) SetPic3(s string) {
+	m.pic3 = &s
+}
+
+// Pic3 returns the value of the "pic3" field in the mutation.
+func (m *PolyMutation) Pic3() (r string, exists bool) {
+	v := m.pic3
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPic3 returns the old "pic3" field's value of the Poly entity.
+// If the Poly object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PolyMutation) OldPic3(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPic3 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPic3 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPic3: %w", err)
+	}
+	return oldValue.Pic3, nil
+}
+
+// ResetPic3 resets all changes to the "pic3" field.
+func (m *PolyMutation) ResetPic3() {
+	m.pic3 = nil
+}
+
 // SetMenkan sets the "menkan" field.
 func (m *PolyMutation) SetMenkan(s string) {
 	m.menkan = &s
@@ -775,7 +923,7 @@ func (m *PolyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PolyMutation) Fields() []string {
-	fields := make([]string, 0, 15)
+	fields := make([]string, 0, 19)
 	if m.create_time != nil {
 		fields = append(fields, poly.FieldCreateTime)
 	}
@@ -802,6 +950,18 @@ func (m *PolyMutation) Fields() []string {
 	}
 	if m.end_time != nil {
 		fields = append(fields, poly.FieldEndTime)
+	}
+	if m.logo_pic != nil {
+		fields = append(fields, poly.FieldLogoPic)
+	}
+	if m.pic1 != nil {
+		fields = append(fields, poly.FieldPic1)
+	}
+	if m.pic2 != nil {
+		fields = append(fields, poly.FieldPic2)
+	}
+	if m.pic3 != nil {
+		fields = append(fields, poly.FieldPic3)
 	}
 	if m.menkan != nil {
 		fields = append(fields, poly.FieldMenkan)
@@ -847,6 +1007,14 @@ func (m *PolyMutation) Field(name string) (ent.Value, bool) {
 		return m.StartTime()
 	case poly.FieldEndTime:
 		return m.EndTime()
+	case poly.FieldLogoPic:
+		return m.LogoPic()
+	case poly.FieldPic1:
+		return m.Pic1()
+	case poly.FieldPic2:
+		return m.Pic2()
+	case poly.FieldPic3:
+		return m.Pic3()
 	case poly.FieldMenkan:
 		return m.Menkan()
 	case poly.FieldFafang:
@@ -886,6 +1054,14 @@ func (m *PolyMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStartTime(ctx)
 	case poly.FieldEndTime:
 		return m.OldEndTime(ctx)
+	case poly.FieldLogoPic:
+		return m.OldLogoPic(ctx)
+	case poly.FieldPic1:
+		return m.OldPic1(ctx)
+	case poly.FieldPic2:
+		return m.OldPic2(ctx)
+	case poly.FieldPic3:
+		return m.OldPic3(ctx)
 	case poly.FieldMenkan:
 		return m.OldMenkan(ctx)
 	case poly.FieldFafang:
@@ -969,6 +1145,34 @@ func (m *PolyMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEndTime(v)
+		return nil
+	case poly.FieldLogoPic:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLogoPic(v)
+		return nil
+	case poly.FieldPic1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPic1(v)
+		return nil
+	case poly.FieldPic2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPic2(v)
+		return nil
+	case poly.FieldPic3:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPic3(v)
 		return nil
 	case poly.FieldMenkan:
 		v, ok := value.(string)
@@ -1114,6 +1318,18 @@ func (m *PolyMutation) ResetField(name string) error {
 		return nil
 	case poly.FieldEndTime:
 		m.ResetEndTime()
+		return nil
+	case poly.FieldLogoPic:
+		m.ResetLogoPic()
+		return nil
+	case poly.FieldPic1:
+		m.ResetPic1()
+		return nil
+	case poly.FieldPic2:
+		m.ResetPic2()
+		return nil
+	case poly.FieldPic3:
+		m.ResetPic3()
 		return nil
 	case poly.FieldMenkan:
 		m.ResetMenkan()

@@ -118,6 +118,30 @@ func (pc *PolyCreate) SetNillableEndTime(t *time.Time) *PolyCreate {
 	return pc
 }
 
+// SetLogoPic sets the "logo_pic" field.
+func (pc *PolyCreate) SetLogoPic(s string) *PolyCreate {
+	pc.mutation.SetLogoPic(s)
+	return pc
+}
+
+// SetPic1 sets the "pic1" field.
+func (pc *PolyCreate) SetPic1(s string) *PolyCreate {
+	pc.mutation.SetPic1(s)
+	return pc
+}
+
+// SetPic2 sets the "pic2" field.
+func (pc *PolyCreate) SetPic2(s string) *PolyCreate {
+	pc.mutation.SetPic2(s)
+	return pc
+}
+
+// SetPic3 sets the "pic3" field.
+func (pc *PolyCreate) SetPic3(s string) *PolyCreate {
+	pc.mutation.SetPic3(s)
+	return pc
+}
+
 // SetMenkan sets the "menkan" field.
 func (pc *PolyCreate) SetMenkan(s string) *PolyCreate {
 	pc.mutation.SetMenkan(s)
@@ -307,6 +331,38 @@ func (pc *PolyCreate) check() error {
 	if _, ok := pc.mutation.EndTime(); !ok {
 		return &ValidationError{Name: "end_time", err: errors.New(`ent: missing required field "Poly.end_time"`)}
 	}
+	if _, ok := pc.mutation.LogoPic(); !ok {
+		return &ValidationError{Name: "logo_pic", err: errors.New(`ent: missing required field "Poly.logo_pic"`)}
+	}
+	if v, ok := pc.mutation.LogoPic(); ok {
+		if err := poly.LogoPicValidator(v); err != nil {
+			return &ValidationError{Name: "logo_pic", err: fmt.Errorf(`ent: validator failed for field "Poly.logo_pic": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Pic1(); !ok {
+		return &ValidationError{Name: "pic1", err: errors.New(`ent: missing required field "Poly.pic1"`)}
+	}
+	if v, ok := pc.mutation.Pic1(); ok {
+		if err := poly.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Poly.pic1": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Pic2(); !ok {
+		return &ValidationError{Name: "pic2", err: errors.New(`ent: missing required field "Poly.pic2"`)}
+	}
+	if v, ok := pc.mutation.Pic2(); ok {
+		if err := poly.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Poly.pic2": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Pic3(); !ok {
+		return &ValidationError{Name: "pic3", err: errors.New(`ent: missing required field "Poly.pic3"`)}
+	}
+	if v, ok := pc.mutation.Pic3(); ok {
+		if err := poly.Pic3Validator(v); err != nil {
+			return &ValidationError{Name: "pic3", err: fmt.Errorf(`ent: validator failed for field "Poly.pic3": %w`, err)}
+		}
+	}
 	if _, ok := pc.mutation.Menkan(); !ok {
 		return &ValidationError{Name: "menkan", err: errors.New(`ent: missing required field "Poly.menkan"`)}
 	}
@@ -416,6 +472,22 @@ func (pc *PolyCreate) createSpec() (*Poly, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.EndTime(); ok {
 		_spec.SetField(poly.FieldEndTime, field.TypeTime, value)
 		_node.EndTime = value
+	}
+	if value, ok := pc.mutation.LogoPic(); ok {
+		_spec.SetField(poly.FieldLogoPic, field.TypeString, value)
+		_node.LogoPic = value
+	}
+	if value, ok := pc.mutation.Pic1(); ok {
+		_spec.SetField(poly.FieldPic1, field.TypeString, value)
+		_node.Pic1 = value
+	}
+	if value, ok := pc.mutation.Pic2(); ok {
+		_spec.SetField(poly.FieldPic2, field.TypeString, value)
+		_node.Pic2 = value
+	}
+	if value, ok := pc.mutation.Pic3(); ok {
+		_spec.SetField(poly.FieldPic3, field.TypeString, value)
+		_node.Pic3 = value
 	}
 	if value, ok := pc.mutation.Menkan(); ok {
 		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
@@ -538,6 +610,54 @@ func (u *PolyUpsert) SetMemo(v string) *PolyUpsert {
 // UpdateMemo sets the "memo" field to the value that was provided on create.
 func (u *PolyUpsert) UpdateMemo() *PolyUpsert {
 	u.SetExcluded(poly.FieldMemo)
+	return u
+}
+
+// SetLogoPic sets the "logo_pic" field.
+func (u *PolyUpsert) SetLogoPic(v string) *PolyUpsert {
+	u.Set(poly.FieldLogoPic, v)
+	return u
+}
+
+// UpdateLogoPic sets the "logo_pic" field to the value that was provided on create.
+func (u *PolyUpsert) UpdateLogoPic() *PolyUpsert {
+	u.SetExcluded(poly.FieldLogoPic)
+	return u
+}
+
+// SetPic1 sets the "pic1" field.
+func (u *PolyUpsert) SetPic1(v string) *PolyUpsert {
+	u.Set(poly.FieldPic1, v)
+	return u
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *PolyUpsert) UpdatePic1() *PolyUpsert {
+	u.SetExcluded(poly.FieldPic1)
+	return u
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *PolyUpsert) SetPic2(v string) *PolyUpsert {
+	u.Set(poly.FieldPic2, v)
+	return u
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *PolyUpsert) UpdatePic2() *PolyUpsert {
+	u.SetExcluded(poly.FieldPic2)
+	return u
+}
+
+// SetPic3 sets the "pic3" field.
+func (u *PolyUpsert) SetPic3(v string) *PolyUpsert {
+	u.Set(poly.FieldPic3, v)
+	return u
+}
+
+// UpdatePic3 sets the "pic3" field to the value that was provided on create.
+func (u *PolyUpsert) UpdatePic3() *PolyUpsert {
+	u.SetExcluded(poly.FieldPic3)
 	return u
 }
 
@@ -741,6 +861,62 @@ func (u *PolyUpsertOne) SetMemo(v string) *PolyUpsertOne {
 func (u *PolyUpsertOne) UpdateMemo() *PolyUpsertOne {
 	return u.Update(func(s *PolyUpsert) {
 		s.UpdateMemo()
+	})
+}
+
+// SetLogoPic sets the "logo_pic" field.
+func (u *PolyUpsertOne) SetLogoPic(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetLogoPic(v)
+	})
+}
+
+// UpdateLogoPic sets the "logo_pic" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdateLogoPic() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateLogoPic()
+	})
+}
+
+// SetPic1 sets the "pic1" field.
+func (u *PolyUpsertOne) SetPic1(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic1(v)
+	})
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdatePic1() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic1()
+	})
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *PolyUpsertOne) SetPic2(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic2(v)
+	})
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdatePic2() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic2()
+	})
+}
+
+// SetPic3 sets the "pic3" field.
+func (u *PolyUpsertOne) SetPic3(v string) *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic3(v)
+	})
+}
+
+// UpdatePic3 sets the "pic3" field to the value that was provided on create.
+func (u *PolyUpsertOne) UpdatePic3() *PolyUpsertOne {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic3()
 	})
 }
 
@@ -1125,6 +1301,62 @@ func (u *PolyUpsertBulk) SetMemo(v string) *PolyUpsertBulk {
 func (u *PolyUpsertBulk) UpdateMemo() *PolyUpsertBulk {
 	return u.Update(func(s *PolyUpsert) {
 		s.UpdateMemo()
+	})
+}
+
+// SetLogoPic sets the "logo_pic" field.
+func (u *PolyUpsertBulk) SetLogoPic(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetLogoPic(v)
+	})
+}
+
+// UpdateLogoPic sets the "logo_pic" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdateLogoPic() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdateLogoPic()
+	})
+}
+
+// SetPic1 sets the "pic1" field.
+func (u *PolyUpsertBulk) SetPic1(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic1(v)
+	})
+}
+
+// UpdatePic1 sets the "pic1" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdatePic1() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic1()
+	})
+}
+
+// SetPic2 sets the "pic2" field.
+func (u *PolyUpsertBulk) SetPic2(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic2(v)
+	})
+}
+
+// UpdatePic2 sets the "pic2" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdatePic2() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic2()
+	})
+}
+
+// SetPic3 sets the "pic3" field.
+func (u *PolyUpsertBulk) SetPic3(v string) *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.SetPic3(v)
+	})
+}
+
+// UpdatePic3 sets the "pic3" field to the value that was provided on create.
+func (u *PolyUpsertBulk) UpdatePic3() *PolyUpsertBulk {
+	return u.Update(func(s *PolyUpsert) {
+		s.UpdatePic3()
 	})
 }
 

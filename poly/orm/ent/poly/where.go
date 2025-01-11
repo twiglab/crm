@@ -100,6 +100,26 @@ func EndTime(v time.Time) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldEndTime, v))
 }
 
+// LogoPic applies equality check predicate on the "logo_pic" field. It's identical to LogoPicEQ.
+func LogoPic(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldLogoPic, v))
+}
+
+// Pic1 applies equality check predicate on the "pic1" field. It's identical to Pic1EQ.
+func Pic1(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic1, v))
+}
+
+// Pic2 applies equality check predicate on the "pic2" field. It's identical to Pic2EQ.
+func Pic2(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic2, v))
+}
+
+// Pic3 applies equality check predicate on the "pic3" field. It's identical to Pic3EQ.
+func Pic3(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic3, v))
+}
+
 // Menkan applies equality check predicate on the "menkan" field. It's identical to MenkanEQ.
 func Menkan(v string) predicate.Poly {
 	return predicate.Poly(sql.FieldEQ(FieldMenkan, v))
@@ -613,6 +633,266 @@ func EndTimeLT(v time.Time) predicate.Poly {
 // EndTimeLTE applies the LTE predicate on the "end_time" field.
 func EndTimeLTE(v time.Time) predicate.Poly {
 	return predicate.Poly(sql.FieldLTE(FieldEndTime, v))
+}
+
+// LogoPicEQ applies the EQ predicate on the "logo_pic" field.
+func LogoPicEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldLogoPic, v))
+}
+
+// LogoPicNEQ applies the NEQ predicate on the "logo_pic" field.
+func LogoPicNEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldLogoPic, v))
+}
+
+// LogoPicIn applies the In predicate on the "logo_pic" field.
+func LogoPicIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldLogoPic, vs...))
+}
+
+// LogoPicNotIn applies the NotIn predicate on the "logo_pic" field.
+func LogoPicNotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldLogoPic, vs...))
+}
+
+// LogoPicGT applies the GT predicate on the "logo_pic" field.
+func LogoPicGT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldLogoPic, v))
+}
+
+// LogoPicGTE applies the GTE predicate on the "logo_pic" field.
+func LogoPicGTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldLogoPic, v))
+}
+
+// LogoPicLT applies the LT predicate on the "logo_pic" field.
+func LogoPicLT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldLogoPic, v))
+}
+
+// LogoPicLTE applies the LTE predicate on the "logo_pic" field.
+func LogoPicLTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldLogoPic, v))
+}
+
+// LogoPicContains applies the Contains predicate on the "logo_pic" field.
+func LogoPicContains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldLogoPic, v))
+}
+
+// LogoPicHasPrefix applies the HasPrefix predicate on the "logo_pic" field.
+func LogoPicHasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldLogoPic, v))
+}
+
+// LogoPicHasSuffix applies the HasSuffix predicate on the "logo_pic" field.
+func LogoPicHasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldLogoPic, v))
+}
+
+// LogoPicEqualFold applies the EqualFold predicate on the "logo_pic" field.
+func LogoPicEqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldLogoPic, v))
+}
+
+// LogoPicContainsFold applies the ContainsFold predicate on the "logo_pic" field.
+func LogoPicContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldLogoPic, v))
+}
+
+// Pic1EQ applies the EQ predicate on the "pic1" field.
+func Pic1EQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic1, v))
+}
+
+// Pic1NEQ applies the NEQ predicate on the "pic1" field.
+func Pic1NEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldPic1, v))
+}
+
+// Pic1In applies the In predicate on the "pic1" field.
+func Pic1In(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldPic1, vs...))
+}
+
+// Pic1NotIn applies the NotIn predicate on the "pic1" field.
+func Pic1NotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldPic1, vs...))
+}
+
+// Pic1GT applies the GT predicate on the "pic1" field.
+func Pic1GT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldPic1, v))
+}
+
+// Pic1GTE applies the GTE predicate on the "pic1" field.
+func Pic1GTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldPic1, v))
+}
+
+// Pic1LT applies the LT predicate on the "pic1" field.
+func Pic1LT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldPic1, v))
+}
+
+// Pic1LTE applies the LTE predicate on the "pic1" field.
+func Pic1LTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldPic1, v))
+}
+
+// Pic1Contains applies the Contains predicate on the "pic1" field.
+func Pic1Contains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldPic1, v))
+}
+
+// Pic1HasPrefix applies the HasPrefix predicate on the "pic1" field.
+func Pic1HasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldPic1, v))
+}
+
+// Pic1HasSuffix applies the HasSuffix predicate on the "pic1" field.
+func Pic1HasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldPic1, v))
+}
+
+// Pic1EqualFold applies the EqualFold predicate on the "pic1" field.
+func Pic1EqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldPic1, v))
+}
+
+// Pic1ContainsFold applies the ContainsFold predicate on the "pic1" field.
+func Pic1ContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldPic1, v))
+}
+
+// Pic2EQ applies the EQ predicate on the "pic2" field.
+func Pic2EQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic2, v))
+}
+
+// Pic2NEQ applies the NEQ predicate on the "pic2" field.
+func Pic2NEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldPic2, v))
+}
+
+// Pic2In applies the In predicate on the "pic2" field.
+func Pic2In(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldPic2, vs...))
+}
+
+// Pic2NotIn applies the NotIn predicate on the "pic2" field.
+func Pic2NotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldPic2, vs...))
+}
+
+// Pic2GT applies the GT predicate on the "pic2" field.
+func Pic2GT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldPic2, v))
+}
+
+// Pic2GTE applies the GTE predicate on the "pic2" field.
+func Pic2GTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldPic2, v))
+}
+
+// Pic2LT applies the LT predicate on the "pic2" field.
+func Pic2LT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldPic2, v))
+}
+
+// Pic2LTE applies the LTE predicate on the "pic2" field.
+func Pic2LTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldPic2, v))
+}
+
+// Pic2Contains applies the Contains predicate on the "pic2" field.
+func Pic2Contains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldPic2, v))
+}
+
+// Pic2HasPrefix applies the HasPrefix predicate on the "pic2" field.
+func Pic2HasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldPic2, v))
+}
+
+// Pic2HasSuffix applies the HasSuffix predicate on the "pic2" field.
+func Pic2HasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldPic2, v))
+}
+
+// Pic2EqualFold applies the EqualFold predicate on the "pic2" field.
+func Pic2EqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldPic2, v))
+}
+
+// Pic2ContainsFold applies the ContainsFold predicate on the "pic2" field.
+func Pic2ContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldPic2, v))
+}
+
+// Pic3EQ applies the EQ predicate on the "pic3" field.
+func Pic3EQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEQ(FieldPic3, v))
+}
+
+// Pic3NEQ applies the NEQ predicate on the "pic3" field.
+func Pic3NEQ(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldNEQ(FieldPic3, v))
+}
+
+// Pic3In applies the In predicate on the "pic3" field.
+func Pic3In(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldIn(FieldPic3, vs...))
+}
+
+// Pic3NotIn applies the NotIn predicate on the "pic3" field.
+func Pic3NotIn(vs ...string) predicate.Poly {
+	return predicate.Poly(sql.FieldNotIn(FieldPic3, vs...))
+}
+
+// Pic3GT applies the GT predicate on the "pic3" field.
+func Pic3GT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGT(FieldPic3, v))
+}
+
+// Pic3GTE applies the GTE predicate on the "pic3" field.
+func Pic3GTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldGTE(FieldPic3, v))
+}
+
+// Pic3LT applies the LT predicate on the "pic3" field.
+func Pic3LT(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLT(FieldPic3, v))
+}
+
+// Pic3LTE applies the LTE predicate on the "pic3" field.
+func Pic3LTE(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldLTE(FieldPic3, v))
+}
+
+// Pic3Contains applies the Contains predicate on the "pic3" field.
+func Pic3Contains(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContains(FieldPic3, v))
+}
+
+// Pic3HasPrefix applies the HasPrefix predicate on the "pic3" field.
+func Pic3HasPrefix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasPrefix(FieldPic3, v))
+}
+
+// Pic3HasSuffix applies the HasSuffix predicate on the "pic3" field.
+func Pic3HasSuffix(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldHasSuffix(FieldPic3, v))
+}
+
+// Pic3EqualFold applies the EqualFold predicate on the "pic3" field.
+func Pic3EqualFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldEqualFold(FieldPic3, v))
+}
+
+// Pic3ContainsFold applies the ContainsFold predicate on the "pic3" field.
+func Pic3ContainsFold(v string) predicate.Poly {
+	return predicate.Poly(sql.FieldContainsFold(FieldPic3, v))
 }
 
 // MenkanEQ applies the EQ predicate on the "menkan" field.

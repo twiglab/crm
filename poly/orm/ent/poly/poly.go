@@ -32,6 +32,14 @@ const (
 	FieldStartTime = "start_time"
 	// FieldEndTime holds the string denoting the end_time field in the database.
 	FieldEndTime = "end_time"
+	// FieldLogoPic holds the string denoting the logo_pic field in the database.
+	FieldLogoPic = "logo_pic"
+	// FieldPic1 holds the string denoting the pic1 field in the database.
+	FieldPic1 = "pic1"
+	// FieldPic2 holds the string denoting the pic2 field in the database.
+	FieldPic2 = "pic2"
+	// FieldPic3 holds the string denoting the pic3 field in the database.
+	FieldPic3 = "pic3"
 	// FieldMenkan holds the string denoting the menkan field in the database.
 	FieldMenkan = "menkan"
 	// FieldFafang holds the string denoting the fafang field in the database.
@@ -60,6 +68,10 @@ var Columns = []string{
 	FieldMemo,
 	FieldStartTime,
 	FieldEndTime,
+	FieldLogoPic,
+	FieldPic1,
+	FieldPic2,
+	FieldPic3,
 	FieldMenkan,
 	FieldFafang,
 	FieldXiaoqi,
@@ -101,6 +113,14 @@ var (
 	DefaultStartTime func() time.Time
 	// DefaultEndTime holds the default value on creation for the "end_time" field.
 	DefaultEndTime func() time.Time
+	// LogoPicValidator is a validator for the "logo_pic" field. It is called by the builders before save.
+	LogoPicValidator func(string) error
+	// Pic1Validator is a validator for the "pic1" field. It is called by the builders before save.
+	Pic1Validator func(string) error
+	// Pic2Validator is a validator for the "pic2" field. It is called by the builders before save.
+	Pic2Validator func(string) error
+	// Pic3Validator is a validator for the "pic3" field. It is called by the builders before save.
+	Pic3Validator func(string) error
 	// MenkanValidator is a validator for the "menkan" field. It is called by the builders before save.
 	MenkanValidator func(string) error
 	// FafangValidator is a validator for the "fafang" field. It is called by the builders before save.
@@ -168,6 +188,26 @@ func ByStartTime(opts ...sql.OrderTermOption) OrderOption {
 // ByEndTime orders the results by the end_time field.
 func ByEndTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEndTime, opts...).ToFunc()
+}
+
+// ByLogoPic orders the results by the logo_pic field.
+func ByLogoPic(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLogoPic, opts...).ToFunc()
+}
+
+// ByPic1 orders the results by the pic1 field.
+func ByPic1(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic1, opts...).ToFunc()
+}
+
+// ByPic2 orders the results by the pic2 field.
+func ByPic2(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic2, opts...).ToFunc()
+}
+
+// ByPic3 orders the results by the pic3 field.
+func ByPic3(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic3, opts...).ToFunc()
 }
 
 // ByMenkan orders the results by the menkan field.

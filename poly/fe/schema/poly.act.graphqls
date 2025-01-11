@@ -1,0 +1,17 @@
+
+input QualificationReq {
+  memberCode: String!
+  polyCode: String!
+}
+
+type QualificationResp {
+  memberCode: String!
+  polyCode: String!
+  token: String!
+  result: Int!
+}
+
+extend type Query {
+  # 领卷资格判定
+  qualification(input: QualificationReq!): QualificationResp!
+}

@@ -83,6 +83,40 @@ func (Poly) Fields() []ent.Field {
 
 		field.Time("end_time").Default(time.Now).Immutable(),
 
+		// 活动图片
+		field.String("logo_pic").
+			MaxLen(256).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
+		field.String("pic1").
+			MaxLen(256).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
+		field.String("pic2").
+			MaxLen(256).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
+		field.String("pic3").
+			MaxLen(256).
+			NotEmpty().
+			SchemaType(map[string]string{
+				dialect.MySQL:    "varchar(256)", // Override MySQL.
+				dialect.Postgres: "varchar(256)", // Override Postgres.
+				dialect.SQLite:   "varchar(256)", // Override Postgres.
+			}),
+
 		// 门槛规则
 		field.String("menkan").
 			MaxLen(512).

@@ -76,6 +76,62 @@ func (pu *PolyUpdate) SetNillableMemo(s *string) *PolyUpdate {
 	return pu
 }
 
+// SetLogoPic sets the "logo_pic" field.
+func (pu *PolyUpdate) SetLogoPic(s string) *PolyUpdate {
+	pu.mutation.SetLogoPic(s)
+	return pu
+}
+
+// SetNillableLogoPic sets the "logo_pic" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillableLogoPic(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetLogoPic(*s)
+	}
+	return pu
+}
+
+// SetPic1 sets the "pic1" field.
+func (pu *PolyUpdate) SetPic1(s string) *PolyUpdate {
+	pu.mutation.SetPic1(s)
+	return pu
+}
+
+// SetNillablePic1 sets the "pic1" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillablePic1(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetPic1(*s)
+	}
+	return pu
+}
+
+// SetPic2 sets the "pic2" field.
+func (pu *PolyUpdate) SetPic2(s string) *PolyUpdate {
+	pu.mutation.SetPic2(s)
+	return pu
+}
+
+// SetNillablePic2 sets the "pic2" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillablePic2(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetPic2(*s)
+	}
+	return pu
+}
+
+// SetPic3 sets the "pic3" field.
+func (pu *PolyUpdate) SetPic3(s string) *PolyUpdate {
+	pu.mutation.SetPic3(s)
+	return pu
+}
+
+// SetNillablePic3 sets the "pic3" field if the given value is not nil.
+func (pu *PolyUpdate) SetNillablePic3(s *string) *PolyUpdate {
+	if s != nil {
+		pu.SetPic3(*s)
+	}
+	return pu
+}
+
 // SetMenkan sets the "menkan" field.
 func (pu *PolyUpdate) SetMenkan(s string) *PolyUpdate {
 	pu.mutation.SetMenkan(s)
@@ -232,6 +288,26 @@ func (pu *PolyUpdate) check() error {
 			return &ValidationError{Name: "memo", err: fmt.Errorf(`ent: validator failed for field "Poly.memo": %w`, err)}
 		}
 	}
+	if v, ok := pu.mutation.LogoPic(); ok {
+		if err := poly.LogoPicValidator(v); err != nil {
+			return &ValidationError{Name: "logo_pic", err: fmt.Errorf(`ent: validator failed for field "Poly.logo_pic": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Pic1(); ok {
+		if err := poly.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Poly.pic1": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Pic2(); ok {
+		if err := poly.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Poly.pic2": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Pic3(); ok {
+		if err := poly.Pic3Validator(v); err != nil {
+			return &ValidationError{Name: "pic3", err: fmt.Errorf(`ent: validator failed for field "Poly.pic3": %w`, err)}
+		}
+	}
 	if v, ok := pu.mutation.Menkan(); ok {
 		if err := poly.MenkanValidator(v); err != nil {
 			return &ValidationError{Name: "menkan", err: fmt.Errorf(`ent: validator failed for field "Poly.menkan": %w`, err)}
@@ -278,6 +354,18 @@ func (pu *PolyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := pu.mutation.Memo(); ok {
 		_spec.SetField(poly.FieldMemo, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.LogoPic(); ok {
+		_spec.SetField(poly.FieldLogoPic, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Pic1(); ok {
+		_spec.SetField(poly.FieldPic1, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Pic2(); ok {
+		_spec.SetField(poly.FieldPic2, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Pic3(); ok {
+		_spec.SetField(poly.FieldPic3, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.Menkan(); ok {
 		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
@@ -367,6 +455,62 @@ func (puo *PolyUpdateOne) SetMemo(s string) *PolyUpdateOne {
 func (puo *PolyUpdateOne) SetNillableMemo(s *string) *PolyUpdateOne {
 	if s != nil {
 		puo.SetMemo(*s)
+	}
+	return puo
+}
+
+// SetLogoPic sets the "logo_pic" field.
+func (puo *PolyUpdateOne) SetLogoPic(s string) *PolyUpdateOne {
+	puo.mutation.SetLogoPic(s)
+	return puo
+}
+
+// SetNillableLogoPic sets the "logo_pic" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillableLogoPic(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetLogoPic(*s)
+	}
+	return puo
+}
+
+// SetPic1 sets the "pic1" field.
+func (puo *PolyUpdateOne) SetPic1(s string) *PolyUpdateOne {
+	puo.mutation.SetPic1(s)
+	return puo
+}
+
+// SetNillablePic1 sets the "pic1" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillablePic1(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetPic1(*s)
+	}
+	return puo
+}
+
+// SetPic2 sets the "pic2" field.
+func (puo *PolyUpdateOne) SetPic2(s string) *PolyUpdateOne {
+	puo.mutation.SetPic2(s)
+	return puo
+}
+
+// SetNillablePic2 sets the "pic2" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillablePic2(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetPic2(*s)
+	}
+	return puo
+}
+
+// SetPic3 sets the "pic3" field.
+func (puo *PolyUpdateOne) SetPic3(s string) *PolyUpdateOne {
+	puo.mutation.SetPic3(s)
+	return puo
+}
+
+// SetNillablePic3 sets the "pic3" field if the given value is not nil.
+func (puo *PolyUpdateOne) SetNillablePic3(s *string) *PolyUpdateOne {
+	if s != nil {
+		puo.SetPic3(*s)
 	}
 	return puo
 }
@@ -540,6 +684,26 @@ func (puo *PolyUpdateOne) check() error {
 			return &ValidationError{Name: "memo", err: fmt.Errorf(`ent: validator failed for field "Poly.memo": %w`, err)}
 		}
 	}
+	if v, ok := puo.mutation.LogoPic(); ok {
+		if err := poly.LogoPicValidator(v); err != nil {
+			return &ValidationError{Name: "logo_pic", err: fmt.Errorf(`ent: validator failed for field "Poly.logo_pic": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Pic1(); ok {
+		if err := poly.Pic1Validator(v); err != nil {
+			return &ValidationError{Name: "pic1", err: fmt.Errorf(`ent: validator failed for field "Poly.pic1": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Pic2(); ok {
+		if err := poly.Pic2Validator(v); err != nil {
+			return &ValidationError{Name: "pic2", err: fmt.Errorf(`ent: validator failed for field "Poly.pic2": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Pic3(); ok {
+		if err := poly.Pic3Validator(v); err != nil {
+			return &ValidationError{Name: "pic3", err: fmt.Errorf(`ent: validator failed for field "Poly.pic3": %w`, err)}
+		}
+	}
 	if v, ok := puo.mutation.Menkan(); ok {
 		if err := poly.MenkanValidator(v); err != nil {
 			return &ValidationError{Name: "menkan", err: fmt.Errorf(`ent: validator failed for field "Poly.menkan": %w`, err)}
@@ -603,6 +767,18 @@ func (puo *PolyUpdateOne) sqlSave(ctx context.Context) (_node *Poly, err error) 
 	}
 	if value, ok := puo.mutation.Memo(); ok {
 		_spec.SetField(poly.FieldMemo, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.LogoPic(); ok {
+		_spec.SetField(poly.FieldLogoPic, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Pic1(); ok {
+		_spec.SetField(poly.FieldPic1, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Pic2(); ok {
+		_spec.SetField(poly.FieldPic2, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Pic3(); ok {
+		_spec.SetField(poly.FieldPic3, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.Menkan(); ok {
 		_spec.SetField(poly.FieldMenkan, field.TypeString, value)
