@@ -1,5 +1,6 @@
 schema:
   - ../rpc/gql/schema/**/*.graphqls
+  - ../rpc/gql/schema/*.graphqls
 
 operations:
   - api/member.graphql

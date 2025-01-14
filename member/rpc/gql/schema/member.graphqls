@@ -1,1 +1,14 @@
+type MemberResp {
+  code: String!
+  wxOpenID: String!
+  level: Int!
+  status: Int!
+}
 
+input CodeReq {
+  code: String!
+}
+
+extend type Query {
+  qryMemberByCode(input: CodeReq!): MemberResp!
+}

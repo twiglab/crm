@@ -1,5 +1,9 @@
 package data
 
+type CodeReq struct {
+	Code string `json:"code"`
+}
+
 type WxCreateMemberReq struct {
 	Code      string `json:"code"`
 	WxUnionID string `json:"wxUnionID"`

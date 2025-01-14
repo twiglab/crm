@@ -26,3 +26,12 @@ query QryMemberByWxOpenID($input: OpenIDReq!) {
     status
   }
 }
+
+query QryMemberByCode($input: CodeReq!) {
+  qryMemberByCode(input: $input) {
+    code
+    wxOpenID
+    level
+    status
+  }
+}

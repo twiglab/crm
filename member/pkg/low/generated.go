@@ -9,6 +9,14 @@ import (
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
+// QryMemberByCodeResponse is returned by QryMemberByCode on success.
+type QryMemberByCodeResponse struct {
+	QryMemberByCode data.MemberResp `json:"qryMemberByCode"`
+}
+
+// GetQryMemberByCode returns QryMemberByCodeResponse.QryMemberByCode, and is useful for accessing the field via an interface.
+func (v *QryMemberByCodeResponse) GetQryMemberByCode() data.MemberResp { return v.QryMemberByCode }
+
 // QryMemberByWxOpenIDResponse is returned by QryMemberByWxOpenID on success.
 type QryMemberByWxOpenIDResponse struct {
 	QryMemberByWxOpenID data.MemberResp `json:"qryMemberByWxOpenID"`
@@ -35,6 +43,14 @@ type WxLoginResponse struct {
 // GetWxLogin returns WxLoginResponse.WxLogin, and is useful for accessing the field via an interface.
 func (v *WxLoginResponse) GetWxLogin() data.WxLoginResp { return v.WxLogin }
 
+// __QryMemberByCodeInput is used internally by genqlient
+type __QryMemberByCodeInput struct {
+	Input data.CodeReq `json:"input"`
+}
+
+// GetInput returns __QryMemberByCodeInput.Input, and is useful for accessing the field via an interface.
+func (v *__QryMemberByCodeInput) GetInput() data.CodeReq { return v.Input }
+
 // __QryMemberByWxOpenIDInput is used internally by genqlient
 type __QryMemberByWxOpenIDInput struct {
 	Input data.OpenIDReq `json:"input"`
@@ -58,6 +74,44 @@ type __WxLoginInput struct {
 
 // GetInput returns __WxLoginInput.Input, and is useful for accessing the field via an interface.
 func (v *__WxLoginInput) GetInput() data.OpenIDReq { return v.Input }
+
+// The query or mutation executed by QryMemberByCode.
+const QryMemberByCode_Operation = `
+query QryMemberByCode ($input: CodeReq!) {
+	qryMemberByCode(input: $input) {
+		code
+		wxOpenID
+		level
+		status
+	}
+}
+`
+
+func QryMemberByCode(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input data.CodeReq,
+) (*QryMemberByCodeResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "QryMemberByCode",
+		Query:  QryMemberByCode_Operation,
+		Variables: &__QryMemberByCodeInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ QryMemberByCodeResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
 
 // The query or mutation executed by QryMemberByWxOpenID.
 const QryMemberByWxOpenID_Operation = `

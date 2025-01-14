@@ -11,17 +11,21 @@ import (
 	"github.com/twiglab/crm/member/pkg/data"
 )
 
-// QryMemberByWxOpenID is the resolver for the qryMemberByWxOpenID field.
-func (r *queryResolver) QryMemberByWxOpenID(ctx context.Context, input data.OpenIDReq) (*data.MemberResp, error) {
-	mb, err := r.Op.GetMemberByWxOpenID(ctx, orm.Param{OpenID: input.WxOpenID})
+// QryMemberByCode is the resolver for the qryMemberByCode field.
+func (r *queryResolver) QryMemberByCode(ctx context.Context, input data.CodeReq) (*data.MemberResp, error) {
+	mb, err := r.Op.GetMemberByCode(ctx, orm.Param{Code: input.Code})
 	if err != nil {
 		return nil, err
 	}
-
 	return &data.MemberResp{
 		Code:     mb.Code,
-		WxOpenID: mb.WxOpenID,
 		Level:    mb.Level,
+		WxOpenID: mb.WxOpenID,
 		Status:   mb.Status,
 	}, nil
 }
+
+// Query returns QueryResolver implementation.
+func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+
+type queryResolver struct{ *Resolver }
